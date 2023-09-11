@@ -1,0 +1,17 @@
+# *Python : an introduction to programming* - second edition (Parker, 2021)
+
+## Chapter 1 : Computers and programming
+
+La plupart des ordinateurs sont des *digital computers* : ce sont des ordinateurs qui manipulent des nombres (les programmes sont encodés en caractères humainement compréhensibles). Les *analog computers* sont plus rares et manipulent plutôt des signaux électriques, ou sont mécaniques.
+
+En programmation, on a plutôt besoin d'arithmétique en terme de mathématiques.
+
+### **Solving a problem using a computer**
+
+Le processus de résolution de problème commence avec une spécification détaillée du problème à résoudre. Il fut comprendre complètement le problème pour que celui-ci puisse être résolu à l'aide d'un ordi. On divise ensuite le problème en une partie qu'on sait résoudre avec nos moyens actuels (méthodes et programmes en notre possession) et en une partie qu'on ne sait pas résoudre.
+Pseudocode : grandes lignes de la solution, souvent notée par écrit.
+Script / source cocde / computer program : le programme en langage de programmation qui résulte du pseudocode.
+
+Compileur : programme qui convertit notre code en code machine (0 et 1) que peut comprendre l'ordinateur.
+
+">>>" en début de ligne = a prompt, on se trouve dans l'interpréteur Python.
