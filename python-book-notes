@@ -1,13 +1,15 @@
 # *Python : an introduction to programming* - second edition (Parker, 2021)
 
-## Chapter 1 : Computers and programming
+## <center>Chapter 1 : Computers and programming
 
 La plupart des ordinateurs sont des *digital computers* : ce sont des ordinateurs qui manipulent des nombres (les programmes sont encodés en caractères humainement compréhensibles). Les *analog computers* sont plus rares et manipulent plutôt des signaux électriques, ou sont mécaniques.
 
 En programmation, on a plutôt besoin d'arithmétique en terme de mathématiques.
 
-### **Solving a problem using a computer**
+### 1. Solving a problem using a computer
 ---
+
+Un programme est un **ensemble d'instructions dans le but de réaliser une tâche à l'aide d'une ordinateur**. Python est un des langages de programmation pouvant être utilisé à cet effet.
 
 Le processus de résolution de problème commence avec une spécification détaillée du problème à résoudre. Il faut comprendre complètement le problème pour que celui-ci puisse être résolu à l'aide d'un ordi. On divise ensuite le problème en une partie qu'on sait résoudre avec nos moyens actuels (méthodes et programmes en notre possession) et en une partie qu'on ne sait pas résoudre.
 
@@ -25,7 +27,7 @@ Dans un langage de programmation, on trouve :
 - des ***system variables*** qui ont une signification définie par le langage et peuvent être rétuilisées par le programmeur.
 - des ***variables*** et des ***fonctions*** qui sont des termes définies par le programmeur pour être utilisées ensuite dans le code.
 
-### Guess a number
+### 2. Guess a number
 ---
 Plusieurs variantes du jeu :
 - Deviner de façon précise le nombre : une personne choisit un nombre dans un intervalle spécifique (le *chooser*) et une personne devine (le *guesser*). Si elle devine le nombre, elle a gagné.
@@ -36,13 +38,19 @@ Plusieurs variantes du jeu :
 
 **1ère version** : l'ordinateur choisit un nombre dans un intervalle et l'utilisateur doit le deviner.
 
-1. L'ordinateur choisit un nombre.
+1. L'ordinateur choisit un nombre. \
+```choice = 7```
 
-2. L'ordinateur demande au joueur de deviner.
+2. L'ordinateur demande au joueur de deviner. \
+```playerchoice = int(input("Please guess a number between 1 and 10 : ")```
 
 3. Le joueur tape un nombre entier et l'ordinateur l'analyse.
 
-4. L'ordinateur compare l'input utilisateur avec celui qu'il a choisit ; s'ils sont identiques, le joueur a gagné, sinon l'ordinateur a gagné.
+4. L'ordinateur compare l'input utilisateur avec celui qu'il a choisit ; s'ils sont identiques, le joueur a gagné, sinon l'ordinateur a gagné. \
+```if choice == playerchoice:``` \
+&emsp;&emsp;```print("You win !)``` \
+```else:``` \
+&emsp;&emsp;```print("Sorry, you lose.")```
 
 Pré-requis Python : imprimer un message dans le prompt, lire un nombre, pouvoir le stocker dans une variable, pouvoir comparer deux nombres et avoir deux issues possibles en fonction du résultat de cette comparaison.
 
@@ -64,7 +72,7 @@ Pré-requis Python : imprimer un message dans le prompt, lire un nombre, pouvoir
 
 Le mécanisme de répétitions est le seul nouvel aspect par rapport à la version 1, mais la notion de **boucle** est très importante dans les langages de programmation.
 
-### Rock-paper-scissors
+### 3. Rock-paper-scissors
 ---
 
 Deux joueurs choisissent un item de la liste (pierre, feuille, ciseaux) et révèlent simultanément leur choix. Si l'item est identique, on recommence. Sinon, la feuille/le papier bat la pierre, la pierre bat le ciseau et le ciseau bat la feuille/le papier.
@@ -101,7 +109,7 @@ Pour chaque item, il existe un item qui le bat et un autre contre lequel il perd
 On aura donc besoin ici d'une façon de stocker une valeur (= *la variable*), d'une façon d'éxécuter certaines parties du programme en fonction de la valeur (= *condition if* ou *if statement*), une façon de lire la valeur du prompt, une façon de print un message à l'écran et enfin une façon d'éxécuter du code à répétition (= *une boucle* ou *a loop*).
 
 ---
-### Variables and values-experimenting with the Graphical User Interface
+### 4. Variables and values-experimenting with the Graphical User Interface
 
 Une ***variable*** est un nom que le développeur définit pour représenter une valeur, le plus souvent un nombre ou une chaîne de caractères. Elle représente la place où l'ordinateur stocke cette valeur (l'espace "de nommage", étant lié à l'espace "objet" qu'il représente).
 
@@ -115,62 +123,65 @@ Bien qu'il n'y ait pas d'obligation à donner un nom significatif à une variabl
 
 Une variable peut changer de valeur, mais elle ne peut contenir qu'une valeur à la fois. Elle est du même type que le dernier objet qui lui a été assigné.
 
-[Exemple : on définit une variable **pi** associée à la valeur 3.1415926. Le nombre 3.1415926 est une constante, mais c'est aussi une *expression*. Le symbole *=* signifie *assign to*. Donc pi = 3.1415926 est un *assignment statement* et donne à la variable **pi** une valeur spécifique.\
-On définit une nouvelle variable appelée **radius**, assignée à 10.0.\
-On peut manipuler les valeurs via les variables comme ceci : pour calculer la circonférence d'un cercle, on a la formule *2 x pi x r*. On souhaite assigner la réponse à une nouvelle variable circonférence : *circumference = 2* * *pi* * *radius*. Si on tape *circumference* dans l'interpréteur ensuite, celui-ci nous renverra 62.832852.](#)
+<p style="color:green"> Exemple : on définit une variable <strong>pi</strong> associée à la valeur 3.1415926. Le nombre 3.1415926 est une constante, mais c'est aussi une <em>expression</em>. Le symbole <em>=</em> signifie <em>assign to</em>. Donc pi = 3.1415926 est un <em>assignment statement</em> et donne à la variable <strong>pi</strong> une valeur spécifique. </p>
+<p style="color: green">On définit une nouvelle variable appelée <strong>radius</strong>, assignée à 10.0.</p>
+<p style="color: green">On peut manipuler les valeurs via les variables comme ceci : pour calculer la circonférence d'un cercle, on a la formule <em>2 x pi x r</em>. On souhaite assigner la réponse à une nouvelle variable circonférence : <em>circumference = 2</em> * <em>pi</em> * <em>radius</em>. Si on tape <em>circumference</em> dans l'interpréteur ensuite, celui-ci nous renverra 62.832852.
 
 Quand on assigne une variable à une valeur, la variable prend le type de la valeur qu'elle représente (une string, un entier, une liste,...). On ne peut pas utiliser une variable avant de l'avoir assignée à une valeur, cela retournerait un message d'erreur.
 
 | Not allowed | allowed |
 |:---:|:---:|
-| area = side * side | side = 12.0 |
-| side = 12.0 | area = side * side|
+| *area = side * side <br>side = 12.0* | *side = 12.0 <br>area = side * side* |
 
 On appelle cela des *statements* en Python. Dans d'autres langages de programmation, les statements sont séparés par des *;* (*semicolon* en anglais), alors qu'en Python ils sont marqués par la fin d'une ligne et les indentations.
 
 Les ***expressions*** : ce sont des opérations numériques vues en arithmétiques (=, +, -, *, /). La priorité opératoire (*precedence rule* en anglais) est respectée. On rappelle que ** en Python marque la **puissance/l'exposant**. Il est prioritaire et est donc réalisé avant toute autre opération.
 Evidemment, on peut utiliser des parenthèses pour favoriser une opération (parenthèse > exposant).
 
-[Exemple : 1 + 2**3 = 1 + 2<sup>3</sup> = 9 \
-&emsp;&emsp;&emsp;&emsp;(1+2)**3 = 3<sup>3</sup> = 27](#)
+<p style="color: green">Exemple : 1 + 2**3 = 1 + 2<sup>3</sup> = 9</p>
+<p style="color: green">&emsp;&emsp;&emsp;&emsp;(1+2)**3 = 3<sup>3</sup> = 27
 
 En Python, on a des opérations un peu particulières, notamment concernant les divisions :
-- **Division entière** (*integer division*) représentée par *//*. Le résultat de ce type de division sera arrondi à l'entier inférieur.\
-[*3//2 = 1* ou *3//6 = 0*]()
-- **Division naturelle/décimale** resprésentée par */*. Elle permet de calculer le quotient de la division décimale et donnera donc un nombre flottant/décimal comme résultat. \
-[*3/2 = 1.5* ou *3/6 = 0.5*]()
-- **Modulo** resprésenté par *%*. Calcule le **reste** de la division **entière**. \
-[*3%2 = 1* ou *3%6 = 3*]()
-- **Valeur absolue** (*absolute*) représentée par *abs()*. Elle donne la valeur absolue d'une nombre. \
-[*abs(-3) = 3*]()
+- **Division entière** (*integer division*) représentée par *//*. Le résultat de ce type de division sera arrondi à l'entier inférieur.
+<p style="color: green"><em>3//2 = 1</em> ou <em>3//6 = 0</em></p>
+
+- **Division naturelle/décimale** resprésentée par */*. Elle permet de calculer le quotient de la division décimale et donnera donc un nombre flottant/décimal comme résultat.
+<p style="color: green"><em>3/2 = 1.5</em> ou <em>3/6 = 0.5</em></p>
+
+- **Modulo** resprésenté par *%*. Calcule le **reste** de la division **entière**.
+<p style="color: green"><em>3%2 = 1</em> ou <em>3%6 = 3</em></p>
+
+- **Valeur absolue** (*absolute*) représentée par *abs()*. Elle donne la valeur absolue d'une nombre.
+<p style="color: green"><em>abs(-3) = 3</em></p>
 
 ---
-### Exchanging information with the computer
+### 5. Exchanging information with the computer
 
 Il y a un échange d'informations entre l'ordinateur et l'utilisateur. Par exemple, l'utilisateur communique la valeur du radius à l'ordinateur, puis l'ordinateur communique la circonférence du cercle à l'utilisateur à partir du radius et de la formule donnés. De prime abord, cet échange se fait via du texte, des caractères tapés à l'aide d'un clavier. Mais cela n'est que la forme définie par le développeur, c'est en réalité des séries de nombre qui sont échangées.
 
 Pour envoyer un message à l'écran, le développeur utilise la commande ***print()*** qui renvoie une chaîne de caractères apparaissant à l'écran. \
 On peut également séparés les éléments qu'on souhaite mentionner par des virgules (*comma* en anglais).
 
-[Exemple : *print("The circumference is", 62.831852)* ou *print("The circumference is", circumference)* - on note ici la variable *circumference*, qui sera remplacée dans le message par sa valeur.]()
+<p style="color: green">Exemple : <em>print("The circumference is", 62.831852)</em> ou <em>print("The circumference is", circumference)</em> - on note ici la variable <em>circumference</em>, qui sera remplacée dans le message par sa valeur.
 
 ---
-### Strings, integers and real numbers
+### 6. Strings, integers and real numbers
 
 On distingue les nombres entiers (*intergers* ou *whole numbers* en anglais) et nombres flottants (*real number* ou *floating-point numbers/float numbers* en anglais). Une variable python peut être d'un type ou de l'autre. \
 On peut mélanger des opérations des deux types, mais il vaut mieux éviter ou mettre des parenthèses pour indiquer les priorités.\
-Attention, *var = 6* n'est pas égal à *var = 6.0* ! 
+<p style="color: red">Attention, *var = 6* n'est pas égal à *var = 6.0* !</p>
 
-On peut aussi convertir un type en un autre (en remplissant certaines conditions). 
+On peut aussi convertir un type en un autre (en remplissant certaines conditions).
 - ***float(n)*** permet de convertir un entier n en un nombre flottant n.0. \
-[*float(3) = 3.0*]()
-- ***int(n.x)*** permet de convertir un flottant n.x en un entier n. \
-[*int(3.5) = 3*]()
-- ***round(n.x)*** permet de convertir un nombre flottant en l'entier le plus proche. \
-[*round(3.5) = 4* ou *round(3.3) = 3*]()
+<p style="color: green"><em>float(3) = 3.0</em></p>
 
----
-### Example : compute the circumference of any circle
+- ***int(n.x)*** permet de convertir un flottant n.x en un entier n. \
+<p style="color: green"><em>int(3.5) = 3*</em>
+
+- ***round(n.x)*** permet de convertir un nombre flottant en l'entier le plus proche. \
+<p style="color: green"><em>round(3.5) = 4</em> ou <em>round(3.3) = 3</em>
+
+### 6.1. Example : compute the circumference of any circle
 
 Si on revient sur l'exemple de print de notre circonférence, on ne l'a calculée que sur un radius donné, indiqué par le développeur.
 En pratique, ce n'est pas très pertinent si on souhaite faire un programme qui calcule la circonférence de n'importe quel cercle, et il vaudrait mieux demander la valeur à l'utilisateur via un ***input***. \
@@ -180,9 +191,177 @@ Attention cependant car l'input retourne une **string** qui ne peut pas être ut
 *Si ce qu'on souhaite manipuler est un nombre flottant, sinon on peut utiliser **int()**. Il est préférable d'utiliser float() car moins de risque de perte d'information dans ce genre de situation.*
 
 Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également. \
-[*TypeError: can't multiply sequence by non-int of type 'float'* ==> cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.]()
+<p style="color: green"><em>TypeError: can't multiply sequence by non-int of type 'float'* ==> cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.</em>
 
-## Number bases
+---
+### 7. **if** statements
+
+C'est une phrase conditionnelle commençant par ***if*** suivi d'une **expression logique** (*logical expression*) dont l'issue est soit *True*, soit *False*. Elle s'achève par : (*colon*). S'ensuit une série de code qui ne sera exécutée que si la condition *if* est évaluée *True*.
+
+```if a < b :``` \
+***if** → le mot-clé Python qui indique qu'on est dans une affirmation conditionnelle.* \
+***a < b** → l'expression qui est évaluée comme étant True ou False.* \
+***:** → les deux-points qui indiquent la fin de la première partie du if statement ; c'est comme un **then**.*
+
+*True* et *False* sont des *booléens*, un type d'entier qui ne prennent que deux valeurs distinctes (1 / 0, True / False).
+
+La condition *if* peut prendre plusieurs formes :
+- *if True* : # **Constant**
+- *if flag (True or False value)* : # **Logical variable**
+- *if a < b* : # **Relational expression**
+- *if a < b and c > d* : # **Logical combination**
+
+| Relational expressions | |
+| :---: | ---|
+| < | inférieur |
+| > | supérieur |
+| <= | inférieur ou égal |
+| >= | supérieur ou égal |
+| == | équivalent à |
+| != | différent de |
+
+| Logical combinations | |
+| :---: | ---|
+| and | 2 conditions à remplir pour être True |
+| or | 1 condition ou l'autre à remplir pour être True |
+| not | équivalent à != |
+
+Ce qui suit les *:* est appelé *consequent*. Ils prennent une indentation supplémentaire que le *if* et toutes les phrases suivantes prenant la même indentation sont exécutées comme des conséquences du if. Si le *if* est *False*, aucune de ces actions ne sont exécutées. \
+*Par convention, en Python, une indentation = 4 espaces. La plupart des autres langages ne lisent ni les sauts de ligne ni les espaces et utilisent des séparateurs (; par exemple)pour distinguer les statements.*
+
+```if a < b:``` \
+&emsp;&emsp;```a = a + 1``` \
+&emsp;&emsp;```b = b - 1``` \
+```c = a - b```
+
+Les deux lignes suivant le *if* ont une indentation de plus que le *if*, ils appartiennent donc au *if*. Des groupes de statements est appelé une *suite*. La dernière ligne avec la variable c a la même indentation que le *if* et sera donc réalisée quoi qu'il arrive à la suite du *if*.
+
+<p style="color: green">Exemple de code *Java* :</p>
+
+```if (a < b) {``` \
+&emsp;&emsp;```a = a + 1;``` \
+&emsp;&emsp;```b = b - 1;``` \
+```}``` \
+```c = a - b;```
+
+L'utilisation des {...} (*braces*) identifie la suite, c'est ce qu'on appellerait un *block* en Java ou C++. *On appelle aussi **bloc d'instruction** la suite de consignes en Python.* L'indentation est ici uniquement utilisée pour simplifier la lecture du code pour un humain.
+
+On retrouve l'utilisation des ; en Python également mais dans un autre but : ils sont utilisés si on veut écrire plus d'un statement sur une même ligne. Mais c'est souvent plus difficile à comprendre rapidement donc on évite. On privilégie toujours la clarté à la compacité.
+
+```if (a < b): a = a + 1; b = b - 1``` \
+```c = a - b```
+
+Il existe aussi des opérateurs d'assignation un peu spéciaux, comme les opérateurs d'**incrémentation** (+=) / **décrémentation** (-=). <em>*=, /=, **= et %= existent aussi.</em>
+
+<p style="color: green"><em>a = a + 1 → a += 1</em> et <em>b = b - 1 → b += 1</em></p>
+
+L'incrémentation peut aussi s'appliquer à des types non numériques, comme une liste :
+
+```liste = [0, 3, 5]``` \
+```liste += ["a", "b"] ; print(liste)```\
+```[0, 3, 5, "a", "b"]```
+
+*La liste ne supporte pas la décrémentation en revanche.*
+
+### 7.1. else
+
+***Else*** appartient au statement ***if***. Si la condition *if* est *True*, on exécute son bloc d'instruction ; si elle est *False*, on peut aussi exécuter un autre set d'instructions, contenu dans la clause *else*. \
+Un *if statement* peut exister sans le *else*, mais l'inverse n'est pas vrai.
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```else:``` \
+&emsp;&emsp;```print("a >= b")``` \
+
+Qui pourrait aussi s'écrre :
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```if not a < b:``` \
+&emsp;&emsp;```print("a >= b")``` \
+
+*else* est :
+- Expressif : il correspond à une façon syntaxique correct d'énoncer une alternative dans le langage humain.
+- Efficace : il évite d'évaluer deux fois la même expression comme dans la deuxième version du code, et permet ainsi de gagner en vitesse d'exécution.
+- Grammaticalement pratique.
+
+### 7.2. Nested IFs
+
+Ce sont des *if* dans un *if*. Souvent il existe une alternative non imbriquée, mais c'est plus long à coder et plus fastidieux à lire.
+
+<p style="color: green"> Nested IFs :</p>
+
+```if player == "scissors":``` \
+&emsp;&emsp;```if choice == "rock":``` \
+&emsp;&emsp;&emsp;&emsp;```print("Computer wins.")``` \
+```else:``` \
+&emsp;&emsp;```print("You win!")```
+
+<p style="color: green"> Non-nested IFs :</p>
+
+```if player == "scissors" and choice == "rock":``` \
+&emsp;&emsp;```print("Computer wins.")``` \
+```if player == "scissors" and choice != "rock":``` \
+&emsp;&emsp;```print("You win!")```
+
+*On n'utilise pas ici le else car il existe d'autres alternatives au if qui ne remplissent pas les conditions qu'on souhaiterait dans le else ; il faut donc faire deux ifs distincts.*
+
+### 7.3. elif
+
+On peut parfois se retrouver avec trop de répétitions et de nested-IFs. Une alternative à cela est le ***elif*** ; il combine un *else* et un *if*.
+
+<p style="color: green">Without <em>elif</em> :</p>
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```else:``` \
+&emsp;&emsp;```if a > b:``` \
+&emsp;&emsp;&emsp;&emsp;```print("a > b")```
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp;```print("a = b")```
+
+<p style="color: green">With <em>elif</em> :</p>
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```elif a > b:``` \
+&emsp;&emsp;```print("a > b")``` \
+```else:``` \
+&emsp;&emsp;```print("a = b")```
+
+Cette méthode réduit considérablement le nombre d'indentation et améliore la lisibilité. Cela permet aussi de ne pas lire les lignes suivantes inutilement (comme avec deux ifs) si une condition a déjà été remplie et cela améliore la vitesse d'exécution du programme. \
+*Exemple ici, si le premier if est exécuté, l'ordinateur ne lira pas elif ni else car il sait que ce sont des alternatives au premier if.*
+
+---
+### 8. Documentation
+
+La documentation **externe** est comme un manuel utilisateur. C'est un texte qui explique  ce que fait le programme ; il est plus ou moins long selon le programme. *Il vaut mieux l'écrire en anglais, c'est universel.*
+
+<p style="color: green">Un exemple de documentation pour <em>Guess a number</em> : <em>Guess a number is a simple guessing game. The computer will select a number between 1 and 10 and you are expected to guess what it is. When the program displays 'Please guess a number between 1 and 10: ', you type in your guess followed by the Enter key. Your guess must be an integer in the range 1 to 10. The computer will tell you if you win or lose.</em></p>
+
+La documentation **interne** est destinée aux programmeurs qui ont accès au code source du programme. \
+Ce sont typiquement des **commentaires** laissés dans le code. On l'écrit souvent en anglais aussi, dans une syntaxe humaine car c'est un morceau de code qui sera ignorée par l'ordinateur. Un commentaire commence par ***#*** et se termine au prochain saut de ligne.\
+On trouve aussi les **docstrings** ***"""..."""***, qui sont des strings, donc peuvent être stockées dans un document séparé pour être utilisée comme description d'une fonction par exemple.
+
+---
+### 9. Types are dynamic
+
+En Python, le type d'une variable peut changer en fonction de l'objet auquel elle est assignée.
+
+<p style="color: green"><em>x = 10</em> # x est un entier</p>
+
+<p style="color: green"><em>x = x * 0.1</em> # x est un flottant</p>
+
+<p style="color: green"><em>x = (x * 10 == 10)</em> # x est un booléen (<em>True</em>)</p>
+
+Si on prend un langage **statique** comme le C++, un entier est un endroit de 32 bits (4 octets) stockés dans la mémoire, ils ont donc une "taille" fixe ; donc le plus grand nombre stockable est 2<sup>32</sup> -1.
+
+On peut connaître le type d'une variable en Python par la fonction ***type()***, qui nous retournera : \
+```<class 'int/float/str'>``` → ce n'est pas une string mais un *type* !\
+Si on change l'assignation de la variable ensuite, son type peut changer et la fonction ne retournera pas le même résultat.
+
+---
+## <center>Aparté : Number bases
 
 Pour compter, on utilise toujours une **base** et des **"digits"** auquels on multiplie la base.
 
@@ -192,12 +371,12 @@ Pour compter, on utilise toujours une **base** et des **"digits"** auquels on mu
 C'est le système de comptage le plus répandu, probablement car on a 10 doigts.\
 Elle se compose d'un symbole pour chaque digit, soit 10 digits de **0 à 9**. \
 Pour compter au-delà, il faut changer de rang (unité, dizaine, centaine, etc) et recommencer le comptage de 0 à 9 dans le nouveau rang et les unités reviennent à 0. A chaque fois qu'on augmente le digit d'un rang, on recommence le compte de tous les digits dans les rangs précédents de droite à gauche. \
-[Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arriver à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.]()
+<p style="color: green">Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arriver à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.
 
-Chaque rang est à une puissance de 10 supérieure au précédent : un rang = rang précédent * 10.
-[*100 (une centaine) = 10 * 10 (10 dizaines)* et *10 (une dizaine) = 01 * 10 (dix unités)* ]()
+Chaque rang est à une puissance de 10 supérieure au précédent : un rang = rang précédent * 10. \
+<p style="color: green">*100 (une centaine) = 10 * 10 (10 dizaines)* et *10 (une dizaine) = 01 * 10 (dix unités)*
 
-[En décomposant en base 10 : *216<sub>10</sub> = 200 + 10 + 6 = 2 * 10<sup>2</sup> + 1 * 10<sup>1</sup> + 6 * 10<sup>0</sup>]()
+<p style="color: green">En décomposant en base 10 : *216<sub>10</sub> = 200 + 10 + 6 = 2 * 10<sup>2</sup> + 1 * 10<sup>1</sup> + 6 * 10<sup>0</sup>
 
 ### Base 2 ou base binaire
 ---
@@ -371,7 +550,7 @@ On peut l'exprimer en n<sub>8</sub> ou *0on*.
 | 8<sup>3 | 512 |
 | 8<sup>4 | 4096 |
 
-**Attention !! 1 octal = un rang de la base 8 =/= 1 octet (*byte* en anglais)= 8 bits.**
+<p style="color: red"><strong>Attention !! 1 octal = un rang de la base 8 =/= 1 octet (*byte* en anglais)= 8 bits.</strong></p>
 
 ---
 
@@ -394,8 +573,9 @@ On peut l'exprimer en n<sub>8</sub> ou *0on*.
 ```int(0o10)``` \
 ```8```
 
-***bin()*** permet de convertir un entier en son équivalent en base 2. \
+***bin()*** permet de convertir un entier en son équivalent en base 2. Le type de l'output est une string. \
 ```bin(2)``` \
-```0b10```
+```"0b10"```
 
 ---
+
