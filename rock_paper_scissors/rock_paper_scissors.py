@@ -8,9 +8,13 @@ choices = {
     "c": "ciseaux"
 }
 
+# random.choice() only know how to randomize in a sequence.
+# However, a dictionary is not a sequence and choices.keys() are not a string.
+# So we have to change de keys in a list in which the module can randomize.
 computer_choice = random.choice(list(choices.keys()))
 
 def controlled_input():
+    """Loop while the user input is invalid, then return the input first letter"""
     while True:
         user_input = input("pierre (p), feuille (f), ciseau (c) ?\n> ").lower()
         if user_input == "" \
@@ -26,8 +30,6 @@ while player_choice == computer_choice:
     print(f"Egalité ! Vous avez tous les deux joué {choices[computer_choice]}. Recommençons.")
     computer_choice = random.choice(list(choices.keys()))
     player_choice = controlled_input()
-
-# Attention à ne pas créer de variable trop tôt et qu'elle ne s'actualise pas.
 
 if player_choice == "p" and computer_choice == "c" \
 or player_choice == "c" and computer_choice == "f" \

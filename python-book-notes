@@ -96,3 +96,306 @@ Deux joueurs choisissent un item de la liste (pierre, feuille, ciseaux) et rév�
 8. Print "L'ordinateur a gagné." et fermer le programme.
 
 9. Print "Vous avez gagné." et fermer le programme.
+
+Pour chaque item, il existe un item qui le bat et un autre contre lequel il perd. Le choix des deux joueurs est checker et, en fonction du résultat, on print un message de victoire ou de défaite. \
+On aura donc besoin ici d'une façon de stocker une valeur (= *la variable*), d'une façon d'éxécuter certaines parties du programme en fonction de la valeur (= *condition if* ou *if statement*), une façon de lire la valeur du prompt, une façon de print un message à l'écran et enfin une façon d'éxécuter du code à répétition (= *une boucle* ou *a loop*).
+
+---
+### Variables and values-experimenting with the Graphical User Interface
+
+Une ***variable*** est un nom que le développeur définit pour représenter une valeur, le plus souvent un nombre ou une chaîne de caractères. Elle représente la place où l'ordinateur stocke cette valeur (l'espace "de nommage", étant lié à l'espace "objet" qu'il représente).
+
+Tout ne peut pas être un nom de variable :
+- Une variable ne peut pas commencer par un nombre.
+- Une variable ne peut pas commencer par la plupart des caractères non alphabétiques, sauf _ (*underscore* en anglais) dans certaines conditions.
+- Une variable peut en revanche contenir des majuscules, des minuscules, des nombres (pas en première position) et des underscores.
+- /!\ Python est case-sensitive, donc il distingue les majuscules des minuscules.
+
+Bien qu'il n'y ait pas d'obligation à donner un nom significatif à une variable, c'est préférable pour la compréhension ultérieure et inter-évaluateur.
+
+Une variable peut changer de valeur, mais elle ne peut contenir qu'une valeur à la fois. Elle est du même type que le dernier objet qui lui a été assigné.
+
+[Exemple : on définit une variable **pi** associée à la valeur 3.1415926. Le nombre 3.1415926 est une constante, mais c'est aussi une *expression*. Le symbole *=* signifie *assign to*. Donc pi = 3.1415926 est un *assignment statement* et donne à la variable **pi** une valeur spécifique.\
+On définit une nouvelle variable appelée **radius**, assignée à 10.0.\
+On peut manipuler les valeurs via les variables comme ceci : pour calculer la circonférence d'un cercle, on a la formule *2 x pi x r*. On souhaite assigner la réponse à une nouvelle variable circonférence : *circumference = 2* * *pi* * *radius*. Si on tape *circumference* dans l'interpréteur ensuite, celui-ci nous renverra 62.832852.](#)
+
+Quand on assigne une variable à une valeur, la variable prend le type de la valeur qu'elle représente (une string, un entier, une liste,...). On ne peut pas utiliser une variable avant de l'avoir assignée à une valeur, cela retournerait un message d'erreur.
+
+| Not allowed | allowed |
+|:---:|:---:|
+| area = side * side | side = 12.0 |
+| side = 12.0 | area = side * side|
+
+On appelle cela des *statements* en Python. Dans d'autres langages de programmation, les statements sont séparés par des *;* (*semicolon* en anglais), alors qu'en Python ils sont marqués par la fin d'une ligne et les indentations.
+
+Les ***expressions*** : ce sont des opérations numériques vues en arithmétiques (=, +, -, *, /). La priorité opératoire (*precedence rule* en anglais) est respectée. On rappelle que ** en Python marque la **puissance/l'exposant**. Il est prioritaire et est donc réalisé avant toute autre opération.
+Evidemment, on peut utiliser des parenthèses pour favoriser une opération (parenthèse > exposant).
+
+[Exemple : 1 + 2**3 = 1 + 2<sup>3</sup> = 9 \
+&emsp;&emsp;&emsp;&emsp;(1+2)**3 = 3<sup>3</sup> = 27](#)
+
+En Python, on a des opérations un peu particulières, notamment concernant les divisions :
+- **Division entière** (*integer division*) représentée par *//*. Le résultat de ce type de division sera arrondi à l'entier inférieur.\
+[*3//2 = 1* ou *3//6 = 0*]()
+- **Division naturelle/décimale** resprésentée par */*. Elle permet de calculer le quotient de la division décimale et donnera donc un nombre flottant/décimal comme résultat. \
+[*3/2 = 1.5* ou *3/6 = 0.5*]()
+- **Modulo** resprésenté par *%*. Calcule le **reste** de la division **entière**. \
+[*3%2 = 1* ou *3%6 = 3*]()
+- **Valeur absolue** (*absolute*) représentée par *abs()*. Elle donne la valeur absolue d'une nombre. \
+[*abs(-3) = 3*]()
+
+---
+### Exchanging information with the computer
+
+Il y a un échange d'informations entre l'ordinateur et l'utilisateur. Par exemple, l'utilisateur communique la valeur du radius à l'ordinateur, puis l'ordinateur communique la circonférence du cercle à l'utilisateur à partir du radius et de la formule donnés. De prime abord, cet échange se fait via du texte, des caractères tapés à l'aide d'un clavier. Mais cela n'est que la forme définie par le développeur, c'est en réalité des séries de nombre qui sont échangées.
+
+Pour envoyer un message à l'écran, le développeur utilise la commande ***print()*** qui renvoie une chaîne de caractères apparaissant à l'écran. \
+On peut également séparés les éléments qu'on souhaite mentionner par des virgules (*comma* en anglais).
+
+[Exemple : *print("The circumference is", 62.831852)* ou *print("The circumference is", circumference)* - on note ici la variable *circumference*, qui sera remplacée dans le message par sa valeur.]()
+
+---
+### Strings, integers and real numbers
+
+On distingue les nombres entiers (*intergers* ou *whole numbers* en anglais) et nombres flottants (*real number* ou *floating-point numbers/float numbers* en anglais). Une variable python peut être d'un type ou de l'autre. \
+On peut mélanger des opérations des deux types, mais il vaut mieux éviter ou mettre des parenthèses pour indiquer les priorités.\
+Attention, *var = 6* n'est pas égal à *var = 6.0* ! 
+
+On peut aussi convertir un type en un autre (en remplissant certaines conditions). 
+- ***float(n)*** permet de convertir un entier n en un nombre flottant n.0. \
+[*float(3) = 3.0*]()
+- ***int(n.x)*** permet de convertir un flottant n.x en un entier n. \
+[*int(3.5) = 3*]()
+- ***round(n.x)*** permet de convertir un nombre flottant en l'entier le plus proche. \
+[*round(3.5) = 4* ou *round(3.3) = 3*]()
+
+---
+### Example : compute the circumference of any circle
+
+Si on revient sur l'exemple de print de notre circonférence, on ne l'a calculée que sur un radius donné, indiqué par le développeur.
+En pratique, ce n'est pas très pertinent si on souhaite faire un programme qui calcule la circonférence de n'importe quel cercle, et il vaudrait mieux demander la valeur à l'utilisateur via un ***input***. \
+Attention cependant car l'input retourne une **string** qui ne peut pas être utilisée telle quelle pour faire des opérations. Il faut donc convertir son type en un type opératoire.
+
+```radius = float(input())``` \
+*Si ce qu'on souhaite manipuler est un nombre flottant, sinon on peut utiliser **int()**. Il est préférable d'utiliser float() car moins de risque de perte d'information dans ce genre de situation.*
+
+Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également. \
+[*TypeError: can't multiply sequence by non-int of type 'float'* ==> cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.]()
+
+## Number bases
+
+Pour compter, on utilise toujours une **base** et des **"digits"** auquels on multiplie la base.
+
+### Base 10 ou base décimale
+---
+
+C'est le système de comptage le plus répandu, probablement car on a 10 doigts.\
+Elle se compose d'un symbole pour chaque digit, soit 10 digits de **0 à 9**. \
+Pour compter au-delà, il faut changer de rang (unité, dizaine, centaine, etc) et recommencer le comptage de 0 à 9 dans le nouveau rang et les unités reviennent à 0. A chaque fois qu'on augmente le digit d'un rang, on recommence le compte de tous les digits dans les rangs précédents de droite à gauche. \
+[Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arriver à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.]()
+
+Chaque rang est à une puissance de 10 supérieure au précédent : un rang = rang précédent * 10.
+[*100 (une centaine) = 10 * 10 (10 dizaines)* et *10 (une dizaine) = 01 * 10 (dix unités)* ]()
+
+[En décomposant en base 10 : *216<sub>10</sub> = 200 + 10 + 6 = 2 * 10<sup>2</sup> + 1 * 10<sup>1</sup> + 6 * 10<sup>0</sup>]()
+
+### Base 2 ou base binaire
+---
+
+C'est la plus importante en informatique car c'est le code pour s'adresser à l'ordinateur (code machine). \
+En base 2, les nombres n'ont que 2 digits : **0 et 1**. \
+Chacun représente une puissance de 2 en fonction du rang auquel on le trouve. Les rangs décimaux (unités, dizaines, centaines, etc) correspondent ici à des rangs binaires (*binary digit* = *bit*).
+
+Les nombres **pairs** prennent toujours un **0 tout à droite** tandis que les nombres **impairs** prennent systématiquement un **1 tout à droite**.
+
+**Convertir du binaire au décimal :**
+
+On additionne chaque rang en multipliant **son digit avec 2<sup>son rang</sup>**.\
+[*101 0110<sub>2</sub> = 1 * 2<sup> 6</sup> + 0 * 2<sup> 5</sup> + 1 * 2<sup> 4</sup> + 0 * 2<sup> 3</sup> + 1 * 2<sup> 2</sup> + 1 * 2<sup> 1</sup> + 0 * 2<sup> 0</sup> \
+&emsp;&emsp;&emsp;&emsp;&emsp;= 1 * 64 + 1 * 16 + 1 * 4 + 1 * 2 \
+101 0110<sub>2</sub>= 86<sub>10</sub>*]()
+
+| Valeur décimale | Conversion | Valeur binaire |
+|:---:|:---:| :---: |
+| 0 | 0 * 2<sup>0 | 0
+| 1 | 1 * 2<sup>0 | 1
+| 2 | 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 10
+| 3 | 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 11
+| 4 | 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 100
+| 5 | 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 101
+| 6 | 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 110
+| 7 | 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 111
+| 8 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 1000
+| 9 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 1001
+| 10 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 1010
+| 11 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 1011
+| 12 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 1100
+| 13 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 1101
+| 14 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 1110
+| 15 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 1111
+
+Donc 15<sub>10</sub> = 1111<sub>2</sub> \
+*On peut aussi écrire 15<sub>dec</sub> = 1111<sub>bin</sub> ou 15 = **0b**1111*
+
+***Notons aussi qu'on peut écrire les nombres binaires de façon lisible en les regroupant 4bits par 4 bits.***
+
+**Convertir du décimal au binaire :**
+
+- Méthode 1 : **les puissances de 2** \
+Il faut décomposer le nombre décimal en multiple de 2. \
+[*26<sub>10</sub> = 16 + 8 + 2 \
+&emsp;&emsp;= 1 * 16 + 1 * 8 + 1 * 2 \
+&emsp;&emsp;= **1** * 2<sup> 4</sup> + **1** * 2<sup> 3</sup> + 0 * 2<sup> 2</sup> + **1** * 2<sup> 1</sup> + 0 * 2<sup> 0</sup> \
+**26<sub>10</sub>= 1 1010<sub>2</sub>***]()
+
+| Puissance de 2 | Valeur décimale |
+| :---: | :---: |
+| 2<sup>0 | 1 |
+| 2<sup>1 | 2 |
+| 2<sup>2 | 4 |
+| 2<sup>3 | 8 |
+| 2<sup>4 | 16 |
+| 2<sup>5 | 32 |
+| 2<sup>6 | 64 |
+| 2<sup>7 | 128 |
+| 2<sup>8 | 256 |
+| 2<sup>9 | 512 |
+| 2<sup>10 | 1024 |
+| 2<sup>11 | 2048 |
+| 2<sup>12 | 4096 |
+
+- Méthode 2 : **divisions euclidiennes par 2** \
+C'est la méthode la plus simple pour les grands nombres, elle est facile à uiliser en programmation car on peut en faire un algorithme. \
+[*Prenons le nombre décimal **164**.*]() \
+1- On divise par 2 notre nombre décimal (division **entière**) et on récupère le **reste** à l'aide du **modulo**. \
+[*164 // 2 = **82** ; 164 % 2 = **0***]() \
+2- On divise par 2 le quotient obtenu et on note le reste de la division. \
+[*82 // 2 = **41** ; 82 % 2 = **0***]() \
+3- On réitère jusqu'à obtenir un **quotient nul**. \
+[*41 // 2 = **20** ; 164 % 2 = **1** \
+20 // 2 = **10** ; 20 % 2 = **0** \
+10 // 2 = **5** ; 10 % 2 = **0** \
+5 // 2 = **2** ; 5 % 2 = **1** \
+2 // 2 = **1** ; 2 % 2 = **0** \
+1 // 2 = **0** ; 1 % 2 = **1***]() \
+*Ici on peut aussi simplement remarquer si le quotient est pair ou impair et on connaîtra son reste, qu'on a juste à noter.* \
+4- On lit le résultat obtenu à partir des restes, **de bas en haut**, soit du dernier obtenu jusqu'au premier. Ceci nous donne l'équivalent binaire de notre nombre décimal. \
+[*164<sub>10</sub> = 1010 0100<sub>2</sub>*]()
+
+### Base 16 ou base hexadécimale
+---
+La base 16 comporte donc 16 digits : **0 à 9 puis A à F**. \
+Cette base est intéressante car c'est un multiple de la base 2 mais elle permet d'exprimer des nombres binaires avec moins de caractères. \
+On utilise la base hex pour représenter les couleurs en Python, ainsi que sur beaucoup de pages Web. \
+[*Web page : 0xFF0000 = rouge.*]()
+
+| Hexadécimal | Décimal |
+| :---: | :---: |
+| A | 10 |
+| B | 11 |
+| C | 12 |
+| D | 13 |
+| E | 14 |
+| F | 15 |
+
+Le principe reste le même : on augmente les digits pour chaque rang jusqu'à F puis on recommence à 1 au rang suivant et 0 à tous les rangs précédents. \
+*Notez que E + 1 = F (14 + 1 = 15 en base décimale), mais que F + 1 = 10 (toujours en hexadécimal).*
+
+**Conversion du décimal à l'hexadécimal :**
+
+On décompose en puissance de 16.
+
+| Puissance de 16 | Valeur décimale |
+| :---: | :---: |
+| 16<sup>0 | 1 |
+| 16<sup>1 | 16 |
+| 16<sup>2 | 256 |
+| 16<sup>3 | 4096 |
+| 16<sup>4 | 65536 |
+
+On commence par chercher la plus grande puissance de 16 du nombre. \
+[*1680<sub>10</sub> \
+1680 // 256 = **6** ; 1680 % 256 = 144 \
+144 // 16 = **9** ; 144 % 16 = 0 \
+Donc 1680<sub>10</sub> = 6 * 256 + 9 * 16 + 0 * 1 \
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= 6 * 16<sup> 2</sup> + 9 * 16<sup> 1</sup> + 0 * 16<sup>0</sup> \
+&emsp;&emsp; 1680<sub>10</sub> = 690<sub>16</sub>*]()
+
+*On peut aussi écrire 1680<sub>dec</sub> = 690<sub>hex</sub> ou 1680 = **0x**690.*
+
+**Conversion de l'hexadécimal au décimal :**
+
+Chaque rang est une puissance de 16. \
+On multiplie chaque rang par une puissance de 16 croissante. \
+[*4F2C<sub>16</sub> = 4 15 2 12 \
+&emsp;&emsp;&emsp;= 4 * 16<sup> 3</sup> + 15 * 16<sup> 2</sup> + 2 * 16<sup> 1</sup> + 12 * 16<sup> 0</sup> \
+&emsp;&emsp;&emsp;= 4 * 4096 + 15 * 256 + 2 * 16 + 12 * 1 \
+(4F2C)<sub>16</sub> = (20 268)<sub>10</sub>*]()
+
+**Conversion du binaire à l'hexadécimal :**
+
+**2<sup>4</sup> = 16<sup>1</sup>** \
+Cela signifie que 4 rangs binaires correspondent à un rang en hexadécimal.
+Et en effet, 4 rangs binaires permettent de monter jusqu'à 15 (*1111*), de même qu'un rang hexadécimal (*F*).
+On décompose donc, quand c'est possible, 4 rangs par 4 rangs.
+
+| 101 | 0011 | 1011 |
+|:---:|:---:| :---: |
+| 0 * 2<sup>3</sup> + **1** * 2<sup>2</sup> + 0 * 2<sup>1</sup> + **1** * 2<sup>0 | 0 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + **1** * 2<sup>1</sup> + **1** * 2<sup>0 | **1** * 2<sup>3</sup> + 0 * 2<sup>2</sup> + **1** * 2<sup>1</sup> + **1** * 2<sup>0 |
+| 5 | 3 | 11 = B |
+
+*Donc (101 0011 1011)<sub>2</sub> = (53B)<sub>16</sub> .*
+
+**Conversion de l'héxadécimal en binaire :**
+
+On passe d'abord par une conversion hex --> dec rang par rang, puis dec --> bin.
+
+[*BE57<sub>16</sub> : B<sub>16</sub> = 11<sub>10</sub> , E<sub>16</sub> = 14<sub>10</sub> , 5<sub>16</sub> = 5<sub>10</sub> , 7<sub>16</sub> = 7<sub>10</sub> \
+11<sub>10</sub> = 1 * 8 + 1 * 2 + 1 * 1 = 1011<sub>2</sub> \
+14<sub>10</sub> = 1 * 8 + 1 * 4 + 1 * 2 = 1110<sub>2</sub> \
+5<sub>10</sub> = 1 * 4 + 1 * 1 = 0101<sub>2</sub> \
+7<sub>10</sub> = 1 * 4 + 1 * 2 + 1 * 1 = 0111<sub>2</sub> \
+Donc (BE57)<sub>16</sub> = (1011 1110 0101 0111)<sub>2</sub>*]()
+
+### Base 8 ou base octale
+---
+
+Elle se compose de 8 digits : **de 0 à 7**. \
+On peut l'exprimer en n<sub>8</sub> ou *0on*.
+
+| Puissance de 8 | Valeur décimale |
+| :---: | :---: |
+| 8<sup>0 | 1 |
+| 8<sup>1 | 8 |
+| 8<sup>2 | 64 |
+| 8<sup>3 | 512 |
+| 8<sup>4 | 4096 |
+
+**Attention !! 1 octal = un rang de la base 8 =/= 1 octet (*byte* en anglais)= 8 bits.**
+
+---
+
+### Fonctions built-in conversion python
+--- 
+***int()*** permet de convertir d'autres types en **entiers décimaux**. \
+```int("0b10", base= 2)``` \
+```2```
+
+```int("0x10", base= 16)``` \
+```16```
+
+```int("0o10", base= 8)``` \
+```8```
+
+*On peut ne pas mentioner "0b/x/o" avant le chiffre si on mentionne la base. On est pas obligé d'écrire "base =" ; à ce moment-là, on ne met pas de "" autour du nombre, mais on précise 0b/x/o.* \
+```int("10", base= 8)``` \
+```8```
+
+```int(0o10)``` \
+```8```
+
+***bin()*** permet de convertir un entier en son équivalent en base 2. \
+```bin(2)``` \
+```0b10```
+
+---
