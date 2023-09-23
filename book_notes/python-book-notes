@@ -1,0 +1,772 @@
+# <center>*Python : an introduction to programming* - second edition (Parker, 2021)
+
+## <center>Chapter 1: Computers and programming
+
+La plupart des ordinateurs sont des *digital computers* : ce sont des ordinateurs qui manipulent des nombres (les programmes sont encodés en caractères humainement compréhensibles). Les *analog computers* sont plus rares et manipulent plutôt des signaux électriques, ou sont mécaniques.
+
+En programmation, on a plutôt besoin d'arithmétique en terme de mathématiques.
+
+### 1.1. Solving a problem using a computer
+---
+
+Un programme est un **ensemble d'instructions dans le but de réaliser une tâche à l'aide d'une ordinateur**. Python est un des langages de programmation pouvant être utilisé à cet effet.
+
+Le processus de résolution de problème commence avec une spécification détaillée du problème à résoudre. Il faut comprendre complètement le problème pour que celui-ci puisse être résolu à l'aide d'un ordi. On divise ensuite le problème en une partie qu'on sait résoudre avec nos moyens actuels (méthodes et programmes en notre possession) et en une partie qu'on ne sait pas résoudre.
+
+**Pseudocode** : grandes lignes de la solution, souvent notées par écrit.\
+**Script / source cocde / computer program** : le programme en langage de programmation qui résulte du pseudocode.\
+**Compileur** : programme qui convertit notre code en code machine (0 et 1) que peut comprendre l'ordinateur.
+
+">>>" en début de ligne = *a prompt*, on se trouve dans l'interpréteur Python.
+
+IDE = "Integrated development environment", c'est un logiciel qui contient un environnement nécessaire au développement (éditeur de texte, débugger...).
+
+Dans un langage de programmation, on trouve :
+- des symboles ayant une signification (ex : *+* = *add*, *-* = *substract*)
+- des ***reserved words***, des mots-clés qui sont définis par le langage et leur sens ne peut pas être changé par le programmeur (on ne peut pas les utiliser comme noms de variables donc - ex : *if*, *while*, *True*)
+- des ***system variables*** qui ont une signification définie par le langage et peuvent être rétuilisées par le programmeur.
+- des ***variables*** et des ***fonctions*** qui sont des termes définies par le programmeur pour être utilisées ensuite dans le code.
+
+### 1.2. Guess a number
+---
+Plusieurs variantes du jeu :
+- Deviner de façon précise le nombre : une personne choisit un nombre dans un intervalle spécifique (le *chooser*) et une personne devine (le *guesser*). Si elle devine le nombre, elle a gagné.
+- Identique + "plus grand" ou "plus petit".
+- Plusieurs guessers avec une seule tentative, le plus proche gagne. En cas d'égalité, on recommence.
+
+#### Solving the *guess a number* problem
+
+**1ère version** : l'ordinateur choisit un nombre dans un intervalle et l'utilisateur doit le deviner.
+
+1. L'ordinateur choisit un nombre. \
+```choice = 7```
+
+2. L'ordinateur demande au joueur de deviner. \
+```playerchoice = int(input("Please guess a number between 1 and 10 : ")```
+
+3. Le joueur tape un nombre entier et l'ordinateur l'analyse.
+
+4. L'ordinateur compare l'input utilisateur avec celui qu'il a choisit ; s'ils sont identiques, le joueur a gagné, sinon l'ordinateur a gagné. \
+```if choice == playerchoice:``` \
+&emsp;&emsp;```print("You win !)``` \
+```else:``` \
+&emsp;&emsp;```print("Sorry, you lose.")```
+
+Pré-requis Python : imprimer un message dans le prompt, lire un nombre, pouvoir le stocker dans une variable, pouvoir comparer deux nombres et avoir deux issues possibles en fonction du résultat de cette comparaison.
+
+**2ème version** : identique à la précédente mais on répète le processus si la réponse est mauvaise, jusqu'à ce que ce soit correct.
+
+1. L'ordinateur choisit un nombre aléatoire. \
+```import random``` \
+```choice = random.randint(1, 10)```
+
+2. L'ordinateur demande au joueur de deviner et analyse la réponse du joueur. \
+```playerchoice = int(input("Please guess a number between 1 and 10 : ")```
+
+3. L'ordinateur compare l'input utilisateur avec celui qu'il a choisit ; s'ils sont différents, l'ordinateur demande au joueur de deviner à nouveau. Si l'input utilisateur est identique au choix de l'ordinateur, on passe directement à l'étape 4. \
+```while choice != playerchoice:``` \
+&emsp;&emsp;```print("Sorry, not correct. Guess again: ")``` \
+&emsp;&emsp;```playerchoice = int(input())``` \
+
+4. Le joueur a gagné. L'ordinateur print un message de victoire. \
+```print("You have guessed correctly, congratulations !)``` \
+
+5. Fin du jeu.
+
+Le mécanisme de répétitions est un nouvel aspect par rapport à la version 1 ; la notion de **boucle** est essentielle dans les langages de programmation. On a également ajouté la notion de randomisation avec la fonction built-in *randint()*.
+
+**3ème version** : évolution de la version 2 avec un débrief pour l'utilisateur si son guess est trop grand ou trop petit.\
+Reprenons à l'étape 3 où le code change.
+
+3. L'ordinateur compare l'input utilisateur avec celui qu'il a choisit ; si l'input utilisateur est identique au choix de l'ordinateur, on passe directement à l'étape 4. \
+```while choice != playerchoice:``` \
+3.1. Si l'input utilisateur est plus petit que le nombre choisi par l'ordinateur, celui-ci print un message d'information. \
+&emsp;&emsp;```if (playerchoice < choice):``` \
+&emsp;&emsp;&emsp;&emsp; ```print("Your guess was too small. Guess again: ")``` \
+3.2. Si au contraire l'input est plus grand, l'ordinateur print un message d'information. \
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp; ```print("Your guess was too large. Guess again: ")``` \
+3.3. L'ordinateur analyse à nouveau le print du joueur et le réanalyse. \
+&emsp;&emsp;```playerchoice = int(input())``` \
+
+4. Le joueur a gagné. L'ordinateur print un message de victoire. \
+```print("You have guessed correctly, congratulations !)``` \
+
+5. Fin du jeu.
+
+### 1.3. Rock-paper-scissors
+---
+
+Deux joueurs choisissent un item de la liste (pierre, feuille, ciseaux) et révèlent simultanément leur choix. Si l'item est identique, on recommence. Sinon, la feuille/le papier bat la pierre, la pierre bat le ciseau et le ciseau bat la feuille/le papier.
+
+#### Solving the *rock-paper-scissors* problem
+
+1. L'ordinateur choisit l'un des trois items et enregistre ce choix dans une variable ***choice***.On peut utiliser une valeur numérique comme 1 = rock, 2 = paper et 3 = scissors. On peut aussi utiliser une fonction du module random qui choisit parmi une liste d'éléments, pas forcément des entiers. \
+```import random``` \
+```i = random.randint(1, 3)``` \
+```if i == 1:``` \
+&emsp;&emsp;``` choice == "rock"``` \
+```elif i == 2:``` \
+&emsp;&emsp;``` choice == "paper"``` \
+```else:``` \
+&emsp;&emsp;``` choice == "scissors"```
+
+2. Demander au joueur de choisir un item. \
+```print("Rock-paper-scissors: type in your choice: ")```
+
+3. Lire le choix du joueur dans la variable ***player***. \
+```player = input()```
+
+4. Si **player** == **choice** :\
+&emsp;Print "Egalité. Recommençons."\
+&emsp;**Répéter depuis l'étape 1.** \
+```while choice == player:``` \
+&emsp;&emsp;```print("Game is a tie. Please try again.")``` \
+&emsp;&emsp;```player = input()``` \
+
+5. Si **player** == 1 (rock) :\
+&emsp;Si **choice** == paper, **aller à l'étape 8.**\
+&emsp;Sinon, **aller à l'étape 9.** \
+```if player != "rock":``` \
+&emsp;&emsp;```if choice == "scissors":``` \
+&emsp;&emsp;&emsp;&emsp;```print("You win.")``` \
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp;```print("You lose.")``` \
+
+6. Si **player** == 2 (paper) :\
+&emsp;Si **choice** == scissors, **aller à l'étape 8.**\
+&emsp;Sinon, **aller à l'étape 9.** \
+```elif player != "paper":``` \
+&emsp;&emsp;```if choice == "rock":``` \
+&emsp;&emsp;&emsp;&emsp;```print("You win.")``` \
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp;```print("You lose.")``` \
+
+7. Si **player** == 3 (scissors) :\
+&emsp;Si **choice** == rock, **aller à l'étape 8.**\
+&emsp;Sinon, **aller à l'étape 9.** \
+```elif player != "scissors":``` \
+&emsp;&emsp;```if choice == "paper":``` \
+&emsp;&emsp;&emsp;&emsp;```print("You win.")``` \
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp;```print("You lose.")``` \
+
+8. Print "L'ordinateur a gagné." et fermer le programme. \
+*Message intégré aux boucles ifs.*
+
+9. Print "Vous avez gagné." et fermer le programme. \
+*Message intégré aux boucles ifs.*
+
+10. Facultatif : on peut print un dernier message si aucune des conditions précédentes n'est remplie car l'ordinateur ne reconnaît pas le choix du joueur par exemple.
+```else:```
+&emsp;&emsp;```print("Error: select one of the followings: rock, paper, scissors")```
+
+Pour chaque item, il existe un item qui le bat et un autre contre lequel il perd. Le choix des deux joueurs est checké et, en fonction du résultat, on print un message de victoire ou de défaite. \
+On aura donc besoin ici d'une façon de stocker une valeur (= *une variable*), d'une façon d'éxécuter certaines parties du programme en fonction de la valeur (= *if statement*), une façon de lire la valeur du prompt (= *input()*), une façon de print un message à l'écran et enfin une façon d'éxécuter du code à répétition (= *a loop*).
+
+---
+### 1.4. Variables and values-experimenting with the Graphical User Interface
+
+Une ***variable*** est un nom que le développeur définit pour représenter une valeur, le plus souvent un nombre ou une chaîne de caractères. Elle représente la place où l'ordinateur stocke cette valeur (l'espace "de nommage", étant lié à l'espace "objet" qu'il représente).
+
+Tout ne peut pas être un nom de variable :
+- Une variable ne peut pas commencer par un nombre.
+- Une variable ne peut pas commencer par la plupart des caractères non alphabétiques, sauf _ (*underscore* en anglais) dans certaines conditions.
+- Une variable peut en revanche contenir des majuscules, des minuscules, des nombres (pas en première position) et des underscores.
+- /!\ Python est case-sensitive, donc il distingue les majuscules des minuscules.
+
+Bien qu'il n'y ait pas d'obligation à donner un nom significatif à une variable, c'est préférable pour la compréhension ultérieure et inter-évaluateur.
+
+Une variable peut changer de valeur, mais elle ne peut contenir qu'une valeur à la fois. Elle est du même type que le dernier objet qui lui a été assigné.
+
+<p style="color:green"> Exemple : on définit une variable <strong>pi</strong> associée à la valeur 3.1415926. Le nombre 3.1415926 est une constante, mais c'est aussi une <em>expression</em>. Le symbole <em>=</em> signifie <em>assign to</em>. Donc pi = 3.1415926 est un <em>assignment statement</em> et donne à la variable <strong>pi</strong> une valeur spécifique. <br>
+On définit une nouvelle variable appelée <strong>radius</strong>, assignée à 10.0.<br>
+On peut manipuler les valeurs via les variables comme ceci : pour calculer la circonférence d'un cercle, on a la formule <em>2 x pi x r</em>. On souhaite assigner la réponse à une nouvelle variable circonférence : <em>circumference = 2</em> * <em>pi</em> * <em>radius</em>. Si on tape <em>circumference</em> dans l'interpréteur ensuite, celui-ci nous renverra 62.832852.
+
+Quand on assigne une variable à une valeur, la variable prend le type de la valeur qu'elle représente (une string, un entier, une liste,...). On ne peut pas utiliser une variable avant de l'avoir assignée à une valeur, cela retournerait un message d'erreur.
+
+| Not allowed | allowed |
+|:---:|:---:|
+| *area = side * side <br>side = 12.0* | *side = 12.0 <br>area = side * side* |
+
+On appelle cela des *statements* en Python. Dans d'autres langages de programmation, les statements sont séparés par des *;* (*semicolon* en anglais), alors qu'en Python ils sont marqués par la fin d'une ligne et les indentations.
+
+Les ***expressions*** : ce sont des opérations numériques vues en arithmétiques (=, +, -, *, /). La priorité opératoire (*precedence rule* en anglais) est respectée. On rappelle que ** en Python marque la **puissance/l'exposant**. Il est prioritaire et est donc réalisé avant toute autre opération.
+Evidemment, on peut utiliser des parenthèses pour favoriser une opération (parenthèse > exposant).
+
+<p style="color: green">Exemple : 1 + 2**3 = 1 + 2<sup>3</sup> = 9<br>
+&emsp;&emsp;&emsp;&emsp;(1+2)**3 = 3<sup>3</sup> = 27</p>
+
+En Python, on a des opérations un peu particulières, notamment concernant les divisions :
+- **Division entière** (*integer division*) représentée par *//*. Le résultat de ce type de division sera arrondi à l'entier inférieur.
+<p style="color: green"><em>3//2 = 1</em> ou <em>3//6 = 0</em></p>
+
+- **Division naturelle/décimale** resprésentée par */*. Elle permet de calculer le quotient de la division décimale et donnera donc un nombre flottant/décimal comme résultat.
+<p style="color: green"><em>3/2 = 1.5</em> ou <em>3/6 = 0.5</em></p>
+
+- **Modulo** resprésenté par *%*. Calcule le **reste** de la division **entière**.
+<p style="color: green"><em>3%2 = 1</em> ou <em>3%6 = 3</em></p>
+
+- **Valeur absolue** (*absolute*) représentée par *abs()*. Elle donne la valeur absolue d'une nombre.
+<p style="color: green"><em>abs(-3) = 3</em></p>
+
+---
+### 1.5. Exchanging information with the computer
+
+Il y a un échange d'informations entre l'ordinateur et l'utilisateur. Par exemple, l'utilisateur communique la valeur du radius à l'ordinateur, puis l'ordinateur communique la circonférence du cercle à l'utilisateur à partir du radius et de la formule donnés. De prime abord, cet échange se fait via du texte, des caractères tapés à l'aide d'un clavier. Mais cela n'est que la forme définie par le développeur, c'est en réalité des séries de nombre qui sont échangées.
+
+Pour envoyer un message à l'écran, le développeur utilise la commande ***print()*** qui renvoie une chaîne de caractères apparaissant à l'écran. \
+On peut également séparés les éléments qu'on souhaite mentionner par des virgules (*comma* en anglais).
+
+<p style="color: green">Exemple : <em>print("The circumference is", 62.831852)</em> ou <em>print("The circumference is", circumference)</em> - on note ici la variable <em>circumference</em>, qui sera remplacée dans le message par sa valeur.
+
+---
+### 1.6. Strings, integers and real numbers
+
+On distingue les nombres entiers (*intergers* ou *whole numbers* en anglais) et nombres flottants (*real number* ou *floating-point numbers/float numbers* en anglais). Une variable python peut être d'un type ou de l'autre. \
+On peut mélanger des opérations des deux types, mais il vaut mieux éviter ou mettre des parenthèses pour indiquer les priorités.
+<p style="color: red">Attention, *var = 6* n'est pas égal à *var = 6.0* !</p>
+
+On peut aussi convertir un type en un autre (en remplissant certaines conditions).
+- ***float(n)*** permet de convertir un entier n en un nombre flottant n.0.
+<p style="color: green"><em>float(3) = 3.0</em></p>
+
+- ***int(n.x)*** permet de convertir un flottant n.x en un entier n.
+<p style="color: green"><em>int(3.5) = 3*</em>
+
+- ***round(n.x)*** permet de convertir un nombre flottant en l'entier le plus proche.
+<p style="color: green"><em>round(3.5) = 4</em> ou <em>round(3.3) = 3</em>
+
+### 1.6.1. Example : compute the circumference of any circle
+
+Si on revient sur l'exemple de print de notre circonférence, on ne l'a calculée que sur un radius donné, indiqué par le développeur.
+En pratique, ce n'est pas très pertinent si on souhaite faire un programme qui calcule la circonférence de n'importe quel cercle, et il vaudrait mieux demander la valeur à l'utilisateur via un ***input***. \
+Attention cependant car l'input retourne une **string** qui ne peut pas être utilisée telle quelle pour faire des opérations. Il faut donc convertir son type en un type opératoire.
+
+```radius = float(input())``` \
+*Si ce qu'on souhaite manipuler est un nombre flottant, sinon on peut utiliser **int()**. Il est préférable d'utiliser float() car moins de risque de perte d'information dans ce genre de situation.*
+
+Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également. \
+<p style="color: green"><em>TypeError: can't multiply sequence by non-int of type 'float' → cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.</em>
+
+---
+### 1.7. **if** statements
+
+C'est une phrase conditionnelle commençant par ***if*** suivi d'une **expression logique** (*logical expression*) dont l'issue est soit *True*, soit *False*. Elle s'achève par : (*colon*). S'ensuit une série de code qui ne sera exécutée que si la condition *if* est évaluée *True*.
+
+![if statement](image.png)
+
+
+*True* et *False* sont des *booléens*, un type d'entier qui ne prennent que deux valeurs distinctes (1 / 0, True / False).
+
+La condition *if* peut prendre plusieurs formes :
+- *if True* : # **Constant**
+- *if flag (True or False value)* : # **Logical variable**
+- *if a < b* : # **Relational expression**
+- *if a < b and c > d* : # **Logical combination**
+
+| Relational expressions | |
+| :---: | ---|
+| < | inférieur |
+| > | supérieur |
+| <= | inférieur ou égal |
+| >= | supérieur ou égal |
+| == | équivalent à |
+| != | différent de |
+
+| Logical combinations | |
+| :---: | ---|
+| and | 2 conditions à remplir pour être True |
+| or | 1 condition ou l'autre à remplir pour être True |
+| not | équivalent à != |
+
+Ce qui suit les *:* est appelé *consequent*. Ils prennent une indentation supplémentaire que le *if* et toutes les phrases suivantes prenant la même indentation sont exécutées comme des conséquences du if. Si le *if* est *False*, aucune de ces actions ne sont exécutées. \
+*Par convention, en Python, une indentation = 4 espaces. La plupart des autres langages ne lisent ni les sauts de ligne ni les espaces et utilisent des séparateurs (; par exemple)pour distinguer les statements.*
+
+```if a < b:``` \
+&emsp;&emsp;```a = a + 1``` \
+&emsp;&emsp;```b = b - 1``` \
+```c = a - b```
+
+Les deux lignes suivant le *if* ont une indentation de plus que le *if*, ils appartiennent donc au *if*. Des groupes de statements est appelé une *suite*. La dernière ligne avec la variable c a la même indentation que le *if* et sera donc réalisée quoi qu'il arrive à la suite du *if*.
+
+<p style="color: green">Exemple de code <em>Java</em> :</p>
+
+```if (a < b) {``` \
+&emsp;&emsp;```a = a + 1;``` \
+&emsp;&emsp;```b = b - 1;``` \
+```}``` \
+```c = a - b;```
+
+L'utilisation des {...} (*braces*) identifie la suite, c'est ce qu'on appellerait un *block* en Java ou C++. *On appelle aussi **bloc d'instruction** la suite de consignes en Python.* L'indentation est ici uniquement utilisée pour simplifier la lecture du code pour un humain.
+
+On retrouve l'utilisation des ; en Python également mais dans un autre but : ils sont utilisés si on veut écrire plus d'un statement sur une même ligne. Mais c'est souvent plus difficile à comprendre rapidement donc on évite. On privilégie toujours la clarté à la compacité.
+
+```if (a < b): a = a + 1; b = b - 1``` \
+```c = a - b```
+
+Il existe aussi des opérateurs d'assignation un peu spéciaux, comme les opérateurs d'**incrémentation** (+=) / **décrémentation** (-=). <em>*=, /=, **= et %= existent aussi.</em>
+
+<p style="color: green"><em>a = a + 1 → a += 1</em> et <em>b = b - 1 → b += 1</em></p>
+
+L'incrémentation peut aussi s'appliquer à des types non numériques, comme une liste :
+
+```liste = [0, 3, 5]``` \
+```liste += ["a", "b"] ; print(liste)```\
+```[0, 3, 5, "a", "b"]```
+
+*La liste ne supporte pas la décrémentation en revanche.*
+
+### 1.7.1. else
+
+***Else*** appartient au statement ***if***. Si la condition *if* est *True*, on exécute son bloc d'instruction ; si elle est *False*, on peut aussi exécuter un autre set d'instructions, contenu dans la clause *else*. \
+Un *if statement* peut exister sans le *else*, mais l'inverse n'est pas vrai.
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```else:``` \
+&emsp;&emsp;```print("a >= b")``` \
+
+Qui pourrait aussi s'écrre :
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```if not a < b:``` \
+&emsp;&emsp;```print("a >= b")``` \
+
+*else* est :
+- Expressif : il correspond à une façon syntaxique correct d'énoncer une alternative dans le langage humain.
+- Efficace : il évite d'évaluer deux fois la même expression comme dans la deuxième version du code, et permet ainsi de gagner en vitesse d'exécution.
+- Grammaticalement pratique.
+
+### 1.7.2. Nested IFs
+
+Ce sont des *if* dans un *if*. Souvent il existe une alternative non imbriquée, mais c'est plus long à coder et plus fastidieux à lire.
+
+<p style="color: green"> Nested IFs :</p>
+
+```if player == "scissors":``` \
+&emsp;&emsp;```if choice == "rock":``` \
+&emsp;&emsp;&emsp;&emsp;```print("Computer wins.")``` \
+```else:``` \
+&emsp;&emsp;```print("You win!")```
+
+<p style="color: green"> Non-nested IFs :</p>
+
+```if player == "scissors" and choice == "rock":``` \
+&emsp;&emsp;```print("Computer wins.")``` \
+```if player == "scissors" and choice != "rock":``` \
+&emsp;&emsp;```print("You win!")```
+
+*On n'utilise pas ici le else car il existe d'autres alternatives au if qui ne remplissent pas les conditions qu'on souhaiterait dans le else ; il faut donc faire deux ifs distincts.*
+
+### 1.7.3. elif
+
+On peut parfois se retrouver avec trop de répétitions et de nested-IFs. Une alternative à cela est le ***elif*** ; il combine un *else* et un *if*.
+
+<p style="color: green">Without <em>elif</em> :</p>
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```else:``` \
+&emsp;&emsp;```if a > b:``` \
+&emsp;&emsp;&emsp;&emsp;```print("a > b")```
+&emsp;&emsp;```else:``` \
+&emsp;&emsp;&emsp;&emsp;```print("a = b")```
+
+<p style="color: green">With <em>elif</em> :</p>
+
+```if a < b:``` \
+&emsp;&emsp;```print("a < b")``` \
+```elif a > b:``` \
+&emsp;&emsp;```print("a > b")``` \
+```else:``` \
+&emsp;&emsp;```print("a = b")```
+
+Cette méthode réduit considérablement le nombre d'indentation et améliore la lisibilité. Cela permet aussi de ne pas lire les lignes suivantes inutilement (comme avec deux ifs) si une condition a déjà été remplie et cela améliore la vitesse d'exécution du programme. \
+*Exemple ici, si le premier if est exécuté, l'ordinateur ne lira pas elif ni else car il sait que ce sont des alternatives au premier if.*
+
+---
+### 1.8. Documentation
+
+La documentation **externe** est comme un manuel utilisateur. C'est un texte qui explique  ce que fait le programme ; il est plus ou moins long selon le programme. *Il vaut mieux l'écrire en anglais, c'est universel.*
+
+<p style="color: green">Un exemple de documentation pour <em>Guess a number</em> : <em>Guess a number is a simple guessing game. The computer will select a number between 1 and 10 and you are expected to guess what it is. When the program displays 'Please guess a number between 1 and 10: ', you type in your guess followed by the Enter key. Your guess must be an integer in the range 1 to 10. The computer will tell you if you win or lose.</em></p>
+
+La documentation **interne** est destinée aux programmeurs qui ont accès au code source du programme. \
+Ce sont typiquement des **commentaires** laissés dans le code. On l'écrit souvent en anglais aussi, dans une syntaxe humaine car c'est un morceau de code qui sera ignorée par l'ordinateur. Un commentaire commence par ***#*** et se termine au prochain saut de ligne.\
+On trouve aussi les **docstrings** ***"""..."""***, qui sont des strings, donc peuvent être stockées dans un document séparé pour être utilisée comme description d'une fonction par exemple.
+
+---
+### 1.9. Types are dynamic
+
+En Python, le type d'une variable peut changer en fonction de l'objet auquel elle est assignée.
+
+<p style="color: green"><em>x = 10</em> # x est un entier<br>
+<em>x = x * 0.1</em> # x est un flottant<br>
+<em>x = (x * 10 == 10)</em> # x est un booléen (<em>True</em>)</p>
+
+Si on prend un langage **statique** comme le C++, un entier est un endroit de 32 bits (4 octets) stockés dans la mémoire, ils ont donc une "taille" fixe ; donc le plus grand nombre stockable est 2<sup>32</sup> -1.
+
+On peut connaître le type d'une variable en Python par la fonction ***type()***, qui nous retournera : \
+```<class 'int/float/str'>``` → ce n'est pas une string mais un *type* !\
+Si on change l'assignation de la variable ensuite, son type peut changer et la fonction ne retournera pas le même résultat.
+
+---
+## <center>Aparté : Number bases
+
+Pour compter, on utilise toujours une **base** et des **"digits"** auquels on multiplie la base.
+
+### Base 10 ou base décimale
+---
+
+C'est le système de comptage le plus répandu, probablement car on a 10 doigts.\
+Elle se compose d'un symbole pour chaque digit, soit 10 digits de **0 à 9**. \
+Pour compter au-delà, il faut changer de rang (unité, dizaine, centaine, etc) et recommencer le comptage de 0 à 9 dans le nouveau rang et les unités reviennent à 0. A chaque fois qu'on augmente le digit d'un rang, on recommence le compte de tous les digits dans les rangs précédents de droite à gauche.
+<p style="color: green">Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arriver à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.
+
+Chaque rang est à une puissance de 10 supérieure au précédent : un rang = rang précédent * 10.
+<p style="color: green"><em>100 (une centaine) = 10 * 10 (10 dizaines)* et *10 (une dizaine) = 01 * 10 (dix unités)</em></p>
+
+<p style="color: green">En décomposant en base 10 : <em>216<sub>10</sub> = 200 + 10 + 6 = 2 * 10<sup> 2</sup> + 1 * 10<sup> 1</sup> + 6 * 10<sup> 0</sup></em></p>
+
+### Base 2 ou base binaire
+---
+
+C'est la plus importante en informatique car c'est le code pour s'adresser à l'ordinateur (code machine). \
+En base 2, les nombres n'ont que 2 digits : **0 et 1**. \
+Chacun représente une puissance de 2 en fonction du rang auquel on le trouve. Les rangs décimaux (unités, dizaines, centaines, etc) correspondent ici à des rangs binaires (*binary digit* = *bit*).
+
+Les nombres **pairs** prennent toujours un **0 tout à droite** tandis que les nombres **impairs** prennent systématiquement un **1 tout à droite**.
+
+**Convertir du binaire au décimal :**
+
+On additionne chaque rang en multipliant **son digit avec 2<sup>son rang</sup>**.
+<p style="color: green"><em>101 0110<sub>2</sub> = 1 * 2<sup> 6</sup> + 0 * 2<sup> 5</sup> + 1 * 2<sup> 4</sup> + 0 * 2<sup> 3</sup> + 1 * 2<sup> 2</sup> + 1 * 2<sup> 1</sup> + 0 * 2<sup> 0</sup></em><br>
+&emsp;&emsp;&emsp;&emsp;&emsp;<em>= 1 * 64 + 1 * 16 + 1 * 4 + 1 * 2</em><br>
+<strong><em>101 0110<sub>2</sub> = 86<sub>10</sub></em></strong></p>
+
+| Valeur décimale | Conversion | Valeur binaire |
+|:---:|:---:| :---: |
+| 0 | 0 * 2<sup>0 | 0
+| 1 | 1 * 2<sup>0 | 1
+| 2 | 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 10
+| 3 | 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 11
+| 4 | 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 100
+| 5 | 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 101
+| 6 | 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 110
+| 7 | 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 111
+| 8 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 1000
+| 9 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 1001
+| 10 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 1010
+| 11 | 1 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 1011
+| 12 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 0 * 2<sup>0 | 1100
+| 13 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 0 * 2<sup>1</sup> + 1 * 2<sup>0 | 1101
+| 14 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 0 * 2<sup>0 | 1110
+| 15 | 1 * 2<sup>3</sup> + 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0 | 1111
+
+Donc 15<sub>10</sub> = 1111<sub>2</sub> \
+*On peut aussi écrire 15<sub>dec</sub> = 1111<sub>bin</sub> ou 15 = **0b**1111*
+
+***Notons aussi qu'on peut écrire les nombres binaires de façon lisible en les regroupant 4bits par 4 bits.***
+
+**Convertir du décimal au binaire :**
+
+- Méthode 1 : **les puissances de 2** \
+Il faut décomposer le nombre décimal en multiple de 2.
+<p style="color: green"><em>26<sub>10</sub> = 16 + 8 + 2<br>
+&emsp;&emsp;= 1 * 16 + 1 * 8 + 1 * 2<br>
+&emsp;&emsp;= <strong>1</strong> * 2<sup> 4</sup> + <strong>1</strong> * 2<sup> 3</sup> + 0 * 2<sup> 2</sup> + <strong>1</strong> * 2<sup> 1</sup> + 0 * 2<sup> 0</sup><br>
+<strong>26<sub>10</sub>= 1 1010<sub>2</sub></strong></em></p>
+
+| Puissance de 2 | Valeur décimale |
+| :---: | :---: |
+| 2<sup>0 | 1 |
+| 2<sup>1 | 2 |
+| 2<sup>2 | 4 |
+| 2<sup>3 | 8 |
+| 2<sup>4 | 16 |
+| 2<sup>5 | 32 |
+| 2<sup>6 | 64 |
+| 2<sup>7 | 128 |
+| 2<sup>8 | 256 |
+| 2<sup>9 | 512 |
+| 2<sup>10 | 1024 |
+| 2<sup>11 | 2048 |
+| 2<sup>12 | 4096 |
+
+- Méthode 2 : **divisions euclidiennes par 2** \
+C'est la méthode la plus simple pour les grands nombres, elle est facile à uiliser en programmation car on peut en faire un algorithme.
+<p style="color: green"><em>Prenons le nombre décimal 164.</em></p>
+
+1- On divise par 2 notre nombre décimal (division **entière**) et on récupère le **reste** à l'aide du **modulo**.
+<p style="color: green"><em>164 // 2 = 82 ; 164 % 2 = <strong>0</strong></em></p>
+
+2- On divise par 2 le quotient obtenu et on note le reste de la division.
+<p style="color: green"><em>82 // 2 = 41 ; 82 % 2 = <strong>0</strong></em></p>
+
+3- On réitère jusqu'à obtenir un **quotient nul**.
+<p style="color: green"><em>41 // 2 = 20 ; 164 % 2 = <strong>1</strong><br>
+20 // 2 = 10 ; 20 % 2 = <strong>0</strong><br>
+10 // 2 = 5 ; 10 % 2 = <strong>0</strong><br>
+5 // 2 = 2 ; 5 % 2 = <strong>1</strong><br>
+2 // 2 = 1 ; 2 % 2 = <strong>0</strong><br>
+1 // 2 = 0 ; 1 % 2 = <strong>1</strong></em></p>
+*Ici on peut aussi simplement remarquer si le quotient est pair ou impair et on connaîtra son reste, qu'on a juste à noter.* \
+4- On lit le résultat obtenu à partir des restes, **de bas en haut**, soit du dernier obtenu jusqu'au premier. Ceci nous donne l'équivalent binaire de notre nombre décimal.
+<p style="color: green"><em>164<sub>10</sub> = 1010 0100<sub>2</sub></em></p>
+
+### Base 16 ou base hexadécimale
+---
+La base 16 comporte donc 16 digits : **0 à 9 puis A à F**. \
+Cette base est intéressante car c'est un multiple de la base 2 mais elle permet d'exprimer des nombres binaires avec moins de caractères. \
+On utilise la base hex pour représenter les couleurs en Python, ainsi que sur beaucoup de pages Web.
+<p style="color: green"><em>Web page : 0xFF0000 = rouge.</em></p>
+
+| Hexadécimal | Décimal |
+| :---: | :---: |
+| A | 10 |
+| B | 11 |
+| C | 12 |
+| D | 13 |
+| E | 14 |
+| F | 15 |
+
+Le principe reste le même : on augmente les digits pour chaque rang jusqu'à F puis on recommence à 1 au rang suivant et 0 à tous les rangs précédents. \
+*Notez que E + 1 = F (14 + 1 = 15 en base décimale), mais que F + 1 = 10 (toujours en hexadécimal).*
+
+**Conversion du décimal à l'hexadécimal :**
+
+On décompose en puissance de 16.
+
+| Puissance de 16 | Valeur décimale |
+| :---: | :---: |
+| 16<sup>0 | 1 |
+| 16<sup>1 | 16 |
+| 16<sup>2 | 256 |
+| 16<sup>3 | 4096 |
+| 16<sup>4 | 65536 |
+
+On commence par chercher la plus grande puissance de 16 du nombre.
+<p style="color: green"><em>1680<sub>10</sub><br>
+1680 // 256 = <strong>6</strong> ; 1680 % 256 = 144<br>
+144 // 16 = <strong>9</strong> ; 144 % 16 = 0<br>
+Donc 1680<sub>10</sub> = 6 * 256 + 9 * 16 + 0 * 1<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;= 6 * 16<sup> 2</sup> + 9 * 16<sup> 1</sup> + 0 * 16<sup> 0</sup><br>
+&emsp;&emsp; <strong>1680<sub>10</sub> = 690<sub>16</sub></strong></em></p>
+
+*On peut aussi écrire 1680<sub>dec</sub> = 690<sub>hex</sub> ou 1680 = **0x**690.*
+
+**Conversion de l'hexadécimal au décimal :**
+
+Chaque rang est une puissance de 16. \
+On multiplie chaque rang par une puissance de 16 croissante.
+<p style="color: green"><em>4F2C<sub>16</sub> = 4 15 2 12<br>
+&emsp;&emsp;&emsp;= 4 * 16<sup> 3</sup> + 15 * 16<sup> 2</sup> + 2 * 16<sup> 1</sup> + 12 * 16<sup> 0</sup><br>
+&emsp;&emsp;&emsp;= 4 * 4096 + 15 * 256 + 2 * 16 + 12 * 1<br>
+<strong>(4F2C)<sub>16</sub> = (20 268)<sub>10</sub></strong></em></p>
+
+**Conversion du binaire à l'hexadécimal :**
+
+**2<sup>4</sup> = 16<sup>1</sup>** \
+Cela signifie que 4 rangs binaires correspondent à un rang en hexadécimal.
+Et en effet, 4 rangs binaires permettent de monter jusqu'à 15 (*1111*), de même qu'un rang hexadécimal (*F*).
+On décompose donc, quand c'est possible, 4 rangs par 4 rangs.
+
+| 101 | 0011 | 1011 |
+|:---:|:---:| :---: |
+| 0 * 2<sup>3</sup> + **1** * 2<sup>2</sup> + 0 * 2<sup>1</sup> + **1** * 2<sup>0 | 0 * 2<sup>3</sup> + 0 * 2<sup>2</sup> + **1** * 2<sup>1</sup> + **1** * 2<sup>0 | **1** * 2<sup>3</sup> + 0 * 2<sup>2</sup> + **1** * 2<sup>1</sup> + **1** * 2<sup>0 |
+| 5 | 3 | 11 = B |
+
+*Donc (101 0011 1011)<sub>2</sub> = (53B)<sub>16</sub> .*
+
+**Conversion de l'héxadécimal en binaire :**
+
+On passe d'abord par une conversion hex --> dec rang par rang, puis dec --> bin.
+
+<p style="color: green"><em>BE57<sub>16</sub> : B<sub>16</sub> = 11<sub>10</sub> , E<sub>16</sub> = 14<sub>10</sub> , 5<sub>16</sub> = 5<sub>10</sub> , 7<sub>16</sub> = 7<sub>10</sub><br>
+11<sub>10</sub> = 1 * 8 + 1 * 2 + 1 * 1 = 1011<sub>2</sub><br>
+14<sub>10</sub> = 1 * 8 + 1 * 4 + 1 * 2 = 1110<sub>2</sub><br>
+5<sub>10</sub> = 1 * 4 + 1 * 1 = 0101<sub>2</sub><br>
+7<sub>10</sub> = 1 * 4 + 1 * 2 + 1 * 1 = 0111<sub>2</sub><br>
+Donc <strong>(BE57)<sub>16</sub> = (1011 1110 0101 0111)<sub>2</sub></strong></em></p>
+
+### Base 8 ou base octale
+---
+
+Elle se compose de 8 digits : **de 0 à 7**. \
+On peut l'exprimer en n<sub>8</sub> ou *0on*.
+
+| Puissance de 8 | Valeur décimale |
+| :---: | :---: |
+| 8<sup>0 | 1 |
+| 8<sup>1 | 8 |
+| 8<sup>2 | 64 |
+| 8<sup>3 | 512 |
+| 8<sup>4 | 4096 |
+
+<p style="color: red"><strong>Attention !! 1 octal = un rang de la base 8 =/= 1 octet (*byte* en anglais)= 8 bits.</strong></p>
+
+---
+
+### Fonctions built-in conversion python
+---
+***int()*** permet de convertir d'autres types en **entiers décimaux**. \
+```int("0b10", base= 2)``` \
+```2```
+
+```int("0x10", base= 16)``` \
+```16```
+
+```int("0o10", base= 8)``` \
+```8```
+
+*On peut ne pas mentioner "0b/x/o" avant le chiffre si on mentionne la base. On est pas obligé d'écrire "base =" ; à ce moment-là, on ne met pas de "" autour du nombre, mais on précise 0b/x/o.* \
+```int("10", base= 8)``` \
+```8```
+
+```int(0o10)``` \
+```8```
+
+***bin()*** permet de convertir un entier en son équivalent en base 2. Le type de l'output est une string. \
+```bin(2)``` \
+```"0b10"```
+
+---
+
+## <center>Chapter 2: Repetition
+
+Une des raisons en faveur de l'utilisation d'un ordinateur est qu'il est capable de réaliser des tâches fastidieuses, répétitives à une grande vitesse. C'est ce qu'on appelle des ***boucles*** (*loops* en anglais).
+
+### 2.1. The *while* statement
+
+C'est une instruction de **répétition tant que** l'affirmation est *True*. Le bloc d'instruction suivant la ligne du while (indenté bien sûr) est réalisé à chaque loop tant que la condition évoquée par le while est *True*. Si la condition est *False*, on n'exécute pas le bloc d'instruction qui suit.
+
+![While statement](image-1.png)
+
+A chaque tour de boucle, on évalue le statement du while. Pour sortir d'une boucle, il faut donc qu'au sein de la boucle il y ait une instruction qui modifie l'état du statement, sinon c'est une boucle infinie.
+
+*While True* est un exemple de boucle infinie de laquelle on ne peut sortir qu'avec un *return*.
+
+<p style="color: green">Exemple de boucle finie :</p>
+
+```a = 0``` \
+```while a < 10:``` \
+&emsp;&emsp;```a += 1```&emsp;&emsp;→&emsp;identique à *a = a + 1* \
+```print(a)```
+
+La boucle while fera 10 tours avant que la condition a < 10 ne soit *False*. Le bloc d'instruction réalise une incrémentation de 1 de a, ainsi a change de valeur à chaque tour et la condition prend fin à un moment. \
+Une fois la boucle terminée, l'instruction suivante est réalisée et l'ordinateur print la valeur de a, soit 10 à ce stade du programme.
+
+<p style="color: green">Exemple de boucle infinie :</p>
+
+```a = 0``` \
+```b = 1``` \
+```while b < 10:``` \
+&emsp;&emsp;```a += 1``` \
+```print(a)```
+
+Dans ce code, on exécutera jamais l'instruction print() car le while est toujours *True* ; en effet, on entre dans la boucle car b = 1 <10 mais aucune instruction dans le bloc ne modifie la condition initiale donc il n'y aura jamais de changement. \
+Du point de vue utilisateur, il ne passera rien. Le programme fonctionne mais ne s'arrête jamais. *Pour forcer d'un programme, faire ctrl + C dans le terminal d'éxécution.*
+
+<p style="color: green">Exemple de boucle non réalisée :</p>
+
+```a = 100``` \
+```while a < 10:``` \
+&emsp;&emsp;```a += 1``` \
+```print(a)```
+
+La condition n'est pas remplie donc on exécute pas le bloc d'instruction suivant. Le print renverra 100.
+
+### 2.2 Introduction to module and functions with random numbers
+
+Le tirage de nombre aléatoire est utile dans les jeux. \
+Le principe de la **randomisation** est de réaliser un tirage aléatoire et une répartition aléatoire de façon à avoir le moins de biais possible.
+
+La probabilité d'un évènement survenu aléatoirement n'est pas lié à la probabilité des évènements précédents ; mais tout dépend comment on pose la question car la probabilité qu'un évènement survienne n'est pas la même que celle que cet évènement se produise deux fois de suite.
+<p style= "color: green"><em>Par exemple, si je sélectionne des boules triés de 1 à 10, la probabilité que je tire la boule 5 est de 1/10, soit 0.1. Si je remets la boule 5 et que je resélectionne une boule ensuite, la probabilité que je tire à nouveau le 5 est encore de 1/10.<br>
+En revanche, si je me demande quelle est la probabilité que je tire deux fois de suite le 5, alors la probabilité sera de 1/10 * 1/10, soit 1/100 = 0.01.</em></p>
+
+Une **fonction built-in** est comme une fonction mathématiques et correspond à est codée dans le code-source du langage, elle est donc connue par celui-ci.
+
+<p style= "color: green">Exemples de fonction built in : <em>print()</em>, <em>int().</em></p>
+
+Certaines fonctions sont aussi contenues dans des **modules**, comme *sine* ou *square root* contenues dans le module ***math***. \
+```import math``` &emsp;→&emsp;&emsp; le module *math* est importé dans le programme et ses fonctions peuvent être utilisées. \
+L'instruction ***import*** doit se trouver au début du programme (après le shebang s'il y en a).
+
+Pour appeler une fonction, il faut ensuite appeler le nom du module suivi d'un *.* (*period* en anglais) et du nom de la fonction.
+```print(math.sqrt(64))``` &emsp;→&emsp;&emsp; *sqrt(x)* = un *appel de fonction* \
+```8```
+
+---
+#### Quelques exemples de fonctions *random*
+
+Il existe un module ***random*** contenant plusieurs modules.
+
+**random()** \
+La fonction ***random()*** produit un nombre aléatoire compris entre 0.0 et 1.0. \
+```import random``` \
+```print(random.random())``` \
+```0.07229650795715237```
+
+Pour augmenter l'amplitude de random, il suffit de le multiplier par un certain nombre, par exemple pour aller de 0 à 100 : \
+```print(random.random()*100)```
+
+**randint()**
+La fonction ***randint()*** accepte deux paramètres (deux nombres). Le premier correspond à la borne inférieure (incluse) et la deuxième est la borne supérieure (incluse) des nombres à produire.
+
+<p style= "color: green">Exemple appliqué au lancer de pièce : pile ou face</p>
+
+```if random.randint(1, 2) == 1:``` \
+&emsp;&emsp;```print("Heads")``` \
+```else:``` \
+&emsp;&emsp;```print("Tails")``` \
+
+---
+### 2.3. Counting loops : for loops
+
+Une boucle ***for*** réalise un nombre d'itérations (tours de boucle) défini. \
+```for i in (1, 2, 3, 4, 5):``` \
+&emsp;&emsp;```print(i)``` \
+*On printera ici tour à tour 1 puis 2,... jusqu'à 5.*
+
+![Alt text](image-2.png) \
+*le tuple n'a pas forcément à être entre parenthèses.*
+
+La collection contenue dans les parenthèses est appelée un ***tuple*** (c'est un type d'objet, ou plutôt une nouvelle classe de types). C'est un ensemble d'objets pouvant contenir n'importe quel type d'objets dans n'importe quel ordre : \
+*(3, 6, 9, 12)* \
+*(2.1, 3.5, 0, 12)* \
+*("green", "yellow", "red")* \
+*("red", 3, 4.5, 2, "blue", i) où i est une variable avec une valeur assignée précédemment*
+
+La boucle *for* attribue à chaque tour de boucle la valeur de gauche à droite à la variable i. Une fois que tous les objets du tuple sont passés dans la boucle, on sort de la boucle et la suite du code est exécutée. *On a donc autant de tours de boucle qu'il y a d'éléments dans le tuple.*
+
+Pour les boucles longues, on peut utiliser la fonction built-in ***range()***, qui retourne un tuple contenant tous les entiers (positifs ou négatifs) entre les deux paramètres donnés, borne supérieure exclue. Si un seul argument est passé à la fonction, la borne inférieure sera 0 par défaut. \
+```for i in range(1, 5):``` \
+&emsp;&emsp;```print(i)``` \
+*Cette boucle réalise 4 tours de boucle et print à chaque fois le numéro du tour auquel elle se trouve.*
+
+<p style= "color: red">Attention, le nombre de la borne inférieure doit impérativement être inférieur à celui de la borne supérieure.</p>
+
+#### 2.3.1. Prime or non prime
+
+C'est un jeu qui nécessite une boucle for. \
+Un nombre premier est un nombre entier divisible uniquement par 1 et par lui-même.
+<p style= "color: green"><em>2, 3, 5, 11 ou encore 17 sont des nombres premiers.</em></p>
+
+Le jeu consiste à faire deviner au joueur si un nombre est entier ou non. Le code simplifié est le suivant : \
+1.&emsp;Tant que le jeu n'est pas terminé (boucle while), suivre les étapes suivantes.
+
+2.&emsp;Sélectionner un nombre entier aléatoire k.
+
+3.&emsp;Demander au joueur si k est un nombre premier et récupérer sa réponse.
+
+4.1.&emsp;Si la réponse du joueur est correcte, print un message de victoire. *Cette condition implique que l'ordinateur ait préalablement déterminé si le nombre est un entier.*
+
+4.2.&emsp;Si la réponse du joueur est incorrecte, print un message de défaite.
+
+Si un nombre k possède un diviseur n, cela signifie que le reste de la division de k par n est nulle ; en langage de programmation cela s'écrit : \
+```k % n == 0``` \
+*Si n != 1 et n!= k, alors k n'est pas un nombre premier, car il est divisible par autre chose que 1 et lui-même.*
+
