@@ -1,0 +1,103 @@
+{
+    "would_you_rather": "Tu préfères",
+    "proposals": [
+        {
+            "prop": [
+                "1. C++",
+                "2. C"
+            ]
+        },
+        {
+            "prop": [
+                "1. Popo",
+                "2. Pépo"
+            ]
+        },
+        {
+            "prop": [
+                "1. FromSoftware",
+                "2. Bethesda"
+            ]
+        },
+        {
+            "prop": [
+                "1. Dracaufeu",
+                "2. Mackogneur"
+            ]
+        },
+        {
+            "prop": [
+                "1. Vélo",
+                "2. Randonnée"
+            ]
+        },
+        {
+            "prop": [
+                "1. Grèce",
+                "2. Italie"
+            ]
+        },
+        {
+            "prop": [
+                "1. Talos",
+                "2. Vivec"
+            ]
+        },
+        {
+            "prop": [
+                "1. Poissy",
+                "2. Toulouse"
+            ]
+        },
+        {
+            "prop": [
+                "1. 206",
+                "2. Corolla"
+            ]
+        },
+        {
+            "prop": [
+                "1. Doudou",
+                "2. Dragono"
+            ]
+        },
+        {
+            "prop": [
+                "1. été",
+                "2. hiver"
+            ]
+        },
+        {
+            "prop": [
+                "1. Japon",
+                "2. Finlande"
+            ]
+        },
+        {
+            "prop": [
+                "1. Mariez Popo :)",
+                "2. Mariez Popo :))"
+            ]
+        },
+        {
+            "prop": [
+                "1. Nommer sa fille Alessia",
+                "2. Nommer sa fille Ada"
+            ]
+        },
+        {
+            "prop": [
+                "1. Nommer son fils George-Emmanuel alias GEM",
+                "2. Nommer son fils Jean Marmoud"
+            ]
+        },
+        {
+            "prop": [
+                "1. Dormir avec Fançoise",
+                "2. Dîner avec Juliette"
+            ]
+        }
+    ],
+    "or" : "ou",
+    "question mark": "?"
+}
