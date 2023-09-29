@@ -18,7 +18,7 @@ str6 = "Ans: uqxg oy znk iruykyz znotm zu terut o'bk kbkx kgzkt."
 
 # FUNCTIONS
 
-def encode(letter,key):
+def encode(letter, key):
     if letter not in alphabet:
         return letter
     letter = alphabet.index(letter)
