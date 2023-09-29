@@ -25,10 +25,12 @@ str6 = "Ans: uqxg oy znk iruykyz znotm zu terut o'bk kbkx kgzkt."
 def encode(letter,key):
     if letter in alphabet:
         letter = alphabet.index(letter)
-        if letter in range(0, 20):
-            letter = alphabet[letter + 6]
-        if letter in range(20, 26):
-            letter = alphabet[letter - 20]
+        if key > 0 and letter in range((len(alphabet) - key), len(alphabet)):
+            letter = alphabet[letter - (len(alphabet) - key)]
+        elif key < 0 and letter in range(0, key):
+            letter = alphabet[letter + (len(alphabet) - key)]
+        else:
+            letter = alphabet[letter + key]
         return letter
     else:
         return letter
@@ -42,15 +44,14 @@ for i in str1.lower():
     i = encode(i, 6)
     print(i, end = "")
 print()
-
 for i in str5.lower():
     i = decode(i, 6)
     print(i, end = "")
 print()
 
 for i in str2.lower():
-    i = encode(i, 6)
-    i = decode(i, 6)
+    i = encode(i, 8)
+    i = decode(i, 8)
     print(i, end = "")
 print()
 
