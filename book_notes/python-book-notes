@@ -1616,7 +1616,7 @@ Une autre façon de faire en utilisant les listes :
 
     ...
 
-    end_time = time.tim()
+    end_time = time.time()
 
     elapsed_time = end_time - start_time
 
@@ -1762,7 +1762,7 @@ La ***liste*** est une séquence d'objets hétérogènes, de la même manière q
 
 C'est +/- un équivalent de l'*array* en Java ou en C.
 
-D'apparence, la liste ressemble au tuple mais est délimitée par des [ ] (*brackets*).
+D'apparence, la liste ressemble au tuple mais est délimitée par des [ ] (*brackets* ou *square brackets*).
 
     list1 = [2, 3, 5, 7, 11, 13, 17, 19]
     list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
@@ -1871,6 +1871,14 @@ La méthode ***insert(index, new_element)*** joue aussi le rôle d'ajouter des �
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Silver']` \
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver']`
 
+On peut obtenir le même résultat avec un slicing d'affectation :
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    list2[0:0] = ["Nitrogen"]
+    print(list2)
+
+`['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon']`
+
 ### 3.4.3. Append
 
 La méthode ***append(new_element)*** permet d'ajouter **un** élément à la fin de la liste.
@@ -1893,10 +1901,13 @@ La méthode ***extend([new_element])*** est pratiquement identique à une concat
     list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
     list_2 = ["Nickel", "Silver", "Nitrogen"]
     print(list2 + list_2)
-    list2.extend(list_2)
+    print(list2.extend(list_2))
 
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']` \
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']`
+
+**Avec *extend( )* ou *append( )*, la liste en modifiée en place. On ne peut donc pas leur assigner de variable comme `a = list2.extend(list-2)`, le résultat de `print(a)` sera *None*. \
+La différence avec la concaténation *+* est que celle-ci crée un nouvel objet. On peut donc lui assigner une variable, et il existe toujours la version originale des lsites concaténées.**
 
 ### 3.4.5. Remove
 
@@ -1929,4 +1940,377 @@ La méthode ***index(element)*** retourne l'indice de la première occurence du 
     print(list2.index("Boron"))
 
 `3`
+
+Comme pour le tuple, *index( )* lève une exception si l'élément recherché n'est pas retrouvé dans la liste (*ValueError*). On peut commencer par faire un test d'appartenance de l'élément dans la liste avant de demander l'index si on souhaite éviter l'erreur.
+
+    if "Boron" in list2:
+        print(list2.index("Boron"))
+
+`3`
+
+### 3.4.7. Pop
+
+La méthode ***pop( )*** est l'inverse de la méthode *append( )* ; elle retire le dernier élément de la liste.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    list2.pop()
+    print(list2)
+
+`['Hydrogen', 'Helium', 'Lithium', 'Boron']`
+
+On peut aussi donner un indice à *pop( )* pour qu'il extrait l'élément situé à l'indice donné.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    list2.pop(0)
+    print(list2)
+
+`['Helium', 'Lithium', 'Boron', 'Carbon']`
+
+L'appel de la fonction sur une liste vide lève une erreur. Si on souhaite éviter l'erreur, on peut vérifier que la liste contient au moins un élément en faisant :
+
+    if len(list2) > 0:
+        list2.pop()
+
+`['Hydrogen', 'Helium', 'Lithium', 'Boron']`
+
+### 3.4.8. Sort, sorted
+
+La méthode ***sort( )*** replace les éléments de la liste par ordre croissant. La liste en modifiée **en place**, sans en faire de copie. Il faut cependant que les éléments soient du même type car cette méthode implique une comparaison entre les éléments.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    list2.sort()
+    print(list2)
+
+    list_2 = ["Hydrogen", 1, "Helium", 2, "Lithium", 3, "Beryllium", 4, "Boron", 5]
+    list_2.sort()
+
+`['Boron', 'Carbon', 'Helium', 'Hydrogen', 'Lithium']` \
+`TypeError: '<' not supported between instances of 'int' and 'str'`
+
+On peut trier des listes imbriquées dans des listes :
+
+    list_2 = [["Hydrogen", 1], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
+    list_2.sort()
+    print(list_2)
+
+    list_2 = [["Hydrogen", 1], ["Hydrogen", 2], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
+    list_2.sort()
+    print(list_2)
+
+`[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Lithium', 3]]` \
+`[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Hydrogen', 2], ['Lithium', 3]]`
+
+Comme toutes les listes sont compatibles entre elles (un enchaînement str_int), la comparaison peut avoir lieu. Le placement se fait en comparant le premier élément qui diffère entre deux éléments : si les str sont identiques, on compare l'élément suivant qui est le nombre.
+
+<br>
+
+Naturellement, un argument *reverse= False* est donné à la fonction. Si on souhaite trier par ordre décroissant, on écrira `list2.sort(reverse= True)`.
+
+<br>
+
+On ne peut pas faire d'opération d'affectation sur *sort( )* car cela renvoie à l'objet *None* :
+
+    a = list2.sort()
+    print(a)
+
+`None`
+
+Il existe une fonction ***sorted( )*** (**qui n'est pas une méthode à la différence de *sort( )***) permettant de créer une copie de la liste à trier. Cela permet ainsi de garder la version originale de la liste et d'assigner à une nouvelle variable la liste triée.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    new_list2 = sorted(list2)
+    print(f"{list2}\n{new_list2}")
+
+`['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon']` \
+`['Boron', 'Carbon', 'Helium', 'Hydrogen', 'Lithium']`
+
+### 3.4.9. Reverse
+
+La méthode ***reverse()*** réalise en fait un slicing [::-1] et inverse l'ordre des éléments dans la liste. \
+Cette méthode peut aussi être utilisée après *sort( )* pour trier les éléments par ordre décroissant, mais nous avons vu qu'en donnant *reverse= True* en argument à *sort( )*, on pouvait obtenir ce résultat en moins d'étapes.
+
+    list_number = [9, 1, 5, 6, 5, 7]
+    list_number.reverse()
+    print(list_number)
+
+`[7, 5, 6, 5, 1, 9]`
+
+### 3.4.10. Count
+
+La méthode ***count( )*** est utilisée pour déterminer combien d'occurence d'un élément on retrouve dans une liste. Si l'élément n'est pas retrouvé dans la liste, le compte est de 0.
+
+    list_number = [9, 1, 5, 6, 5, 7]
+    print(list_number.count(5))
+
+`2`
+
+### 3.4.11. List comprehension
+
+On peut référencer des objets à une liste à l'aide de *for*.
+
+<p style= "color: green">Exemple : créer une liste d'entiers parfaits</p>
+
+    perfect_square = []
+    for i in range(0,11):
+        perfect_square = perfect_square + [i**2]
+    print(perfect_square)
+
+    perfect_square = []
+    for i in range(0,11):
+        perfect_square.append(i**2)         # même résultat que la concaténation
+    print(perfect_square)
+
+`[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]` \
+`[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]`
+
+Une autre syntaxe existe pour cette situation car elle est très commune. On appelle cette syntaxe la **compréhension de liste**.
+
+    perfect_square = [i**2 for i in range(11)]
+    print(perfect_square)
+
+`[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]`
+
+On pourrait aussi ajouter une condition *if* à la compréhension de liste :
+
+    perfect_square = [i**2 for i in range(11) if i % 2 == 0]
+    print(perfect_square)
+
+`[0, 4, 16, 36, 64, 100]`
+
+Ces compréhensions de liste restent concises et compréhensibles ; il faut éviter qu'elles soient trop longues et pompeuses car elles ne simplifient plus tant la syntaxe.
+
+La structure d'une compréhension de liste est donc la suivante :
+
+<center><p style= "color: pink"><strong><em>new_variable</em> = [<em>instruction</em> for i in <em>iterable_object</em> if <em>condition</em>]</strong></p></center>
+
+*La condition étant facultative.*
+
+<p style= "color: green">Exemple : passer en minuscule les éléments de la liste</p>
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    list_2 = []
+    for i in list2:
+        list_2.append(i.lower())
+    print(list_2)
+
+    list2 = [i.lower() for i in list2]
+    print(list2)
+
+`['hydrogen', 'helium', 'lithium', 'boron', 'carbon']` \
+`['hydrogen', 'helium', 'lithium', 'boron', 'carbon']`
+
+*Dans la compréhension de liste, on a pu modifier ce que référençait list2, tandis qu'on a dû créer une nouvelle liste dans l'autre version.*
+
+### 3.4.12. Lists and tuples
+
+Un tuple peut être converti en liste et inversement. Les listes présentent plus de fonctionnalités que les tuples, mais nécessitent plus de ressources, il est donc préférable quand on peut de représenter les données dans un tuple. \
+Un tuple est plus pensé comme un *struct* en C u un *record* en Pascal : un recueil d'éléments dont le tout représente un objet plus compliqué. \
+Une liste est plutôt comme un *array*, un tableau qui référence des données du même type.
+
+Les fonctions ***tuple( )*** et ***list( )*** permettent des opérations de conversion de type.
+
+    list1 = [2, 3, 5, 7, 11, 13, 17, 19]
+    tuple1 = tuple(list1)
+    print(tuple1)
+
+    list1 = list(tuple1)
+    print(list1)
+
+`(2, 3, 5, 7, 11, 13, 17, 19)` \
+`[2, 3, 5, 7, 11, 13, 17, 19]`
+
+3.4.13. Exceptions
+
+Les exceptions permettent de checker les erreurs d'indiçage ou d'appartenance au sein des listes. Ce sont des conditions qui permettent d'anticiper et de tester des erreurs potentielles.
+
+    list2 = ["Hydrogen","Helium","Lithium","Boron", "Carbon"]
+    if "Helium" in list1:
+        list1.remove("Helium")
+
+Si on essaie de supprimer un élément absent d'une liste, on lève une ***AttributeError***.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    try:
+        list2.remove("Oxygen")
+    except AttributeError:
+        print("Can't find Oxygen")
+
+`"Can't find Oxygen"`
+
+Si on essaie de convertir en entier dont le type n'est pas convertible en entier, on lève une ***ValueError***.
+
+    try:
+        int("Hydrogen")
+    except ValueError:
+        print("Hydrogen can not be convert into an integer")
+
+`"Hydrogen can not be convert into an integer"`
+
+Si on donne un argument du mauvais type à une fonction, on lève une ***TypeError***.
+
+    try:
+        int(list2)
+    except TypeError:
+        print("Can't be convert")
+
+`"Can't be convert"`
+
+On peut aussi très bien ne pas préciser l'erreur et ainsi couvrir toutes les erreurs possibles. Ca peut être intéressant quand on analyse l'input utilisateur, qui peut contenir des tas d'erreurs.
+
+    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+    removed_element = input("Element ?\n> ")
+    try:
+        list2.remove(removed_element)
+    except:
+        print("Can't find element")
+    print(list2)
+
+Si on entre "Lithium" :
+`["Hydrogen", "Helium", "Boron", "Carbon"]`
+
+Si on entre "lithium" ou "oxygen" :
+`"Can't find element"` \
+`["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]`
+
+### 3.5. Set types
+
+Un objet de type ***set*** correspond à un recueil d'objets **non ordonné**. L'indiçage et le slicing ne sont donc pas réalisables. \
+Un élément ne peut appartenir qu'une fois à un set. Souvent ce sont des sets mathématiques. \
+En Python, on peut réaliser des opérations d'appartenance (**in**), de longueur (**len( )**) et faire des boucles sur un set (*for i in set*).
+
+Un set est délimité par **{ }** (*curly brackets* ou *braces*).
+
+<center>
+
+| opérations | écriture | explication |
+| :---: | :---: | :---: |
+| *Subset* | **set1** < **set2** | Retourne un booléen en fonction de si **set1** est un subset de **set2** |
+| *Intersection* | **set1** & **set2** | Crée un nouveau set contenant les objets communs à **set1** et **set2** |
+| *Union* | **set1** \| **set2** | Crée un nouveau set contenant tous les éléments des deux sets |
+| *Difference* | **set1** - **set2** | Crée un nouveau set avec les éléments qui ne sont pas dans les deux sets (inverse de l'*intersection*) |
+| *Equality* | **set1** == **set2** | Retourne un booléen selon si les deux sets sont identiques |
+</center>
+<br>
+<br>
+    set_color = {"cyan", magenta", "pink"}
+    set_tuple = {(2, 4), (3, 9), (6, 36)}
+
+
+    set1 = {7, 9, 1, 3, 5}
+    set2 = set(range(10))
+
+    print(set1 < set2)     # set1 appartient-il à set2 ?
+    print(set1 & set2)
+    print(set1 | set2)
+    print(set2 - set1)
+    print(set1 == set2)
+
+`True` \
+`{7, 9, 1, 3, 5}` \
+`{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}` \
+`{0, 2, 4, 6, 8}` \
+`False`
+
+Pour ajouter un élément à un set, on utilise ***add( )***.
+
+    set1.add(11)
+    print(set1)
+
+`{1, 3, 5, 7, 9, 11}`
+
+Pour supprimer un élément d'un set, on utilise ***remove( )*** ou ***discard( )***.
+
+    set1.remove(11)
+    print(set1)
+
+    set1.discard(7)
+    print(set1)
+
+`{1, 3, 5, 7, 9}` \
+`{1, 3, 5, 9}`
+
+Si l'élément donné en argument à *remove( )* n'existe pas dans le set, on lève une ***KeyError***. Ce n'est pas le cas de discard( ).
+
+*Exemple : énoncer les combinaisons possibles d'une somme de deux dés*
+
+    import random
+
+    roll = list(range(0,13))    # on crée une liste contenant 13 éléments (des entiers ici)
+    for i in range(0,13):
+        roll[i] = set()     # on remplace tous les éléments de la liste par un set vide
+    print(f"{roll}\n")
+
+    for i in range (1,7):           # on prend la valeur que peut prendre un premier dé
+        for j in range (1,7):         # on y associe la valeur que peut prendre le deuxième dé
+            k = i+j             # somme des deux dés
+            roll[k].add( (i,j) )    # on place à l'indice de la somme un tuple les deux dés dans l'ordre
+
+    roll = roll[2:]     # les deux premiers sets sont vides car on ne peut pas obtenir une somme = 0 ou 1
+    print(roll)
+
+`[set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set()]`
+
+`[{(1, 1)}, {(1, 2), (2, 1)}, {(3, 1), (1, 3), (2, 2)}, {(2, 3), (3, 2), (4, 1), (1, 4)}, {(2, 4), (1, 5), (5, 1), (4, 2), (3, 3)}, {(3, 4), (4, 3), (6, 1), (1, 6), (2, 5), (5, 2)}, {(4, 4), (6, 2), (2, 6), (5, 3), (3, 5)}, {(6, 3), (4, 5), (5, 4), (3, 6)}, {(4, 6), (6, 4), (5, 5)}, {(5, 6), (6, 5)}, {(6, 6)}]`
+
+***Exemple : craps / seven-eleven***
+
+C'est un jeu de dé avec des paris sur le résultat du lancer. \
+le joueur (*shooter*) lance deux dés à la fois, sur une à deux manches.
+
+1. Au premier lancer (*pass*):
+- si le shooter obtient 7 ou 11, il gagne.
+- s'il fait 2, 3 ou 12 il perd immédiatement.
+- Toute autre somme obtenue marque des points (*point*).
+
+<br>
+
+2.  Si le shooter n'a pas gagné ou perdu au premier lancer, il lance les deux jusqu'à ce qu'une des deux issues suivantes arrivent :
+- si le shooter obtient 7, il perd.
+- si le shooter obtient le score de *point*, il gagne. \
+
+A partir du code réalisé plus tôt, et sans retirer les deux premiers sets vides, on peut obtenir les combinaisons gagnantes du premier tour dans un seul set (*union*) :
+
+    winner_first_roll = roll[7] | roll[11]
+    print(winner_first_roll)
+
+`{(3, 4), (5, 6), (4, 3), (6, 5), (6, 1), (1, 6), (2, 5), (5, 2)}`
+
+Les combinaisons perdantes du premier tour sont les suivantes :
+
+    loser_first_roll = roll[2] | roll[3] |roll[11]
+    print(loser_first_roll)
+
+`{(1, 2), (2, 1), (5, 6), (6, 5), (1, 1)}`
+
+Le code du jeu en reposant sur des sets serait le suivant :
+
+    die1 = random.randint(1, 6)
+    die2 = random.randint(1, 6)
+    dice = (die1, die2)
+    print(f"You rolls {die1} and {die2}.")
+
+    if dice in winner_first_roll:
+        print("You win!")
+    elif dice in loser_first_roll:
+        print("You lose.")
+    else:
+        point = roll[die1 + die2]
+        print(f"{die1 + die2} is your point.")
+
+    while True:
+        die1 = random.randint(1, 6)
+        die2 = random.randint(1, 6)
+        dice = (die1, die2)
+        print(f"You rolls {die1} and {die2}.")      # répéter plusieurs fois donc on pourrait en faire une fonction
+
+        if dice in roll[7]:
+            print("You lose.")
+            break
+        if dice in point:
+            print("You win!")
+            break
+        else:
+            print("We continue.")
+
+On peut éventuellement ajouter un `input("Roll ?")` avant de lancer les dés pour donner l'illusion à l'utilisateur de les lancer et avoir une interaction avec l'utilisateur.
 
