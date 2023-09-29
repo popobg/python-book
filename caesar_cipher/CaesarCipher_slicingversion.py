@@ -22,7 +22,7 @@ str6 = "Ans: uqxg oy znk iruykyz znotm zu terut o'bk kbkx kgzkt."
 
 # FUNCTIONS
 
-def encode(letter):
+def encode(letter,key):
     if letter in alphabet:
         letter = alphabet.index(letter)
         if letter in range(0, 20):
@@ -33,32 +33,24 @@ def encode(letter):
     else:
         return letter
 
-def decode(letter):
-    if letter in alphabet:
-        letter = alphabet.index(letter)
-        if letter in range(0, 6):
-            letter = alphabet[letter + 20]
-        if letter in range(6, 26):
-            letter = alphabet[letter - 6]
-        return letter
-    else:
-        return letter
+def decode(letter, key):
+    return encode(letter, key * -1)
 
 # MAIN
 
 for i in str1.lower():
-    i = encode(i)
+    i = encode(i, 6)
     print(i, end = "")
 print()
 
 for i in str5.lower():
-    i = decode(i)
+    i = decode(i, 6)
     print(i, end = "")
 print()
 
 for i in str2.lower():
-    i = encode(i)
-    i = decode(i)
+    i = encode(i, 6)
+    i = decode(i, 6)
     print(i, end = "")
 print()
 
