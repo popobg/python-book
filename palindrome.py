@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+
+# def is_palindrome(string : str) --> bool (return a boolean)
 def is_palindrome(string):
     modified_string = string.lower().strip().replace(" ", "")
     return modified_string == modified_string[::-1]
