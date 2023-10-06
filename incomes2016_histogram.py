@@ -1,35 +1,21 @@
 #! /usr/bin/env python3
 
-# import popo_tools
+def make_bar(number_char):
+    """return n pounds in a row"""
+    return "#" * int(number_char / 20000)
 
-# def quarter(prompt):
-#    return int(popo_tools.input_float(f"{prompt} ?"))
+# construct the string to print it at once
+def make_string(i, profit):
+    return f"Q{i+1}: {make_bar(profit)}     {profit}"
 
-def histo(quarter, Q):
-    print(f"{Q}: ", end = '')
-    for i in range(0, int(quarter/20000)):
-        print("#", end = '')
-    print("      ", quarter)
+# incomes_histo takes an iterable object and a non_iterable object as arguments
+def incomes_histo(profit_year, year):
+    """construct an histogram with the profits per quarter of a given year"""
+    print(f"Earnings of WidgetCorp in each quarter of {year}")
+    print("==============================")
+    for i in range(0,4):
+        print(make_string(i, profit_year[i]))
 
-# quarter1 = quarter("Q1")
-# quarter2 = quarter("Q2")
-# quarter3 = quarter("Q3")
-# quarter4 = quarter("Q4")
+profit_2016 = [190000, 340000, 873000, 439833]
 
-print("earnings of WidgetCorp in each quarter of 2016")
-print("==============================")
-
-quarter1 = 900000
-quarter2 = 874000
-quarter3 = 200000
-quarter4 = 439833
-
-Q1 = "Q1"
-Q2 = "Q2"
-Q3 = "Q3"
-Q4 = "Q4"
-
-histo(quarter1, Q1)
-histo(quarter2, Q2)
-histo(quarter3, Q3)
-histo(quarter4, Q4)
+incomes_histo(profit_2016, 2016)
