@@ -1429,6 +1429,43 @@ Quelques méthodes sont propres aux bytes cependant :
 
         bytes = string.encode("utf-8")
 
+Il existe deux fonctions intéressantes permettant de convertir des caractères en code Unicode et inversement :
+- ***ord( )*** est une fonction qui retourne le code Unicode du caractère (qui doit être unique) qui lui est donné.
+
+        print(ord("a"))
+        print(ord("?"))
+        print(ord("6"))
+
+    `97` \
+    `63` \
+    `54`
+
+    Comme on peut le constater dans le code ci-dessous, donner plus d'un caractère ou autre chose qu'une string à la fonction lève une exception. *Le type <caractère> n'existe pas en Python.*
+
+        print(ord(6))
+        print(ord("63"))
+        print(ord("ab"))
+    `TypeError: ord() expected string of length 1, but int found` \
+    `TypeError : ord() expected a character, but string of length 2 found` \
+    `TypeError : ord() expected a character, but string of length 2 found`
+
+<br>
+
+- ***chr()*** est une fonction qui retourne le caractère (de type *str*) correspondant au code Unicode qui lui est donné en argument.
+
+        print(chr(33))
+        print(chr(100))
+        print(chr(125))
+
+        print(type(chr(33)))
+    
+    `!` \
+    `d` \
+    `}` \
+    `<class 'str'>`
+
+    De la même façon que pour *ord()*, un argument d'un autre type qu'un entier lève un *TypeError* (dont un nombre flottant). Lui donner un argument entier non compris dans [min; max] d'Unicode lève une *ValueError*.
+
 ### 3.3. Tuples
 
 Un **tuple** est presque identique à la string :
@@ -2314,3 +2351,690 @@ Le code du jeu en reposant sur des sets serait le suivant :
 
 On peut éventuellement ajouter un `input("Roll ?")` avant de lancer les dés pour donner l'illusion à l'utilisateur de les lancer et avoir une interaction avec l'utilisateur.
 
+<center>
+
+## Chapter 4 : functions
+</center>
+
+Il existe beaucoup de fonctions built-in en Python, mais le programmeur peut avoir besoin de créer ses propres fonctions.
+
+Pourquoi créer une fonction ?
+- Quand on remarque qu'un bout de code est répété à de multiples reprises dans notre programme ; on peut intégrer cette fonction à un module qui sera appelé dans d'autres programmes.
+- Pour tester plus facilement son code et donc de faire moins d'erreurs ; la fonction peut donc être utilisée pour découper en plusieurs parties un long morceau de code.
+
+Caractéristiques d'une fonction :
+- Une fonction ne doit avoir qu'**une seule tâche**, ou une seule tâche principale en tout cas.
+- Le nom de la fonction doit **évoquer clairement** ce que fait la fonction et ce qu'elle retourne.
+- L'objectif de la fonction est de **retourner** une valeur (qui peut aussi être un booléen). Certaines fonctions ne retournent pas directement une valeur (ex : fonction affichant un message d'erreur, ou affichant une fenêtre graphique). Si on ne définit pas d'objet à retourner, la fonction retournera l'objet ***None***.
+
+***Aparté sur la fonction dir*** \
+La fonction ****dir( )*** retourne une liste de strings. Sans lui donner d'argument, elle retourne le nom des fonctions du programme actuel. Si on lui passe un argument, elle retourne une liste des principaux modules et attributs de l'objet.
+
+---
+
+### 4.1. Function definition : syntax and semantics
+
+
+<center><figure>
+    <img src="image-4.png"
+         alt="function">
+</figure></center>
+
+<br>
+
+Le mot-clé ***def*** démarre la définition de la fonction, suivi du nom de la fonction immédiatement suivie de parenthèses dans lesquelles peut apparaître la liste des paramètres qu'on passe à la fonction, sous la forme d'un tuple de variables, puis immédiatement suivies de deux points qui indique que la suite est un bloc d'instruction définissant la fonction.
+
+Notez qu'on peut ne pas donner d'argument/de paramètre à la fonction, les parenthèses sont donc **vides**, mais il y a **toujours des parenthèses après un nom de variable, idem quand on l'appelle dans le code**. Cela permet de distinguer une fonction d'une variable. \
+L'argument passé à la fonction dans sa définition n'existera que dans cette partie du code, et est ensuite remplacée par l'argument donné véritablement dans le main code.
+
+<p style= "color: green">Exemple : fonction qui imprime le nombre de pounds # qu'on lui donne en argument.
+
+    # FUNCTION
+    def print_pound(ncharacters):
+        for i in range(0, ncharacters):
+            print("#", end = "")
+
+    # MAIN
+    print_pound(20)        # exécute la fonction définie plus tôt
+
+`####################` # print sur une ligne car pas de saut de ligne car end = ""
+
+### 4.1.1. Practice : use the function print_pound to draw a histogram
+
+En utilisant la fonction print_pound, voici le rendu du code :
+
+    def print_pound(ncharacters):
+        for i in range(0, ncharacters):
+            print("#", end = "")
+
+    q1 = 190000
+    q2 = 340000
+    q3 = 873000
+    q4 = 439833
+
+    print("Q1: ", end = "")
+    print_pound(int(q1 / 20000))     # convertir en entier car la fonction range() ne prend que des entiers
+    print("       ", q1)
+
+    print("Q2: ", end = "")
+    print_pound(int(q2 / 20000))
+    print("       ", q2)
+
+    print("Q3: ", end = "")
+    print_pound(int(q3 / 20000))
+    print("       ", q3)
+
+    print("Q4: ", end = "")
+    print_pound(int(q4 / 20000))
+    print("       ", q4)
+
+`Q1: #########        190000`\
+`Q2: #################        340000` \
+`Q3: ###########################################        873000` \
+`Q4: #####################        439833`
+
+Si on cherche maintenant à générer un histograme pour une année donnée : \
+On peut stocker les profits de chaque trimestre dans une liste portant le nom de l'année en cours.
+
+    profit_2016 = [190000, 340000, 873000, 439833]
+    print(profit_2016[0])
+
+`190000`
+
+Pour trouver combien de # mettre dans l'histo du premier trimestre, il faut faire :
+
+    profit_2016[0]/20000       # To convert in integer before giving it to the function because of range()
+
+<br>
+
+Un premier exemple de ce que pourrait donner le programme :
+
+
+    # FUNCTION
+    def print_pound(number_char):
+        for i in range(0, int(number_char / 20000)):
+            print("#", end = '')
+
+    # MAIN
+    profit_2016 = [190000, 340000, 873000, 439833]      # assign the list of profit for the year 2016
+
+    print("Earnings of WidgetCorp in each quarter of 2016")
+    print("==============================")
+
+    for i in range(0,4):
+        print(f"Q{i + 1}: ", end = '')
+        print_pound(profit_2016[i])      # function print_pound call
+        print(f"      Q{i+1}")
+
+`Earnings of WidgetCorp in each quarter of 2016` \
+`==============================` \
+`Q1: #########      190000` \
+`Q2: #################      340000` \
+`Q3: ###########################################      873000` \
+`Q4: #####################      439833`
+
+<br>
+
+On peut créer une fonction plus précise qui fabriquerait directement l'histogramme des profits à partir de la liste des profits par trimestre pour une certaine année :
+
+    # FUNCTIONS
+    def make_bar(number_char):
+    """return n pounds in a row"""
+    return "#" * int(number_char / 20000)
+
+    # construct the string to print it at once
+    def make_string(i, profit):
+        return f"Q{i+1}: {make_bar(profit)}     {profit}"
+
+    # incomes_histo takes an iterable object and a non_iterable object as arguments
+    def incomes_histo(profit_year, year):
+        """construct an histogram with the profits per quarter of a given year"""
+        print(f"Earnings of WidgetCorp in each quarter of {year}")
+        print("==============================")
+        for i in range(0,4):
+            print(make_string(i, profit_year[i]))
+
+    # MAIN
+    profit_2016 = [190000, 340000, 873000, 439833]
+
+    incomes_histo(profit_2016, 2016)
+
+`Earnings of WidgetCorp in each quarter of 2016` \
+`==============================` \
+`Q1: #########      190000` \
+`Q2: #################      340000` \
+`Q3: ###########################################      873000` \
+`Q4: #####################     439833`
+
+**On peut donc appeler une fonction au sein d'une autre fonction.** Cela n'importe pas l'ordre dans lequel on définit et appelle les fonctions en Python, mais ce n'est pas le cas de tous les langages. \
+On voit aussi qu'**on peut donner plusieurs arguments à une fonction**. Leur position importe (puisque c'est un tuple) : le premier argument donné sera traité comme le premier défini dans la fonction et ainsi de suite. \
+En revanche, il est important de définir au préalable les variables du # main qui sont utilisées dans la fonction ensuite.
+
+Quelques points sur les fonctions en Python :
+- l'instruction *def* n'est pas une *déclaration*, cela n'existe pas en Python.
+- L'instruction *def* exécute le code sous-jacent et crée une nouvelle fonction chaque fois qu'elle l'exécute.
+
+### 4.2. Function execution
+
+Lorsqu'elle est appelée, la fonction va exécuter le code dans l'ordre des instructions. On sort de la fonction soit quand tout le code a été exécuté, soit quand on rencontre l'instruction ***return***. *Si on écrit return sans valeur ensuite, la valeur retournée par défaut est None.* \
+Quand on sort de la fonction, le code reprend depuis là où la fonction avait été appelée.
+
+### 4.2.1. Returning a value
+
+Chaque fonction retourne une valeur, on peut donc les utiliser dans des opérations comme si c'était des variables assignées à la variable qu'elles retournent :
+
+    x = cos(x) * r
+    if cos(x) < 0.5:
+        print(cos(x) * cos(x))
+
+*cos(x)* est une fonction appartenant au module *math*, mais le fonctionnement est le même pour une fonction écrite par le programmeur.
+
+On retourne une valeur à l'aide de l'instruction ***return*** et stoppe l'exécution de la fonction. Cette instruction assigne une **valeur** et un **type** à l'objet retourné par la fonction. \
+On ne peut retourner qu'une seule valeur, mais elle peut être une expression (*x * x + y*), un entier/flottant (1.0), une string ("hello"), une liste (["chlore", "iode"]), un tuple ((1, 3, 5)), etc.
+
+    def square(x):
+        return x * x
+
+    print(square(12))
+    print(square(12.0))
+
+`144`
+`144.0`
+
+    def test(x):
+    if x < 1:
+        return 1
+    if x < 2:
+        return 2.0
+    if x < 3:
+        return "3"
+    return  [1, 2, 3, 4]        # if no condition is fulfilled so far, then it returns this list
+
+    print(test(0))
+    print(test(1))
+    print(test(1.4))
+    print(test(2))
+    print(test(3))
+
+`1` \
+`2.0` \
+`2.0` \
+`3` \
+`[1, 2, 3, 4]`
+
+<p style = "color: green">Exemple : écrire une fonction calculant la racine carrée de ses paramètres
+
+Si y * y = y<sup>2</sup> = x, comment trouver y à partir de x ? *x / y* peut n'être qu'une approximation si y est lui-même approximé. \
+On fait donc *y<sub>1</sub> = (y + x / y) / 2*, puis *y<sub>2</sub> = (y<sub>1</sub> + x / y<sub>1</sub>) / 2*, et ainsi de suite.
+
+On peut à tout moment **estimer l'erreur relative** par l'expression suivante : **x - y<sub>i</sub><sup>2</sup>**.\
+Si le résultat est différent de 0, c'est que le calcul n'est pas encore exact.
+
+Notre expression est donc : &emsp;&emsp;&emsp; **y<sub>i</sub> + 1 = (y<sub>i</sub> + x / y<sub>i</sub>) / 2** pour l'itération **i**
+
+    def root(x):
+        y = x
+        for i in range(1, 20):
+            y = (y + x / y) / 2.0         # divide 2.0 allows to have a float number as the result
+        return y            # return y after 20 iterations
+
+    print(f"{root(2):.4f}")         # print the square root of 2 with 4 floating number
+
+`1.4142`
+
+Avec 20 itérations, on calcule de façon exacte jusqu'à au moins 15 décimales ; c'est largement suffisant, on va donc tenter de réduire le nombre d'itérations. 6 itérations donne toujours au moins 15 décimales exactes. \
+En revanche, si on calcule la racine carrée de 10000, le résultat après 6 itérations est très loin de la valeur exacte (*323.1*). Les grands nombres nécessitent plus d'itérations.
+
+On ne devrait donc pas utiliser un nombre d'itérations précises étant donné que l'exactitude varie suivant la valeur de *x*. \
+On peut donc utiliser l'estimation de l'erreur relative pour garantir une bonne estimation de la racine carrée. Si la différence est jugée trop importante, on répète les itérations ; quand la différence est considérée comme suffisamment petite, on peut considérer que la valeur de *y* est suffisamment proche de la réalité pour être considérée comme exacte. On utilise donc un ***while*** ici plutôt qu'un ***for***.
+
+    def root_error(x):
+    """calculate the square root of x to 7 decimal places"""
+    y = x
+    error = abs(x - y**2)
+    while error > 0.0000001:
+        y = (y + x/y) / 2.0
+        error = abs(x - y**2)
+    return y
+
+    print(f"{root_error(100000):.7f}")
+    print(f"{root_error(17):.7f}")
+    print(f"{root_error(68.5):.7f}")
+
+`316.2277660` \
+`4.1231056` \
+`8.2764727`
+
+Il faudrait faire énormément de tours de boucle pour tomber sur la valeur exacte de la racine carrée de 10000. Formule imparfaite pour les grands nombres.
+
+*Il existe une fonction **sqrt(x)** qui calcule la racine carrée d'un nombre x dans le module math.*
+
+### 4.2.2. Parameters
+
+On peut passer aussi bien une variable qu'une expression à une fonction. La fonction évaluera d'abord le type de l'objet passé : c'est rapide avec une variable car elle prend le type de l'objet qu'elle référence ; la valeur de l'expression est analysée et un nom lui est assignée avant qu'elle soit passée à la fonction afin que celle-ci puisse la retrouver facilement.
+
+Ci-dessous une illustration de comment les paramètres sont traités dans la fonction :
+
+<p style= "color: green">Code de base :
+
+    def square(x):
+        return x**2
+
+    pi = 3.14159
+    r = 2.54
+    c = square(2 * pi * r)
+    print(f"Circumeference is {c}")
+
+`Circumference is 254.69852874643982`
+
+<p style= "color: green">Ce qui se passe au niveau des variables dans l'appel de fonction :
+
+  def square(x):
+        return x**2
+
+    pi = 3.14159
+    r = 2.54
+    # call square(2 * pi *r)
+    # a copy of the parameter is passed ; if a simple variable is passed,
+    # then the internal location of that variable would be passed
+    parameter1 = 2 * pi * r
+    x = parameter1
+
+    return value = x**2
+    c = return value
+    print(f"Circumeference is {c}")
+
+---
+Il est important de comprendre une chose : en Python, les paramètres sont des *références d'objets* passés à la fonction et celle-ci ne peut pas assigner une nouvelle valeur à ces *références d'objet* A L'INTERIEUR DE LA FONCTION. Par contre, pour une liste par exemple elle peut modifier les objets qui y sont référencés.
+
+    def addend(arg):
+        arg.append("End")
+
+    z = ["Start", "Add", "Multiply"]
+    print(1, z)
+    addend(z)
+    print(2, z)
+
+`1 ['Start', 'Add', 'Multiply']` \
+`2 ['Start', 'Add', 'Multiply', 'End']`
+
+La fonction *append( )* modifie la liste en place donc elle modifie directement les objets référencés par la liste z. Ceci explique qu'on ait pas besoin de préciser *return arg*.
+
+    def addend(arg):
+        arg = arg + ["End"]
+
+    z = ["Start", "Add", "Multiply"]
+    print(1, z)
+    addend(z)
+    print(2, z)
+
+`1 ['Start', 'Add', 'Multiply']` \
+`2 ['Start', 'Add', 'Multiply']`
+
+La concaténation avec *+* ne modifie pas en place mais crée une copie de la liste, qui n'est donc plus référencée par le nom de la liste z. On assigne effectivement l'argument à cette opération, mais sans *return* la nouvelle assignation ne sort pas de la fonction. Pour obtenir le même résultat qu'avec append( ) :
+
+    def addend(arg):
+        arg = arg + ["End"]
+        return arg
+
+    z = ["Start", "Add", "Multiply"]
+    print(1, z)
+    z = addend(z)
+    print(2, z)
+
+`1 ['Start', 'Add', 'Multiply']` \
+`2 ['Start', 'Add', 'Multiply', 'End']`
+
+### 4.2.3. Default parameters
+
+Il peut être utile de print régulièrement des valeurs pour vérifier que le programme va bien jusque là sans bug, comme des check-points.
+
+    def gothere(count, value):
+        print(f"Got here : {count}, value is {value}.")
+
+    `first part of the code`
+    gothere(1, var_a)
+    `second part of the code`
+    gothere(2, var_b)
+    `third part of the code`
+    gothere(3, var_c)
+
+Si les trois valeurs sont print avec les bonnes valeurs dans l'output, le code est exécuté sans encombre. \
+On peut choisir de ne pas print systématiquement de valeur :
+
+    def gothere(count, value = None):
+        if value:
+            print(f"Got here : {count}, value is {value}.")
+        else:
+            print(f"Got here : {count}")
+
+Et on peut alors ne donner qu'un argument à la fonction, considéré comme le paramètre *count*. Si un second est donné, ce sera le paramètre *value*.
+
+On a précédemment attribué *None* comme valeur par défaut mais on peut attribuer n'importe quelle valeur par défaut :
+
+    def function_test(a, b = 12, c = 1)
+        return a + b - c
+
+    print(function_test(19))            # a = 19, b = 12, c = 1
+    print(function_test(3, 3))          # a = 3, b = 3, c = 1
+    print(function_test(6, 6, 6))       # a = 6, b = 6, c = 6
+    print(function_test(6, c = 6))      # a = 6, b = 12, c = 6
+
+`30` \
+`5` \
+`6` \
+`12`
+
+### 4.2.4. None
+
+En Python, une fonction à laquelle on assigne pas de valeur à retourner retournera un objet *None*, contrairement à d'autres langages qui retourneraient une erreur. \
+*None* est de type none (*NoneType*). Pour tester si cette valeur est assignée :
+
+    if x == None:
+
+    #OU
+
+    if x is None:
+
+**Example : the game of sticks**
+
+- Jeu à deux joueurs.
+- 21 bâtons alignés au départ.
+- A son tour, le joueur peut retirer 1, 2 ou 3 bâtons à la suite sur la ligne.
+- Le joueur qui retire le dernier bâton l'emporte ; en d'autres termes, le joueur qui n'a plus de bâton pour jouer perd.
+
+L'état actuel du jeu est déterminé par le nombre de bâtons restants ; quand on arrive à 0, la partie est terminée. Le perdant est celui qui devrait jouer, mais qui ne peut pas car il n'y a plus de bâton.
+
+La difficulté de ce programme est de faire en sorte que l'ordinateur ne choisisse pas un nombre de façon randomisée mais cherche à gagner s'il le peut : s'il reste 3 bâtons ou moins à la fin, l'ordinateur doit les prendre tous pour l'emporter. On peut arriver à cette fin en faisant en sorte que 4 bâtons soient proposés au dernier joueur à la fin. C'est aussi le cas s'il arrive à laisser un multiple de 4 au joueur, ce qu'il cherchera donc toujours à faire.
+
+Une amorce de code qui pourrait permettre d'exécuter le jeu :
+
+    # FUNCTIONS
+    # Note that the function is named for what it does, it does only one thing and it serves a purpose that is needed multiple times. It is a good function.
+    def display_state(value):
+        """print | for each stick remaining.
+        There are 6 sticks in a row."""
+        k = value
+        while k > 0:
+            if k >= 6:
+                print("| " * 6, end = "")
+                k = k - 6
+            else:
+                for j in range(0, k):
+                    print("| ", end = "")
+                k = 0
+            print()
+
+    def get_move():
+        """print a prompt to the user asking for the number of sticks they wish to remove
+        read the value from the keyboard and return it."""
+        n = int(input("Your move: Take away how many? "))
+        while n <= 0 n >= 3:
+            print("Sorry, you must choose a number between 1 and 3.")
+            n = int(input("Your move: Take away how many? "))
+        return n
+
+    def game_over():
+        global sticks_number_g
+        if sticks_number_g == 0:
+            return True
+        return False
+
+    def make_computer_move():
+        global sticks_number_g
+        n = sticks_number_g % 4
+        if n <= 0:
+            return 1
+        else:
+            return n
+
+    # MAIN
+    sticks_number_g = 21            # _g shows that it is a global variable
+    display_state(sticks_number_g)
+    user_move = get_move()
+    sticks_number_g = sticks_number_g - user_move
+    print(f"You took {user_move}. Sticks leaving : {sticks_number_g}.")
+    if game_over():
+        print("You win !")
+    else:
+        move = make_computer_move()
+        print(f"Computer tooks {move}. Sticks leaving : {sticks_number_g}.")
+        if game_over():
+            print("Computer wins.")
+
+### 4.2.5. Scope
+
+Dans un programme, on distingue les variables **globales** des variables **locales**. \
+Les variables ***globales*** sont définiées (utilisées pour la première fois) dans le *main* du programme ; elle est accessible à toutes les fonctions. \
+Les variables ***locales*** sont définies dans une fonction et utilisables dans celle-ci (*utilisées* aussi d'ailleurs), mais ni dans d'autres fonctions ni dans le *main*. \
+C'est ce qu'on appelle le ***scoping*** : l'emplacement du programme où la variable est accessible est appelé le *scope*.
+
+Si une variable locale porte le même nom qu'une variable globale, c'est ce qu'on appelle l'*aliasing* et cela devient compliqué. \
+En Python, les variables sont considérées comme étant locales à moins que le programmeur spécifie qu'elle est globale dans une instruction :
+
+    global a, b, c
+
+Cela signifie que les variables *a*, *b* et *c* sont des variables globales définies en dehors de toute fonction. Ainsi ces fonctions sont aussi accessibles du *main* et de tout programme les déclarant comme globales.
+
+Pour ne pas s'emmêler, il ne faut définir de variables globales que pour des variables qui sont connues, essentielles et utilisées sur l'ensemble du programme (*ex : le plateau de jeu sur un jeu d'échec*). Pour mieux s'y retrouver, on peut aussi placer *_g* à la fin du nom de la variable globale pour savoir à tout moment qu'elle est globale. \
+Dans notre jeu de sticks, la valeur globale serait *value* qui détermine le nombre de bâtons restants sur le plateau.
+
+### 4.2.6. Variable parameter lists
+
+L'aide concernant la fonction built-in *print()* est la suivante :
+
+    print(*args, sep=' ', end='\n', file=None, flush=False)
+        """Prints the values to a stream, or to sys.stdout by default."""
+
+L'expression **args* prend les arguments donnés et les met dans un tuple.
+
+Prenons l'exemple de la fonction suivante (peu utile, purement fictive) :
+
+    def format_print(format_item, *list):
+        """print un entier si format_item == 'i',
+        print un flottant si format_item == 'f'"""
+        index = 0
+        if len(format_item) != len(list):
+            return "There must be the same number of var as format items"
+        for v in list:
+            if format_item[index] == "f":
+                print(float(v), " ", end = "")
+            elif format_item[index] == "i":
+                print(int(v), " ", end = "")
+            else:
+                print("?", end = "")
+            index += 1
+        return ""
+
+    print(format_print("fi", 12 , 13))
+
+`12.0 13`
+
+Ici, *"fi"* est assimilé au premier argument *format_item* et les suivants sont traités comme **list*. Donc format_item lit comme argument : *"fi", (12, 13)*
+
+Les instructions suivantes sont incorrectes :
+- Erreur liée à la longueur des arguments :
+
+        print(format_print("f", 12, 13))       # len("f") = 1 != len((12, 13)) = 2
+        print(format_print("ffi", 12, 13))       # len("ffi") = 3 != len((12, 13),) = 2
+        print(format_print("fi", (12, 13)))     # len("fi") = 2 != len((12, 13),) = 1 (contains one tuple ; a tuple into a tuple)
+
+        numbers = [12, 13]
+        print(format_print("fi", numbers))      # same error : *list = ([12, 13]) so len(*list) = 1
+
+- Erreur liée au type de l'objet passé :
+
+        print(format_print(12, 13))       # print a TypeError : format_item = 12 here and an integer object has no length
+
+Autre exemple :
+
+    def function_test(*arg):
+        return arg
+
+    print(function_test(19))
+    print(function_test(3, 3))
+    print(function_test(6, 6, 6))
+
+    numbers = [8, 7, 6]
+    print(function_test(numbers))
+
+`(19, )` \
+`(3, 3)` \
+`(6, 6, 6)` \
+`([8, 7, 6],)`
+
+    def function_test(*arg):
+        for i in arg:
+            print(i, end = " ")
+        return ""
+
+    print(function_test(19, 20, 21))
+    print(function_test(numbers))
+
+`19 20 21 ` \
+`[8, 7, 6] `
+
+Pour pouvoir itérer dans la variable liste, il faut retirer le *.
+
+    def function_test(arg):
+        for i in arg:
+            print(i, end = " ")
+        return ""
+
+    print(function_test(numbers))
+
+`8 7 6 `
+
+Il existe aussi les ***dict* qui prennent une série d'arguments nommés (***named** parameters*) qui sont ensuite transformés en dictionnaire quand passés à la fonction.
+
+    def function_test(**dict):
+        return dict
+
+    print(function_test(first = 21, second = 20, third = 19))
+
+`{'first': 21, 'second' : 20, 'third' : 19}`
+
+### 4.2.7. Variables as functions
+
+En Python, une variable n'a pas de type défini et peut référencer un objet de n'importe quel type.
+
+    def print0():
+        print("Zero")
+
+    def print1():
+        print("One")
+
+    printNum = print1       # no parameter list given ; type of printNum = function
+    printNum()      # new function referencing the location of print1()
+    print1()
+
+`One` \
+`One`
+
+Si on écrit `printNum = print1()`, cela résulte en l'exécution de la fonction *print1()* à ce moment-là ; si la fonction retourne une valeur, cette valeur se trouve assignée à printNum. \
+En l'état, le programmeur n'a pas indiqué explicitement à la fonction de retourner une valeur, donc elle retourne la valeur par défaut *None*. La variable printNum référence l'objet *None* et n'est plus de type *function* mais du type *NoneType*.
+
+    def print0():
+        print("Zero")
+
+    def print1():
+        print("One")
+
+    printNum = print1()
+    print(type(printNum))
+
+`One` \
+`<class 'NoneType'>`
+
+Si on essaie d'exécuter *printNum* de la sorte `printNum()`, cela lèvera une TypeError.
+
+<p style= "color: red"><em>print1</em> a la valeur de <em>fonction</em> tandis que <em>print1()</em> correspond à un <em>appel de fonction</em>.</p>
+
+    a = 1
+    printList = [print0, print1]
+    printNum = printList[a]         # = printList[1] = print1
+    printNum()
+
+`One`
+
+<p style = "color: green">Exemple : trouver la valeur maximum d'une fonction
+
+L'énoncé : "Une entreprise de calculette produit une calculatrice scientifique et une calculatrice graphique. Les projections à long terme indiquent une demande d'au moins 100 calculatrices scientifiques et 80 calculatrices graphiques par jour. La production est limitée à un maximum de 200 calculatrices scientifiques et 170 graphiques par jour. Pour satisfaire le contract d'envoi, au moins 200 calculatrices doivent être envoyées chaque jour. \
+Si la vente d'une calculatrice scientifique résulte en un déficit de 2$ mais la vente d'une calculatrice graphique rapporte 5$ de profit, combien de chaque type faut-il faire chaque jour pour maximiser les profits nets ?
+
+*scient_calcul* est le nombre de calculatrices scientifiques et *graph_calcul* est le nombre de calculatrices graphiques. \
+Pour scient_calcul, on sait que le minimum de production journalière attendu est de 100, et le maximum qui peut être produit est de 200 :
+
+    100 <= scient_calcul <= 200
+
+Pour graph_calcul, le minimum de production journalière attendu est de 80, et la maximum pouvant être produit est de 170 :
+
+    80 <= graph_calcul <= 170
+
+On sait aussi qu'il faut que plus de 200 calculatrices soient envoyées chaque jour :
+
+    scient_calcul + graph_calcul >= 200
+
+    # OU
+
+    graph_calcul >= 200 - scient_graph
+
+Pour finir, le profit est le suivant :
+
+    p = -2 scient_calcul + 5 graph_calcul
+
+Le code pour calculer le profit maximisé sera le suivant :
+
+    def profit(scient_calcul, graph_calcul):
+        return -2 * scient_calcul + 5 * graph_calcul
+
+    # range for scient [x0, x1]
+    # range for graph [y0, y1]
+    # scient + graph must be >= sum
+    def search_max(f, x0, y0, x1, y1, sum):
+        pmax = -1 * 10**12
+        pscient = -100
+        pgraph = -100
+        for s in range (x0, x1+1):
+            for g in range (y0, y1+1):
+                if s + g >= sum:
+                    p = f(s, g)
+
+                    if p >= max:
+                        pmax = p
+                        pscient = s
+                        pgraph = g
+        return((pscient, pgraph))
+
+    c = search_max(profit, 100, 80, 200, 170, 200)
+    print(c)
+
+`(100, 170)`
+
+Le profit sera de 650$ par jour s'ils fabriquent 100 calculatrices scientifiques et 170 calculatrices graphiques par jour.
+
+### 4.2.8. Functions as return values
+
+Une fonction peut retourner une fonction comme valeur de retour.
+
+    def print0():
+        print("Zero")
+
+    def print1():
+        print("One")
+
+    def print2():
+        print("Two")
+
+    def get_print_funct(a):
+        if a == 0:
+            return print0
+        if a == 1:
+            return print1
+        if a == 2:
+            return print2
+
+    printNum = get_print_funct(2)
+    printNum()
+
+`Two`
