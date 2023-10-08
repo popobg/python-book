@@ -3038,3 +3038,258 @@ Une fonction peut retourner une fonction comme valeur de retour.
     printNum()
 
 `Two`
+
+### 4.3. Recursion
+
+La programmation récursive n'est pas propre au langage mais plutôt une technique de programmation qui consiste à remplacer les instructions de boucle par des appels de fonctions. \
+Quelque chose de récursif est décrit au moins en partie par ce qui le compose.
+
+<p style = "color: green">Exemple : une liste est composée de plusieurs items, mais une liste d'un seul item peut quand même être considéré comme une liste- l'item définit donc la liste, de la même façon qu'une succession d'items séparés d'une virgule peut définir la liste.</p>
+
+En programmation, on parle de **fonction récursive** pour les fonctions contenant dans leur corps un appel à elles-mêmes. C'est une technique supposée simplifier le code. \
+La difficulté pour les débutants est de s'assurer que la fonction récursive se termine bien et retourne bien une valeur.
+
+La fonction récursive suivante ne se termine jamais :
+
+    def recur1(i):
+        recur1(i+1)
+        print(i)        # Elle ne printera jamais, pas d'output
+
+Si on l'exécute, l'erreur suivante sera levée : `RecursionError: maximum recursion depth exceeded`.
+
+La suivante a une fin :
+
+    def recur2(i):
+        if i > 0:
+            recur2(i-1)
+        print(i)
+
+    recur2(2)
+
+`0` \
+`1` \
+`2`
+
+La fonction est exécutée à 3 reprises et le print() s'exécute d'abord dans la dernière exécution (quand i == 0 donc), puis le programme revient à la ligne de la précédente exécution (*précédente récursion*) et print, etc. \
+Si on écrivait le détail de ce qui est fait : \
+
+    recur2(2)
+        2 > 0: True
+            recur(1)
+                1 > 0: True
+                    recur(0)
+                        0 > 0: False, 0 == 0
+                        print(0)
+                        (return)
+                print(1)
+                (return)
+        print(2)
+        (return)
+
+`0` \
+`1` \
+`2`
+
+<p style = "color: red">DONC pour sortir d'une chaîne de récursion, il faut nécessairement qu'il y ait une <strong>condition</strong> à son propre appel, sinon il n'y aura pas de fin à la récursion.
+
+Chaque appel de la fonction crée **sa propre copie des variables locales** qui sont déclarées dans son corps, de même pour ses paramètres. Chaque appel, quand il se termine, revient dans le code de la fonction qui l'avait appelée (sa récursive), comme avec n'importe quel autre appel de fonction.
+
+Exemple d'application de la fonction récursive : \
+On cherche à trouver dans une liste de noms si le nom *Parker* se trouve dans la liste (sachant que la fonction built-in *in* permet de faire ce travail, mais on cherche une autre façon de faire).
+
+    def search_name(name, name_list):
+        length_list = len(name_list)
+        mean_name = length_list // 2
+        if length_list == 1 and name != name_list[0]:       # if there is one item left on the list
+            return False
+        elif name < name_list[mean_name]:
+            return search_name(name, name_list[0:mean_name])
+        elif name > name_list[mean_name]:
+            return search_name(name, name_list[mean_name:])
+        else:
+            return True
+
+    notebook = ["Robert", "Peter", "Lea", "Lisa"]
+    notebook.sort()            # if the list isn't sorted by alphabetic order already
+
+    print(search_name("Lisa", notebook))
+    print(search_name("Gab", notebook))
+
+`True` \
+`False`
+
+Attention à utiliser correctement les fonctions récursives ; quand le plus efficace et le plus évident est d'utiliser l'itération via une boucle, mieux vaut utiliser ça.
+
+### Avoiding infinite recursion
+
+Il y a évidemment un maximum de récursives que peut faire une fonction, étant donné que cela consomme de la mémoire et que la mémoire est une ressource finie. Lorsqu'on atteint ce nombre max d'itérations, la fonction est considérée comme une *inifinite recursion* et lève une erreur.
+
+Quelques règles simples pour éviter le problème de boucles infinies (dans le cas où les variables globales n'ont pas été référencées) :
+
+1. **Ne jamais commencer la définition d'une fonction par un appel à elle-même** ; elle sera forcément infiniment récursive.
+
+2. Chaque récursive doit avoir une **condition avant son appel** pour permettre de sortir de la boucle si la condition n'est pas remplie. Soit un *return* apparaît avant l'appel de la récursive, autorisant donc de sortir de la fonction à un moment, soit l'appel se fait dans un *if*.
+
+3. **Eviter de passer une fonction comme paramètre à elle-même.**
+
+4. On peut **assigner une variable globale au compte du nombre de récursion**. On peut ainsi limiter le nombre maximum de récursive et soit stopper les appels et retourner la dernière valeur obtenue, soit print un message d'erreur.
+
+### 4.4. Creating a Python module
+
+Un module correspond à une fonction ou un paquet de fonctions stockées dans un fichier dont le nom termine par *.py* (apporté par le système python ou par un autre développeur). \
+un module peut être appelé dans n'importe quel programme du moment que son importation a été faite avec succès (il faut connaître le chemin (*path*) vers ce fichier et le spécifier). Les fichiers enregistrées dans le dossier Lib de Python présentent un path connu par l'instruction *import*.
+
+Avant de déclarer un module, il faut tester précisément le code qu'il contient pour s'assurer qu'il n'y a pas d'erreur dedans (imaginez le travail si quand une erreur survient dans notre code il faut envisager les erreurs de son code + des modules qu'on importe). Un module doit donc être **fiable**.
+
+Si le module est apporté par le système Python ou si son fichier se trouve dans le même dossier que le fichier souhaitant l'utiliser, alors il suffit d'écrire :
+
+    import random       # module python
+    import popo_tools       # module du développeur se trouvant dans le même dossier
+
+**Si on exporte du code, il faudra aussi exporter les fichiers de modules qu'il utilise pour qu'il soit fonctionnel.**
+
+- L'instruction ***import*** doit apparaître au début du programme ; Python réalisera une analyse du fichier importé avant d'exécuter le code du programme. Une erreur est levée s'il ne le trouve pas ou si le module  n'est pas appelé ensuite dans le code.
+- Les fonctions du module sont toujours précédées du nom du module, pour préciser à Python où elles sont stockées :
+
+        random.randrange()
+        popo_tools.input_int()
+
+Lorsque le module est chargé dans le programme, le code dans le fichier du module est exécuté (initialisation des variables).
+
+On peut aussi indiquer où trouver la fonction dès le début du fichier ; on pourra ainsi appeler simplement la fonction comme une fonction "locale" :
+
+    from random import randrange
+    from popo_tools import input_int
+
+*Ce n'est pas gênant que le nom du module soit identique au nom de la fonction (ex : random.random(), qui appartient à la librairie Python).*
+
+### 4.5. Program design using functions - the game of Nim
+
+Ce jeu est un exemple de *top-down approach* (ou *stepwise refinement approach*) : c'est une méthode d'élaboration et de construction d'un système en commençant par la construction des entités "haut niveau" pour entrer petit-à-petit de plus en plus dans les détails. \
+Le jeu Nim est un exemple de programme utilisant des fonctions et des modules.
+
+- Le jeu démarre avec **3 rangées d'objets** (bâtons, pièces...) - chaque ligne présente un nombre d'objet différent. Dans notre version, il y aura **9 bâtons dans la première ligne, 7 dans la seconde puis 5 dans la troisième** (représentés par | ).
+
+- A son tour, le joueur choisit une ligne et peut **retirer autant qu'il veut d'objets**. Il doit cependant en choisir **au moins un**, et doit rester dans la **même ligne**.
+
+- Le joueur qui retire le **dernier objet** est le gagnant.
+
+Il faut donc dans ce jeu récolter deux nombres de la part du joueur : la rangée d'où retirer les bâtons et combien en retirer. \
+On définit une variable *row_val* référençant une liste contenant le nombre de bâtons dans chaque ligne.
+
+    row_val = [5, 7, 9]
+
+Cette donnée est **l'état actuel du jeu** (le plateau de jeu) et est crucial au déroulement du jeu puisqu'il définit ce qui peut être joué.
+
+    row_val = [0, 0, 0]     # the game is over
+
+Au tour du joueur, le joueur choisit le nombre de sticks N qu'il veut retirer et on les retire de la bonne ligne M :
+
+    row_val[M] = row_val[M] - N
+
+Ecrivons d'abord le *main* code et nous écrirons ensuite les fonctions dont il a besoin :
+
+    row_val = [5, 7, 9]
+    done = False        # the game is over?
+    player_move = [-1, 1]
+
+    print("The game of Nim.")
+    rules()
+
+    while not done:
+        display_state(row_val)              # show the game board
+        prompt(player_move)       # ask player for their move
+        ok = legal_move(player_move, row_val)         # was the player's move ok?
+        while not ok:
+            print("The move is not legal.")
+            display_state(row_val)
+            prompt(player_move)
+            ok = legal_move(player_move, row_val)
+        make_move(player_move)
+        if game_over(row_val):
+            print("You win!")
+            break
+        print("State after you move is ")
+        display_state(row_val)
+
+Les fonctions à définir sont :
+
+- ***rules()*** : print les règles du jeu
+- ***display_state(v)*** : print le plateau de jeu (combien de bâtons par ligne)
+- ***prompt(m)*** : demande à l'utilisateur ce qu'il fait
+- ***legal_move(r, n)*** : le move est-il autorisé ?
+- ***make_move(r, n)*** : update le board avec le choix du player
+
+    def display_board(val):
+        for j in range(0, 3):
+            print(f"row {j + 1}: ", end = "")
+            for i in range(0, val[j]):
+                print("| ", end = "")
+            print(f" {val[j]}")
+
+`row 1: | | | | |  5` \
+`row 2: | | | | | | |  7` \
+`row 3: | | | | | | | | |  9`
+
+*Notons qu'il est commun en programmation de nommer un élément dans le système de numérotation humain (1) quand pour l'ordinateur cela représente un autre nombre (0).*
+
+    def prompt(move):
+        row = input("Your move : which row? ")
+        sticks = input("        how many sticks?")
+        move[0] = int(row) -1
+        move[1] = int(sticks)
+        return move
+
+    def legal_move(move, val):
+        """return a boolean"""
+        row = move[0]
+        sticks = move[1]
+        if row < 0 or row > 2:
+            return False
+        if sticks <= 0 or sticks > val[row]:
+            return False
+        return True
+
+    def make_move(move, state):
+        row = move[0]
+        sticks = move[1]
+        state[row] = state[row] - sticks
+        return state
+
+La stratégie pour gagner à coup sûr est la suivante : assurer la parité des valeurs quand c'est le tour de l'adversaire.
+
+Row 1 = 5 = 4 + 1 = 1 * 2<sup>2</sup> + 1 * 2<sup>0</sup> = 0101 \
+Row 2 = 7 = 4 + 2 + 1 = 1 * 2<sup>2</sup> + 1 * 2<sup>1</sup> + 1 * 2<sup>0</sup> = 0111 \
+Row 3 = 9 = 8 + 1 = 1 * 2<sup>3</sup> + 1 * 2<sup>0</sup> = 1001 \
+
+<center>
+
+| |
+| --- |
+| 0101 |
+| 0111 |
+| 1001 |
+| Parité |
+| 1011 = 11 |
+</center>
+
+La partié est calculée selon l'opération bit à bit "ou exclusif", soit *exclusive-OR* (*XOR* ou ^) : en binaire, la ligne de résultat affiche 1 seulement si le chiffre 1 apparaît de façon impaire (au moins un 1 mais pas dans toutes les lignes). Si la colonne binaire est impaire, le chiffre partaire sera 1, si elle est paire, le chiffre sera 0. La stratégie Nim est de faire en sorte que la parité soit nulle pour chaque colonne :
+
+Si on retire 7 bâtons de la dernière ligne à 9 bâtons, on obtient 2<sub>10</sub> = 0010<sub>2</sub>
+
+<center>
+
+| |
+| :---: |
+| 0101 |
+| 0111 |
+| 0010 |
+| Parité (XOR) |
+| 0000 |
+</center>
+
+Une fonction permettant de vérifier cette parité serait la suivante :
+
+    def eval(val):
+        parity = val[0] ^val[1] ^ val[2]
+        return parity
