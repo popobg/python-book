@@ -13,7 +13,9 @@ def player_turn(sticks_number):
         return sticks_number
 
 def computer_turn(sticks_number):
-    computer_move = random.choices(computer_choices)[0]
+    computer_move = sticks_number % 4
+    if computer_move == 0 or computer_move > 3:
+        computer_move = random.randrange(1, 4)
     print(f"The computer choose {computer_move} {make_stick_words(computer_move)}.")
     sticks_number = remove_sticks(computer_move, sticks_number)
     return sticks_number
@@ -23,7 +25,6 @@ def make_stick_words(sticks_number):
 
 player_prompt = "It is your turn: "
 sticks_number = 21
-computer_choices = [1, 2, 3]
 
 print("There are 21 sticks. You can remove between 1 and 3 sticks at each round.")
 print("The winner is the one that removes the last stick.")
