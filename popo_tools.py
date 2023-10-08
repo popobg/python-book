@@ -12,7 +12,7 @@ def input_int(prompt, range=None, quiet=False):
             user_input = int(input(prompt))
         except ValueError:
             if not quiet:
-                print("La réponse attendue est un nombre entier.")
+                print("The answer must be an integer.")
             continue
 
         if not range:
@@ -21,7 +21,7 @@ def input_int(prompt, range=None, quiet=False):
         min = range[0]
         max = range[1]
         if user_input < min or user_input > max:
-            print(f"Le nombre doit être compris entre {min} et {max}.")
+            print(f"The number must be between {min} and {max}.")
         else:
             return user_input
 
@@ -40,7 +40,7 @@ def input_float(prompt, range=None, quiet=False):
             user_input = float(input(prompt))
         except ValueError:
             if not quiet:
-                print("La réponse attendue est un nombre entier.")
+                print("The answer must be a number.")
             continue
 
         if not range:
@@ -49,7 +49,7 @@ def input_float(prompt, range=None, quiet=False):
         min = range[0]
         max = range[1]
         if user_input < min or user_input > max:
-            print(f"Le nombre doit être compris entre {min} et {max}.")
+            print(f"The number must be between {min} and {max}.")
         else:
             return user_input
 
@@ -64,6 +64,6 @@ def search_keywords(string, keywords):
 
 # le bloc d'instruction ne s'exécute que si on exécute le script dans le terminal
 if __name__ == "__main__":
-    a = input_int("Entrez un nombre entier.", [1, 5])
-    print(f"vous avez entré {a} !")
+    a = input_int("Enter an integer.", [1, 5])
+    print(f"You choose {a} !")
     print(isinstance(a, int))
