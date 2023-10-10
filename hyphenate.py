@@ -16,7 +16,7 @@ def search_suffix_start(string):
 def search_prefix_end(string):
     prefix = ["pre", "post", "para", "pro", "con", "com"]
     for i in prefix:
-        if string.startswith(i) == i:
+        if string.startswith(i):
             return len(i)
     return -1
 
@@ -31,16 +31,17 @@ def hyphenate(string):
         suffix2 = string[suffix_index:]
         new_strings = string[:suffix_index]
         return (new_strings, suffix2)
+
     prefix_index = search_prefix_end(string)
     if prefix_index != -1:
         prefix2 = string[:prefix_index]
         new_stringp = string[prefix_index:]
         return (prefix2, new_stringp)
-    else:
-        separator_index = len(string) // 2
-        pre_hyphen = string[:separator_index]
-        post_hyphen = string[separator_index:]
-        return (pre_hyphen, post_hyphen)
+
+    separator_index = len(string) // 2
+    pre_hyphen = string[:separator_index]
+    post_hyphen = string[separator_index:]
+    return (pre_hyphen, post_hyphen)
 
 print(hyphenate("papagalosng"))
 print(hyphenate("prepapagalosin"))
