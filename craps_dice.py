@@ -10,7 +10,6 @@ The shooter rolls two dices."""
 import random
 
 def roll_dice():
-    # on peut aussi parfaitement faire direct random.randint(1,12)
     return random.randint(2, 12)
 
 def print_win(roll):
@@ -28,7 +27,6 @@ first_roll = roll_dice()
 first_roll_win = [7, 11]
 first_roll_lose = [2, 3, 12]
 
-# Comment arrêter le programme si les deux premiers ifs se réalisent ?
 if first_roll in first_roll_win:
     print_win(first_roll)
     exit()
