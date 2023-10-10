@@ -1790,8 +1790,8 @@ Attention cependant, on ne peut pas comparer deux éléments de type différents
 | Méthode | Explication | Appel de méthode | Résultat |
 | :---: | :---: | :---: | :---: |
 | *len(tuple)* | Retourne le nombre d'éléments appartenant au * tuple*. | len(T1) | `5` |
-| *max(tuple)* | Retourne le plus grand élément du tuple.<br>*erreur si les éléments ne sont pas du même type.* | max(T2) | `7` |
-| *min(tuple)* | Retourne le plus petit élément du tuple.<br>*erreur si les éléments ne sont pas du même type.* | min(T2) | `-1` |
+| *max(tuple)* | Retourne le plus grand élément du tuple.<br>*Erreur si les éléments ne sont pas du même type.* | max(T2) | `7` |
+| *min(tuple)* | Retourne le plus petit élément du tuple.<br>*Erreur si les éléments ne sont pas du même type.* | min(T2) | `-1` |
 
 ### 3.4. Lists
 
@@ -3165,7 +3165,7 @@ On peut aussi indiquer où trouver la fonction dès le début du fichier ; on po
 
 ### 4.5. Program design using functions - the game of Nim
 
-Ce jeu est un exemple de *top-down approach* (ou *stepwise refinement approach*) : c'est une méthode d'élaboration et de construction d'un système en commençant par la construction des entités "haut niveau" pour entrer petit-à-petit de plus en plus dans les détails. \
+Ce jeu est un exemple de *top-down approach* (ou *stepwise refinement approach*) : c'est une méthode d'élaboration et de construction d'un système en commençant par la construction des entités "haut niveau" pour entrer petit-à-petit de plus en plus dans les détails. On écrit donc d'abord le code du *main* avant d'écrire les fonctions dont on a besoin. \
 Le jeu Nim est un exemple de programme utilisant des fonctions et des modules.
 
 - Le jeu démarre avec **3 rangées d'objets** (bâtons, pièces...) - chaque ligne présente un nombre d'objet différent. Dans notre version, il y aura **9 bâtons dans la première ligne, 7 dans la seconde puis 5 dans la troisième** (représentés par | ).
@@ -3291,5 +3291,19 @@ Si on retire 7 bâtons de la dernière ligne à 9 bâtons, on obtient 2<sub>10</
 Une fonction permettant de vérifier cette parité serait la suivante :
 
     def eval(val):
-        parity = val[0] ^val[1] ^ val[2]
+        parity = val[0] ^ val[1] ^ val[2]
         return parity
+
+Ceci n'est qu'une ébauche de code (cf dossier python_book pour voir le code complet que j'ai écrit).
+
+### The development process exposed
+
+Revenons sur le *top-down* design. La question qu'on se pose avant d'écrire le code est : quelles sont les étapes nécessaires à la résolution du problème (ou du jeu dans notre cas) ? \
+On peut écrire le *main* et simplement print un message dans les fonctions non écrites pour signifier que le programme va bien jusque là ; c'est une façon de tester le *main* assez tôt dans le développement du programme ==> *prototype*.
+
+*Quand on écrit pas le corps d'une fonction, on appelle ça une ébauche (stub).*
+
+On développe ensuite les fonctions les plus simples en premier (ex : de simples algorithmes comme la fonction pour retirer des bâtons du board), en allant vers les plus complexes, et tester progressivement le fonctionnement du programme --> prototypes successifs de plus en plus fonctionnels.
+
+Cette méthode de développement est particulièrement intéressante si elle implique des interfaces graphiques ou des jeux.
+
