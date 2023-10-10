@@ -16,24 +16,22 @@ def game_over(win_count):
 
 def print_set_winner(rally, win_count, switch_turn):
     """print the winner of this set."""
-    if not switch_turn:
-        if rally % 2 == 0:
-            win_count[0] += 1
-            print("Ping won this set.")
-            return win_count
-        else:
-            win_count[1] += 1
-            print("Pong won this set.")
-            return win_count
-    if switch_turn:
-        if rally % 2 == 0:
-            win_count[1] += 1
-            print("Pong won this set.")
-            return win_count
-        else:
-            win_count[0] += 1
-            print("Ping won this set.")
-            return win_count
+    if rally % 2 == 0 and switch_turn == False:
+        win_count[0] += 1
+        print("Ping won this set.")
+        return win_count
+    if rally % 2 == 1 and switch_turn == False:
+        win_count[1] += 1
+        print("Pong won this set.")
+        return win_count
+    if rally % 2 == 0 and switch_turn == True:
+        win_count[1] += 1
+        print("Pong won this set.")
+        return win_count
+    else:
+        win_count[0] += 1
+        print("Ping won this set.")
+        return win_count
 
 def switch_turn(turn, previous_roll):
     """return the boolean True to switch first player if the player started twice."""
@@ -52,10 +50,11 @@ def determine_overall_winner(win_count):
 # should I rather make a print_winner_and_exit() function?
 def print_winner(win_count):
     """print the winner of the game."""
-    if determine_overall_winner(win_count) == "ping":
+    winner = determine_overall_winner
+    if winner == "ping":
         print(f"Ping won {win_count[0]} vs {win_count[1]}.")
         return
-    if determine_overall_winner(win_count) == "pong":
+    if winner == "pong":
         print(f"Pong won {win_count[1]} vs {win_count[0]}.")
         return
     print("It's a tie.")
