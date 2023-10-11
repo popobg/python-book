@@ -1,14 +1,24 @@
 #! /usr/bin/env python3
 
+# redo the ping_pong game with a mutual recursion between ping() and pong().
+
 import random
 
-def ping(prob):
-    """return the boolean True if the player succed to return the ball"""
+def play_ping_turn(prob_ping = 0.5, prob_pong = 0.5):
     prob_success = random.random()
-    return prob_success < prob
+    if prob_success < prob_ping:
+        winner = play_pong_turn(prob_pong, prob_ping)
+        return winner
+    else:
+        return 1
 
-def pong(prob):
-    return ping(prob)
+def play_pong_turn(prob_pong = 0.5, prob_ping = 0.5):
+    prob_success = random.random()
+    if prob_success < prob_pong:
+        winner = play_ping_turn(prob_ping, prob_pong)
+        return winner
+    else:
+        return 0
 
 def game_over(win_count):
     """return the boolean True if a player won 11 times
@@ -17,37 +27,14 @@ def game_over(win_count):
         return True
     return False
 
-def ping_first(return_ball, win_count, last_winner):
-    while return_ball:
-        return_ball = ping(0.7)
-        if return_ball:
-            return_ball = pong(0.3)
-            if not return_ball:
-                print("ping won this set.")
-                win_count[0] += 1
-            else:
-                continue
-        else:
-            print("pong won this set.")
-            win_count[1] += 1
-            last_winner = 1
-    return return_ball, win_count, last_winner
-
-def pong_first(return_ball, win_count, last_winner):
-    while return_ball:
-        return_ball = pong(0.3)
-        if return_ball:
-            return_ball = ping(0.7)
-            if not return_ball:
-                print("pong won this set.")
-                win_count[1] += 1
-                last_winner = 1
-            else:
-                continue
-        else:
-            print("ping won this set.")
-            win_count[0] += 1
-    return return_ball, win_count, last_winner
+def print_set_winner(winner, win_count):
+    if winner == 0:
+        print("ping won this set.")
+        win_count[0] += 1
+    else:
+        print("pong won this set.")
+        win_count[1] += 1
+    return win_count
 
 def determine_overall_winner(win_count):
     """determine the winner of the game."""
@@ -69,19 +56,20 @@ def print_winner(win_count):
         return
     print(f"It's a tie : {win_count[0]} = {win_count[1]}.")
 
-return_ball = True
 win_count = [0, 0]
-last_winner = 0
-
-return_ball, win_count, last_winner = ping_first(return_ball, win_count, last_winner)
+turn = 0
 
 while not game_over(win_count):
-    return_ball = True
-    if last_winner == 0:
-        return_ball, win_count, last_winner = ping_first(return_ball, win_count, last_winner)
+    if turn % 2 == 0 :
+        turn += 1
+        winner = play_ping_turn()
+        print_set_winner(winner, win_count)
 
-    else:
-        return_ball, win_count, last_winner = pong_first(return_ball, win_count, last_winner)
+    else :
+        turn += 1
+        winner = play_pong_turn()
+        turn += 1
+        print_set_winner(winner, win_count)
 
 print("-----------")
 print_winner(win_count)
