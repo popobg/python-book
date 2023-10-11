@@ -7,15 +7,14 @@ import random
 # FUNCTIONS
 
 def is_prime(n):
-    """return a boolean whether the number is prime or not
-    return None for negative, null or incorrect input"""
+    """return a boolean whether the number is prime or not"""
     if n == 2:
         return True
     if n % 2 == 0:
         return False
 # On cherche de 2 jusqu'à la racine carrée du nombre + 1.
 # Il faut convertir en entier car for itère sur des entiers et non des nombres flottants.
-    for i in range(2, int(n ** 0.5) + 1):
+    for i in range(3, int(n ** 0.5) + 1):
         if n % i == 0:
             return False
     return True
