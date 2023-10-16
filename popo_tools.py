@@ -25,6 +25,8 @@ def input_int(prompt, range=None, quiet=False):
         else:
             return user_input
 
+
+
 def input_float(prompt, range=None, quiet=False):
     """show the prompt to the user
     return the number if it is actually a floatting number
@@ -53,6 +55,8 @@ def input_float(prompt, range=None, quiet=False):
         else:
             return user_input
 
+
+
 def search_keywords(string, keywords):
     """search keywords in a string
     return True if at least one keyword is in the string
@@ -62,22 +66,49 @@ def search_keywords(string, keywords):
             return True
     return False
 
-def parse_csv(file, separator = ", "):
+
+
+def parse_csv(file, separator = ",", index = None):
     """parse a csv file into a list of dictionnaries"""
     f = open(file, "r", encoding = "utf-8")
-    header = f.readline().split(separator)
+
+    header_line = f.readline()
+    if separator not in header_line:
+        raise Exception(f"Separator '{separator}' not found in first line")
+    header = [e.strip() for e in header_line.split(separator)]
+
     parsed = []
     for line in f:
         dic_csv = {}
         list_line = line.split(separator)
-        for i in range(len(list_line)):
-            dic_csv[header[i].strip()] = list_line[i].strip()
+        for i, value in enumerate(list_line):
+            value = value.strip()
+            try:
+                value = int(value)
+            except:
+                try:
+                    value = float(value)
+                except:
+                    pass
+            dic_csv[header[i]] = value
         parsed.append(dic_csv)
+
+    if index != None:
+        indexed_dic = {}
+
+        if isinstance(index, int):
+            index = header[index]
+
+        for dic in parsed:
+            index_value = dic[index]
+            indexed_dic[index_value] = dic
+        parsed = indexed_dic
+
     f.close()
     return parsed
 
 # le bloc d'instruction ne s'exécute que si on exécute le script dans le terminal
+# print(isinstance(a, int))
 if __name__ == "__main__":
-    a = input_int("Enter an integer.", [1, 5])
-    print(f"You choose {a} !")
-    print(isinstance(a, int))
+    planet_dict = parse_csv("planets.csv", index = "Name")
+    print(planet_dict)
