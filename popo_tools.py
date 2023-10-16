@@ -62,6 +62,20 @@ def search_keywords(string, keywords):
             return True
     return False
 
+def parse_csv(file, separator = ", "):
+    """parse a csv file into a list of dictionnaries"""
+    f = open(file, "r", encoding = "utf-8")
+    header = f.readline().split(separator)
+    parsed = []
+    for line in f:
+        dic_csv = {}
+        list_line = line.split(separator)
+        for i in range(len(list_line)):
+            dic_csv[header[i].strip()] = list_line[i].strip()
+        parsed.append(dic_csv)
+    f.close()
+    return parsed
+
 # le bloc d'instruction ne s'exécute que si on exécute le script dans le terminal
 if __name__ == "__main__":
     a = input_int("Enter an integer.", [1, 5])
