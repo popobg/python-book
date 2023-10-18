@@ -1142,7 +1142,9 @@ La boucle *while* a une condition d'initiation et tant que cette condition est v
 La boucle *for* se répète en itérant des objets donnés dans un tuple. \
 L'instruction *try-except* autorise le programmeur à repérer certains types d'erreurs et à les gérer.
 
-## Chapter 3 : Sequences : strings, tuples and lists
+---
+
+## <center>Chapter 3 : Sequences : strings, tuples and lists
 
 Les chaînes de caractères (*string*), les *tuples* et les listes sont des objets qui peuvent contenir plusieurs éléments. On parle de *sequence types*, qui représente une collection d'objets, qui peuvent être des nombres ou des caractères.
 
@@ -2351,10 +2353,8 @@ Le code du jeu en reposant sur des sets serait le suivant :
 
 On peut éventuellement ajouter un `input("Roll ?")` avant de lancer les dés pour donner l'illusion à l'utilisateur de les lancer et avoir une interaction avec l'utilisateur.
 
-<center>
-
-## Chapter 4 : functions
-</center>
+---
+## <center>Chapter 4 : functions
 
 Il existe beaucoup de fonctions built-in en Python, mais le programmeur peut avoir besoin de créer ses propres fonctions.
 
@@ -3306,4 +3306,503 @@ On peut écrire le *main* et simplement print un message dans les fonctions non 
 On développe ensuite les fonctions les plus simples en premier (ex : de simples algorithmes comme la fonction pour retirer des bâtons du board), en allant vers les plus complexes, et tester progressivement le fonctionnement du programme --> prototypes successifs de plus en plus fonctionnels.
 
 Cette méthode de développement est particulièrement intéressante si elle implique des interfaces graphiques ou des jeux.
+
+---
+
+## <center>Chapter 5: Files: input and output
+
+Les fichiers ont été inventés très tôt dans l'histoire des ordinateurs. Ils représentent un paquet d'octets stockés dans un disque ou un appareil similaire. Le stockage qui n'est pas de la mémoire est appelé stockage secondaire et est bien plus lent que la vitesse d'exécution d'une programme liée au stockage mémoire.
+
+Il faut connaître le format du fichier (comment les octets sont ordonnés) et ce qu'il contient pour pouvoir lire un fichier et l'utiliser.
+
+Liste non exhaustive des types de fichiers existants :
+
+<center>
+
+| Types | Descriptions |
+| :---: | :---: |
+| Fichier **texte** | Contient des caractères compréhensibles par un humain ; typiquement appelé "document". |
+| Fichier **exécutable** | Contient des instructions exécutables par un ordinateur ; ce sont des "programmes" ou les "applications". |
+| Fichier **de données**<br>(*data files*) | Peut aussi être un fichier texte si les données sont des caractères, mais elles peuvent aussi être des paquets d'octets représentant des nombres entiers ou flottants. |
+| Fichier **image** | Contient des photos au format digital et leurs propriétés (taille, date de création, etc) ; il en existe de nombreux types (JPEG, GIF, PNG). |
+| Fichier **audio** | Nombreux types mais MP3 le plus souvent. |
+| Fichier **vidéo** | Nombreux types mais le format standard est MPEG ou AVI. |
+| **Page web** | Type particulier, modifiable via un éditeur de texte mais nécessite un navigateur (***browser***) pour être lues proprement. |
+</center>
+
+Tous les fichiers partagent certaines caractéristiques (pas toutes importantes en Python).
+- Un **nom** : sans avoir son nom exact, on ne peut pas accéder aux informations d'un fichier.
+
+- Une **taille** : exprimée en octet.
+
+- Les fichiers supportent des opérations simples, tels que ***read*** et ***write***. Lire un fichier signifie examiner les octets du fichier, souvent par bloc (plus efficace). *Lire* = copier les octets du disque vers la mémoire pour permettre au programme de les lire ; *écrire* = copier les octets de la mémoire vers le disque.
+
+- Les fichiers doivent être **ouverts** avant d'être utilisés (***open***). Pour ouvrir un fichier, on a besoin de son nom. C'est aussi au moment d'appeler la fonction ou le programme *open()* qu'on indique si le fichier doit être simplement lu ou s'il sera modifié (*write*). *Pour exécuter un fichier, il faut pouvoir le modifier, donc write*. \
+Comme beaucoup d'opérations sur les fichiers, la fonction *open()* dépend souvent du système d'exploitation (*operation system = os*) et non du langage ; c'est pourquoi beaucoup de logiciels ne sont pas portables.
+
+- Seul **un programme à la fois peut écrire dans le fichier**. Plusieurs programmes peuvent lire le fichier en même temps, mais un seul peut écrire dedans, et ce sans qu'aucun autre programme ne le lise en même temps.
+
+### 5.1. What is a file? A little theory
+
+Les fichiers sont une structure de données destinées à stocker des informations sur des disques ou des cassettes (principaux types de stockage secondaire). Ces systèmes sont moins coûteux et permettent de stocker bien plus de données que la mémoire (système de stockage primaire). *Les disques durs modernes peuvent stocker plusieurs teraoctets de données (1 To = 10<sup>12</sup>o)*.
+
+La plupart des systèmes de stockage secondaire utilisent un système de stockage magnétique. Les cassettes ne sont presque plus utilisées de nos jours donc nous parleront des disques durs. \
+Un disque dur est un **plateau** circulaire en verre ou en céramique recouvert d'une fine couche de matériau magnétique (souvent un mélange de fer - d'où la couleur brune due à la rouille/oxydation). Le disque est monté sur un fuseau connecté à un moteur qui tourne très rapidement (vitesse comprise entre 3600 et 15000 tours/min sur les disques récents).
+
+Au-dessus du plateau (à quelques nm de sa surface), on trouve une **tête de lecture/écriture**, petite partie magnétisable entourée de fil de fer (différente des têtes de lecture des VCR (*video tape recorder*) ou des cassettes). En se déplaçant, le magnet crée un courant électrique au sein d'une bobine (ressort), qui crée lui-même un champ magnétique.
+
+Pour écrire des données dans le disque, on envoie un courant dans la tête de lecture/écriture, qui crée ainsi une petite marque magnétique sur la partie du disque sous la tête. Le codage en 1 et 0 se fait en **changeant l'orientation du magnet** : soit North pole → south pole (N-S = nombre binaire 1), soit South pole → North pole (S-N = nombre binaire 0). On écrit donc une série de nombres binaires sur la surface du disque dur. \
+Pour lire les données inscrites sur le disque dur, les parties magnétisées (écrites) du disque passent sous la tête de lecture, induisant le passage d'un faible courant dans la bobine ; un circuit électronique détecte le flux et son orientation et lit les séries de 0 et de 1 du disque.
+
+***Head crash*** : la tête de lecture en vient à toucher le disque, ce qui endommage la surface de celui-ci donc toutes les données qui y étaient inscrites sont perdues ; la tête s'en trouve aussi endommagée. De toute manière, il est plus prudent de faire un back-up des informations importantes des disques régulièrement (copies des données sur un autre disque dur).
+
+Le disque est donc un appareil retournant les données comme un flot d'octets. \
+Ce disque est en fait formé d'un ensemble de cercles concentriques allant de la périphérie du cercle vers son centre. On les appelle les **pistes** (***tracks*** en anglais). On divise également le disque en **secteur** (***sectors*** en anglais). \
+
+<center>
+
+![disk storage](image-5.png)
+</center>
+
+La tête de lecture/écriture peut bouger librement entre ces cercles selon l'emplacement de stockage des informations à lire/écrire. Elles sont pilotées par des algorithmes de contrôle très poussés leur permettant d'accélérer et décélérer très rapidement. Quand elles ne sont pas utilisées, elles sont maintenues soit en dehors du disque soit très proche du centre, là où aucune donnée n'est stockée.
+
+La piste la plus extérieure est nommée *position 0* pour la tête et le chiffre augmente jusqu'à N<sub>track</sub>, piste la plus proche du centre du plateau. Les secteurs sont ensuite à leur tour divisés de 0 à N<sub>sector</sub>. Grâce à la **combinaison < track, sector >**, la tête connaît l'**adresse** à laquelle elle doit écrire ou lire les données du disque. Elle se positionne tout d'abord sur la bonne piste, puis attend que le bon secteur passe pour interagir. *Le temps de lecture prend aussi longtemps que le secteur prend de temps à passer sous la tête.* La piste d'un secteur est appelé un **bloc** (***block***) ; tous les blocs font la même taille, en général 512 octets.
+
+### 5.1.1. How are files stored on a disk?
+
+On peut imaginer un fichier comme un **ensemble de blocs**. Si un bloc fait 512 octets et le fichier contient N octets de données, alors le fichier a besoin de **N/512 blocs** de stockage. Il est impossible pour deux fichiers de partager un bloc. \
+Cependant, tous les blocs d'un fichier ne peuvent pas forcément être stockés au même endroit, ce qui fait qu'un fichier est découpé en plusieurs blocs de secteur et piste différents. La **structure de données du fichier** (également inscrite sur le disque) permet de lister l'emplacement de tous les blocs constituant le fichier dans le bon ordre. La tête de lecture doit donc d'abord trouver la structure de données, puis suivre ses instructions pour lire les morceaux du fichier et les copier dans la mémoire. Le plus souvent, la structure de données se retrouve à l'aide d'un nom de fichier donné par l'utilisateur. Souvent les noms et leurs adresses sont stockées à un endroit du disque, dans un nom plus générique qui joue le rôle de dossier (*directory*) dans lequel se trouve d'autres noms de fichiers et dossiers. C'est la gestion des fichiers assurée par les systèmes d'exploitation comme *Linux* ou *Windows*.
+
+### 5.1.2. Files access is slow
+
+Le temps d'accès à un bloc de données randomisé sur le disque est d'environ 10ms pour bouger vers la bonne piste (*seek time*) puis environ 4.15ms, soit la moitié d'une rotation du plateau. La lecture du bloc prend en moyenne 8.3 * (1/N<sub>sectors</sub>), soit environ 0.008ms pour un disque avec 1024 secteurs. Si on considère ce temps comme négligeable, il faut environ 14.15 **millisecondes** pour lire un bloc. En comparaison, il faut 8 **nanosecondes** à l'ordinateur pour accéder à des données contenues dans la mémoire (mémoire de travail, RAM).
+
+### 5.2. Keyboard input
+
+Les informations contenues dans un fichier sont déjà connues de l'ordinateur ; les informations saisies sur un clavier non. Certaines erreurs sont communes avec le clavier, comme par exemple un mauvais type donné par l'utilisateur au programme, sur lequel on ne peut pas réaliser les opérations souhaitées (ex : str au lieu de int). Ces erreurs peuvent survenir avec les fichiers si on ne connaît pas le format du fichier.
+
+#### Problem: read a number from the keyboard and divide it by 2
+
+Il faut bien anticiper les différentes erreurs qui peuvent être levées dans le script pour y répondre de façon correcte sans que le jeu ne crash.
+
+    s = input("Input an integer ")       # the output is a string
+    try:
+        k = int(s)
+        ks = k // 2
+
+    except ValueError:
+            try:
+                k = float(s)
+                ks = int(k // 2)
+
+            except ValueError:
+                ks = 0
+
+    print(ks)
+
+### 5.3. Using files in Python: less theory, more practice
+
+Les étapes sont globalement les mêmes que dans tous les langages.
+
+1- **Ouvrir le fichier**. La fonction *open( )* est appelée en lui passant comme argument une string contenant le nom du fichier. On peut aussi passer le **mode** d'ouverture et l'**encodage** (par défaut utf-8 si non précisé), le tout toujours dans une string.
+
+2- **Lire les données du fichier**. La fonction *read( )* peut être appelée après avoir ouvert le fichier et l'avoir assigné à la variable. Elle affiche les données contenu dans le fichier. A notr qu'elle peut être appelée à plusieurs reprises dans le programme et qu'à l'appel suivant, la lecture reprend là où elle s'était arrêtée.
+
+OU \
+2 - **Ecrire des données dans le fichier**. La fonction *write( )* permet d'écrire dans le fichier (caractères, nombres, lignes voire plusieurs lignes). Elle peut être appelée à plusieurs reprises et les données s'ajoutent à la suite de celles écrites plus tôt à l'appel de fonction suivante.
+
+3- **Fermer le fichier**. La fonction *close( )* permet de vider l'espace de stockage des données du fichier, et dans certains cas permet au fichier d'être utilisé par d'autres programmes en attente. Le contenu du fichier n'est donc plus disponible dans notre espace de travail.
+
+### 5.3.1. Open a file
+
+*open( )* est une fonction qui retourne une valeur représenter un ensemble complexe de valeurs qui représente le statut du fichier ; on appelle cela un descripteur de fichier (*hancle* ou *file descriptor*). On peut l'imaginer comme présentant le type imaginaire *file*. \
+Cette valeur doit être assignée à une variable lorsqu'on utilise *open( )*, sans quoi ses données ne sont pas utilisables. Souvent on donne à cette variable le nom du fichier à ouvrir, +/- avec mention de si le fichier est en lecture ou écriture.
+
+    date_file_r = open("datafile.txt", "r", encoding = "utf_8")
+
+Cela permet d'ouvrir le fichier texte *datafile* contenu dans le même dossier que le programme actuel. Le *"r"* signifie qu'on est en mode lecture : on ne pourra pas modifier le fichier mais on peut consulter les données qu'il contient.
+
+Si le fichier n'est pas dans le même dossier, on peut indiquer son chemin absolu (*absolute path*). Il faut placer un r (*rawstring*) devant l'adresse sinon les / sont interprétées. On peut aussi doubler les /. *On rappelle que le path est indiqué par / sur Unix et par \ sur Windows.*
+
+    data_file_r = open(r"C:/parker/introProgramming/chapter05/datafile.txt")
+
+C'est utile pour les bases de données importantes utilisées par plusieurs programmes (ex : noms de clients ou de fournisseurs).
+
+---
+
+### Les modes d'ouverture du fichier
+
+- *r* pour *read only*, donc de lire le fichier uniquement. C'est le mode par défaut si on en précise pas à l'ouverture. *= input*
+
+- *w* pour *write*, il permet d'écrire dans le fichier. Si le fichier n'existait pas, il est créé à l'emplacmeent indiqué par le path ; si le fichier existait déjà, cela **écrase les données précédemment entrées dans le fichier**. *= output*
+
+- *a* pour *append*, c'est une alternative à *write* qui crée le fichier s'il n'existe pas et permet d'ajouter des données à la suite d'un fichier déjà existant.
+
+- *+* (ou *r+*) pour *read and write*. On peut alors réaliser toutes les opérations de lecture et d'écrire sur le fichier.
+
+- *b* (*wb*, *rb* ou *ab*) pour *binary* (pas d'encodage à préciser dans ce cas), cela ouvre le fichier en mode binaire. C'est utile pour les fichiers MP3 ou vidéo. \
+Précisons qu'il est impératif de le mentionner sur Windows, mieux pour la clarté sur Unix sans nécessité. En effet, Windows modifie les carctères de fin de ligne des fichiers en mode simple ; cela n'a que peut d'importance pour les fichiers .txt ASCII, mais peut corrompre un fichier de type .JPEG ou .exe par exemple.
+
+---
+Si le fichier n'existe pas et qu'il a été ouvert pour *input* (*read*), c'est une erreur et cela lève une exception, qui peut être gérée en Python. Il faut aussi anticiper les défauts de permissions. *Se rappeler qu'il vaut toujours mieux anticiper d'éventuelles erreurs et ne pas se dire que tout va marcher parfaitement.*
+
+**File Not Found Exceptions**
+
+*Cette erreur peut s'appeler IOError ou OSError sur d'autres versions de Python.*
+
+Pour éviter que des erreurs entraînent le crash du programme, on peut ouvrir le fichier dans un bloc d'instruction ***try-except***. On récupère ainsi notamment les erreurs de **fichier non existant** et les **défauts de permission**.
+
+    try:
+        data_file_r = open("datafile.txt", "r", encoding = "utf-8")
+    except FileNotFoundError:
+        print("There is no file named 'datafile.txt'.\nPlease try again.")
+        exit()
+    except PermissionError:
+        print("You don't have the permission to read this file.")
+        exit()
+
+### 5.3.2. Reading from files
+
+Une fois le fichier ouvert et ses données récupérées dans une variable, on peut utiliser la méthode ***read(size)*** pour lire et afficher ces données.
+
+    f = open("file.txt", "r", encoding = "utf-8")
+    s = f.read()
+
+En l'état, la fonction lira et affichera tout le fichier. On peut indiquer un nombre de caractères à lire :
+
+    s = f.read(1)
+
+Il est peu efficace de lire caractère par caractère. Le ***buffering*** est couramment utilisé : lire plus de données que ce qui est utile et les sauvegarder. Un bloc de disque dur contient 512 octets, donc c'est souvent ainsi qu'on crée un buffer :
+
+    s = f.read(512)
+
+On peut donc décrire un buffer comme un ensemble d'emplacements mémoire temporairement stockées pour utiliser ses données, récemment stockées dans le stockage secondaire.
+
+Noter de plus que les fichiers sont des objets **itérables**, on peut donc les intégrer à des boucles, comme un *for*.
+
+    for line in f:
+        print(line)
+
+Par défaut, Python print ligne par ligne.
+
+**End of file**
+
+Quand la fin du fichier est atteint, realine() retourne une string vide "" car le fichier se termine automatiquement par une *newline* \n. C'est ce qu'on appelle **la condition de fin de fichier** ou *end of file condition*.
+
+    f = open("file.txt", "r", encoding = "utf-8")
+    while True:
+        c = f.read(1)
+
+        if c == "":
+            print("End of file")
+            break / exit()
+
+        c = infile.read(1)
+
+Si on lit un fichier dans une boucle *for*, la fin du fichier est gérée automatiquement.
+
+    for c in f:
+        print("'", c, "'")
+
+Il existe une exception **EOFError** (*End Of File Error*).
+
+On peut aussi retrouver le type d'erreur qui survient :
+
+    while True:
+        try:
+            c = input()
+            print(c)
+
+        except Exception as x:
+            print(x)
+            break
+
+`EOF when reading a line`
+
+### Common file input operation
+
+**readline( )**
+
+Une façon "brute" de lire un fichier ligne par ligne serait le suivant :
+
+    f = open("file.txt", "r", encoding = "utf-8")
+
+    for line in f:
+        print("'", line, "'")
+
+    f.close()
+
+Dans un fichier texte, on peut lire ligne par ligne à partir de là où est le pointeur dans le fichier grâce à la méthode ***readline( )***. En effet, le programme reconnaît les *newline*. \
+Pour afficher les lignes une par une comme précédemment, on peut utiliser *readline( )* ; il faudra à ce moment-là déterminer explicitement la fin du fichier.
+
+    f = open("file.txt", "r", encoding = "utf-8")
+
+    line = f.readline()
+
+    while line != "":
+        print("'", line, "'")
+        line = f.readline()
+
+    f.close()
+
+***readlines( )***
+
+La méthode ***readlines( )*** lit les données ligne par ligne et les retourne sous forme de liste.
+
+**copy( )**
+
+On copie un fichier vers un autre, caractère par caractère. \
+Il faut alors ouvrir le fichier à copier en input, et le fichier vers lequel copier en output.
+
+    f = open("file.text", "r", encoding = "utf-8")
+    g = open("copy.txt", "w", encoding = "utf-8")
+
+    c = f.read(1)
+    while c != "":
+        g.write(c)
+        c = f.readline(1)
+
+    f.close()
+    g.close()
+
+***filter***
+
+Un **filtre** est un programme qui lit les données d'un fichier et les convertir en une autre forme avant de les écrire. Un filtre peut être utilisé également lors d'une copie :
+
+    original_file = open("file.text", "r", encoding = "utf-8")
+    copied_file = open("copy.txt", "w", encoding = "utf-8")
+
+    line = original_file.read(1)
+    while line != "":
+        copied_file.write(line.lower())
+        line = original_file.readline(1)
+
+    original_file.close()
+    copied_file.close()
+
+On peut faire plus simple que cette fonction :
+
+    original_file = open("file.text", "r", encoding = "utf-8")
+    copied_file = open("copy.txt", "w", encoding = "utf-8")
+
+    line = original_file.read()
+    copied_file.write(line.lower())
+
+    original_file.close()
+    copied_file.close()
+
+***merging***
+
+Il existe plusieurs manière de **fusionner** deux fichiers. Une manière simple est de copier l'intégralité des fichiers dans un nouveau fichier, l'un après l'autre :
+
+    original_file1 = open("file.text", "r", encoding = "utf-8")
+    final_file = open("copy.txt", "w", encoding = "utf-8")
+
+    line = original_file1.read()
+    final_file.write(line)
+
+    original_file1.close()
+
+    original_file2 = open("file.text", "r", encoding = "utf-8")
+
+    line = original_file2.read()
+    final_file.write(line)
+
+    original_file2.close()
+    final_file.close()
+
+Ici, on a écrit toutes les données du 2ème fichier à la suite de celles du 1er fichier. \
+On ne peut pas utiliser cette méthode si les deux fichiers sont triés et doivent le rester après la fusion.
+
+    original_file1 = open("file.text", "r", encoding = "utf-8")
+    original_file2 = open("file.text", "r", encoding = "utf-8")
+    final_file = open("copy.txt", "w", encoding = "utf-8")
+
+    line_file1 = original_file1.readline()
+    line_file2 = original_file2.readline()
+
+    while line_file1 != "" and line_file2 != "":
+        if line_file1 < line_file2:
+            final_file.write(line_file1)
+            line_file1 = original_file1.readline()
+
+        else:
+            final_file.write(line_file2)
+            line_file2 = original_file2.readline()
+
+    if line_file1 == "":
+        final_file.write(line_file2)        # since the last position of the pointer
+        line_file2 = original_file2.read()
+        final_file.write(line_file2)
+
+    else:
+        final_file.write(line_file1)
+        line_file1 = original_file1.read()
+        final_file.write(line_file1)
+
+    original_file1.close()
+    original_file2.close()
+    final_file.close()
+
+###  CSV files
+
+CSV = *Comma Separated Variable. \
+C'est un format de fichier courant pour stocker des données. Il tient son nom du fait que les données sont séparées par des virgules. \
+Ce format peut être utilisé directement par des tableurs comme Excel et sont supportés par un ensemble large d'outils d'analyse de données.
+
+*Un format est simplement une façon d'organiser les données. Dans le cas du CSV les données sont simplement **ordonnées en colonne avec des séparateurs entre chaque colonne** (typiquement une virgule, mais ça peut être un point virgule, un slash...).*
+
+<center><p style = "color: green"> Exemple typique de CSV avec le fichier <em>planets.txt</em></p>
+
+![Alt text](image-6.png)
+</center>
+
+**Problem: print the names of planets having more than ten moons.**
+
+Etapes :
+- Ouvrir le fichier de données
+- Lire les données (on peut skip la première ligne de titre)
+- lire chaque ligne:
+    - comparer l'élément de la 11ème colonne (indice 10) avec 10
+    - s'il est supérieur à 10, print le nom de la planète (1ère colonne, indice 0)
+
+&emsp;
+
+    f = open("planets.csv", "r", encoding = "utf-8")
+
+    moons_planets = []
+
+    f.readline()        # skip the first line
+
+
+    for line in f:
+        list_planet = line.strip().split(", ")          # string line convert into a list
+        if int(list_planet[10]) > 10.0:         # string convert into an intéger
+            moons_planets.append(list_planet[0])
+
+    f.close()
+
+    print(moons_planets)
+
+`['Jupiter', 'Saturn', 'Uranus', 'Neptune']`
+
+Il existe une bibliothèque Python built-in qui permet de gérer les fichiers CSV. Le module se nomme **CSV**, mais il est assez compliqué donc utiliser le module **simpleCSV** apporté par le bouquin.
+
+Les deux fonctions principales du module simplifié sont ***nextRecord( )*** et ***getData( )***.
+- *nextRecord( )* : lit une ligne entière de données CSV ; cela permet notamment de skip des lignes du fichier (comme le header).
+- *getData( )* : parse (analyse et récupère les données) la dernière ligne lue dans un tuple, chaque élément étant séparés par une virgule.
+
+        import simpleCSV
+
+        f = open("planets.csv", "r", encoding = "utf-8")
+
+        simpleCSV.nextRecord(f)         # skip the first line
+
+        for i in range(0,8):
+            simpleCSV.nextRecord(f)
+            p = simpleCSV.getData(f)
+            r = p[10]
+            if int(p[10]) > 10.0:
+                print(p[0])
+
+        f.close()
+
+Il est important d'utiliser *netRecord( )* avant d'utiliser *getData( )* car c'est dans une variable globale de simpleCSV que sont stockées les données de la ligne lue. On ne peut pas utiliser `f.readline()` ou `for line in f` sinon le pointeur sera à un autre endroit du fichier CSV que le module simpleCSV.
+
+### The with statement
+
+L'instruction ***with*** utilisée lors d'ouverture de fichier suit un protocole de *context manager* : elle permet de fermer automatiquement le fichier quand toutes les opérations nécessaires ont été effectuées ==> **gestion automatique de la mémoire**.
+
+    with open("planets.csv", "r", encoding = "utf_8") as planets_file:
+        planets_data = planets_file.read()
+
+Ici, les données du fichier CSV sont stockées sous forme de string dans la variable *planets_data*. Le fichier a été ouvert puis fermé impliement à la sortie du bloc d'instruction.
+
+    import simpleCSV
+
+        with open("planets.csv", "r", encoding = "utf-8") as f:
+            simpleCSV.nextRecord(f)
+            for i in range(0,8):
+                simpleCSV.nextRecord(f)
+                p = simpleCSV.getData(f)
+                r = p[10]
+                if int(p[10]) > 10.0:
+                    print(p[0])
+
+### tell( ) et seek( )
+
+La méthode ***tell( )*** retourne un entier correspondant à l'octet auquel se trouve le pointeur dans le fichier. \
+La méthode ***seek( )*** change la position du pointeur dans le fichier. Le premier paramètre donné est l'octet auquel on veut déplacer le pointeur, et le second paramètre (*whence argument*, facultatif) correspond au point de référence pour l'indiçage : **0** (valeur par défaut) compte à partir du début du fichier, **1** compte à partir de la position actuelle et **2** compte à partir de la fin du fichier. \
+Si le fichier n'est pas de type *byte* (*br* par exemple), Python ne tolère qu'un *whence* = 0, OU = 2 et le premier paramètre doit alors nécessairement être 0.
+
+Voici le texte de mon fichier : `Code is like humor. When you have to explain it, it's bad.`
+
+    with open("file.txt", "r", encoding = "utf-8") as f:
+    print(f.tell())
+    f.seek(0, 2)            # the file handle is moved at the end of the file
+    print(f.tell())
+
+    print()
+
+    f.seek(20)
+    print(f.tell())
+    print(f.read())
+
+`0` \
+`58`
+
+`20` \
+`When you have to explain it, it's bad.`
+
+    with open("file.txt", "br") as f:
+        f.seek(-10, 2)
+        print(f.tell())
+        print(f.read())
+
+`48` \
+`b" it's bad."`
+
+### 5.4. Writing to files
+
+Cette fois, il faut ouvrir le fichier en mode écriture :
+
+    f = open("file.txt", "w", encoding = "utf-8")
+
+On rappelle que s'il n'y a pas de fichier portant le nom demandé dans la destination, un nouveau fichier sera créé à cet emplacement. Si un fichier déjà existant est présent, les données qu'il contenait se trouvent écrasées et on écrira par dessus.
+
+La fonction ***write( )*** permet d'écrire dans le fichier cible. Elle prend une **string** comme argument ; il faut donc convertir les autres types en string avant de lui donner en argument. \
+Il n'y a pas de concept de ligne dans l'écriture, on écrit simplement un caractère à la suite dans l'ordre donné. Si on veut sauter une ligne dans le fichier cible, il faudra insérer le caractère saut de ligne *\n* (*backslash n*) = *new line*.
+
+<p style = "color: green">Exemple : écrire une table de carrés dans un fichier
+
+1. Le fichier doit être ouvert ;
+2. On crée une boucle de 0 à 25 ;
+3. On multiplie ce nombre par lui-même et on obtient son carré ;
+4. On l'écrit dans le fichier.
+
+        with open("file.txt", "w", encoding = "utf-8") as f:
+            f.write("   table of squares\n")
+            for i in range(0, 25):
+                f.write(f"square{i} = {i**2}\n")
+
+Pas d'output dans le terminal puisque l'écriture se fait dans le fichier, qui contiendra cela :
+
+<center>
+
+![Alt text](image-7.png)
+</center>
+
+La méthode ***writelines( )*** prend une liste de strings et les écrit à la suite dans le fichier de destination. Il faut cependant toujours indiquer les sauts de ligne.
+
+### Appending data to a file
+
+Si *w* écrit au début du fichier, le mode *a* permet d'ouvrir le fichier et de commencer à écrire à la fin de ce fichier s'il existe. C'est préférable pour des fichiers de sauvegarde par exemple.
+
+<p style = "color: green">Exemple : ajouter 20 autres carrés au fichier
+
+    with open("file.txt", "a", encoding= "utf-8") as f:
+    for i in range(25, 45):
+        f.write(f"square{i} = {i**2}\n")
+
+Cela ajoute 20 nouveaux carrés à la suite des précédents. Au total, le fichier contiendra un titre suivi des carrés de 0 à 44.
 
