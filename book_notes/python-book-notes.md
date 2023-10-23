@@ -209,8 +209,9 @@ Deux joueurs choisissent un item de la liste (pierre, feuille, ciseaux) et rév�
 Pour chaque item, il existe un item qui le bat et un autre contre lequel il perd. Le choix des deux joueurs est checké et, en fonction du résultat, on print un message de victoire ou de défaite. \
 On aura donc besoin ici d'une façon de stocker une valeur (= *une variable*), d'une façon d'éxécuter certaines parties du programme en fonction de la valeur (= *if statement*), une façon de lire la valeur du prompt (= *input()*), une façon de print un message à l'écran et enfin une façon d'éxécuter du code à répétition (= *a loop*).
 
----
 ### 1.4. Variables and values-experimenting with the Graphical User Interface
+
+---
 
 Une ***variable*** est un nom que le développeur définit pour représenter une valeur, le plus souvent un nombre ou une chaîne de caractères. Elle représente la place où l'ordinateur stocke cette valeur (l'espace "de nommage", étant lié à l'espace "objet" qu'il représente).
 
@@ -258,8 +259,9 @@ En Python, on a des opérations un peu particulières, notamment concernant les 
 - **Valeur absolue** (*absolute*) représentée par *abs()*. Elle donne la valeur absolue d'une nombre.
 <p style="color: green"><em>abs(-3) = 3</em></p>
 
----
 ### 1.5. Exchanging information with the computer
+
+---
 
 Il y a un échange d'informations entre l'ordinateur et l'utilisateur. Par exemple, l'utilisateur communique la valeur du radius à l'ordinateur, puis l'ordinateur communique la circonférence du cercle à l'utilisateur à partir du radius et de la formule donnés. De prime abord, cet échange se fait via du texte, des caractères tapés à l'aide d'un clavier. Mais cela n'est que la forme définie par le développeur, c'est en réalité des séries de nombre qui sont échangées.
 
@@ -268,8 +270,9 @@ On peut également séparés les éléments qu'on souhaite mentionner par des vi
 
 <p style="color: green">Exemple : <em>print("The circumference is", 62.831852)</em> ou <em>print("The circumference is", circumference)</em> - on note ici la variable <em>circumference</em>, qui sera remplacée dans le message par sa valeur.
 
----
 ### 1.6. Strings, integers and real numbers
+
+---
 
 On distingue les nombres entiers (*intergers* ou *whole numbers* en anglais) et nombres flottants (*real number* ou *floating-point numbers/float numbers* en anglais). Une variable python peut être d'un type ou de l'autre. \
 On peut mélanger des opérations des deux types, mais il vaut mieux éviter ou mettre des parenthèses pour indiquer les priorités.
@@ -298,8 +301,9 @@ Attention cependant car l'input retourne une **string** qui ne peut pas être ut
 Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également. \
 <p style="color: green"><em>TypeError: can't multiply sequence by non-int of type 'float' → cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.</em>
 
----
 ### 1.7. **if** statements
+
+---
 
 C'est une phrase conditionnelle commençant par ***if*** suivi d'une **expression logique** (*logical expression*) dont l'issue est soit *True*, soit *False*. Elle s'achève par : (*colon*). S'ensuit une série de code qui ne sera exécutée que si la condition *if* est évaluée *True*.
 
@@ -442,8 +446,9 @@ On peut parfois se retrouver avec trop de répétitions et de nested-IFs. Une al
 Cette méthode réduit considérablement le nombre d'indentation et améliore la lisibilité. Cela permet aussi de ne pas lire les lignes suivantes inutilement (comme avec deux ifs) si une condition a déjà été remplie et cela améliore la vitesse d'exécution du programme. \
 *Exemple ici, si le premier if est exécuté, l'ordinateur ne lira pas elif ni else car il sait que ce sont des alternatives au premier if.*
 
----
 ### 1.8. Documentation
+
+---
 
 La documentation **externe** est comme un manuel utilisateur. C'est un texte qui explique  ce que fait le programme ; il est plus ou moins long selon le programme. *Il vaut mieux l'écrire en anglais, c'est universel.*
 
@@ -453,8 +458,9 @@ La documentation **interne** est destinée aux programmeurs qui ont accès au co
 Ce sont typiquement des **commentaires** laissés dans le code. On l'écrit souvent en anglais aussi, dans une syntaxe humaine car c'est un morceau de code qui sera ignorée par l'ordinateur. Un commentaire commence par ***#*** et se termine au prochain saut de ligne.\
 On trouve aussi les **docstrings** ***"""..."""***, qui sont des strings, donc peuvent être stockées dans un document séparé pour être utilisée comme description d'une fonction par exemple.
 
----
 ### 1.9. Types are dynamic
+
+---
 
 En Python, le type d'une variable peut changer en fonction de l'objet auquel elle est assignée.
 
@@ -462,7 +468,7 @@ En Python, le type d'une variable peut changer en fonction de l'objet auquel ell
 <em>x = x * 0.1</em> # x est un flottant<br>
 <em>x = (x * 10 == 10)</em> # x est un booléen (<em>True</em>)</p>
 
-Si on prend un langage **statique** comme le C++, un entier est un endroit de 32 bits (4 octets) stockés dans la mémoire, ils ont donc une "taille" fixe ; donc le plus grand nombre stockable est 2<sup>32</sup> -1.
+Si on prend un langage **statique** comme le C++, un entier est un emplacement de 32 bits (4 octets) stocké dans la mémoire, il a donc une "taille" fixe ; donc le plus grand nombre stockable est 2<sup>32</sup> -1.
 
 On peut connaître le type d'une variable en Python par la fonction ***type()***, qui nous retournera : \
 `<class 'int/float/str'>` → ce n'est pas une string mais un *type* !\
@@ -719,6 +725,8 @@ Une des raisons en faveur de l'utilisation d'un ordinateur est qu'il est capable
 
 ### 2.1. The *while* statement
 
+---
+
 C'est une instruction de **répétition tant que** l'affirmation est *True*. Le bloc d'instruction suivant la ligne du while (indenté bien sûr) est réalisé à chaque loop tant que la condition évoquée par le while est *True*. Si la condition est *False*, on n'exécute pas le bloc d'instruction qui suit.
 
 <center><figure>
@@ -762,6 +770,7 @@ Du point de vue utilisateur, il ne passera rien. Le programme fonctionne mais ne
 La condition n'est pas remplie donc on exécute pas le bloc d'instruction suivant. Le *print* renverra 100.
 
 ### 2.2 Introduction to module and functions with random numbers
+---
 
 Le tirage de nombre aléatoire est utile dans les jeux. \
 Le principe de la **randomisation** est de réaliser un tirage aléatoire et une répartition aléatoire de façon à avoir le moins de biais possible.
@@ -811,8 +820,9 @@ La fonction ***randint()*** accepte deux paramètres (deux nombres). Le premier 
     else:
         print("Tails")
 
----
+
 ### 2.3. Counting loops : for loops
+---
 
 Une boucle ***for*** réalise un nombre d'itérations (tours de boucle) défini.
 
@@ -849,7 +859,7 @@ Pour les boucles longues, on peut utiliser la fonction built-in ***range()***, q
 
 *L'incrémentation est explicite en Java ou en C++.*
 
-#### 2.3.1. Prime or non prime
+### 2.3.1. Prime or non prime
 
 C'est un jeu qui nécessite une boucle for. \
 Un nombre premier est un nombre entier divisible uniquement par 1 et par lui-même.
@@ -960,6 +970,7 @@ On peut ajouter un *else* aux boucles *while* et *for* si les boucles se sont r�
 *Bon, ce n'est pas très utile en soi on peut parfaitement arriver à ce résultat d'autres manières. Je ne présente même pas l'exemple avec le while.*
 
 ### 2.4. Loops that are nested
+---
 
 On peut évidemment avoir des imbrications des les boucles : des *if* dans des *while* / *for*, des *for* dans des *while* et inversement.
 
@@ -1004,6 +1015,7 @@ On peut évidemment avoir des imbrications des les boucles : des *if* dans des *
 `The most divisors is 840 with 31.`
 
 ### 2.5. Draw a histogram
+---
 
 Un histogramme est un type de graphique où des valeurs numériques discrètes sont représentées par des rectangles. Il est le plus souvent utilisé pour représenté la fréquence d'un évènement pour une ou plusieurs variables discrètes. Pour en réaliser un, il faut avoir une idée du nombre de catégories et des valeurs numériques de chacune de ces catégories. On met à l'écehelle les nombres pour qu'ils rentrent dans une aire précise et on dessine les rectangles de taille proportionnelle à la valeur qu'ils représentent.
 
@@ -1059,6 +1071,7 @@ Le premier trimestre pourrait être représenté ainsi :
 A répéter pour chaque quarter (on peut écrire une fonction) et on ajoute un titre.
 
 ### 2.6. Loops in general
+---
 
 En assembleur, les boucles étaient des *branches* ou des *goto* dont la condition initiale était une *adresse* ou *mlabel* et la fin était une instruction disant *go to*. Rapidement, c'est devenu l'instruction *do*.
 
@@ -1154,6 +1167,7 @@ La longueur de la séquence (obtenue par l'usage de la fonction ***len()***) cor
 Dans d'autres langages, la *séquence* est appelée *tableau* (*array* en anglais), correspondant à une séquence d'éléments d'un même type.
 
 ### 3.1. Strings
+---
 
 La ***string*** est un enchaînement de caractères. Elle appartient au type *séquence*, donc l'ordre des caractères a une importance. Elles sont le plus souvent utilisées pour représenter du texte de langage humain. \
 L'ordinateur peut effectuer des actions sur la string qu'on appelle des **opérations**. On peut effectuer sur des strings les opérations qu'on imagine pouvoir faire sur du texte : le print, le lire, accéder à certains caractères du texte, lier des chaînes dans de plus longues chaînes et chercher un mot en particulier.
@@ -1409,6 +1423,7 @@ On peut également assigner un programme à une variable à l'aide des triple gu
 `"John Doe"`
 
 ### 3.2. The type bytes
+---
 
 Ce type est appelé "**octet**" en français. C'est un type de séquence. \
 Un objet de type *bytes* de taille 1 est un entier composé de 8 bits, soit une valeur comprise entre 0 et 255 (256 possibilités). Si l'objet a une longueur > 1, c'est donc une séquence de petits entiers.
@@ -1460,7 +1475,7 @@ Il existe deux fonctions intéressantes permettant de convertir des caractères 
         print(chr(125))
 
         print(type(chr(33)))
-    
+
     `!` \
     `d` \
     `}` \
@@ -1469,6 +1484,7 @@ Il existe deux fonctions intéressantes permettant de convertir des caractères 
     De la même façon que pour *ord()*, un argument d'un autre type qu'un entier lève un *TypeError* (dont un nombre flottant). Lui donner un argument entier non compris dans [min; max] d'Unicode lève une *ValueError*.
 
 ### 3.3. Tuples
+---
 
 Un **tuple** est presque identique à la string :
 - C'est une **séquence**.
@@ -1796,6 +1812,7 @@ Attention cependant, on ne peut pas comparer deux éléments de type différents
 | *min(tuple)* | Retourne le plus petit élément du tuple.<br>*Erreur si les éléments ne sont pas du même type.* | min(T2) | `-1` |
 
 ### 3.4. Lists
+---
 
 La ***liste*** est une séquence d'objets hétérogènes, de la même manière qu'un tuple, mais c'est un objet **mutable** : on peut la modifier "en place" (là où elle est stockée), sans en faire une copie. Ceci est dû au fait que la liste ne stocke pas d'objets mais des références à ces objets, qui sont stockés ailleurs en mémoire.
 
@@ -2212,6 +2229,7 @@ Si on entre "lithium" ou "oxygen" :
 `["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]`
 
 ### 3.5. Set types
+---
 
 Un objet de type ***set*** correspond à un recueil d'objets **non ordonné**. L'indiçage et le slicing ne sont donc pas réalisables. \
 Un élément ne peut appartenir qu'une fois à un set. Souvent ce sont des sets mathématiques. \
@@ -2370,10 +2388,8 @@ Caractéristiques d'une fonction :
 ***Aparté sur la fonction dir*** \
 La fonction ****dir( )*** retourne une liste de strings. Sans lui donner d'argument, elle retourne le nom des fonctions du programme actuel. Si on lui passe un argument, elle retourne une liste des principaux modules et attributs de l'objet.
 
----
-
 ### 4.1. Function definition : syntax and semantics
-
+---
 
 <center><figure>
     <img src="image-4.png"
@@ -2515,6 +2531,7 @@ Quelques points sur les fonctions en Python :
 - L'instruction *def* exécute le code sous-jacent et crée une nouvelle fonction chaque fois qu'elle l'exécute.
 
 ### 4.2. Function execution
+---
 
 Lorsqu'elle est appelée, la fonction va exécuter le code dans l'ordre des instructions. On sort de la fonction soit quand tout le code a été exécuté, soit quand on rencontre l'instruction ***return***. *Si on écrit return sans valeur ensuite, la valeur retournée par défaut est None.* \
 Quand on sort de la fonction, le code reprend depuis là où la fonction avait été appelée.
@@ -3040,6 +3057,7 @@ Une fonction peut retourner une fonction comme valeur de retour.
 `Two`
 
 ### 4.3. Recursion
+---
 
 La programmation récursive n'est pas propre au langage mais plutôt une technique de programmation qui consiste à remplacer les instructions de boucle par des appels de fonctions. \
 Quelque chose de récursif est décrit au moins en partie par ce qui le compose.
@@ -3135,6 +3153,7 @@ Quelques règles simples pour éviter le problème de boucles infinies (dans le 
 4. On peut **assigner une variable globale au compte du nombre de récursion**. On peut ainsi limiter le nombre maximum de récursive et soit stopper les appels et retourner la dernière valeur obtenue, soit print un message d'erreur.
 
 ### 4.4. Creating a Python module
+---
 
 Un module correspond à une fonction ou un paquet de fonctions stockées dans un fichier dont le nom termine par *.py* (apporté par le système python ou par un autre développeur). \
 un module peut être appelé dans n'importe quel programme du moment que son importation a été faite avec succès (il faut connaître le chemin (*path*) vers ce fichier et le spécifier). Les fichiers enregistrées dans le dossier Lib de Python présentent un path connu par l'instruction *import*.
@@ -3164,6 +3183,7 @@ On peut aussi indiquer où trouver la fonction dès le début du fichier ; on po
 *Ce n'est pas gênant que le nom du module soit identique au nom de la fonction (ex : random.random(), qui appartient à la librairie Python).*
 
 ### 4.5. Program design using functions - the game of Nim
+---
 
 Ce jeu est un exemple de *top-down approach* (ou *stepwise refinement approach*) : c'est une méthode d'élaboration et de construction d'un système en commençant par la construction des entités "haut niveau" pour entrer petit-à-petit de plus en plus dans les détails. On écrit donc d'abord le code du *main* avant d'écrire les fonctions dont on a besoin. \
 Le jeu Nim est un exemple de programme utilisant des fonctions et des modules.
@@ -3343,6 +3363,7 @@ Comme beaucoup d'opérations sur les fichiers, la fonction *open()* dépend souv
 - Seul **un programme à la fois peut écrire dans le fichier**. Plusieurs programmes peuvent lire le fichier en même temps, mais un seul peut écrire dedans, et ce sans qu'aucun autre programme ne le lise en même temps.
 
 ### 5.1. What is a file? A little theory
+---
 
 Les fichiers sont une structure de données destinées à stocker des informations sur des disques ou des cassettes (principaux types de stockage secondaire). Ces systèmes sont moins coûteux et permettent de stocker bien plus de données que la mémoire (système de stockage primaire). *Les disques durs modernes peuvent stocker plusieurs teraoctets de données (1 To = 10<sup>12</sup>o)*.
 
@@ -3378,6 +3399,7 @@ Cependant, tous les blocs d'un fichier ne peuvent pas forcément être stockés 
 Le temps d'accès à un bloc de données randomisé sur le disque est d'environ 10ms pour bouger vers la bonne piste (*seek time*) puis environ 4.15ms, soit la moitié d'une rotation du plateau. La lecture du bloc prend en moyenne 8.3 * (1/N<sub>sectors</sub>), soit environ 0.008ms pour un disque avec 1024 secteurs. Si on considère ce temps comme négligeable, il faut environ 14.15 **millisecondes** pour lire un bloc. En comparaison, il faut 8 **nanosecondes** à l'ordinateur pour accéder à des données contenues dans la mémoire (mémoire de travail, RAM).
 
 ### 5.2. Keyboard input
+---
 
 Les informations contenues dans un fichier sont déjà connues de l'ordinateur ; les informations saisies sur un clavier non. Certaines erreurs sont communes avec le clavier, comme par exemple un mauvais type donné par l'utilisateur au programme, sur lequel on ne peut pas réaliser les opérations souhaitées (ex : str au lieu de int). Ces erreurs peuvent survenir avec les fichiers si on ne connaît pas le format du fichier.
 
@@ -3401,6 +3423,7 @@ Il faut bien anticiper les différentes erreurs qui peuvent être levées dans l
     print(ks)
 
 ### 5.3. Using files in Python: less theory, more practice
+---
 
 Les étapes sont globalement les mêmes que dans tous les langages.
 
@@ -3763,6 +3786,7 @@ Voici le texte de mon fichier : `Code is like humor. When you have to explain it
 `b" it's bad."`
 
 ### 5.4. Writing to files
+---
 
 Cette fois, il faut ouvrir le fichier en mode écriture :
 
@@ -3805,4 +3829,496 @@ Si *w* écrit au début du fichier, le mode *a* permet d'ouvrir le fichier et de
         f.write(f"square{i} = {i**2}\n")
 
 Cela ajoute 20 nouveaux carrés à la suite des précédents. Au total, le fichier contiendra un titre suivi des carrés de 0 à 44.
+
+---
+
+## Chapter 6: classes
+
+### 6.1. A casual introduction to classes
+---
+
+Si on imagine un objet *man* traité par un ordinateur, l'ordinateur aurait les informations (propriétés) suivantes à son sujet (grosso modo) :
+
+<center>
+
+![Alt text](image-8.png)
+</center>
+
+Un *man* est donc un ensemble complexe de données aux types différents, avec un nombre de propriétés.\
+Avec la colonne *spouse* on observe le type *person*, auquel appartient aussi *man*.
+
+On peut donc imaginer une classe *personne* qui présente des caractéristiques communes à la classe *man* et à la classe *woman*. Mais entre *man* et *woman*, il existe des caractéristiques qui ne peuvent pas être partagées (ex : examen de prostate pour un homme, date des dernières menstruations pour une femme, etc).
+
+Si on considère maintenant l'objet *bar*, c'est une classe d'objets qui peut contenir un certain nombre de *persons* (*men* or *women*). C'est une **classe conteneur**.
+
+La phrase : "*A man walks into a bar*" peut être traduite en langage ordinateur comme ceci :
+
+    aMan.walksInto(aBar)
+
+- *aMan* est une **instance**, soit une entité spécifique de la classe *man*. \
+- *aBar* est une **instance** de la classe d'objets *bar*.
+
+Cet homme a un nom *Name* (variable) qui est une de ses propriétés. Pour y accéder :
+
+    print(aMan.Name)        # accessing / printing the name
+    aMan.Name = "Ted Smith"     # assigning to the name
+
+*On place le point "." après le nom de l'instance de classe.*
+
+*walksInto* est une fonction appartenant à la définition de *man* qui prend un paramètre, du type de *bar*.
+
+Python autorise le programmeur à définir des classes et à les utiliser pour contenir des variables et fonctions.
+
+### 6.2. Classes and types
+---
+
+La **classe** est un modèle de conteneur de données et opérations (fonctions). Un **objet** est une **instance** de la classe, un élément spécifique de ce modèle. \
+Pour définir une classe en Python, il faut lui donner un nom et un ensemble de variables et fonctions qui lui appartiennent.
+
+Si on reprend l'exemple de la classe *man*, on sait qu'elle présente une fonction *walksInto()*. On peut commencer par écrire cette classe de la manière suivante :
+
+    class man:
+        def walksInto(aBar):
+            # code
+
+Une fonction appartenant à une classe est généralement référencée par le terme ***méthode***, que nous avons déjà croisé auparavant. Donc, une méthode désigne n'importe quelle fonction appartenant à une classe.
+
+Les classes peuvent aussi avoir leurs propres données, soit des variables propres appartenant à la classe ; ces variables sont utilisées dans le code de la classe mais ne sont pas accessibles en dehors (= ***variables locales de la classe***). On peut donc retrouver le même nom de variable **x** dans une classe et dans une autre sans conflit.
+
+La classe reste une description abstraite d'un fonctionnement, un "patron". On "instancie" des instances de classe, des exemples spécifiques qui utilisent ce modèle pour s'appliquer à un objet précis (ex : *aMan*, instance de la classe *man*). Pour créer une nouvelle instance de classe, on écrit comme ceci :
+
+    aMan = man()
+
+Ainsi, toutes les variables utilisées dans la définition de *man* sont également utilisables par *aMan*. "*man( )*" est ce qu'on appelle un ***constructeur*** (au même titre que *str( )* ou *int( )* - qu'on avait auparavant qualifiés de *type*), lorsqu'il est appelé, les variables sont initiées. Il faut donner un nom à l'instanciation donc le constructeur prend un paramètre :
+
+    aMan = man("Jim Parker")
+
+Le constructeur prend ici une string comme paramètre, et l'assigne à la variable locale *Name*.
+
+Le constructeur est toujours appelé ***\_\_init__*** :
+
+    def __init__(self, parameter1, parameter2,...):
+
+Le paramètre initial ***self*** est une référence à la classe ayant été définie. Toute variable appartenant à cette classe est référencée en plaçant le préfixe "self" devant.
+
+    def __init__(self, name):
+        self.Name = name
+
+Ici on fait en sorte que le constructeur *man* prenne un paramètre qu'il assigne ensuite à la variable *Name*.
+
+### 6.3. Classes as encapsulated modules
+---
+
+Les *modules* (ou *packages*) comme *math* ou *random* sont des ensembles de variables et de fonction ayant un thème ou un objectif commun. Une classe peut être assimilée à un module. \
+Les fonctions qui composent ces classes/modules sont appelées des méthodes car elles sont propres à ces classes et utilisables sur les instances de ces classes.
+
+Quand on écrit : `from random import *`, * est une instance de la classe *random*.
+
+Quand on importe un module, on crée en fait une instance de cette classe (qui est alors un objet de type *module*) dans notre script. On peut parfaitement référencer cette instance avec une variable :
+
+    import random
+    s = random
+    print(s.random())
+
+Il peut y avoir plusieurs instances :
+
+    t = random      # une autre instance de la classe random
+    print(s.random(), t.random())
+
+Les variables qui sont déclarées dans la classe sont accessibles en utilisant une méthode sur l'instance de la classe. Par exemple, la variable *name* appartenant à la classe *client* :
+
+    import client
+
+    print(client.name)
+
+Il est évidemment possible de faire cela, mais il est plus clair d'avoir une méthode ***.get( )*** pour chaque variable, et cette méthode retourne la valeur de la variable qu'on souhaite utilsier.
+
+    import client
+
+    print(client.get_name())
+
+`Jimmy Parker`
+
+De la même façon, c'est une bonne pratique que d'avoir une méthode ***set( )*** qui assigne une valeur aux variables appartenant à la classe.
+
+    client.set_name("Parker")
+
+Une méthode très importante est le **constructeur**, appelé automatiquement par le système quand une instance est créée. Le constructeur peut accepter des arguments et les enregistrer ensuite comme des variables locales de la classe. Si une classe a un constructeur, la syntaxe pour créer une instance est alors la suivante :
+
+    a = client()
+
+### 6.4. Classes as data abstractions
+---
+
+On peut définir un *type* comme une *structure de données* et un ensemble d'*opérations* qu'on peut réaliser sur cette structure. C'est ce qu'on appelle un **type de donnée abstrait** (*abstract data type* = *ADT*). La structure *classe* peut être utilisée comme le début d'une implémentation pratique de types utilisant un modèle. Les variables locales et les types de données implémentées ne doivent être accessibles que par la personne qui implémente la classe, et l'utilisateur ne devrait pouvoir qu'instantier la classe et utiliser les opérations propres.
+
+<p style = "color: green">Exemple du type <em>Bool</em> :
+
+Une variable booléenne ne peut prendre qu'une valeur parmi deux choix, *True* ou *False*. Ce sont des constantes, dont les valeurs réelles ne sont pas importantes ; tout ce qui importe est qu'elles existent et sont toujours les mêmes.
+
+En Python, on peut avoir l'instruction :
+
+    flag = True
+
+Avec *flag* la variable de type *bool* qui prend la valeur *True*. \
+Si on utilise une classe pour représenter le type *bool*, on peut écrire :
+
+    flag = Boolean()
+    flag.set_true()
+
+C'est plus compliqué mais montre ce qui se passe réellement : le constructeur *Boolean* établit une instance de la classe *Boolean*, assignée à la variable *flag*. On lui assigne ensuite une valeur en appelant la méthode ***set_true( )*** codée dans la classe *Boolean*. *Une méthode set_false( ) peut aussi exister.* \
+Le résultat de cette opération est que *flag* est une variable booléenne appartenant à la classe *Boolean* et prenant la valeur True.
+
+On peut faire une boucle pour connaître la valeur de flag en utilisant la méthode ***get( )*** :
+
+    while flag.get():
+        #code
+
+Les variables booléennes supportent les opérations *and*, *or* et *not*. \
+Par exemple, avec deux variables booléennes *a* et *b*, *a and b* est *True* seulement si *a* est *True* et *b* est *True*. Si on implémente la classe *Boolean*, on peut utiliser une méthode ***and( )*** pour implémenter cette opération. De même, *a or b* ne sera *True** que si au moins *a* ou *b* est *True* (ou les deux, c'est un ou inclusif).
+
+    result = a.and(b)
+    result = a.or(b)
+
+L'opération *not* est unaire, c'est-à-dire qu'elle ne s'applique qu'à une seule valeur. Elle inverse la valeur de la variable booléenne. On ne passe donc pas d'argument à ***not( )***.
+
+    result.not()
+
+Une classe peut avoir des variables locales, dont un genre spécial qui est une valeur que la classe définie pour que les programmeurs l'utilisent spécifiquement avec cette classe, le plus souvent une constante.
+
+    TRUE = 1000
+    FALSE = 2000
+
+On peut les utiliser hors de la classe :
+
+    Boolean.TRUE            #class_name.var
+    Boolean.FALSE
+
+C'était ici un exemple si on écrivait nous-mêmes la classe *Boolean*, qui est une classe déjà existante sur Python.
+
+### 6.5. The Python class - syntax and semantics
+---
+
+On peut trouver des similitudes entre une fonction et une classe ; par exemple, pour définir une classe :
+- On utilise le mot-clé ***class***
+- Suivi d'un nom donné à la classe
+- De deux points
+- D'un bloc d'instruction (donc indenté par rapport à la définition).
+
+On y retrouve également des variables locales, comme dans une fonction.
+
+La méthode **\_\_init__** est utilisée pour initialiser les variables appartenant à la classe. C'est ce qu'on a appelé un **constructeur** plus haut. \
+Les variables locales ne sont accessibles qu'en utilisant le nom de la classe ou d'une instance de celle-ci (en dehors de la classe), ou en utilisant le nom ***self*** (à l'intérieur de la classe). ***self.name*** référence une variable qui a été définie dans la classe, tandis que ***name*** référence une variable locale de la méthode.
+
+Quand *\_\_init__* est appelé, un ensemble de paramètres sont passés et utilisés pour initialisés les variables dans la classe. Si le premier paramètre est *self*, cela signifie que la méthode peut accéder à des variables *class-local* ; autrement, elle ne peut pas y accéder. Toute variable initialisée dans *\_\_init__* et précédée de *self* est une variable locale de la classe (*class-local*). Toute méthode à laquelle on passe *self* comme paramètre peut définir une nouvelle variable class-local, bien qu'il soit sensé de toutes les initialisées en même temps.
+
+<p style = "color: green">Exemple avec la classe <em>person</em> :
+
+    class Person:
+        def __init__(self, name):
+            self.name = name
+
+        def introduce(self):
+            print(f"Hi, my name is {self.name}!")
+
+    me = person("Jim")      # me = class person's instance - has its characteristics and can use its methods
+    me.introduce()
+
+    you = person("Mike")
+    you.introduce()
+
+`Hi, my name is Jim!` \
+`Hi, my name is Mike!`
+
+Cette classe possède deux méthodes, *\_\_init__( )* et *introduce( )*. Après que la classe ait été définie, la variable *me* devient une nouvelle isntance de la classe *person*, possèdant le nom "Jim". Cette variable est ensuite utilisée pour accéder à la méthode *introduce( )*. \
+*you* est une seconde instance de la classe *person*, possédant le nom "Mike".
+
+On peut créer autant d'instances qu'on le souhaite, et un nom de variables peut être assigné à une instance, puis à une autre.
+
+Une méthode peut créer une nouvelle variable class-local :
+
+    def introduce(self):
+        # name being a class-local variable created in __init__()
+        print(f"Hi, my name is {self.name}!")
+        self.introductions = True
+
+    me = person("Jim")
+    me.introduce()
+    print(me.introductions)
+
+`Hi, my name is Jim!` \
+`True`
+
+### 6.5.1. A really simple class
+
+<p style = "color: green"><strong>Point class</strong>
+
+Créons la classe *point* qui correspond à une place dans un avion, dont les coordonnées sont x la rangée et y le numéro dans la rangée.
+
+    import math
+
+    class Point:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+<p style = "color: red"><strong>On préfère mettre en lettre majuscule la première lettre du nom de la classe, cela permet de créer une instance du même nom mais minuscule.</strong>
+
+Il faut imaginer que ici ***self* sera remplacé partout où il est écrit dans la classe par l'instance de classe qui sera créée et sur laquelle on appelera les méthodes**. \
+Le *self* est à donner en argument à **chaque méthode** si c'est une méthode qui s'utilise sur l'instance ou qu'elle utilise des caractéristiques qui lui sont propres.
+
+Ici les caractéristiques (ou **attributs**) propres à l'instance sont x et y. Par l'opération *self.x = x* et self.y = y*, on **associe ces variables et leurs valeurs spécifiques à notre instance**. On aura ainsi pas à les donner à chaque fois qu'on appelle une méthode sur la classe.
+
+        # the function is written in the class so think to indentate
+        def distance(self, p):
+            d = (self.x - p.x)**2 + (self.y - p.y)**2
+            return math.sqrt(d)      # square root
+
+Cette formule permet de calculer la distance entre deux points dans un repère bidimensionnel (entre autre).
+
+Pour comparaison, voici comment on aurait écrit une fonction qui calcule la distance entre deux points en dehors d'une classe :
+
+    def distance(p1_x, p2_x, p1_y, p2_y):
+        d = (p1_x - p2_x)**2 + (p1_y - p2_y)**2
+        return math.sqrt(d)
+
+Il faut passer les paramètres x et y de chaque point à la fonction à chaque fois qu'on l'appelle. \
+Tandis qu'une fois qu'on a créé une instance de classe en mentionnant ses attributs à *\_\_init__*, **on appelle simplement la méthode sur l'instance** (on peut aussi avoir à lui donner une autre instance en argument, comme ci-dessus). On peut ensuite utiliser ses attributs dans le corps de la fonction en écrivant ***instance_name.attribut***. C'est bien plus pratique et rapide pour le développeur, et cela permet de ranger les fonctions avec les classes pour lesquelles elles sont utiles.
+
+Continuons avec notre exemple et créons deux points *point1* et *point2* et leurs coordonnées :
+
+    point1 = Point(2, 4)
+    point2 = Point(5, 2)
+
+    distance_point1 = point1.distance(point2)
+    print(distance_point1)
+
+    distance_point2 = point2.distance(point1)
+    print(distance_point2)
+
+    distance_point1 = point1.distance(point1)
+    print(distance_point1)
+
+`3.605551275463989` \
+`3.605551275463989` \
+`0.0`
+
+Les méthodes et attributs (données) d'une classe sont vues comme des données appartenant à un objet (une isntance de la classe). C'est pourquoi on considère qu'une classe peut être vue comme un type.
+
+    print(type(point1))
+
+`<class '__main__.Point'>`
+
+Les classes sont une des caractéristiques des langages de programmation orientée objet (POO).\
+Beaucoup de ces langages de programmation offrent le concept de méthodes **d'accès** (*accessor methods*) ou **getters** pour manipuler les attributs d'une classe. Certains langages n'autorisent pas les variables appartenant à une classe d'être utilisée directement, ou il y a des contrôles spécifiques pour y accéder.\
+Cela vient du fait que vouloir trouver les valeurs d'une variable et les modifier est la plupart du temps une mauvaise idée. Si le seul endroit où la variable locale peut être modifiée est au sein de la classe, cela permet de mieux contrôler ces changements et d'éviter des erreurs. Prévenir les erreurs dans un programme vient notamment du fait de restreindre les actions à une région et savoir en permanence ce qui s'y passe et l'état de chaque variable. \
+En gros, l'interface de la classe pour le programmeur est différente de celle de l'utilisateur.
+
+Le programmeur peut cependant définir des méthodes au sein de la classe qui rendront accessibles ces variables locales de façon contrôlée ; c'est le principe des méthodes d'accès :
+
+        # in the class code
+        def get_x(self):
+            return self.x
+        def get_y(self):
+            return self.y
+
+    print(f"{point1.get_x()}, {point1.get_y()}")
+
+`2, 4`
+
+Contrairement à d'autres langages POO, il n'existe pas de façon de rendre une variable privée et intouchable en Python. Par convention, si on ajoute un underscore _x devant la variable x, cela veut dire qu'il ne faut pas la modifier, sauf via la méthode set() si le programmeur la définie. Cela permet de contrôler les transformations apportée sur la variable (par exemple s'assurer que le changement de valeur reste un *int*, donc ne change pas de type - autrement, les méthodes et opérations pratiquées sur cet attribut seraient caduques et cela créerait des erreurs).
+
+Si on réécrit la méthode *distance( )* de façon plus sécurisée, en ayant renommé les attributs __x et __y :
+
+    def distance(self, p):
+        d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
+        return math.sqrt(d)
+
+Les méthodes dites **de mutation** (*mutators*) ou **setters** sont utilisées pour modifier la valeur d'une variable locale de la classe. Elles permettent de checker la range ou le type de la nouvelle valeur par exemple.
+
+        def set_x(self, x):
+            # x is a row, so it is an integer and there are 20 rows in the plane
+            if not isinstance(x, int) or x not in range(0, 20):
+                return
+            self.__x = x
+
+        def set_y(self, y):
+            # y is a place in a row, and there is 6 places in a row
+            if not isinstance(y, int) or y not in range(0, 6):
+                return
+            self.__y = y
+
+On peut ajouter une méthode ***draw( )*** qui print les coordonnées du point et peut être utile pour le débugage.
+
+        def draw(self):
+            print(f"({self.__x}, {self.__y})")
+
+    point1.draw()
+
+`(2,4)`
+
+<p style = "color: green"><strong>Point Triangle</strong>
+
+Créons maintenant une classe *Triangle*, composé de 3 points.
+
+    class Triangle:
+        def __init__(self, p0, p1, p2, p3):
+            self.__v0 = p0
+            self.__v1 = p1
+            self.__v2 = p2
+            self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
+            self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
+
+        # vertices = sommets
+        def set_vertices(self, p0, p1, p2):
+            self.__v0 = p0
+            self.__v1 = p1
+            self.__v2 = p2
+
+        def get_vertices(self):
+            return (self.__v0, self.__v1, self.__v2)
+
+        def get_x(self):
+            return self.__x
+
+        def get_y(self):
+            return self.__y
+
+Les valeurs __x et __y sont les coordonnées du centre du triangle, qu'on peut aussi considérer comme les coordonnées moyennes en abscisse et ordonnées de ses sommets.
+
+Nous aborderons le traitement graphique dans le prochain chapitre, mais un des objectifs d'une telle classe serait aussi de dessiner ce triangle à l'écran.
+
+        def draw(self):
+            print("Triangle:")
+            self.__v0.draw()
+            self.__v1.draw()
+            self.__v2.draw()
+
+On peut aussi déplacer le triangle à une nouvelle position. Cela correspond simplement à déplacer les coordonnées de ses sommets (et donc de son centre) d'une même distance.
+
+        def move(self, dx, dy):
+            coord = self.__v0.get_x()
+            self.__v0.set_x(coord + dx)
+
+            coord = self.__v0.get_y()
+            self.__v0.set_y(coord + dy)
+
+            coord = self.__v1.get_x()
+            self.__v1.set_x(coord + dx)
+
+            coord = self.__v1.get_y()
+            self.__v1.set_y(coord + dy)
+
+            coord = self.__v2.get_x()
+            self.__v2.set_x(coord + dx)
+
+            coord = self.__v2.get_y()
+            self.__v2.set_y(coord + dy)
+
+            self.__x = self.__x + dx
+            self.__y = self.__y + dy
+
+Cette méthode n'est pas très claire, donc on pourrait plutôt ajouter une méthode *move( )* à la classe *Point*, comme ceci :
+
+        def move(self, dx, dy):
+            self.__x = self.__x + dx
+            self.__y = self.__y + dy
+
+Ainsi, la méthode *move( )* , qui déplace les coordonnées des sommets, serait la suivante :
+
+        def move(self, dx, dy):
+            self.__v0.move(dx, dy)
+            self.__v1.move(dx, dy)
+            self.__v2.move(dx, dy)
+            self.__x = self.__x + dx
+            self.__y = self.__y + dy
+
+Cela rend le script à la fois plus lisible, plus simple et plus explicite.
+
+Le script complet donnerait ceci :
+
+    import math
+
+    class Point:
+        def __init__(self, x, y):
+            self.__x = x
+            self.__y = y
+
+        def get_x(self):
+            return self.__x
+
+        def get_y(self):
+            return self.__y
+
+        def set_x(self, x):
+            if not isinstance(x, int) or x not in range(0, 20):
+                return
+            self.__x = x
+
+        def set_y(self, y):
+            if not isinstance(y, int) or y not in range(0, 6):
+                    return
+            self.__y = y
+
+        def distance(self, p):
+            d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
+            return math.sqrt(d)
+
+        def draw(self):
+            print(f"({self.__x}, {self.__y})")
+
+        def move(self, dx, dy):
+            self.__x = self.__x + dx
+            self.__y = self.__y + dy
+
+    class Triangle:
+        def __init__(self, p0, p1, p2):
+            self.__v0 = p0
+            self.__v1 = p1
+            self.__v2 = p2
+            self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
+            self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
+
+        def set_vertices(self, p0, p1, p2):
+            self.__v0 = p0
+            self.__v1 = p1
+            self.__v2 = p2
+
+        def get_vertices(self):
+            return (self.__v0, self.__v1, self.__v2)
+
+        def get_x(self):
+            return self.__x
+
+        def get_y(self):
+            return self.__y
+
+        def move(self, dx, dy):
+            self.__v0.move(dx, dy)
+            self.__v1.move(dx, dy)
+            self.__v2.move(dx, dy)
+            self.__x = self.__x + dx
+            self.__y = self.__y + dy
+
+    point1 = Point(2, 4)
+    point2 = Point(5, 2)
+    point3 = Point(4, 3)
+
+    triangle = Triangle(point1, point2, point3)
+
+    triangle.move(2, 3)
+
+### 6.5.2. Encapsulation
+
+L'encapsulation n'existe pas véritablement en Python, même si certaines conventions d'écriture permettent de protéger les données d'une classe (notamment ses variables) pour inciter l'utilisateur ou les programmeurs qui utiliseront ces classes à ne pas modifier les variables de ses classes. \
+On parle de variable **protégée** en Python si le nom de cette variable commence par un underscore _. Cette variable ne pourra pas être modifiée en dehors de la classe. \
+On parle de variable **privée** en python si le nom de cette variable commence par deux underscores __. Cette variable ne peut ni être modifiée ni examinée en dehors de la classe. \
+Les autres variables sont considérées comme **publiques**.
+
+Cette convention d'écriture s'applique aux noms de méthodes également : ***\_\_init__( )*** est souvent le constructeur de la classe, et c'est une méthode privée.
+
+Dans notre classe *Point* vue précédemment, la méthode *\_\_init__( )* est **privée** et les variables *self.__x* et *self.__y* sont **privées** et ne peuvent être examinées (*get( )*) et modifiées (*set( )*) que via des méthodes de la classe.
+
+### 6.6. Classes and data types again
+---
 
