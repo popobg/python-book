@@ -29,21 +29,17 @@ class Ball:
     def update_speed(self, dt):
         self._speed = self._speed + self._acceleration * dt
 
-    def calculate_height_after_bounce(self):
-        self._height = -self._height * self._elasticity
-
-    def calculate_speed_after_bounce(self, t_bounce):
-        self._speed = -(self._speed + self._acceleration * t_bounce) * self._elasticity
-
-    def calculate_elasticity(self):
+    def loss_elasticity(self):
         if self._elasticity < 0.03:
             self._elasticity = 0.0
         else:
             self._elasticity = self._elasticity - 0.03
 
-    def calculate_tbounce(self, start_speed, start_height):
+    def bounce(self, start_speed, start_height):
         t_bounce = (-start_speed + math.sqrt(start_speed**2 +2 * self._acceleration * start_height))/self._acceleration
-        return t_bounce
+        self._speed = -(self._speed + self._acceleration * t_bounce) * self._elasticity
+        self._height = -self._height * self._elasticity
+        self.loss_elasticity()
 
     def calculate_fall_distance(self, dt):
         s = 0.5 * self._acceleration * dt**2 + self._speed * dt
@@ -56,10 +52,7 @@ class Ball:
         self.update_height(s)
         self.update_speed(dt)
         if self.get_height() < 0:
-            t_bounce = self.calculate_tbounce(start_speed, start_height)
-            self.calculate_height_after_bounce()
-            self.calculate_speed_after_bounce(t_bounce)
-            self.calculate_elasticity()
+            self.bounce(start_speed, start_height)
         elif start_speed * self.get_speed() < 0:
             self.reset_speed()
         if self.get_height() < 0:
