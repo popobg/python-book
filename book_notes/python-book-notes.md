@@ -111,26 +111,27 @@ Reprenons à l'étape 3 où le code change.
 <p style= "color: orange"><strong>4ème version</strong> : on traite les erreurs potentielles qui peuvent survenir.</p>
 
 On utilise *try* pour vérifier que l'input utilisateur est bien un entier, sinon on lève une exception et on redemande à l'utilisateur d'entrer un input.
+```python
+import random
+choice = random.randint(1, 10)
 
-    import random
-    choice = random.randint(1, 10)
+guess = False
+while not guess:
+    try:
+        playerchoice = int(input("Guess a number between 1 and 10: "))
+        guess = True
+    except:
+        print("Sorry, your guess must be an integer.")
+        continue
+    if playerchoice < 1 or playerchoice > 10:
+        print(f"Your guess was {playerchoice}, which is out of range.")
+        guess = False
 
-    guess = False
-    while not guess:
-        try:
-            playerchoice = int(input("Guess a number between 1 and 10: "))
-            guess = True
-        except:
-            print("Sorry, your guess must be an integer.")
-            continue
-        if playerchoice < 1 or playerchoice > 10:
-            print(f"Your guess was {playerchoice}, which is out of range.")
-            guess = False
-
-    if choice == playerchoice:
-        print("You win !")
-    else:
-        print("Sorry, you lose.")
+if choice == playerchoice:
+    print("You win !")
+else:
+    print("Sorry, you lose.")
+```
 
 ### 1.3. Rock-paper-scissors
 ---
@@ -293,8 +294,9 @@ On peut aussi convertir un type en un autre (en remplissant certaines conditions
 Si on revient sur l'exemple de print de notre circonférence, on ne l'a calculée que sur un radius donné, indiqué par le développeur.
 En pratique, ce n'est pas très pertinent si on souhaite faire un programme qui calcule la circonférence de n'importe quel cercle, et il vaudrait mieux demander la valeur à l'utilisateur via un ***input***. \
 Attention cependant car l'input retourne une **string** qui ne peut pas être utilisée telle quelle pour faire des opérations. Il faut donc convertir son type en un type opératoire.
-
-    radius = float(input())
+```python
+radius = float(input())
+```
 
 *Si ce qu'on souhaite manipuler est un nombre flottant, sinon on peut utiliser **int()**. Il est préférable d'utiliser float() car moins de risque de perte d'information dans ce genre de situation.*
 
@@ -351,28 +353,30 @@ Les deux lignes suivant le *if* ont une indentation de plus que le *if*, ils app
 
 <p style="color: green">Exemple de code <em>Java</em> :</p>
 
-    if (a < b) {
-        a = a + 1;
-        b = b - 1;
-    }
-    c = a - b;
-
+```Java
+if (a < b) {
+    a = a + 1;
+    b = b - 1;
+}
+c = a - b;
+```
 L'utilisation des {...} (*braces*) identifie la suite, c'est ce qu'on appellerait un *block* en Java ou C++. *On appelle aussi **bloc d'instruction** la suite de consignes en Python.* L'indentation est ici uniquement utilisée pour simplifier la lecture du code pour un humain.
 
 On retrouve l'utilisation des ; en Python également mais dans un autre but : ils sont utilisés si on veut écrire plus d'un statement sur une même ligne. Mais c'est souvent plus difficile à comprendre rapidement donc on évite. On privilégie toujours la clarté à la compacité.
-
-    if (a < b): a = a + 1; b = b - 1
-    c = a - b
+```python
+if (a < b): a = a + 1; b = b - 1
+c = a - b
+```
 
 Il existe aussi des opérateurs d'assignation un peu spéciaux, comme les opérateurs d'**incrémentation** (+=) / **décrémentation** (-=). <em>*=, /=, **= et %= existent aussi.</em>
 
 <p style="color: green"><em>a = a + 1 → a += 1</em> et <em>b = b - 1 → b += 1</em></p>
 
 L'incrémentation peut aussi s'appliquer à des types non numériques, comme une liste :
-
-    liste = [0, 3, 5]
-    liste += ["a", "b"] ; print(liste)
-
+```python
+liste = [0, 3, 5]
+liste += ["a", "b"] ; print(liste)
+```
 `[0, 3, 5, "a", "b"]` # output
 
 *La liste ne supporte pas la décrémentation en revanche.*
@@ -381,18 +385,20 @@ L'incrémentation peut aussi s'appliquer à des types non numériques, comme une
 
 ***Else*** appartient au statement ***if***. Si la condition *if* est *True*, on exécute son bloc d'instruction ; si elle est *False*, on peut aussi exécuter un autre set d'instructions, contenu dans la clause *else*. \
 Un *if statement* peut exister sans le *else*, mais l'inverse n'est pas vrai.
-
-    if a < b:
-        print("a < b")
-    else:
-        print("a >= b")
+```python
+if a < b:
+    print("a < b")
+else:
+    print("a >= b")
+```
 
 Qui pourrait aussi s'écrre :
-
-    if a < b:
-        print("a < b")
-    if not a < b:
-        print("a >= b")
+```python
+if a < b:
+    print("a < b")
+if not a < b:
+    print("a >= b")
+```
 
 *else* est :
 - Expressif : il correspond à une façon syntaxique correct d'énoncer une alternative dans le langage humain.
@@ -405,44 +411,48 @@ Ce sont des *if* dans un *if*. Souvent il existe une alternative non imbriquée,
 
 <p style="color: green"> Nested IFs :</p>
 
-    if player == "scissors":
-        if choice == "rock":
-            print("Computer wins.")
-        else:
-            print("You win!")
-
+```python
+if player == "scissors":
+    if choice == "rock":
+        print("Computer wins.")
+    else:
+        print("You win!")
+```
 <p style="color: green"> Non-nested IFs :</p>
 
-    if player == "scissors" and choice == "rock":
-        print("Computer wins.")
-    if player == "scissors" and choice != "rock":
-        print("You win!")
-
+```python
+if player == "scissors" and choice == "rock":
+    print("Computer wins.")
+if player == "scissors" and choice != "rock":
+    print("You win!")
+```
 *On n'utilise pas ici le else car il existe d'autres alternatives au if qui ne remplissent pas les conditions qu'on souhaiterait dans le else ; il faut donc faire deux ifs distincts.*
 
 ### 1.7.3. elif
 
 On peut parfois se retrouver avec trop de répétitions et de nested-IFs. Une alternative à cela est le ***elif*** ; il combine un *else* et un *if*.
 
-<p style="color: green">Without <em>elif</em> :</p>
+<p style="color: green">Sans <em>elif</em> :</p>
 
-    if a < b:
-        print("a < b")
-    else:
-        if a > b:
-            print("a > b")
-        else:
-            print("a = b")
-
-<p style="color: green">With <em>elif</em> :</p>
-
-    if a < b:
-        print("a < b")
-    elif a > b:
+```python
+if a < b:
+    print("a < b")
+else:
+    if a > b:
         print("a > b")
     else:
         print("a = b")
+```
+<p style="color: green">Avec <em>elif</em> :</p>
 
+```python
+if a < b:
+    print("a < b")
+elif a > b:
+    print("a > b")
+else:
+    print("a = b")
+```
 Cette méthode réduit considérablement le nombre d'indentation et améliore la lisibilité. Cela permet aussi de ne pas lire les lignes suivantes inutilement (comme avec deux ifs) si une condition a déjà été remplie et cela améliore la vitesse d'exécution du programme. \
 *Exemple ici, si le premier if est exécuté, l'ordinateur ne lira pas elif ni else car il sait que ce sont des alternatives au premier if.*
 
@@ -741,32 +751,35 @@ A chaque tour de boucle, on évalue le statement du while. Pour sortir d'une bou
 
 <p style="color: green">Exemple de boucle finie :</p>
 
-    a = 0
-    while a < 10:
-        a += 1``` # identique : a = a + 1
-    print(a)
-
+```python
+a = 0
+while a < 10:
+    a += 1``` # identique : a = a + 1
+print(a)
+```
 La boucle while fera 10 tours avant que la condition *a < 10* ne soit *False*. Le bloc d'instruction réalise une incrémentation de 1 sur *a*, ainsi *a* change de valeur à chaque tour et la condition prend fin à un moment. \
 Une fois la boucle terminée, l'instruction suivante est réalisée et l'ordinateur print la valeur de *a*, soit 10 à ce stade du programme.
 
 <p style="color: green">Exemple de boucle infinie :</p>
 
-    a = 0
-    b = 1
-    while b < 10:
-        a += 1
-    print(a)
-
+```python
+a = 0
+b = 1
+while b < 10:
+    a += 1
+print(a)
+```
 Dans ce code, on exécutera jamais l'instruction *print()* car le while est toujours *True* ; en effet, on entre dans la boucle car b = 1 <10 mais aucune instruction dans le bloc ne modifie la condition initiale donc il n'y aura jamais de changement. \
 Du point de vue utilisateur, il ne passera rien. Le programme fonctionne mais ne s'arrête jamais. *Pour forcer d'un programme, faire ctrl + C dans le terminal d'éxécution.*
 
 <p style="color: green">Exemple de boucle non réalisée :</p>
 
-    a = 100
-    while a < 10:
-        a += 1
-    print(a)
-
+```python
+a = 100
+while a < 10:
+    a += 1
+print(a)
+```
 La condition n'est pas remplie donc on exécute pas le bloc d'instruction suivant. Le *print* renverra 100.
 
 ### 2.2 Introduction to module and functions with random numbers
@@ -784,14 +797,16 @@ Une **fonction built-in** est comme une fonction mathématiques et correspond à
 <p style= "color: green">Exemples de fonction built in : <em>print()</em>, <em>int().</em></p>
 
 Certaines fonctions sont aussi contenues dans des **modules**, comme *sine* ou *square root* contenues dans le module ***math***.
-
-    import math # le module math est importé dans le programme et ses fonctions peuvent être utilisées.
+```python
+import math # le module math est importé dans le programme et ses fonctions peuvent être utilisées.
+```
 
 L'instruction ***import*** doit se trouver au début du programme (après le shebang s'il y en a).
 
 Pour appeler une fonction, il faut ensuite appeler le nom du module suivi d'un *.* (*period* en anglais) et du nom de la fonction.
-
-    print(math.sqrt(64))``` # sqrt(x) = un appel de fonction
+```python
+print(math.sqrt(64))``` # sqrt(x) = un appel de fonction
+```
 `8`
 
 ---
@@ -801,33 +816,37 @@ Il existe un module ***random*** contenant plusieurs modules.
 
 **random()** \
 La fonction ***random()*** produit un nombre aléatoire compris entre 0.0 et 1.0.
-
+```python
     import random
     print(random.random())
+```
 `0.07229650795715237`
 
 Pour augmenter l'amplitude de random, il suffit de le multiplier par un certain nombre, par exemple pour aller de 0 à 100 :
-
-    print(random.random()*100)
+```python
+print(random.random()*100)
+```
 
 **randint()**
 La fonction ***randint()*** accepte deux paramètres (deux nombres). Le premier correspond à la borne inférieure (inclue) et la deuxième est la borne supérieure (inclue) des nombres à produire.
 
 <p style= "color: green">Exemple appliqué au lancer de pièce : pile ou face</p>
 
-    if random.randint(1, 2) == 1:
-        print("Heads")
-    else:
-        print("Tails")
-
+```python
+if random.randint(1, 2) == 1:
+    print("Heads")
+else:
+    print("Tails")
+```
 
 ### 2.3. Counting loops : for loops
 ---
 
 Une boucle ***for*** réalise un nombre d'itérations (tours de boucle) défini.
-
-    for i in (1, 2, 3, 4, 5):
-        print(i)
+```python
+for i in (1, 2, 3, 4, 5):
+    print(i)
+```
 *On printera ici tour à tour 1 puis 2,... jusqu'à 5.*
 
 <center><figure>
@@ -846,17 +865,19 @@ La collection contenue dans les parenthèses est appelée un ***tuple*** (c'est 
 La boucle *for* attribue à chaque tour de boucle la valeur de gauche à droite à la variable i. Une fois que tous les objets du tuple sont passés dans la boucle, on sort de la boucle et la suite du code est exécutée. *On a donc autant de tours de boucle qu'il y a d'éléments dans le tuple.*
 
 Pour les boucles longues, on peut utiliser la fonction built-in ***range()***, qui retourne un tuple contenant tous les entiers (positifs ou négatifs) entre les deux paramètres donnés, borne supérieure exclue. Si un seul argument est passé à la fonction, la borne inférieure sera 0 par défaut.
-
-    for i in range(1, 5):
-        print(i)
+```python
+for i in range(1, 5):
+    print(i)
+```
 *Cette boucle réalise 4 tours de boucle et print à chaque fois le numéro du tour auquel elle se trouve.*
 
 <center><p style= "color: red">Attention, le nombre de la borne inférieure doit impérativement être inférieur à celui de la borne supérieure.</p></center>
 
 <p style= "color: green">Exemple équivalent au for en Java :</p>
 
-    for (i = 0; i < 5; i = i + 1)
-
+```Java
+for (i = 0; i < 5; i = i + 1)
+```
 *L'incrémentation est explicite en Java ou en C++.*
 
 ### 2.3.1. Prime or non prime
@@ -877,16 +898,18 @@ Le jeu consiste à faire deviner au joueur si un nombre est entier ou non. Le co
 4.2.&emsp;Si la réponse du joueur est incorrecte, print un message de défaite.
 
 Si un nombre k possède un diviseur n, cela signifie que le reste de la division de k par n est nulle ; en langage de programmation cela s'écrit :
-
-    k % n == 0
+```python
+k % n == 0
+```
 *Si n != 1 et n!= k, alors k n'est pas un nombre premier, car il est divisible par autre chose que 1 et lui-même.*
 
 Un exemple de code pour savoir si k est entier est :
-
-    is_prime = "yes"
-    for n in range(2, k):
-        if k % n == 0:
-            is_prime = "no"
+```python
+is_prime = "yes"
+for n in range(2, k):
+    if k % n == 0:
+        is_prime = "no"
+```
 *Ici, on divise le nombre par tous les entiers compris entre 2 et lui-même (exclu). Si un autre nombre le divise sans reste, alors le nombre n'est pas premier : on entre dans le bloc d'instruction de if et is_prime est "no".*
 
 **Améliorations diverses du programme**
@@ -894,7 +917,7 @@ Un exemple de code pour savoir si k est entier est :
 - On peut améliorer ce script en cherchant seulement entre 2 et **k/2** car si un nombre supérieur à sa moitié le divise, alors un nombre inférieur le peut aussi et nous l'aurons déjà trouvé dans la boucle :
 
         for n in range(2, k/2):
-On peut encore l'améliorer en cherchant seulement jusqu'à la **racine carrée de notre nombre + 1** :
+    On peut encore l'améliorer en cherchant seulement jusqu'à la **racine carrée de notre nombre + 1** :
 
         for n in range(2, k** 0.5 + 1):
         # exposant 0.5 == exposant 1/2, soit l'inverse du carré, la racine carrée
@@ -913,21 +936,22 @@ On peut encore l'améliorer en cherchant seulement jusqu'à la **racine carrée 
 ### 2.3.1.1. Exiting from a loop
 
 Pour éviter une perte de temps et de ressources, il faut dire à la boucle *for* de s'arrêter dès qu'elle a trouvé que le nombre n'était pas premier. Pour sortir d'une boucle, on utilise l'instruction ***break***.
-
-    is_prime = "yes"
-    for n in range(2, k**0.5 + 1):
-        if k % n == 0:
-            is_prime = "no"
-            break
-
+```python
+is_prime = "yes"
+for n in range(2, k**0.5 + 1):
+    if k % n == 0:
+        is_prime = "no"
+        break
+```
 Ici, le programme s'arrête soit après avoir trouvé que le nombre n'était pas premier et être rentré dans la boucle *if* contenant le *break*, soit après avoir réalisé tous les tours de boucle sans entrer dans *if* (le nombre est donc premier).
 
 Une variation de *break* est ***continue***. Cela permet de passer à l'itération suivante sans lire la suite du bloc d'instruction.
-
-    for n in ("bob", 1, 2, 3, "cha"):
-        if not isinstance(n, int):
-            continue
-        print(n**2)
+```python
+for n in ("bob", 1, 2, 3, "cha"):
+    if not isinstance(n, int):
+        continue
+    print(n**2)
+```
 `1` \
 `4` \
 `9` \
@@ -936,11 +960,12 @@ Une variation de *break* est ***continue***. Cela permet de passer à l'itérati
 *continue* et *break* ont la même fonction dans les boucles ***while*** et ***loop***.
 
 Modifier la variable en cours d'itération ne change pas le nombre d'itérations réalisées.
-
-    for i in range(0, 3):
-        print("Before", i)
-        i += 1000
-        print("After", i)
+```python
+for i in range(0, 3):
+    print("Before", i)
+    i += 1000
+    print("After", i)
+```
 `Before 0` \
 `After 1000` \
 `Before 1` \
@@ -959,14 +984,15 @@ On peut ajouter un *else* aux boucles *while* et *for* si les boucles se sont r�
 
 <p style= "color: green">Exemple avec le programme <em>isprime game</em></p>
 
-    # for itère sur des entiers donc on doit convertir (k**0.5) en entier car c'est potentiellement un nombre flottant
-    for n in range(1, int((k** 0.5) + 1 )):
-        if k % n == 0:
-            isprime = "no"
-            break
-    else:
-        isprime = "yes"
-
+```python
+# for itère sur des entiers donc on doit convertir (k**0.5) en entier car c'est potentiellement un nombre flottant
+for n in range(1, int((k** 0.5) + 1 )):
+    if k % n == 0:
+        isprime = "no"
+        break
+else:
+    isprime = "yes"
+```
 *Bon, ce n'est pas très utile en soi on peut parfaitement arriver à ce résultat d'autres manières. Je ne présente même pas l'exemple avec le while.*
 
 ### 2.4. Loops that are nested
@@ -976,9 +1002,11 @@ On peut évidemment avoir des imbrications des les boucles : des *if* dans des *
 
 <p style= "color: green">Par exemple, deux boucles for imbriquées :</p>
 
-    for i in range(0,10):
-        for j in range (0,10):
-        print(i,j)
+```python
+for i in range(0,10):
+    for j in range (0,10):
+    print(i,j)
+```
 `0, 0` \
 `0, 1` \
 `0, 2` \
@@ -1000,18 +1028,20 @@ On peut évidemment avoir des imbrications des les boucles : des *if* dans des *
 
 <p style= "color: green">Si on veut savoir quel est l'entier de 0 à 1000 qui a le plus de diviseurs :</p>
 
-    maxdiv = 1          # the number that has the greatest number of divisors
-    maxdivcount = 0         # the number of divisors that maxdiv has
-    for k in range (1, 1001):           # boucle qui attribue à k les entiers de 1 à 1000
-        count = 0               # décompte du nombre de diviseurs pour k
-        for n in range(1, k/2):         # cherche des diviseurs entiers pour k
-            if k % n == 0:
-                count += 1           # on compte chaque diviseur de k entre 1 et k/2
-            count += 1             # on ajoute 1 pour prendre en compte le fait que k est divisible par k
-        if count > maxdivcount:       # on compare le compte actuel des diviseurs de k avec le précédent max
-            maxdivcount = count    # si le count actuel > max enregistré, on assigne au max le count de k
-            maxdiv = k      # on assigne au maxdiv le k actuel
-    print(f"The most divisors is {maxdiv} with {maxdivcount}.")
+```python
+maxdiv = 1          # the number that has the greatest number of divisors
+maxdivcount = 0         # the number of divisors that maxdiv has
+for k in range (1, 1001):           # boucle qui attribue à k les entiers de 1 à 1000
+    count = 0               # décompte du nombre de diviseurs pour k
+    for n in range(1, k/2):         # cherche des diviseurs entiers pour k
+        if k % n == 0:
+            count += 1           # on compte chaque diviseur de k entre 1 et k/2
+        count += 1             # on ajoute 1 pour prendre en compte le fait que k est divisible par k
+    if count > maxdivcount:       # on compare le compte actuel des diviseurs de k avec le précédent max
+        maxdivcount = count    # si le count actuel > max enregistré, on assigne au max le count de k
+        maxdiv = k      # on assigne au maxdiv le k actuel
+print(f"The most divisors is {maxdiv} with {maxdivcount}.")
+```
 `The most divisors is 840 with 31.`
 
 ### 2.5. Draw a histogram
@@ -1039,33 +1069,34 @@ Il faut ensuite définir l'échelle de la barre : si 50 caractères rentrent dan
 Donc chaque # représente un lot de 20 000$.
 
 Naturellement, un *print()* ajoute un saut de ligne \n à la fin de la string qu'il imprime. Si on utilise l'argument *end = ''*, on modifie le dernier caractère imprimé. Par exemple :
-
-    print(i, end= '!')
+```python
+print(i, end= '!')
+```
 *Ici au lieu de print la variable i puis de sauter une ligne pour afficher le prompt, on imprimera i! et le prompteur collé.*
 
 On peut donc utiliser ça pour faire une barre :
-
-    print("#", end = '')
-    print("#", end = '')
-    print("#", end = '')
-
+```python
+print("#", end = '')
+print("#", end = '')
+print("#", end = '')
+```
 `###` \
 *Pas de saut de ligne entre chaque.*
 
 ==
-
-    for i in range(0,3):
-        print("#", end = '')
-
+```python
+for i in range(0,3):
+    print("#", end = '')
+```
 `###`
 
 Le premier trimestre pourrait être représenté ainsi :
-
-    print("Q1: ", end = '')
-    for k in range(0, int(Q1 / 20000)):
-        print("#", end = '')
-    print("     ", Q1)
-
+```python
+print("Q1: ", end = '')
+for k in range(0, int(Q1 / 20000)):
+    print("#", end = '')
+print("     ", Q1)
+```
 `Q1: #########   190 000`
 
 A répéter pour chaque quarter (on peut écrire une fonction) et on ajoute un titre.
@@ -1077,16 +1108,17 @@ En assembleur, les boucles étaient des *branches* ou des *goto* dont la conditi
 
 Il existe dans le langage de programmation *Ada* (*en référence et hommage à Ada Lovelace, première programmeuse supposée de l'Histoire*) une instruction *loop* qui permet, en fonction de la syntaxe employée (où mettre un exit etc) de réaliser tous les types de boucles. \
 En python, ce serait la boucle *while* qui permettrait de remplacer le *for*.
+```python
+i = a
+while i < b:
+    ...
+    i = i + 1
 
-    i = a
-    while i < b:
-        ...
-        i = i + 1
+# ==
 
-    ==
-
-    for i in range(a, b):
-        ...
+for i in range(a, b):
+    ...
+```
 
 Une boucle est composée d'une **initialisation**, d'une **incrémentation** et d'une **condition** (qui termine la boucle). La variable *i* ci-dessus est ce qu'on appelle une *loop control variable*. Ce n'est pas véritablement cette variable qu'on implémente mais un compte fictif qui compte à quelle position du tuple on se trouve ([0], [1], [2],...). *Ce genre de loop sont similaires à celles retrouvées en PHP, et sont des abstractions des langages tels que Java ou C++*.
 
@@ -1101,50 +1133,56 @@ Un programme peut présenter des erreurs à divers endroits :
 
 Une ***exception*** est une façon de détecter des erreurs en les testant avant leur exécution. Le programmeur a alors la possibilité d'écrire du code pour corriger l'erreur ; autrement, python interrompra l'exécution du programme et imprimera un message d'erreur explicite.
 
-<p style= "color: green">Exemple de code anticipant une erreur possible :</p>
+<p style= "color: green">Exemple de code anticipant une erreur :</p>
 
-    if b != 0:
-        c = a / b
+```python
+if b != 0:
+    c = a / b
+```
 
 Mais cela peut vite devenir fastidieux s'il y a de nombreuses possibilités à retranscrire.
-
-    try:
-        c = a / b
-    except:                 # nom d'erreur non spécifié ==> toutes les erreures lèvent une exception
+```python
+try:
+    c = a / b
+except:                 # nom d'erreur non spécifié ==> toutes les erreures lèvent une exception
         c = 1000000
+```
 
 L'instruction ***try*** permet de tester du code "autorisant" les erreurs à se produire. Il faut que le bloc *try* soit achevé avant que le programme n'ait fini de s'exécuter. \
 L'instruction ***except*** est un mot-clé pouvant éventuellement être suivi du nom d'une erreur (type d'erreur connue de Python). Si aucun nom d'erreur n'est spécifié, alors toutes les erreurs lèvent une exception et entraînent l'exécution du bloc d'instruction de *except*. Le bloc d'instruction de *except* est appelé gestionnaire d'erreurs (*error handler*).
-
-    try:
-        c = a / b
-    except ZeroDivisionError:
-        c = 1000000
+```python
+try:
+    c = a / b
+except ZeroDivisionError:
+    c = 1000000
+```
 
 Dans ce code, seule l'erreur liée à b == 0 est prise en compte par le gestionnaire d'erreurs.
-
-    try:
-        c = a / b
-    except (ZeroDivisionError, ValueError):
-        c = 1000000
+```python
+try:
+    c = a / b
+except (ZeroDivisionError, ValueError):
+    c = 1000000
+```
 
 On peut spécifier plusieurs erreurs dans une instruction, si la façon de les gérer reste identique.
-
-    try:
-        c = a / b
-    except VelueError:
-        c = 0
-    except ZeroDivisionError:
+```python
+try:
+    c = a / b
+except VelueError:
+    c = 0
+except ZeroDivisionError:
         c = 1000000
+```
 
 On peut définir plusieurs instructions *except* pour un seul *try*.
-
-    k = ZeroDivisionError
-    try:
-        c = a / b
-    except k:
-        c = 1000000
-
+```python
+k = ZeroDivisionError
+try:
+    c = a / b
+except k:
+    c = 1000000
+```
 Le nom d'une erreur peut être assignée à une variable qui la référence dans le *except*.
 
 ---
@@ -1181,30 +1219,30 @@ Au même titre que n'importe quelle séquence, la string a une longueur, corresp
     adress = '121 Second Street'      # idem avec la variable adress
 
 Une string se comporte comme si ses caractères étaient stockés comme un ensemble consécutif dans la mémoire. Si on veut se rapporter au premier caractère de *name* :
-
-    print(name[0])
-
+```python
+print(name[0])
+```
 `J`
 
 Si on veut se rapporter au dernier caractère de *adress* :
-
-    print(adress[16])
-    print(adress[-1])
-
+```python
+print(adress[16])
+print(adress[-1])
+```
 `t` \
 `t`
 
 Pour connaître la taille de *name* :
-
-    print(len(name))
-
+```python
+print(len(name))
+```
 `8`
 
 Si on note un indice supérieur à la longueur de la string, cela déclenche une erreur. On peut noter des indices compris entre 0 et len(string) - 1.
-
-    for i in range(0, len(name)):       # On peut faire ça car la borne supérieure est exclue.
-        print(name[i], end= "")
-
+```python
+for i in range(0, len(name)):       # On peut faire ça car la borne supérieure est exclue.
+    print(name[i], end= "")
+```
 `John Doe`
 
 **Il n'y a pas de *character* type en Python, donc une string de longueur = 1 (donc contenant un seul caractère) reste de type str.**
@@ -1212,9 +1250,9 @@ Si on note un indice supérieur à la longueur de la string, cela déclenche une
 Il faut aussi comprendre que les strings sont de type **immuables** (***immutable*** en anglais), donc name[0] me retourne une nouvelle string "J" d'un seul caractère.
 
 *On peut aussi accéder à l'indice d'une string non assignée à une variable :*
-
-    print("abc"[0])
-
+```python
+print("abc"[0])
+```
 `a`
 
 ### 3.1.1. Comparing strings
@@ -1233,27 +1271,31 @@ Si chaque caractère de deux strings et leur position sont identiques, alors les
 Les autres comparaisons se font par rapport au **numéro ASCII attribué au caractère** : les premiers caractères ASCII sont les *control characters* comme le saut de ligne, l'absence de caractères, la tabulation... Viennent ensuite les caractères spéciaux comme !, %, +, et les chiffres comme 0, 5, 9, puis les lettres majuscules A, G, N, et les minuscules comme d, h, x et enfin des caractères ajoutés ensuite comme le € ou le ^. Quelques caractères spéciaux sont entre chaque type, ce qui rend difficile l'anticipation de l'ordre de certaines suites sans avoir la table ASCII sous les yeux. \
 Les comparaisons ne dépendent pas de la longueur des strings.
 
-
-    "John" < "john"
-
+```python
+"John" < "john"
+```
 `True`
 
-    "hello !" < "hello ?"
-
+```python
+"hello !" < "hello ?"
+```
 `True`
 
-    " hi" < "a"    # l'espace est un des premiers caractères
-    " hi" < "hi "   # ordre alphabétique : si le 1er caractère est plus petit, la string est inférieure
-
+```python
+" hi" < "a"    # l'espace est un des premiers caractères
+" hi" < "hi "   # ordre alphabétique : si le 1er caractère est plus petit, la string est inférieure
+```
 `True` \
 `True`
 
-    "€" < "$"
-
+```python
+"€" < "$"
+```
 `False`
 
-    "[sk+3]" < "[sk+2]"
-
+```python
+"[sk+3]" < "[sk+2]"
+```
 `False`
 
 C'est une des raisons pour lesquelles il peut être utile d'employer les fonctions ***.lower()*** ou ***.upper()*** quand on récupère un input utilisateur par exemple, pour comparer des caractères comparables.
@@ -1263,46 +1305,48 @@ C'est une des raisons pour lesquelles il peut être utile d'employer les fonctio
 La string correspondant souvent à du langage humain, il est utile de pouvoir identifier des ensembles en son sein, comme par exemple des mots.
 
 Une ***slice*** est un ensemble de caractères continus dans une string, dont les indices sont donc consécutifs. On peut y accéder en indiquant une amplitudes d'indices entre crochets : [0:5] par exemple. **La borne inférieure est inclue et la borne supérieure est exclue**, comme dans le *range()*.
-
-    name[0] == name[0:1]
+```python
+name[0] == name[0:1]
+```
 
 Si on omet une des bornes, le slicing démarrera dès le début ou ira jusqu'au bout ; si aucune borne n'est indiquée (*[:]*), on prendra la string entière.
-
-    name = "John Doe"
-    print(name[:5])
-    print(name[5:])
-
+```python
+name = "John Doe"
+print(name[:5])
+print(name[5:])
+```
 `John` \
 `Doe`
 
 Les indices **négatifs** indèxent la string de la droite vers la gauche (il n'y a alors pas d'indice 0).
-
-    print(name[-1])
-    print(name[-3:])
-
+```python
+print(name[-1])
+print(name[-3:])
+```
 `e` \
 `Doe`
 
 Enfin, on peut attribuer un troisième paramètre au slicing : *[a:b:c]*, le paramètre *c*. On rappelle que *a* est l'indice de départ, *b* est l'indice de fin + 1 et *c* est le **pas** (*increment* en anglais). \
 Le pas correspond au saut que peut effectuer le slicing dans la string.
-
-    str = "Hello my name is John Doe."
-    print(str[::2])     # on récupère un caractère sur deux sur l'ensemble de la string
-
+```python
+str = "Hello my name is John Doe."
+print(str[::2])     # on récupère un caractère sur deux sur l'ensemble de la string
+```
 `Hlom aei onDe`
 
 Le pas peut aussi être **négatif** et permet ainsi de prendre à l'envers la string.
-
-    print(str[::-1])
-
+```python
+print(str[::-1])
+```
 `.eoD nhoJ si eman ym olleH`
 
 <p style= "color: pink"><strong>Problème : identifier une instruction <em>print()</em> dans une string</strong></p>
 
-    statement = print("Lcase > numbers")
+```python
+statement = print("Lcase > numbers")
 
-    if statement[:5] == "print":   # ce if permet de vérifier si la fonction est bien print
-
+if statement[:5] == "print":   # ce if permet de vérifier si la fonction est bien print
+```
 ### 3.1.3. Editing strings
 
 La string étant un type **immuable**, on ne peut pas la modifier "en place".
@@ -1310,19 +1354,19 @@ La string étant un type **immuable**, on ne peut pas la modifier "en place".
 <p style= "color: green">Si on reprend notre exemple <em>name = "John Doe"</em>, on ne peut pas faire d'assignations telles que : <em>name[3] = "p"</em> ou encore <em>name[2:3] = ".."</em>.</p>
 
 On peut réaliser des opérations de **concaténation** (*+*) sur les strings ; cela signfie qu'on accole deux strings distinctes à la suite pour n'en former qu'une. Cela résulte en la création d'une nouvelle variable contenant le résultat de la concaténation (nouvelle variable créée en mémoire).
-
-    file_name = "image"
-    fname = file_name + ".jpg"
-    print(fname)
-
+```python
+file_name = "image"
+fname = file_name + ".jpg"
+print(fname)
+```
 `image.jpg`
 
 Pour ensuite changer le suffixe, on peut faire :
-
-    if fname[len(fname)-5:] == ".jpeg":
-        fname = fname[0:len(fname)-5]
-        fname += ".jpg"
-
+```python
+if fname[len(fname)-5:] == ".jpeg":
+    fname = fname[0:len(fname)-5]
+    fname += ".jpg"
+```
 ### 3.1.4. String methods
 
 Les méthodes sont des fonctions qui s'utilisent uniquement *s*ur un type ou une classe d'objets*. Attention, on peut retrouver le même nom de méthode sur la fonction d'un autre type, mais elle aura alors une action différente sur cet autre type. \
@@ -1330,8 +1374,9 @@ Syntaxiquement, les méthodes ne s'écrivent pas comme des fonctions : on écrir
 
 Il existe certaines méthodes propres aux strings permettant de les manipuler, notamment pour les comparer plus facilement. \
 Ces méthodes créent des copies de la string après modification. La string non modifiée existe toujours et peut être contenue dans une variable différente.
-
-    string = "hello to you all."
+```python
+string = "hello to you all."
+```
 
 | Méthode | Explication | Appel de méthode | Résultat |
 | :---: | :---: | :---: | :---: |
@@ -1373,11 +1418,11 @@ Ces méthodes créent des copies de la string après modification. La string non
     `"des bidules et des chouettes`
 
 **Aparté formatage :** on peut spécifier un format à l'intérieur des { }, typiquement pour spécifier un arrondi pour les valeurs flottantes.
-
-    print(f"{2*pi:.2f}")    # limite à 2 le nombre de chiffres décimaux (après la virgule)
-    print(f"{15:04d}")  # imprime au moins 4 chiffres, remplace par des 0 devant le chiffre s'il y en a moins
-    print(f"{15:4d}")   # idem mais espaces s'il y a moins de 4 chiffres
-
+```python
+print(f"{2*pi:.2f}")    # limite à 2 le nombre de chiffres décimaux (après la virgule)
+print(f"{15:04d}")  # imprime au moins 4 chiffres, remplace par des 0 devant le chiffre s'il y en a moins
+print(f"{15:4d}")   # idem mais espaces s'il y a moins de 4 chiffres
+```
 `6.28` \
 `0015` \
 `  15`
@@ -1385,14 +1430,14 @@ Ces méthodes créent des copies de la string après modification. La string non
 ### 3.1.5. Spanning multiple lines
 
 On peut utiliser les triple guillemets (*triple quotes*) pour délimiter des chaînes de caractères qui font plusieurs lignes. Les sauts de ligne seront print aux mêmes endroits que les lignes sautées dans le code.
-
-    poem = '''She walks in beauty like the night
-    Of cloudless climes and starry skies,
-    And all that's best of dark and bright
-    Meets in her aspect and her eyes;
-    Thus mellow'd to that tender light
-    Which Heaven to gaudy day denies.'''
-
+```python
+poem = '''She walks in beauty like the night
+Of cloudless climes and starry skies,
+And all that's best of dark and bright
+Meets in her aspect and her eyes;
+Thus mellow'd to that tender light
+Which Heaven to gaudy day denies.'''
+```
 `She walks in beauty like the night` \
 `Of cloudless climes and starry skies,` \
 `And all that's best of dark and bright` \
@@ -1401,13 +1446,13 @@ On peut utiliser les triple guillemets (*triple quotes*) pour délimiter des cha
 `Which Heaven to gaudy day denies.`
 
 On peut également assigner un programme à une variable à l'aide des triple guillemets.
+```python
+program = """list = [1, 2, 4, 7, 15]
+for i in list:
+    print(i, i*2)"""
 
-    program = """list = [1, 2, 4, 7, 15]
-    for i in list:
-        print(i, i*2)"""
-
-    exec(program)
-
+exec(program)
+```
 `1 2` \
 `2 4` \
 `4 8` \
@@ -1415,11 +1460,11 @@ On peut également assigner un programme à une variable à l'aide des triple gu
 `15 30`
 
 **strings et boucle *for*** : on peut itérer les caractères d'une string.
-
-    name = 'John Doe'
-    for i in name:      # identique à for i in ('j', 'o', etc)
-        print(i, end= "")
-
+```python
+name = 'John Doe'
+for i in name:      # identique à for i in ('j', 'o', etc)
+    print(i, end= "")
+```
 `"John Doe"`
 
 ### 3.2. The type bytes
@@ -1492,64 +1537,69 @@ Un **tuple** est presque identique à la string :
 
 MAIS à la différence de la string, il n'est pas constitué de caractères mais d'éléments arbitraires. \
 On utilise pas de guillemets pour délimiter un tuple, mais des **parenthèses** (bien que cela reste facultatif).
-
-    tup1 = (2, 3, 5, 7, 11, 13, 17, 19)
-    tup2 = ("Hydrogen", "Helium", "Lithium", "Boron", "Carbon",)
-    tup3 = "hi", "ohio", "salut"
-    tup4 = ([1, 2, 3], [4, 5, 6],)
-
+```python
+tup1 = (2, 3, 5, 7, 11, 13, 17, 19)
+tup2 = ("Hydrogen", "Helium", "Lithium", "Boron", "Carbon",)
+tup3 = "hi", "ohio", "salut"
+tup4 = ([1, 2, 3], [4, 5, 6],)
+```python
 Ce sont différentes syntaxes que peuvent prendre le tuple.
 
 <br>
 
 Il n'y a que deux manières d'écrire un tuple à un élément (appelé ***singleton***) :
-
-    tup_1 = 1,
-    tup_2 = (1,)
+```python
+tup_1 = 1,
+tup_2 = (1,)
+```
 **La virgule terminale est indispensable.**
 
 <p style= "color: red"><strong>Quelques points d'intérêt :</strong></p>
 
 - Il est préférable de mettre une **virgule terminale** de façon systématique
 - Si un tuple fait plusieurs lignes, on préfèrera faire un apparaître seulement un tuple par ligne :
-
-        my_tuple = (
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9],
-        )
+```python
+my_tuple = (
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    )
+```
 - Un tuple vide ne déclenche pas d'erreur mais est **inutile** étant donné qu'on ne peut pas y ajouter d'élément sans en créer une copie.
 
 ### 3.3.1. Operations on tuples
 
 Comme les strings, ils présentent des indices pour référencer la position de leurs éléments en leur sein. On peut donc pratiquer des opérations de **slicing** sur les tuples.
 
-    print(tup1[2:4])
-
+```python
+print(tup1[2:4])
+```
 `(5, 7)`
 
-    print(tup2[::-1])
-
+```python
+print(tup2[::-1])
+```
 `("Carbon", "Boron", "Lithium", "Helium", "Hydrogen")`
 
-    print(tup3[-1])
-
+```python
+print(tup3[-1])
+```
 `"salut"`
 
 La **concaténation** est également possible.
-
-    tuple1 = ("one",)
-    tuple2 = "two",
-    tuple1 = tuple1 + tuple2
-    print(tuple1)
-
+```python
+tuple1 = ("one",)
+tuple2 = "two",
+tuple1 = tuple1 + tuple2
+print(tuple1)
+```
 `("one", "two")`
 
 Cependant, du fait qu'elles sont immuables, les opérations suivantes sont impossibles et déclenchent une erreur :
-
-    tuple1[0] = 6       # on ne peut pas réassigner un nouvel élément à un tuple
-    tup3[1:] = (2, 3)   # on ne peut pas remplacer une section du tuple par une autre
-
+```python
+tuple1[0] = 6       # on ne peut pas réassigner un nouvel élément à un tuple
+tup3[1:] = (2, 3)   # on ne peut pas remplacer une section du tuple par une autre
+```
 
 ---
 Les **tuples** sont un mix entre les strings et les listes. Ils sont plus simples à implémenter que les listes et plus généraux que les strings, qui ne contiennent que des caractères.
@@ -1569,13 +1619,14 @@ On aura ici 6 tours de boucle (6 itérations). Ici toutes les itérations sont d
 L'objectif est de déterminer le nombre de nucléon de l'atome à partir du numéro atomique (nombre de protons/d'électrons) qui nous est donné. Pour des atomes de numéro atomique faible (< 21), globalement on peut utiliser la formule suivante : *nombre de nucléon = nombre de proton * 2*. \
 On cherchera ici à distinguer les strings des nombres dans le tuple *atoms* car on ne peut pas faire d'opération mathématique sur des strings. On va pour cela avoir recours à la fonction built-in ***isinstance**(obj, type or class )*. Cette fonction retourne *True* si la variable *obj* est du type *type*, sinon elle retourne *False*.
 
-    for i in atoms:
-        if isinstance(i, int):
-            j = i * 2
-            print(f"has {i} protons and {j} nucleons.")
-        else:
-            print(f"Element {i} ", end= "")
-
+```python
+for i in atoms:
+    if isinstance(i, int):
+        j = i * 2
+        print(f"has {i} protons and {j} nucleons.")
+    else:
+        print(f"Element {i} ", end= "")
+```
 `Element Hydrogen has 1 protons and 2 nucleons.` \
 `Element Helium has 2 protons and 4 nucleons.` \
 `Element Lithium has 3 protons and 6 nucleons.` \
@@ -1584,22 +1635,23 @@ On cherchera ici à distinguer les strings des nombres dans le tuple *atoms* car
 `Element Carbon has 6 protons and 12 nucleons.`
 
 Une autre façon de faire, en obtenant le même résultat, est de manipuler les indices du tuple :
-
-    for i in range(0, len(atoms)):      # la variable loot control ne parcourt pas le tuple cette fois
-        if i%2 == 1:        # si le nombre est impair, on entre dans la condition
-            j = atoms[i]*2      # atoms[i] est un indice se rapportant à un élément du tuple atoms
-            print(f"has {atoms[i]} protons and {j} nucleons.")
-        else:
-            print(f"Element {atoms[i]} ", end= "")
-
+```python
+for i in range(0, len(atoms)):      # la variable loot control ne parcourt pas le tuple cette fois
+    if i%2 == 1:        # si le nombre est impair, on entre dans la condition
+        j = atoms[i]*2      # atoms[i] est un indice se rapportant à un élément du tuple atoms
+        print(f"has {atoms[i]} protons and {j} nucleons.")
+    else:
+        print(f"Element {atoms[i]} ", end= "")
+```
 ### 3.3.3. Membership
 
 On peut pratiquer certaines opérations sur les tuples, comme des ***set union*** ou ***set intersection***. \
 l'**intersection** entre deux lots A et B est un lot d'éléments appartenant à la fois à A et à B. L'opérateur d'**appartenance** en Python est ***in***. Le test de non appartenance ***not in*** est son inverse.
-
-    for i in A:
-        if i in B:
-            C = C + i
+```python
+for i in A:
+    if i in B:
+        C = C + i
+```
 
 Le tuple C est l'intersection de A et B puisqu'on n'entre dans le bloc d'instruction où il apparaît seulement si l'élément i appartient à A mais aussi à B.
 
@@ -1608,21 +1660,21 @@ Le tuple C est l'intersection de A et B puisqu'on n'entre dans le bloc d'instruc
 <p style= "color: green">Exemple : cherchons quels nombres pairs inférieurs ou égaux à 100 sont des carrés parfaits à l'aide de in.</p>
 
 *pair = even en anglais et impair = odd en anglais.*
+```python
+even_number = ()
+for i in range(0, 51):
+    even_number = even_number + (i*2,)      # concaténation tuple + singleton
 
-    even_number = ()
-    for i in range(0, 51):
-        even_number = even_number + (i*2,)      # concaténation tuple + singleton
+square = ()
+for i in range(0, 11):
+    square = square + (i*i,)
 
-    square = ()
-    for i in range(0, 11):
-        square = square + (i*i,)
-
-    perfect_square = ()
-    for i in even_number:
-        if i in square:
-            perfect_square = perfect_square + (i,)
-    print(perfect_square)
-
+perfect_square = ()
+for i in even_number:
+    if i in square:
+        perfect_square = perfect_square + (i,)
+print(perfect_square)
+```
 `(0, 4, 16, 36, 64, 100)`
 
 ==> temps d'exécution du programme = **0.0495ms** environ
@@ -1630,68 +1682,69 @@ Le tuple C est l'intersection de A et B puisqu'on n'entre dans le bloc d'instruc
 On voit ici que pour construire un nouveau tuple et y ajouter des éléments, on peut démarrer avec un tuple vide et ajouter par concaténation des objets du même type dans celui-ci (*l'élément ajouté au tuple doit être un tuple pour obtenir un tuple comme résultat de la concaténation*).
 
 Une autre façon de faire en utilisant les listes :
+```python
+perfect_square = []
 
-    perfect_square = []
+for i in range(0, 101):
+    if i%2 == 0:            # on garde les nombres pairs
+        for j in range(0,11):
+            if j * j == i:          # on compare les carrés parfaits
+                perfect_square.append(i)
 
-    for i in range(0, 101):
-        if i%2 == 0:            # on garde les nombres pairs
-            for j in range(0,11):
-                if j * j == i:          # on compare les carrés parfaits
-                    perfect_square.append(i)
-
-    print(perfect_square)
-
+print(perfect_square)
+```
 `[0, 4, 16, 36, 64, 100]`
 
 ==> temps d'exécution du programme = **0.0742ms** environ
 
 *Le plus efficace serait de faire un mix des deux plutôt que d'imbriquer deux boucles.*
+```python
+perfect_square = []
 
-    perfect_square = []
+square = []
+for i in range(0, 11):
+    square.append(i*i)
 
-    square = []
-    for i in range(0, 11):
-        square.append(i*i)
+for i in range(0, 101):
+    if i%2 == 0 and i in square:
+        perfect_square.append(i)
 
-    for i in range(0, 101):
-        if i%2 == 0 and i in square:
-            perfect_square.append(i)
-
-    print(perfect_square)
-
+print(perfect_square)
+```
 `[0, 4, 16, 36, 64, 100]`
 
 ==> temps d'exécution du programme = **0.0435ms** environ
 
 **Aparté : calculer le temps d'exécution d'un programme, la fonctione *time( )***
+```python
+import time
 
-    import time
+start_time = time.time()    # relève le temps à l'initiation du programme
 
-    start_time = time.time()    # relève le temps à l'initiation du programme
+...
 
-    ...
+end_time = time.time()
 
-    end_time = time.time()
-
-    elapsed_time = end_time - start_time
-
+elapsed_time = end_time - start_time
+```
 ### 3.3.4. Delete
 
 Pour supprimer un élément d'un tuple, il faut créer un nouveau tuple avec les éléments qu'on désire garder dans l'ordre désiré.
 
 <p style= "color: green">Exemple avec <em>atoms</em> : on souhaite supprimer l'élément "Lithium" du tuple
 
-    atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
-    index = 0
+```python
+atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
+index = 0
 
-    for i in range(0, len(atoms)):
-        if atoms[i] == "Lithium":
-            index = i
-            break
+for i in range(0, len(atoms)):
+    if atoms[i] == "Lithium":
+        index = i
+        break
 
-    atoms = atoms[0:index] + atoms[index + 1:]
-    print(atoms)
-
+atoms = atoms[0:index] + atoms[index + 1:]
+print(atoms)
+```
 `('Hydrogen', 'Helium', 'Beryllium', 'Boron', 'Carbon')`
 
 *Ici la précédente variable atoms contenant le tuple a été écrasé pour un nouveau tuple.*
@@ -1699,18 +1752,18 @@ Pour supprimer un élément d'un tuple, il faut créer un nouveau tuple avec les
 ### 3.3.5. Update
 
 De façon identique à la suppression, il faut créer un nouveau tuple pour modifier un tuple.
+```python
+atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
+index = 0
 
-    atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
-    index = 0
+for i in range(0, len(atoms)):
+    if atoms[i] == "Lithium":
+        index = i
+        break
 
-    for i in range(0, len(atoms)):
-        if atoms[i] == "Lithium":
-            index = i
-            break
-
-    atoms = atoms[0:index] + ("Oxygen",) + atoms[index + 1:]
-    print(atoms)
-
+atoms = atoms[0:index] + ("Oxygen",) + atoms[index + 1:]
+print(atoms)
+```
 `('Hydrogen', 'Helium', 'Oxygen', 'Beryllium', 'Boron', 'Carbon')`
 
 ### 3.3.6. Tuple assignment
@@ -1720,51 +1773,57 @@ Quand un tuple est assigné à une variable, les éléments sont convertis en *p
 
 <p style= "color: green">Premier exemple : liste d'entiers</p>
 
+```python
     a = list(range(3))
     print(a)
     x, y, z = a
     print(x, y, z)
-
+```
 `[0, 1, 2]` \
 `0 1 2`
 
 <p style= "color: green">Premier exemple : données étudiantes</p>
 
-    student_record = ("Parker", "Jim", 1980, "Math 550", "C+", "Cpsc 302", "A+")
-    (firstName, lastName, year, cmin, gmin, cmax, gmax) = student_record
-    print(firstName)
-
+```python
+student_record = ("Parker", "Jim", 1980, "Math 550", "C+", "Cpsc 302", "A+")
+(firstName, lastName, year, cmin, gmin, cmax, gmax) = student_record
+print(firstName)
+```
 `"Parker"`
 
 C'est exactement la même chose que de faire :
-
-    firstName = student_record[0]
-    lastName = student_record[1]
-    year = student_record[2]
-    cmin = student_record[3]
-    gmin = student_record[4]
-    cmax = student_record[5]
-    gmax = student_record[6]
+```python
+firstName = student_record[0]
+lastName = student_record[1]
+year = student_record[2]
+cmin = student_record[3]
+gmin = student_record[4]
+cmax = student_record[5]
+gmax = student_record[6]
+```
 
 Une autre façon de l'écrire :
-    (firstName, lastName, year) = ("Parker", "Jim", 1980)
-
+```python
+(firstName, lastName, year) = ("Parker", "Jim", 1980)
+```
 Evidemment cela implique d'assigner N variables à N valeurs : **il faut qu'il y ait le même nombre de variables et de valeurs**.
 
 On peut également inverser l'ordre de **variables** ainsi :
+```python
+student_record = ("Parker", "Jim", 1980)
+(firstName, lastName, year) = student_record
 
-    student_record = ("Parker", "Jim", 1980)
-    (firstName, lastName, year) = student_record
+student_record = (lastName, firstName, year)
 
-    student_record = (lastName, firstName, year)
-
-    print(student_record)
-
+print(student_record)
+```
 `"Jim", "Parker", 1980`
 
 <p style= "color: red">Attention, échanger l'ordre ne fonctionne pas avec des valeurs !
 
-    ("Parker", "Jim", 1980) = ("Jim", "Parker", 1980)   # impossible d'effectuer une opération directement sur le tuple
+```python
+("Parker", "Jim", 1980) = ("Jim", "Parker", 1980)   # impossible d'effectuer une opération directement sur le tuple
+```
 
 <br>
 
@@ -1772,24 +1831,24 @@ On peut également inverser l'ordre de **variables** ainsi :
 Cela permet d'**attribuer une variable à plusieurs éléments d'un tuple**. La variable référencera alors **une liste [ ]** de ces éléments. \
 On écrit *x la variable x qui contiendra plusieurs éléments. L'ordre dans lequel elle est placée est important. \
 Il ne peut y avoir **qu'une seule *extended variable*** dans une assignation.
-
-    student_record = ("Parker", "Jim", 1980, "Math 550", "C+", "Cpsc 302", "A+")
-    (*Name, year, cmin, gmin, cmax, gmax) = student_record
-    print(Name, year, gmax)
-
+```python
+student_record = ("Parker", "Jim", 1980, "Math 550", "C+", "Cpsc 302", "A+")
+(*Name, year, cmin, gmin, cmax, gmax) = student_record
+print(Name, year, gmax)
+```
 `["Parker", "Jim"] 1980 "A+"`
 
 ### 3.3.7. Built-in functions for tuples
 
 On peut réaliser des comparaisons entre des tuples. Les éléments sont alors comparés un par un :
-
-    print(("Jim", "Parker", 1980) < ("Lisa", "Kunis", 1960))
-    print(("Jim",) < ("Lisa",))
-    print(("Jim",) < ("Lisa", "Kunis"))
-    print(("Parker",) < ("Kunis",))
-    print((1980,) < (1960,))
-    print(("Parker", "Jim", 1980) < ("Kunis", "Lisa", 1960))
-
+```python
+print(("Jim", "Parker", 1980) < ("Lisa", "Kunis", 1960))
+print(("Jim",) < ("Lisa",))
+print(("Jim",) < ("Lisa", "Kunis"))
+print(("Parker",) < ("Kunis",))
+print((1980,) < (1960,))
+print(("Parker", "Jim", 1980) < ("Kunis", "Lisa", 1960))
+```
 `True` \
 `True` \
 `True` \
@@ -1802,8 +1861,10 @@ Attention cependant, on ne peut pas comparer deux éléments de type différents
 
 <br>
 
-    T1 = (1, 2, 3, 4, 5)
-    T2 = (-1, 2, 4, 5, 7)
+```python
+T1 = (1, 2, 3, 4, 5)
+T2 = (-1, 2, 4, 5, 7)
+```
 
 | Méthode | Explication | Appel de méthode | Résultat |
 | :---: | :---: | :---: | :---: |
@@ -1819,76 +1880,79 @@ La ***liste*** est une séquence d'objets hétérogènes, de la même manière q
 C'est +/- un équivalent de l'*array* en Java ou en C.
 
 D'apparence, la liste ressemble au tuple mais est délimitée par des [ ] (*brackets* ou *square brackets*).
-
-    list1 = [2, 3, 5, 7, 11, 13, 17, 19]
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list3 = ["hi", "ohio", "salut"]
-    list4 = []
+```python
+list1 = [2, 3, 5, 7, 11, 13, 17, 19]
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list3 = ["hi", "ohio", "salut"]
+list4 = []
+```
 
 Comme toutes les séquences, elle peut être **indexée** et **concaténée** :
+```python
+print(list1[2:4])
+print(list3[-1])
 
-    print(list1[2:4])
-    print(list3[-1])
-
-    list4 = list4 + [23, 21]
-    print(list4)
-
+list4 = list4 + [23, 21]
+print(list4)
+```
 `[5, 7]` \
 `"salut"` \
 `[23, 21]`
 
 Contrairement aux objets immuables commes les strings et les tuples, la liste peut être modifiée en place :
+```python
+list1[2] = 6
+print(list1)
 
-    list1[2] = 6
-    print(list1)
+list3[2:] = "bonjour"
+print(list3)
 
-    list3[2:] = "bonjour"
-    print(list3)
-
-    list3[2:] = ["bonjour"]
-
+list3[2:] = ["bonjour"]
+```
 `[2, 3, 6, 7, 11, 13, 17, 19]` \
 `["hi", "ohio", "b", "o", "n", "j", "o", "u", "r"]`&emsp;&emsp;&emsp;# une string est aussi une séquence ; chacun de ses caractères devient alors un élément de la liste \
 `["hi", "ohio", "bonjour"]`
 
-    list1[2] = [0, 8, 9]
-    print(list1)
+```python
+list1[2] = [0, 8, 9]
+print(list1)
 
-    list1[2] = 0, 8, 9
-    print(list1)
+list1[2] = 0, 8, 9
+print(list1)
 
-    list1[2:3] = [0, 8, 9]
-    print(list1)
-
+list1[2:3] = [0, 8, 9]
+print(list1)
+```
 `[2, 3, [0, 8, 9], 7, 11, 13, 17, 19]` \
 `[2, 3, (0, 8, 9), 7, 11, 13, 17, 19]`&emsp;&emsp;# au contraire des nombres ne sont pas séquençables, cela résulte donc en une liste ou un tuple au sein de la liste \
 `[2, 3, 0, 8, 9, 7, 11, 13, 17, 19]`
 
 <p style= "color: green">Exemple : calculer la moyenne de nombres :</p>
 
-    list1 = [2, 3, 5, 7, 11, 13, 17, 19]
-    mean = 0.0
+```python
+list1 = [2, 3, 5, 7, 11, 13, 17, 19]
+mean = 0.0
 
-    for i in list1:
-        mean += i
+for i in list1:
+    mean += i
 
-    mean = mean/len(list1)
-
+mean = mean/len(list1)
+```
 `9.625`
 
 Une équivalence est :
+```python
+for i in range(0, len(list1)):
+    mean += list1[i]
 
-    for i in range(0, len(list1)):
-        mean += list1[i]
-
-    mean = mean/len(list1)
-
+mean = mean/len(list1)
+```
 `9.625`
 
 Il existe une fonction built-in ***sum()*** capable de sommer les éléments d'une séquence (à condition que ce soit des nombres) :
-
-    mean = sum(list1) / len(list1)
-
+```python
+mean = sum(list1) / len(list1)
+```
 `9.625`
 
 On retrouve aussi les fonctions qui fonctionnaient sur les tuples sur les listes : ***min( )***, ***max( )***, ***len( )***.
@@ -1896,55 +1960,55 @@ On retrouve aussi les fonctions qui fonctionnaient sur les tuples sur les listes
 ### 3.4.1. Editing lists
 
 On rappelle qu'on peut ajouter des éléments comme ceci :
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2[1:1] = ["Oxygen"]
+print(list2)
 
-    list2[1:1] = ["Oxygen"]
-    print(list2)
-
-    list2[1:1] = ["Beryllium", "Gold"]
-    print(list2)
-
+list2[1:1] = ["Beryllium", "Gold"]
+print(list2)
+```
 `['Hydrogen', 'Oxygen', 'Helium', 'Lithium', 'Boron', 'Carbon']` \
 `['Hydrogen', 'Beryllium', 'Gold', 'Oxygen', 'Helium', 'Lithium', 'Boron', 'Carbon']`
 
 ### 3.4.2. Insert
 
 La méthode ***insert(index, new_element)*** joue aussi le rôle d'ajouter des éléments au sein de la liste.
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.insert(0, "Nitrogen")     # place l'élément en première position dans la liste
+print(list2)
 
-    list2.insert(0, "Nitrogen")     # place l'élément en première position dans la liste
-    print(list2)
+list2.insert(len(list), "Silver")       # place l'élément en dernière position dans la liste
+print(list2)
 
-    list2.insert(len(list), "Silver")       # place l'élément en dernière position dans la liste
-    print(list2)
-
-    list2.insert(-1, "Nickel")      # place l'élément juste avant le dernier
-    print(list2)
-
+list2.insert(-1, "Nickel")      # place l'élément juste avant le dernier
+print(list2)
+```
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon']` \
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Silver']` \
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver']`
 
 On peut obtenir le même résultat avec un slicing d'affectation :
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2[0:0] = ["Nitrogen"]
-    print(list2)
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2[0:0] = ["Nitrogen"]
+print(list2)
+```
 `['Nitrogen', 'Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon']`
 
 ### 3.4.3. Append
 
 La méthode ***append(new_element)*** permet d'ajouter **un** élément à la fin de la liste.
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.append("Nitrogen")
+print(list2)
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2.append("Nitrogen")
-    print(list2)
-
-    list2.append(["Nickel", "Silver"])
-
+list2.append(["Nickel", "Silver"])
+```
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nitrogen']` \
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nitrogen', ['Nickel', 'Silver']]`
 
@@ -1953,12 +2017,12 @@ C'est l'équivalent de `list2.insert(len(list), "Nitrogen")` ou encore `list2 = 
 ### 3.4.4. Extend
 
 La méthode ***extend([new_element])*** est pratiquement identique à une concaténation. Elle permet d'ajouter **plusieurs** éléments à la fin de la liste. *extend ne prend quand même qu'un argument, il faut mettre les éléments entre crochets.*
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list_2 = ["Nickel", "Silver", "Nitrogen"]
-    print(list2 + list_2)
-    print(list2.extend(list_2))
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list_2 = ["Nickel", "Silver", "Nitrogen"]
+print(list2 + list_2)
+print(list2.extend(list_2))
+```
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']` \
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']`
 
@@ -1968,91 +2032,91 @@ La différence avec la concaténation *+* est que celle-ci crée un nouvel objet
 ### 3.4.5. Remove
 
 La méthode ***remove(element)*** permet d'ôter un élément de la liste. Mais contrairement à *insert( )*, on ne précise pas l'indice. *S'il y a plusieurs occurences de l'élément, seul la première occurence est retirée.*
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.remove("Hydrogen")
+print(list2)
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2.remove("Hydrogen")
-    print(list2)
-
-    list1 = [2, 3, 5, 7, 11, 13, 17, 19]
-    list1.remove(5, 7)
-    print(list1)
-
+list1 = [2, 3, 5, 7, 11, 13, 17, 19]
+list1.remove(5, 7)
+print(list1)
+```
 `['Helium', 'Lithium', 'Boron', 'Carbon']` \
 `[2, 3, 7, 11, 13, 17, 19]`
 
 On peut aussi utiliser l'instruction ***del*** pour supprimer des morceaux de la liste.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    del list2[2:4]
-    print(list2)
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+del list2[2:4]
+print(list2)
+```
 `['Hydrogen', 'Helium', 'Carbon']`
 
 ### 3.4.6. Index
 
 La méthode ***index(element)*** retourne l'indice de la première occurence du mot recherché dans la liste.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    print(list2.index("Boron"))
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+print(list2.index("Boron"))
+```
 `3`
 
 Comme pour le tuple, *index( )* lève une exception si l'élément recherché n'est pas retrouvé dans la liste (*ValueError*). On peut commencer par faire un test d'appartenance de l'élément dans la liste avant de demander l'index si on souhaite éviter l'erreur.
-
-    if "Boron" in list2:
-        print(list2.index("Boron"))
-
+```python
+if "Boron" in list2:
+    print(list2.index("Boron"))
+```
 `3`
 
 ### 3.4.7. Pop
 
 La méthode ***pop( )*** est l'inverse de la méthode *append( )* ; elle retire le dernier élément de la liste.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2.pop()
-    print(list2)
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.pop()
+print(list2)
+```
 `['Hydrogen', 'Helium', 'Lithium', 'Boron']`
 
 On peut aussi donner un indice à *pop( )* pour qu'il extrait l'élément situé à l'indice donné.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2.pop(0)
-    print(list2)
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.pop(0)
+print(list2)
+```
 `['Helium', 'Lithium', 'Boron', 'Carbon']`
 
 L'appel de la fonction sur une liste vide lève une erreur. Si on souhaite éviter l'erreur, on peut vérifier que la liste contient au moins un élément en faisant :
-
-    if len(list2) > 0:
-        list2.pop()
-
+```python
+if len(list2) > 0:
+    list2.pop()
+```
 `['Hydrogen', 'Helium', 'Lithium', 'Boron']`
 
 ### 3.4.8. Sort, sorted
 
 La méthode ***sort( )*** replace les éléments de la liste par ordre croissant. La liste en modifiée **en place**, sans en faire de copie. Il faut cependant que les éléments soient du même type car cette méthode implique une comparaison entre les éléments.
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list2.sort()
+print(list2)
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list2.sort()
-    print(list2)
-
-    list_2 = ["Hydrogen", 1, "Helium", 2, "Lithium", 3, "Beryllium", 4, "Boron", 5]
-    list_2.sort()
-
+list_2 = ["Hydrogen", 1, "Helium", 2, "Lithium", 3, "Beryllium", 4, "Boron", 5]
+list_2.sort()
+```
 `['Boron', 'Carbon', 'Helium', 'Hydrogen', 'Lithium']` \
 `TypeError: '<' not supported between instances of 'int' and 'str'`
 
 On peut trier des listes imbriquées dans des listes :
+```python
+list_2 = [["Hydrogen", 1], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
+list_2.sort()
+print(list_2)
 
-    list_2 = [["Hydrogen", 1], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
-    list_2.sort()
-    print(list_2)
-
-    list_2 = [["Hydrogen", 1], ["Hydrogen", 2], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
-    list_2.sort()
-    print(list_2)
-
+list_2 = [["Hydrogen", 1], ["Hydrogen", 2], ["Helium", 2], ["Lithium", 3], ["Beryllium", 4], ["Boron", 5]]
+list_2.sort()
+print(list_2)
+```
 `[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Lithium', 3]]` \
 `[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Hydrogen', 2], ['Lithium', 3]]`
 
@@ -2065,18 +2129,18 @@ Naturellement, un argument *reverse= False* est donné à la fonction. Si on sou
 <br>
 
 On ne peut pas faire d'opération d'affectation sur *sort( )* car cela renvoie à l'objet *None* :
-
-    a = list2.sort()
-    print(a)
-
+```python
+a = list2.sort()
+print(a)
+```
 `None`
 
 Il existe une fonction ***sorted( )*** (**qui n'est pas une méthode à la différence de *sort( )***) permettant de créer une copie de la liste à trier. Cela permet ainsi de garder la version originale de la liste et d'assigner à une nouvelle variable la liste triée.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    new_list2 = sorted(list2)
-    print(f"{list2}\n{new_list2}")
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+new_list2 = sorted(list2)
+print(f"{list2}\n{new_list2}")
+```
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon']` \
 `['Boron', 'Carbon', 'Helium', 'Hydrogen', 'Lithium']`
 
@@ -2084,20 +2148,20 @@ Il existe une fonction ***sorted( )*** (**qui n'est pas une méthode à la diff�
 
 La méthode ***reverse()*** réalise en fait un slicing [::-1] et inverse l'ordre des éléments dans la liste. \
 Cette méthode peut aussi être utilisée après *sort( )* pour trier les éléments par ordre décroissant, mais nous avons vu qu'en donnant *reverse= True* en argument à *sort( )*, on pouvait obtenir ce résultat en moins d'étapes.
-
-    list_number = [9, 1, 5, 6, 5, 7]
-    list_number.reverse()
-    print(list_number)
-
+```python
+list_number = [9, 1, 5, 6, 5, 7]
+list_number.reverse()
+print(list_number)
+```
 `[7, 5, 6, 5, 1, 9]`
 
 ### 3.4.10. Count
 
 La méthode ***count( )*** est utilisée pour déterminer combien d'occurence d'un élément on retrouve dans une liste. Si l'élément n'est pas retrouvé dans la liste, le compte est de 0.
-
-    list_number = [9, 1, 5, 6, 5, 7]
-    print(list_number.count(5))
-
+```python
+list_number = [9, 1, 5, 6, 5, 7]
+print(list_number.count(5))
+```
 `2`
 
 ### 3.4.11. List comprehension
@@ -2106,31 +2170,32 @@ On peut référencer des objets à une liste à l'aide de *for*.
 
 <p style= "color: green">Exemple : créer une liste d'entiers parfaits</p>
 
-    perfect_square = []
-    for i in range(0,11):
-        perfect_square = perfect_square + [i**2]
-    print(perfect_square)
+```python
+perfect_square = []
+for i in range(0,11):
+    perfect_square = perfect_square + [i**2]
+print(perfect_square)
 
-    perfect_square = []
-    for i in range(0,11):
-        perfect_square.append(i**2)         # même résultat que la concaténation
-    print(perfect_square)
-
+perfect_square = []
+for i in range(0,11):
+    perfect_square.append(i**2)         # même résultat que la concaténation
+print(perfect_square)
+```
 `[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]` \
 `[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]`
 
 Une autre syntaxe existe pour cette situation car elle est très commune. On appelle cette syntaxe la **compréhension de liste**.
-
-    perfect_square = [i**2 for i in range(11)]
-    print(perfect_square)
-
+```python
+perfect_square = [i**2 for i in range(11)]
+print(perfect_square)
+```
 `[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100]`
 
 On pourrait aussi ajouter une condition *if* à la compréhension de liste :
-
-    perfect_square = [i**2 for i in range(11) if i % 2 == 0]
-    print(perfect_square)
-
+```python
+perfect_square = [i**2 for i in range(11) if i % 2 == 0]
+print(perfect_square)
+```
 `[0, 4, 16, 36, 64, 100]`
 
 Ces compréhensions de liste restent concises et compréhensibles ; il faut éviter qu'elles soient trop longues et pompeuses car elles ne simplifient plus tant la syntaxe.
@@ -2143,15 +2208,16 @@ La structure d'une compréhension de liste est donc la suivante :
 
 <p style= "color: green">Exemple : passer en minuscule les éléments de la liste</p>
 
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    list_2 = []
-    for i in list2:
-        list_2.append(i.lower())
-    print(list_2)
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+list_2 = []
+for i in list2:
+    list_2.append(i.lower())
+print(list_2)
 
-    list2 = [i.lower() for i in list2]
-    print(list2)
-
+list2 = [i.lower() for i in list2]
+print(list2)
+```
 `['hydrogen', 'helium', 'lithium', 'boron', 'carbon']` \
 `['hydrogen', 'helium', 'lithium', 'boron', 'carbon']`
 
@@ -2164,63 +2230,63 @@ Un tuple est plus pensé comme un *struct* en C u un *record* en Pascal : un rec
 Une liste est plutôt comme un *array*, un tableau qui référence des données du même type.
 
 Les fonctions ***tuple( )*** et ***list( )*** permettent des opérations de conversion de type.
+```python
+list1 = [2, 3, 5, 7, 11, 13, 17, 19]
+tuple1 = tuple(list1)
+print(tuple1)
 
-    list1 = [2, 3, 5, 7, 11, 13, 17, 19]
-    tuple1 = tuple(list1)
-    print(tuple1)
-
-    list1 = list(tuple1)
-    print(list1)
-
+list1 = list(tuple1)
+print(list1)
+```
 `(2, 3, 5, 7, 11, 13, 17, 19)` \
 `[2, 3, 5, 7, 11, 13, 17, 19]`
 
 3.4.13. Exceptions
 
 Les exceptions permettent de checker les erreurs d'indiçage ou d'appartenance au sein des listes. Ce sont des conditions qui permettent d'anticiper et de tester des erreurs potentielles.
-
-    list2 = ["Hydrogen","Helium","Lithium","Boron", "Carbon"]
-    if "Helium" in list1:
-        list1.remove("Helium")
-
+```python
+list2 = ["Hydrogen","Helium","Lithium","Boron", "Carbon"]
+if "Helium" in list1:
+    list1.remove("Helium")
+```
 Si on essaie de supprimer un élément absent d'une liste, on lève une ***AttributeError***.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    try:
-        list2.remove("Oxygen")
-    except AttributeError:
-        print("Can't find Oxygen")
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+try:
+    list2.remove("Oxygen")
+except AttributeError:
+    print("Can't find Oxygen")
+```
 `"Can't find Oxygen"`
 
 Si on essaie de convertir en entier dont le type n'est pas convertible en entier, on lève une ***ValueError***.
-
-    try:
-        int("Hydrogen")
-    except ValueError:
-        print("Hydrogen can not be convert into an integer")
-
+```python
+try:
+    int("Hydrogen")
+except ValueError:
+    print("Hydrogen can not be convert into an integer")
+```
 `"Hydrogen can not be convert into an integer"`
 
 Si on donne un argument du mauvais type à une fonction, on lève une ***TypeError***.
-
-    try:
-        int(list2)
-    except TypeError:
-        print("Can't be convert")
-
+```python
+try:
+    int(list2)
+except TypeError:
+    print("Can't be convert")
+```
 `"Can't be convert"`
 
 On peut aussi très bien ne pas préciser l'erreur et ainsi couvrir toutes les erreurs possibles. Ca peut être intéressant quand on analyse l'input utilisateur, qui peut contenir des tas d'erreurs.
-
-    list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-    removed_element = input("Element ?\n> ")
-    try:
-        list2.remove(removed_element)
-    except:
-        print("Can't find element")
-    print(list2)
-
+```python
+list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+removed_element = input("Element ?\n> ")
+try:
+    list2.remove(removed_element)
+except:
+    print("Can't find element")
+print(list2)
+```
 Si on entre "Lithium" :
 `["Hydrogen", "Helium", "Boron", "Carbon"]`
 
@@ -2249,19 +2315,21 @@ Un set est délimité par **{ }** (*curly brackets* ou *braces*).
 </center>
 <br>
 <br>
-    set_color = {"cyan", magenta", "pink"}
-    set_tuple = {(2, 4), (3, 9), (6, 36)}
+
+```python
+set_color = {"cyan", "magenta", "pink"}
+set_tuple = {(2, 4), (3, 9), (6, 36)}
 
 
-    set1 = {7, 9, 1, 3, 5}
-    set2 = set(range(10))
+set1 = {7, 9, 1, 3, 5}
+set2 = set(range(10))
 
-    print(set1 < set2)     # set1 appartient-il à set2 ?
-    print(set1 & set2)
-    print(set1 | set2)
-    print(set2 - set1)
-    print(set1 == set2)
-
+print(set1 < set2)     # set1 appartient-il à set2 ?
+print(set1 & set2)
+print(set1 | set2)
+print(set2 - set1)
+print(set1 == set2)
+```
 `True` \
 `{7, 9, 1, 3, 5}` \
 `{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}` \
@@ -2269,42 +2337,42 @@ Un set est délimité par **{ }** (*curly brackets* ou *braces*).
 `False`
 
 Pour ajouter un élément à un set, on utilise ***add( )***.
-
-    set1.add(11)
-    print(set1)
-
+```python
+set1.add(11)
+print(set1)
+```
 `{1, 3, 5, 7, 9, 11}`
 
 Pour supprimer un élément d'un set, on utilise ***remove( )*** ou ***discard( )***.
+```python
+set1.remove(11)
+print(set1)
 
-    set1.remove(11)
-    print(set1)
-
-    set1.discard(7)
-    print(set1)
-
+set1.discard(7)
+print(set1)
+```
 `{1, 3, 5, 7, 9}` \
 `{1, 3, 5, 9}`
 
 Si l'élément donné en argument à *remove( )* n'existe pas dans le set, on lève une ***KeyError***. Ce n'est pas le cas de discard( ).
 
 *Exemple : énoncer les combinaisons possibles d'une somme de deux dés*
+```python
+import random
 
-    import random
+roll = list(range(0,13))    # on crée une liste contenant 13 éléments (des entiers ici)
+for i in range(0,13):
+    roll[i] = set()     # on remplace tous les éléments de la liste par un set vide
+print(f"{roll}\n")
 
-    roll = list(range(0,13))    # on crée une liste contenant 13 éléments (des entiers ici)
-    for i in range(0,13):
-        roll[i] = set()     # on remplace tous les éléments de la liste par un set vide
-    print(f"{roll}\n")
+for i in range (1,7):           # on prend la valeur que peut prendre un premier dé
+    for j in range (1,7):         # on y associe la valeur que peut prendre le deuxième dé
+        k = i+j             # somme des deux dés
+        roll[k].add( (i,j) )    # on place à l'indice de la somme un tuple les deux dés dans l'ordre
 
-    for i in range (1,7):           # on prend la valeur que peut prendre un premier dé
-        for j in range (1,7):         # on y associe la valeur que peut prendre le deuxième dé
-            k = i+j             # somme des deux dés
-            roll[k].add( (i,j) )    # on place à l'indice de la somme un tuple les deux dés dans l'ordre
-
-    roll = roll[2:]     # les deux premiers sets sont vides car on ne peut pas obtenir une somme = 0 ou 1
-    print(roll)
-
+roll = roll[2:]     # les deux premiers sets sont vides car on ne peut pas obtenir une somme = 0 ou 1
+print(roll)
+```
 `[set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set(), set()]`
 
 `[{(1, 1)}, {(1, 2), (2, 1)}, {(3, 1), (1, 3), (2, 2)}, {(2, 3), (3, 2), (4, 1), (1, 4)}, {(2, 4), (1, 5), (5, 1), (4, 2), (3, 3)}, {(3, 4), (4, 3), (6, 1), (1, 6), (2, 5), (5, 2)}, {(4, 4), (6, 2), (2, 6), (5, 3), (3, 5)}, {(6, 3), (4, 5), (5, 4), (3, 6)}, {(4, 6), (6, 4), (5, 5)}, {(5, 6), (6, 5)}, {(6, 6)}]`
@@ -2326,49 +2394,49 @@ le joueur (*shooter*) lance deux dés à la fois, sur une à deux manches.
 - si le shooter obtient le score de *point*, il gagne. \
 
 A partir du code réalisé plus tôt, et sans retirer les deux premiers sets vides, on peut obtenir les combinaisons gagnantes du premier tour dans un seul set (*union*) :
-
-    winner_first_roll = roll[7] | roll[11]
-    print(winner_first_roll)
-
+```python
+winner_first_roll = roll[7] | roll[11]
+print(winner_first_roll)
+```
 `{(3, 4), (5, 6), (4, 3), (6, 5), (6, 1), (1, 6), (2, 5), (5, 2)}`
 
 Les combinaisons perdantes du premier tour sont les suivantes :
-
-    loser_first_roll = roll[2] | roll[3] |roll[11]
-    print(loser_first_roll)
-
+```python
+loser_first_roll = roll[2] | roll[3] |roll[11]
+print(loser_first_roll)
+```
 `{(1, 2), (2, 1), (5, 6), (6, 5), (1, 1)}`
 
 Le code du jeu en reposant sur des sets serait le suivant :
+```python
+die1 = random.randint(1, 6)
+die2 = random.randint(1, 6)
+dice = (die1, die2)
+print(f"You rolls {die1} and {die2}.")
 
+if dice in winner_first_roll:
+    print("You win!")
+elif dice in loser_first_roll:
+    print("You lose.")
+else:
+    point = roll[die1 + die2]
+    print(f"{die1 + die2} is your point.")
+
+while True:
     die1 = random.randint(1, 6)
     die2 = random.randint(1, 6)
     dice = (die1, die2)
-    print(f"You rolls {die1} and {die2}.")
+    print(f"You rolls {die1} and {die2}.")      # répéter plusieurs fois donc on pourrait en faire une fonction
 
-    if dice in winner_first_roll:
-        print("You win!")
-    elif dice in loser_first_roll:
+    if dice in roll[7]:
         print("You lose.")
+        break
+    if dice in point:
+        print("You win!")
+        break
     else:
-        point = roll[die1 + die2]
-        print(f"{die1 + die2} is your point.")
-
-    while True:
-        die1 = random.randint(1, 6)
-        die2 = random.randint(1, 6)
-        dice = (die1, die2)
-        print(f"You rolls {die1} and {die2}.")      # répéter plusieurs fois donc on pourrait en faire une fonction
-
-        if dice in roll[7]:
-            print("You lose.")
-            break
-        if dice in point:
-            print("You win!")
-            break
-        else:
-            print("We continue.")
-
+        print("We continue.")
+```
 On peut éventuellement ajouter un `input("Roll ?")` avant de lancer les dés pour donner l'illusion à l'utilisateur de les lancer et avoir une interaction avec l'utilisateur.
 
 ---
@@ -2405,45 +2473,46 @@ L'argument passé à la fonction dans sa définition n'existera que dans cette p
 
 <p style= "color: green">Exemple : fonction qui imprime le nombre de pounds # qu'on lui donne en argument.
 
-    # FUNCTION
-    def print_pound(ncharacters):
-        for i in range(0, ncharacters):
-            print("#", end = "")
+```python
+# FUNCTION
+def print_pound(ncharacters):
+    for i in range(0, ncharacters):
+        print("#", end = "")
 
-    # MAIN
-    print_pound(20)        # exécute la fonction définie plus tôt
-
+# MAIN
+print_pound(20)        # exécute la fonction définie plus tôt
+```
 `####################` # print sur une ligne car pas de saut de ligne car end = ""
 
 ### 4.1.1. Practice : use the function print_pound to draw a histogram
 
 En utilisant la fonction print_pound, voici le rendu du code :
+```python
+def print_pound(ncharacters):
+    for i in range(0, ncharacters):
+        print("#", end = "")
 
-    def print_pound(ncharacters):
-        for i in range(0, ncharacters):
-            print("#", end = "")
+q1 = 190000
+q2 = 340000
+q3 = 873000
+q4 = 439833
 
-    q1 = 190000
-    q2 = 340000
-    q3 = 873000
-    q4 = 439833
+print("Q1: ", end = "")
+print_pound(int(q1 / 20000))     # convertir en entier car la fonction range() ne prend que des entiers
+print("       ", q1)
 
-    print("Q1: ", end = "")
-    print_pound(int(q1 / 20000))     # convertir en entier car la fonction range() ne prend que des entiers
-    print("       ", q1)
+print("Q2: ", end = "")
+print_pound(int(q2 / 20000))
+print("       ", q2)
 
-    print("Q2: ", end = "")
-    print_pound(int(q2 / 20000))
-    print("       ", q2)
+print("Q3: ", end = "")
+print_pound(int(q3 / 20000))
+print("       ", q3)
 
-    print("Q3: ", end = "")
-    print_pound(int(q3 / 20000))
-    print("       ", q3)
-
-    print("Q4: ", end = "")
-    print_pound(int(q4 / 20000))
-    print("       ", q4)
-
+print("Q4: ", end = "")
+print_pound(int(q4 / 20000))
+print("       ", q4)
+```
 `Q1: #########        190000`\
 `Q2: #################        340000` \
 `Q3: ###########################################        873000` \
@@ -2451,37 +2520,36 @@ En utilisant la fonction print_pound, voici le rendu du code :
 
 Si on cherche maintenant à générer un histograme pour une année donnée : \
 On peut stocker les profits de chaque trimestre dans une liste portant le nom de l'année en cours.
-
-    profit_2016 = [190000, 340000, 873000, 439833]
-    print(profit_2016[0])
-
+```python
+profit_2016 = [190000, 340000, 873000, 439833]
+print(profit_2016[0])
+```
 `190000`
 
 Pour trouver combien de # mettre dans l'histo du premier trimestre, il faut faire :
-
-    profit_2016[0]/20000       # To convert in integer before giving it to the function because of range()
-
+```python
+profit_2016[0]/20000       # To convert in integer before giving it to the function because of range()
+```
 <br>
 
 Un premier exemple de ce que pourrait donner le programme :
+```python
+# FUNCTION
+def print_pound(number_char):
+    for i in range(0, int(number_char / 20000)):
+        print("#", end = '')
 
+# MAIN
+profit_2016 = [190000, 340000, 873000, 439833]      # assign the list of profit for the year 2016
 
-    # FUNCTION
-    def print_pound(number_char):
-        for i in range(0, int(number_char / 20000)):
-            print("#", end = '')
+print("Earnings of WidgetCorp in each quarter of 2016")
+print("==============================")
 
-    # MAIN
-    profit_2016 = [190000, 340000, 873000, 439833]      # assign the list of profit for the year 2016
-
-    print("Earnings of WidgetCorp in each quarter of 2016")
-    print("==============================")
-
-    for i in range(0,4):
-        print(f"Q{i + 1}: ", end = '')
-        print_pound(profit_2016[i])      # function print_pound call
-        print(f"      Q{i+1}")
-
+for i in range(0,4):
+    print(f"Q{i + 1}: ", end = '')
+    print_pound(profit_2016[i])      # function print_pound call
+    print(f"      Q{i+1}")
+```
 `Earnings of WidgetCorp in each quarter of 2016` \
 `==============================` \
 `Q1: #########      190000` \
@@ -2492,29 +2560,29 @@ Un premier exemple de ce que pourrait donner le programme :
 <br>
 
 On peut créer une fonction plus précise qui fabriquerait directement l'histogramme des profits à partir de la liste des profits par trimestre pour une certaine année :
+```python
+# FUNCTIONS
+def make_bar(number_char):
+"""return n pounds in a row"""
+return "#" * int(number_char / 20000)
 
-    # FUNCTIONS
-    def make_bar(number_char):
-    """return n pounds in a row"""
-    return "#" * int(number_char / 20000)
+# construct the string to print it at once
+def make_string(i, profit):
+    return f"Q{i+1}: {make_bar(profit)}     {profit}"
 
-    # construct the string to print it at once
-    def make_string(i, profit):
-        return f"Q{i+1}: {make_bar(profit)}     {profit}"
+# incomes_histo takes an iterable object and a non_iterable object as arguments
+def incomes_histo(profit_year, year):
+    """construct an histogram with the profits per quarter of a given year"""
+    print(f"Earnings of WidgetCorp in each quarter of {year}")
+    print("==============================")
+    for i in range(0,4):
+        print(make_string(i, profit_year[i]))
 
-    # incomes_histo takes an iterable object and a non_iterable object as arguments
-    def incomes_histo(profit_year, year):
-        """construct an histogram with the profits per quarter of a given year"""
-        print(f"Earnings of WidgetCorp in each quarter of {year}")
-        print("==============================")
-        for i in range(0,4):
-            print(make_string(i, profit_year[i]))
+# MAIN
+profit_2016 = [190000, 340000, 873000, 439833]
 
-    # MAIN
-    profit_2016 = [190000, 340000, 873000, 439833]
-
-    incomes_histo(profit_2016, 2016)
-
+incomes_histo(profit_2016, 2016)
+```
 `Earnings of WidgetCorp in each quarter of 2016` \
 `==============================` \
 `Q1: #########      190000` \
@@ -2539,40 +2607,40 @@ Quand on sort de la fonction, le code reprend depuis là où la fonction avait �
 ### 4.2.1. Returning a value
 
 Chaque fonction retourne une valeur, on peut donc les utiliser dans des opérations comme si c'était des variables assignées à la variable qu'elles retournent :
-
-    x = cos(x) * r
-    if cos(x) < 0.5:
-        print(cos(x) * cos(x))
-
+```python
+x = cos(x) * r
+if cos(x) < 0.5:
+    print(cos(x) * cos(x))
+```
 *cos(x)* est une fonction appartenant au module *math*, mais le fonctionnement est le même pour une fonction écrite par le programmeur.
 
 On retourne une valeur à l'aide de l'instruction ***return*** et stoppe l'exécution de la fonction. Cette instruction assigne une **valeur** et un **type** à l'objet retourné par la fonction. \
 On ne peut retourner qu'une seule valeur, mais elle peut être une expression (*x * x + y*), un entier/flottant (1.0), une string ("hello"), une liste (["chlore", "iode"]), un tuple ((1, 3, 5)), etc.
+```python
+def square(x):
+    return x * x
 
-    def square(x):
-        return x * x
-
-    print(square(12))
-    print(square(12.0))
-
+print(square(12))
+print(square(12.0))
+```
 `144`
 `144.0`
+```python
+def test(x):
+if x < 1:
+    return 1
+if x < 2:
+    return 2.0
+if x < 3:
+    return "3"
+return  [1, 2, 3, 4]        # if no condition is fulfilled so far, then it returns this list
 
-    def test(x):
-    if x < 1:
-        return 1
-    if x < 2:
-        return 2.0
-    if x < 3:
-        return "3"
-    return  [1, 2, 3, 4]        # if no condition is fulfilled so far, then it returns this list
-
-    print(test(0))
-    print(test(1))
-    print(test(1.4))
-    print(test(2))
-    print(test(3))
-
+print(test(0))
+print(test(1))
+print(test(1.4))
+print(test(2))
+print(test(3))
+```
 `1` \
 `2.0` \
 `2.0` \
@@ -2588,15 +2656,15 @@ On peut à tout moment **estimer l'erreur relative** par l'expression suivante :
 Si le résultat est différent de 0, c'est que le calcul n'est pas encore exact.
 
 Notre expression est donc : &emsp;&emsp;&emsp; **y<sub>i</sub> + 1 = (y<sub>i</sub> + x / y<sub>i</sub>) / 2** pour l'itération **i**
+```python
+def root(x):
+    y = x
+    for i in range(1, 20):
+        y = (y + x / y) / 2.0         # divide 2.0 allows to have a float number as the result
+    return y            # return y after 20 iterations
 
-    def root(x):
-        y = x
-        for i in range(1, 20):
-            y = (y + x / y) / 2.0         # divide 2.0 allows to have a float number as the result
-        return y            # return y after 20 iterations
-
-    print(f"{root(2):.4f}")         # print the square root of 2 with 4 floating number
-
+print(f"{root(2):.4f}")         # print the square root of 2 with 4 floating number
+```
 `1.4142`
 
 Avec 20 itérations, on calcule de façon exacte jusqu'à au moins 15 décimales ; c'est largement suffisant, on va donc tenter de réduire le nombre d'itérations. 6 itérations donne toujours au moins 15 décimales exactes. \
@@ -2604,20 +2672,20 @@ En revanche, si on calcule la racine carrée de 10000, le résultat après 6 it�
 
 On ne devrait donc pas utiliser un nombre d'itérations précises étant donné que l'exactitude varie suivant la valeur de *x*. \
 On peut donc utiliser l'estimation de l'erreur relative pour garantir une bonne estimation de la racine carrée. Si la différence est jugée trop importante, on répète les itérations ; quand la différence est considérée comme suffisamment petite, on peut considérer que la valeur de *y* est suffisamment proche de la réalité pour être considérée comme exacte. On utilise donc un ***while*** ici plutôt qu'un ***for***.
-
-    def root_error(x):
-    """calculate the square root of x to 7 decimal places"""
-    y = x
+```python
+def root_error(x):
+"""calculate the square root of x to 7 decimal places"""
+y = x
+error = abs(x - y**2)
+while error > 0.0000001:
+    y = (y + x/y) / 2.0
     error = abs(x - y**2)
-    while error > 0.0000001:
-        y = (y + x/y) / 2.0
-        error = abs(x - y**2)
-    return y
+return y
 
-    print(f"{root_error(100000):.7f}")
-    print(f"{root_error(17):.7f}")
-    print(f"{root_error(68.5):.7f}")
-
+print(f"{root_error(100000):.7f}")
+print(f"{root_error(17):.7f}")
+print(f"{root_error(68.5):.7f}")
+```
 `316.2277660` \
 `4.1231056` \
 `8.2764727`
@@ -2634,6 +2702,7 @@ Ci-dessous une illustration de comment les paramètres sont traités dans la fon
 
 <p style= "color: green">Code de base :
 
+```python
     def square(x):
         return x**2
 
@@ -2641,102 +2710,103 @@ Ci-dessous une illustration de comment les paramètres sont traités dans la fon
     r = 2.54
     c = square(2 * pi * r)
     print(f"Circumeference is {c}")
-
+```
 `Circumference is 254.69852874643982`
 
 <p style= "color: green">Ce qui se passe au niveau des variables dans l'appel de fonction :
 
-  def square(x):
-        return x**2
+```python
+def square(x):
+    return x**2
 
-    pi = 3.14159
-    r = 2.54
-    # call square(2 * pi *r)
-    # a copy of the parameter is passed ; if a simple variable is passed,
-    # then the internal location of that variable would be passed
-    parameter1 = 2 * pi * r
-    x = parameter1
+pi = 3.14159
+r = 2.54
+# call square(2 * pi *r)
+# a copy of the parameter is passed ; if a simple variable is passed,
+# then the internal location of that variable would be passed
+parameter1 = 2 * pi * r
+x = parameter1
 
-    return value = x**2
-    c = return value
-    print(f"Circumeference is {c}")
-
+return value = x**2
+c = return value
+print(f"Circumeference is {c}")
+```
 ---
 Il est important de comprendre une chose : en Python, les paramètres sont des *références d'objets* passés à la fonction et celle-ci ne peut pas assigner une nouvelle valeur à ces *références d'objet* A L'INTERIEUR DE LA FONCTION. Par contre, pour une liste par exemple elle peut modifier les objets qui y sont référencés.
+```python
+def addend(arg):
+    arg.append("End")
 
-    def addend(arg):
-        arg.append("End")
-
-    z = ["Start", "Add", "Multiply"]
-    print(1, z)
-    addend(z)
-    print(2, z)
-
+z = ["Start", "Add", "Multiply"]
+print(1, z)
+addend(z)
+print(2, z)
+```
 `1 ['Start', 'Add', 'Multiply']` \
 `2 ['Start', 'Add', 'Multiply', 'End']`
 
 La fonction *append( )* modifie la liste en place donc elle modifie directement les objets référencés par la liste z. Ceci explique qu'on ait pas besoin de préciser *return arg*.
+```python
+def addend(arg):
+    arg = arg + ["End"]
 
-    def addend(arg):
-        arg = arg + ["End"]
-
-    z = ["Start", "Add", "Multiply"]
-    print(1, z)
-    addend(z)
-    print(2, z)
-
+z = ["Start", "Add", "Multiply"]
+print(1, z)
+addend(z)
+print(2, z)
+```
 `1 ['Start', 'Add', 'Multiply']` \
 `2 ['Start', 'Add', 'Multiply']`
 
 La concaténation avec *+* ne modifie pas en place mais crée une copie de la liste, qui n'est donc plus référencée par le nom de la liste z. On assigne effectivement l'argument à cette opération, mais sans *return* la nouvelle assignation ne sort pas de la fonction. Pour obtenir le même résultat qu'avec append( ) :
+```python
+def addend(arg):
+    arg = arg + ["End"]
+    return arg
 
-    def addend(arg):
-        arg = arg + ["End"]
-        return arg
-
-    z = ["Start", "Add", "Multiply"]
-    print(1, z)
-    z = addend(z)
-    print(2, z)
-
+z = ["Start", "Add", "Multiply"]
+print(1, z)
+z = addend(z)
+print(2, z)
+```
 `1 ['Start', 'Add', 'Multiply']` \
 `2 ['Start', 'Add', 'Multiply', 'End']`
 
 ### 4.2.3. Default parameters
 
 Il peut être utile de print régulièrement des valeurs pour vérifier que le programme va bien jusque là sans bug, comme des check-points.
+```python
+def gothere(count, value):
+    print(f"Got here : {count}, value is {value}.")
 
-    def gothere(count, value):
-        print(f"Got here : {count}, value is {value}.")
-
-    `first part of the code`
-    gothere(1, var_a)
-    `second part of the code`
-    gothere(2, var_b)
-    `third part of the code`
-    gothere(3, var_c)
-
+# first part of the code
+gothere(1, var_a)
+# second part of the code
+gothere(2, var_b)
+# third part of the code
+gothere(3, var_c)
+```
 Si les trois valeurs sont print avec les bonnes valeurs dans l'output, le code est exécuté sans encombre. \
 On peut choisir de ne pas print systématiquement de valeur :
-
-    def gothere(count, value = None):
-        if value:
-            print(f"Got here : {count}, value is {value}.")
-        else:
-            print(f"Got here : {count}")
-
+```python
+def gothere(count, value = None):
+    if value:
+        print(f"Got here : {count}, value is {value}.")
+    else:
+        print(f"Got here : {count}")
+```
 Et on peut alors ne donner qu'un argument à la fonction, considéré comme le paramètre *count*. Si un second est donné, ce sera le paramètre *value*.
 
 On a précédemment attribué *None* comme valeur par défaut mais on peut attribuer n'importe quelle valeur par défaut :
+```python
+def function_test(a, b = 12, c = 1)
+    return a + b - c
 
-    def function_test(a, b = 12, c = 1)
-        return a + b - c
-
-    print(function_test(19))            # a = 19, b = 12, c = 1
-    print(function_test(3, 3))          # a = 3, b = 3, c = 1
-    print(function_test(6, 6, 6))       # a = 6, b = 6, c = 6
-    print(function_test(6, c = 6))      # a = 6, b = 12, c = 6
-
+print(function_test(19))            # a = 19, b = 12, c = 1
+print(function_test(3, 3))          # a = 3, b = 3, c = 1
+print(function_test(6, 6, 6))       # a = 6, b = 6, c = 6
+print(function_test(6, c = 6))      # a = 6, b = 12, c = 6
+```
 `30` \
 `5` \
 `6` \
@@ -2746,13 +2816,13 @@ On a précédemment attribué *None* comme valeur par défaut mais on peut attri
 
 En Python, une fonction à laquelle on assigne pas de valeur à retourner retournera un objet *None*, contrairement à d'autres langages qui retourneraient une erreur. \
 *None* est de type none (*NoneType*). Pour tester si cette valeur est assignée :
+```python
+if x == None:
 
-    if x == None:
+#OU
 
-    #OU
-
-    if x is None:
-
+if x is None:
+```
 **Example : the game of sticks**
 
 - Jeu à deux joueurs.
@@ -2765,60 +2835,60 @@ L'état actuel du jeu est déterminé par le nombre de bâtons restants ; quand 
 La difficulté de ce programme est de faire en sorte que l'ordinateur ne choisisse pas un nombre de façon randomisée mais cherche à gagner s'il le peut : s'il reste 3 bâtons ou moins à la fin, l'ordinateur doit les prendre tous pour l'emporter. On peut arriver à cette fin en faisant en sorte que 4 bâtons soient proposés au dernier joueur à la fin. C'est aussi le cas s'il arrive à laisser un multiple de 4 au joueur, ce qu'il cherchera donc toujours à faire.
 
 Une amorce de code qui pourrait permettre d'exécuter le jeu :
+```python
+# FUNCTIONS
+# Note that the function is named for what it does, it does only one thing and it serves a purpose that is needed multiple times. It is a good function.
+def display_state(value):
+    """print | for each stick remaining.
+    There are 6 sticks in a row."""
+    k = value
+    while k > 0:
+        if k >= 6:
+            print("| " * 6, end = "")
+            k = k - 6
+        else:
+            for j in range(0, k):
+                print("| ", end = "")
+            k = 0
+        print()
 
-    # FUNCTIONS
-    # Note that the function is named for what it does, it does only one thing and it serves a purpose that is needed multiple times. It is a good function.
-    def display_state(value):
-        """print | for each stick remaining.
-        There are 6 sticks in a row."""
-        k = value
-        while k > 0:
-            if k >= 6:
-                print("| " * 6, end = "")
-                k = k - 6
-            else:
-                for j in range(0, k):
-                    print("| ", end = "")
-                k = 0
-            print()
-
-    def get_move():
-        """print a prompt to the user asking for the number of sticks they wish to remove
-        read the value from the keyboard and return it."""
+def get_move():
+    """print a prompt to the user asking for the number of sticks they wish to remove
+    read the value from the keyboard and return it."""
+    n = int(input("Your move: Take away how many? "))
+    while n <= 0 n >= 3:
+        print("Sorry, you must choose a number between 1 and 3.")
         n = int(input("Your move: Take away how many? "))
-        while n <= 0 n >= 3:
-            print("Sorry, you must choose a number between 1 and 3.")
-            n = int(input("Your move: Take away how many? "))
+    return n
+
+def game_over():
+    global sticks_number_g
+    if sticks_number_g == 0:
+        return True
+    return False
+
+def make_computer_move():
+    global sticks_number_g
+    n = sticks_number_g % 4
+    if n <= 0:
+        return 1
+    else:
         return n
 
-    def game_over():
-        global sticks_number_g
-        if sticks_number_g == 0:
-            return True
-        return False
-
-    def make_computer_move():
-        global sticks_number_g
-        n = sticks_number_g % 4
-        if n <= 0:
-            return 1
-        else:
-            return n
-
-    # MAIN
-    sticks_number_g = 21            # _g shows that it is a global variable
-    display_state(sticks_number_g)
-    user_move = get_move()
-    sticks_number_g = sticks_number_g - user_move
-    print(f"You took {user_move}. Sticks leaving : {sticks_number_g}.")
+# MAIN
+sticks_number_g = 21            # _g shows that it is a global variable
+display_state(sticks_number_g)
+user_move = get_move()
+sticks_number_g = sticks_number_g - user_move
+print(f"You took {user_move}. Sticks leaving : {sticks_number_g}.")
+if game_over():
+    print("You win !")
+else:
+    move = make_computer_move()
+    print(f"Computer tooks {move}. Sticks leaving : {sticks_number_g}.")
     if game_over():
-        print("You win !")
-    else:
-        move = make_computer_move()
-        print(f"Computer tooks {move}. Sticks leaving : {sticks_number_g}.")
-        if game_over():
-            print("Computer wins.")
-
+        print("Computer wins.")
+```
 ### 4.2.5. Scope
 
 Dans un programme, on distingue les variables **globales** des variables **locales**. \
@@ -2828,9 +2898,9 @@ C'est ce qu'on appelle le ***scoping*** : l'emplacement du programme où la vari
 
 Si une variable locale porte le même nom qu'une variable globale, c'est ce qu'on appelle l'*aliasing* et cela devient compliqué. \
 En Python, les variables sont considérées comme étant locales à moins que le programmeur spécifie qu'elle est globale dans une instruction :
-
-    global a, b, c
-
+```python
+global a, b, c
+```
 Cela signifie que les variables *a*, *b* et *c* sont des variables globales définies en dehors de toute fonction. Ainsi ces fonctions sont aussi accessibles du *main* et de tout programme les déclarant comme globales.
 
 Pour ne pas s'emmêler, il ne faut définir de variables globales que pour des variables qui sont connues, essentielles et utilisées sur l'ensemble du programme (*ex : le plateau de jeu sur un jeu d'échec*). Pour mieux s'y retrouver, on peut aussi placer *_g* à la fin du nom de la variable globale pour savoir à tout moment qu'elle est globale. \
@@ -2839,139 +2909,139 @@ Dans notre jeu de sticks, la valeur globale serait *value* qui détermine le nom
 ### 4.2.6. Variable parameter lists
 
 L'aide concernant la fonction built-in *print()* est la suivante :
-
-    print(*args, sep=' ', end='\n', file=None, flush=False)
-        """Prints the values to a stream, or to sys.stdout by default."""
-
+```python
+print(*args, sep=' ', end='\n', file=None, flush=False)
+    """Prints the values to a stream, or to sys.stdout by default."""
+```
 L'expression **args* prend les arguments donnés et les met dans un tuple.
 
 Prenons l'exemple de la fonction suivante (peu utile, purement fictive) :
+```python
+def format_print(format_item, *list):
+    """print un entier si format_item == 'i',
+    print un flottant si format_item == 'f'"""
+    index = 0
+    if len(format_item) != len(list):
+        return "There must be the same number of var as format items"
+    for v in list:
+        if format_item[index] == "f":
+            print(float(v), " ", end = "")
+        elif format_item[index] == "i":
+            print(int(v), " ", end = "")
+        else:
+            print("?", end = "")
+        index += 1
+    return ""
 
-    def format_print(format_item, *list):
-        """print un entier si format_item == 'i',
-        print un flottant si format_item == 'f'"""
-        index = 0
-        if len(format_item) != len(list):
-            return "There must be the same number of var as format items"
-        for v in list:
-            if format_item[index] == "f":
-                print(float(v), " ", end = "")
-            elif format_item[index] == "i":
-                print(int(v), " ", end = "")
-            else:
-                print("?", end = "")
-            index += 1
-        return ""
-
-    print(format_print("fi", 12 , 13))
-
+print(format_print("fi", 12 , 13))
+```
 `12.0 13`
 
 Ici, *"fi"* est assimilé au premier argument *format_item* et les suivants sont traités comme **list*. Donc format_item lit comme argument : *"fi", (12, 13)*
 
 Les instructions suivantes sont incorrectes :
 - Erreur liée à la longueur des arguments :
+```python
+print(format_print("f", 12, 13))       # len("f") = 1 != len((12, 13)) = 2
+print(format_print("ffi", 12, 13))       # len("ffi") = 3 != len((12, 13),) = 2
+print(format_print("fi", (12, 13)))     # len("fi") = 2 != len((12, 13),) = 1 (contains one tuple ; a tuple into a tuple)
 
-        print(format_print("f", 12, 13))       # len("f") = 1 != len((12, 13)) = 2
-        print(format_print("ffi", 12, 13))       # len("ffi") = 3 != len((12, 13),) = 2
-        print(format_print("fi", (12, 13)))     # len("fi") = 2 != len((12, 13),) = 1 (contains one tuple ; a tuple into a tuple)
-
-        numbers = [12, 13]
-        print(format_print("fi", numbers))      # same error : *list = ([12, 13]) so len(*list) = 1
-
+numbers = [12, 13]
+print(format_print("fi", numbers))      # same error : *list = ([12, 13]) so len(*list) = 1
+```
 - Erreur liée au type de l'objet passé :
-
-        print(format_print(12, 13))       # print a TypeError : format_item = 12 here and an integer object has no length
-
+```python
+print(format_print(12, 13))       # print a TypeError : format_item = 12 here and an integer object has no length
+```
 Autre exemple :
+```python
+def function_test(*arg):
+    return arg
 
-    def function_test(*arg):
-        return arg
+print(function_test(19))
+print(function_test(3, 3))
+print(function_test(6, 6, 6))
 
-    print(function_test(19))
-    print(function_test(3, 3))
-    print(function_test(6, 6, 6))
-
-    numbers = [8, 7, 6]
-    print(function_test(numbers))
-
+numbers = [8, 7, 6]
+print(function_test(numbers))
+```
 `(19, )` \
 `(3, 3)` \
 `(6, 6, 6)` \
 `([8, 7, 6],)`
+```python
+def function_test(*arg):
+    for i in arg:
+        print(i, end = " ")
+    return ""
 
-    def function_test(*arg):
-        for i in arg:
-            print(i, end = " ")
-        return ""
-
-    print(function_test(19, 20, 21))
-    print(function_test(numbers))
-
+print(function_test(19, 20, 21))
+print(function_test(numbers))
+```
 `19 20 21 ` \
 `[8, 7, 6] `
 
 Pour pouvoir itérer dans la variable liste, il faut retirer le *.
+```python
+def function_test(arg):
+    for i in arg:
+        print(i, end = " ")
+    return ""
 
-    def function_test(arg):
-        for i in arg:
-            print(i, end = " ")
-        return ""
-
-    print(function_test(numbers))
-
+print(function_test(numbers))
+```
 `8 7 6 `
 
 Il existe aussi les ***dict* qui prennent une série d'arguments nommés (***named** parameters*) qui sont ensuite transformés en dictionnaire quand passés à la fonction.
+```python
+def function_test(**dict):
+    return dict
 
-    def function_test(**dict):
-        return dict
-
-    print(function_test(first = 21, second = 20, third = 19))
-
+print(function_test(first = 21, second = 20, third = 19))
+```
 `{'first': 21, 'second' : 20, 'third' : 19}`
 
 ### 4.2.7. Variables as functions
 
 En Python, une variable n'a pas de type défini et peut référencer un objet de n'importe quel type.
+```python
+def print0():
+    print("Zero")
 
-    def print0():
-        print("Zero")
+def print1():
+    print("One")
 
-    def print1():
-        print("One")
-
-    printNum = print1       # no parameter list given ; type of printNum = function
-    printNum()      # new function referencing the location of print1()
-    print1()
-
+printNum = print1       # no parameter list given ; type of printNum = function
+printNum()      # new function referencing the location of print1()
+print1()
+```
 `One` \
 `One`
 
 Si on écrit `printNum = print1()`, cela résulte en l'exécution de la fonction *print1()* à ce moment-là ; si la fonction retourne une valeur, cette valeur se trouve assignée à printNum. \
 En l'état, le programmeur n'a pas indiqué explicitement à la fonction de retourner une valeur, donc elle retourne la valeur par défaut *None*. La variable printNum référence l'objet *None* et n'est plus de type *function* mais du type *NoneType*.
+```python
+def print0():
+    print("Zero")
 
-    def print0():
-        print("Zero")
+def print1():
+    print("One")
 
-    def print1():
-        print("One")
-
-    printNum = print1()
-    print(type(printNum))
-
+printNum = print1()
+print(type(printNum))
+```
 `One` \
 `<class 'NoneType'>`
 
 Si on essaie d'exécuter *printNum* de la sorte `printNum()`, cela lèvera une TypeError.
 
 <p style= "color: red"><em>print1</em> a la valeur de <em>fonction</em> tandis que <em>print1()</em> correspond à un <em>appel de fonction</em>.</p>
-
-    a = 1
-    printList = [print0, print1]
-    printNum = printList[a]         # = printList[1] = print1
-    printNum()
-
+```python
+a = 1
+printList = [print0, print1]
+printNum = printList[a]         # = printList[1] = print1
+printNum()
+```
 `One`
 
 <p style = "color: green">Exemple : trouver la valeur maximum d'une fonction
@@ -2981,51 +3051,51 @@ Si la vente d'une calculatrice scientifique résulte en un déficit de 2$ mais l
 
 *scient_calcul* est le nombre de calculatrices scientifiques et *graph_calcul* est le nombre de calculatrices graphiques. \
 Pour scient_calcul, on sait que le minimum de production journalière attendu est de 100, et le maximum qui peut être produit est de 200 :
-
-    100 <= scient_calcul <= 200
-
+```python
+100 <= scient_calcul <= 200
+```
 Pour graph_calcul, le minimum de production journalière attendu est de 80, et la maximum pouvant être produit est de 170 :
-
-    80 <= graph_calcul <= 170
-
+```python
+80 <= graph_calcul <= 170
+```
 On sait aussi qu'il faut que plus de 200 calculatrices soient envoyées chaque jour :
+```python
+scient_calcul + graph_calcul >= 200
 
-    scient_calcul + graph_calcul >= 200
+# OU
 
-    # OU
-
-    graph_calcul >= 200 - scient_graph
-
+graph_calcul >= 200 - scient_graph
+```
 Pour finir, le profit est le suivant :
-
-    p = -2 scient_calcul + 5 graph_calcul
-
+```python
+p = -2 scient_calcul + 5 graph_calcul
+```
 Le code pour calculer le profit maximisé sera le suivant :
+```python
+def profit(scient_calcul, graph_calcul):
+    return -2 * scient_calcul + 5 * graph_calcul
 
-    def profit(scient_calcul, graph_calcul):
-        return -2 * scient_calcul + 5 * graph_calcul
+# range for scient [x0, x1]
+# range for graph [y0, y1]
+# scient + graph must be >= sum
+def search_max(f, x0, y0, x1, y1, sum):
+    pmax = -1 * 10**12
+    pscient = -100
+    pgraph = -100
+    for s in range (x0, x1+1):
+        for g in range (y0, y1+1):
+            if s + g >= sum:
+                p = f(s, g)
 
-    # range for scient [x0, x1]
-    # range for graph [y0, y1]
-    # scient + graph must be >= sum
-    def search_max(f, x0, y0, x1, y1, sum):
-        pmax = -1 * 10**12
-        pscient = -100
-        pgraph = -100
-        for s in range (x0, x1+1):
-            for g in range (y0, y1+1):
-                if s + g >= sum:
-                    p = f(s, g)
+                if p >= max:
+                    pmax = p
+                    pscient = s
+                    pgraph = g
+    return((pscient, pgraph))
 
-                    if p >= max:
-                        pmax = p
-                        pscient = s
-                        pgraph = g
-        return((pscient, pgraph))
-
-    c = search_max(profit, 100, 80, 200, 170, 200)
-    print(c)
-
+c = search_max(profit, 100, 80, 200, 170, 200)
+print(c)
+```
 `(100, 170)`
 
 Le profit sera de 650$ par jour s'ils fabriquent 100 calculatrices scientifiques et 170 calculatrices graphiques par jour.
@@ -3033,27 +3103,27 @@ Le profit sera de 650$ par jour s'ils fabriquent 100 calculatrices scientifiques
 ### 4.2.8. Functions as return values
 
 Une fonction peut retourner une fonction comme valeur de retour.
+```python
+def print0():
+    print("Zero")
 
-    def print0():
-        print("Zero")
+def print1():
+    print("One")
 
-    def print1():
-        print("One")
+def print2():
+    print("Two")
 
-    def print2():
-        print("Two")
+def get_print_funct(a):
+    if a == 0:
+        return print0
+    if a == 1:
+        return print1
+    if a == 2:
+        return print2
 
-    def get_print_funct(a):
-        if a == 0:
-            return print0
-        if a == 1:
-            return print1
-        if a == 2:
-            return print2
-
-    printNum = get_print_funct(2)
-    printNum()
-
+printNum = get_print_funct(2)
+printNum()
+```
 `Two`
 
 ### 4.3. Recursion
@@ -3068,42 +3138,42 @@ En programmation, on parle de **fonction récursive** pour les fonctions contena
 La difficulté pour les débutants est de s'assurer que la fonction récursive se termine bien et retourne bien une valeur.
 
 La fonction récursive suivante ne se termine jamais :
-
-    def recur1(i):
-        recur1(i+1)
-        print(i)        # Elle ne printera jamais, pas d'output
-
+```python
+def recur1(i):
+    recur1(i+1)
+    print(i)        # Elle ne printera jamais, pas d'output
+```
 Si on l'exécute, l'erreur suivante sera levée : `RecursionError: maximum recursion depth exceeded`.
 
 La suivante a une fin :
+```python
+def recur2(i):
+    if i > 0:
+        recur2(i-1)
+    print(i)
 
-    def recur2(i):
-        if i > 0:
-            recur2(i-1)
-        print(i)
-
-    recur2(2)
-
+recur2(2)
+```
 `0` \
 `1` \
 `2`
 
 La fonction est exécutée à 3 reprises et le print() s'exécute d'abord dans la dernière exécution (quand i == 0 donc), puis le programme revient à la ligne de la précédente exécution (*précédente récursion*) et print, etc. \
 Si on écrivait le détail de ce qui est fait : \
-
-    recur2(2)
-        2 > 0: True
-            recur(1)
-                1 > 0: True
-                    recur(0)
-                        0 > 0: False, 0 == 0
-                        print(0)
-                        (return)
-                print(1)
-                (return)
-        print(2)
-        (return)
-
+```python
+recur2(2)
+    2 > 0: True
+        recur(1)
+            1 > 0: True
+                recur(0)
+                    0 > 0: False, 0 == 0
+                    print(0)
+                    (return)
+            print(1)
+            (return)
+    print(2)
+    (return)
+```
 `0` \
 `1` \
 `2`
@@ -3114,25 +3184,25 @@ Chaque appel de la fonction crée **sa propre copie des variables locales** qui 
 
 Exemple d'application de la fonction récursive : \
 On cherche à trouver dans une liste de noms si le nom *Parker* se trouve dans la liste (sachant que la fonction built-in *in* permet de faire ce travail, mais on cherche une autre façon de faire).
+```python
+def search_name(name, name_list):
+    length_list = len(name_list)
+    mean_name = length_list // 2
+    if length_list == 1 and name != name_list[0]:       # if there is one item left on the list
+        return False
+    elif name < name_list[mean_name]:
+        return search_name(name, name_list[0:mean_name])
+    elif name > name_list[mean_name]:
+        return search_name(name, name_list[mean_name:])
+    else:
+        return True
 
-    def search_name(name, name_list):
-        length_list = len(name_list)
-        mean_name = length_list // 2
-        if length_list == 1 and name != name_list[0]:       # if there is one item left on the list
-            return False
-        elif name < name_list[mean_name]:
-            return search_name(name, name_list[0:mean_name])
-        elif name > name_list[mean_name]:
-            return search_name(name, name_list[mean_name:])
-        else:
-            return True
+notebook = ["Robert", "Peter", "Lea", "Lisa"]
+notebook.sort()            # if the list isn't sorted by alphabetic order already
 
-    notebook = ["Robert", "Peter", "Lea", "Lisa"]
-    notebook.sort()            # if the list isn't sorted by alphabetic order already
-
-    print(search_name("Lisa", notebook))
-    print(search_name("Gab", notebook))
-
+print(search_name("Lisa", notebook))
+print(search_name("Gab", notebook))
+```
 `True` \
 `False`
 
@@ -3161,25 +3231,25 @@ un module peut être appelé dans n'importe quel programme du moment que son imp
 Avant de déclarer un module, il faut tester précisément le code qu'il contient pour s'assurer qu'il n'y a pas d'erreur dedans (imaginez le travail si quand une erreur survient dans notre code il faut envisager les erreurs de son code + des modules qu'on importe). Un module doit donc être **fiable**.
 
 Si le module est apporté par le système Python ou si son fichier se trouve dans le même dossier que le fichier souhaitant l'utiliser, alors il suffit d'écrire :
-
-    import random       # module python
-    import popo_tools       # module du développeur se trouvant dans le même dossier
-
+```python
+import random       # module python
+import popo_tools       # module du développeur se trouvant dans le même dossier
+```
 **Si on exporte du code, il faudra aussi exporter les fichiers de modules qu'il utilise pour qu'il soit fonctionnel.**
 
 - L'instruction ***import*** doit apparaître au début du programme ; Python réalisera une analyse du fichier importé avant d'exécuter le code du programme. Une erreur est levée s'il ne le trouve pas ou si le module  n'est pas appelé ensuite dans le code.
 - Les fonctions du module sont toujours précédées du nom du module, pour préciser à Python où elles sont stockées :
-
-        random.randrange()
-        popo_tools.input_int()
-
+```python
+random.randrange()
+popo_tools.input_int()
+```
 Lorsque le module est chargé dans le programme, le code dans le fichier du module est exécuté (initialisation des variables).
 
 On peut aussi indiquer où trouver la fonction dès le début du fichier ; on pourra ainsi appeler simplement la fonction comme une fonction "locale" :
-
-    from random import randrange
-    from popo_tools import input_int
-
+```python
+from random import randrange
+from popo_tools import input_int
+```
 *Ce n'est pas gênant que le nom du module soit identique au nom de la fonction (ex : random.random(), qui appartient à la librairie Python).*
 
 ### 4.5. Program design using functions - the game of Nim
@@ -3196,42 +3266,42 @@ Le jeu Nim est un exemple de programme utilisant des fonctions et des modules.
 
 Il faut donc dans ce jeu récolter deux nombres de la part du joueur : la rangée d'où retirer les bâtons et combien en retirer. \
 On définit une variable *row_val* référençant une liste contenant le nombre de bâtons dans chaque ligne.
-
-    row_val = [5, 7, 9]
-
+```python
+row_val = [5, 7, 9]
+```
 Cette donnée est **l'état actuel du jeu** (le plateau de jeu) et est crucial au déroulement du jeu puisqu'il définit ce qui peut être joué.
-
-    row_val = [0, 0, 0]     # the game is over
-
+```python
+row_val = [0, 0, 0]     # the game is over
+```
 Au tour du joueur, le joueur choisit le nombre de sticks N qu'il veut retirer et on les retire de la bonne ligne M :
-
-    row_val[M] = row_val[M] - N
-
+```python
+row_val[M] = row_val[M] - N
+```
 Ecrivons d'abord le *main* code et nous écrirons ensuite les fonctions dont il a besoin :
+```python
+row_val = [5, 7, 9]
+done = False        # the game is over?
+player_move = [-1, 1]
 
-    row_val = [5, 7, 9]
-    done = False        # the game is over?
-    player_move = [-1, 1]
+print("The game of Nim.")
+rules()
 
-    print("The game of Nim.")
-    rules()
-
-    while not done:
-        display_state(row_val)              # show the game board
-        prompt(player_move)       # ask player for their move
-        ok = legal_move(player_move, row_val)         # was the player's move ok?
-        while not ok:
-            print("The move is not legal.")
-            display_state(row_val)
-            prompt(player_move)
-            ok = legal_move(player_move, row_val)
-        make_move(player_move)
-        if game_over(row_val):
-            print("You win!")
-            break
-        print("State after you move is ")
+while not done:
+    display_state(row_val)              # show the game board
+    prompt(player_move)       # ask player for their move
+    ok = legal_move(player_move, row_val)         # was the player's move ok?
+    while not ok:
+        print("The move is not legal.")
         display_state(row_val)
-
+        prompt(player_move)
+        ok = legal_move(player_move, row_val)
+    make_move(player_move)
+    if game_over(row_val):
+        print("You win!")
+        break
+    print("State after you move is ")
+    display_state(row_val)
+```
 Les fonctions à définir sont :
 
 - ***rules()*** : print les règles du jeu
@@ -3252,30 +3322,30 @@ Les fonctions à définir sont :
 `row 3: | | | | | | | | |  9`
 
 *Notons qu'il est commun en programmation de nommer un élément dans le système de numérotation humain (1) quand pour l'ordinateur cela représente un autre nombre (0).*
+```python
+def prompt(move):
+    row = input("Your move : which row? ")
+    sticks = input("        how many sticks?")
+    move[0] = int(row) -1
+    move[1] = int(sticks)
+    return move
 
-    def prompt(move):
-        row = input("Your move : which row? ")
-        sticks = input("        how many sticks?")
-        move[0] = int(row) -1
-        move[1] = int(sticks)
-        return move
+def legal_move(move, val):
+    """return a boolean"""
+    row = move[0]
+    sticks = move[1]
+    if row < 0 or row > 2:
+        return False
+    if sticks <= 0 or sticks > val[row]:
+        return False
+    return True
 
-    def legal_move(move, val):
-        """return a boolean"""
-        row = move[0]
-        sticks = move[1]
-        if row < 0 or row > 2:
-            return False
-        if sticks <= 0 or sticks > val[row]:
-            return False
-        return True
-
-    def make_move(move, state):
-        row = move[0]
-        sticks = move[1]
-        state[row] = state[row] - sticks
-        return state
-
+def make_move(move, state):
+    row = move[0]
+    sticks = move[1]
+    state[row] = state[row] - sticks
+    return state
+```
 La stratégie pour gagner à coup sûr est la suivante : assurer la parité des valeurs quand c'est le tour de l'adversaire.
 
 Row 1 = 5 = 4 + 1 = 1 * 2<sup>2</sup> + 1 * 2<sup>0</sup> = 0101 \
@@ -3309,11 +3379,11 @@ Si on retire 7 bâtons de la dernière ligne à 9 bâtons, on obtient 2<sub>10</
 </center>
 
 Une fonction permettant de vérifier cette parité serait la suivante :
-
-    def eval(val):
-        parity = val[0] ^ val[1] ^ val[2]
-        return parity
-
+```python
+def eval(val):
+    parity = val[0] ^ val[1] ^ val[2]
+    return parity
+```
 Ceci n'est qu'une ébauche de code (cf dossier python_book pour voir le code complet que j'ai écrit).
 
 ### The development process exposed
@@ -3406,22 +3476,22 @@ Les informations contenues dans un fichier sont déjà connues de l'ordinateur ;
 #### Problem: read a number from the keyboard and divide it by 2
 
 Il faut bien anticiper les différentes erreurs qui peuvent être levées dans le script pour y répondre de façon correcte sans que le jeu ne crash.
+```python
+s = input("Input an integer ")       # the output is a string
+try:
+    k = int(s)
+    ks = k // 2
 
-    s = input("Input an integer ")       # the output is a string
-    try:
-        k = int(s)
-        ks = k // 2
+except ValueError:
+        try:
+            k = float(s)
+            ks = int(k // 2)
 
-    except ValueError:
-            try:
-                k = float(s)
-                ks = int(k // 2)
+        except ValueError:
+            ks = 0
 
-            except ValueError:
-                ks = 0
-
-    print(ks)
-
+print(ks)
+```
 ### 5.3. Using files in Python: less theory, more practice
 ---
 
@@ -3440,15 +3510,15 @@ OU \
 
 *open( )* est une fonction qui retourne une valeur représenter un ensemble complexe de valeurs qui représente le statut du fichier ; on appelle cela un descripteur de fichier (*hancle* ou *file descriptor*). On peut l'imaginer comme présentant le type imaginaire *file*. \
 Cette valeur doit être assignée à une variable lorsqu'on utilise *open( )*, sans quoi ses données ne sont pas utilisables. Souvent on donne à cette variable le nom du fichier à ouvrir, +/- avec mention de si le fichier est en lecture ou écriture.
-
-    date_file_r = open("datafile.txt", "r", encoding = "utf_8")
-
+```python
+date_file_r = open("datafile.txt", "r", encoding = "utf_8")
+```
 Cela permet d'ouvrir le fichier texte *datafile* contenu dans le même dossier que le programme actuel. Le *"r"* signifie qu'on est en mode lecture : on ne pourra pas modifier le fichier mais on peut consulter les données qu'il contient.
 
 Si le fichier n'est pas dans le même dossier, on peut indiquer son chemin absolu (*absolute path*). Il faut placer un r (*rawstring*) devant l'adresse sinon les / sont interprétées. On peut aussi doubler les /. *On rappelle que le path est indiqué par / sur Unix et par \ sur Windows.*
-
-    data_file_r = open(r"C:/parker/introProgramming/chapter05/datafile.txt")
-
+```python
+data_file_r = open(r"C:/parker/introProgramming/chapter05/datafile.txt")
+```
 C'est utile pour les bases de données importantes utilisées par plusieurs programmes (ex : noms de clients ou de fournisseurs).
 
 ---
@@ -3474,72 +3544,72 @@ Si le fichier n'existe pas et qu'il a été ouvert pour *input* (*read*), c'est 
 *Cette erreur peut s'appeler IOError ou OSError sur d'autres versions de Python.*
 
 Pour éviter que des erreurs entraînent le crash du programme, on peut ouvrir le fichier dans un bloc d'instruction ***try-except***. On récupère ainsi notamment les erreurs de **fichier non existant** et les **défauts de permission**.
-
-    try:
-        data_file_r = open("datafile.txt", "r", encoding = "utf-8")
-    except FileNotFoundError:
-        print("There is no file named 'datafile.txt'.\nPlease try again.")
-        exit()
-    except PermissionError:
-        print("You don't have the permission to read this file.")
-        exit()
-
+```python
+try:
+    data_file_r = open("datafile.txt", "r", encoding = "utf-8")
+except FileNotFoundError:
+    print("There is no file named 'datafile.txt'.\nPlease try again.")
+    exit()
+except PermissionError:
+    print("You don't have the permission to read this file.")
+    exit()
+```
 ### 5.3.2. Reading from files
 
 Une fois le fichier ouvert et ses données récupérées dans une variable, on peut utiliser la méthode ***read(size)*** pour lire et afficher ces données.
-
-    f = open("file.txt", "r", encoding = "utf-8")
-    s = f.read()
-
+```python
+f = open("file.txt", "r", encoding = "utf-8")
+s = f.read()
+```
 En l'état, la fonction lira et affichera tout le fichier. On peut indiquer un nombre de caractères à lire :
-
-    s = f.read(1)
-
+```python
+s = f.read(1)
+```
 Il est peu efficace de lire caractère par caractère. Le ***buffering*** est couramment utilisé : lire plus de données que ce qui est utile et les sauvegarder. Un bloc de disque dur contient 512 octets, donc c'est souvent ainsi qu'on crée un buffer :
-
-    s = f.read(512)
-
+```python
+s = f.read(512)
+```
 On peut donc décrire un buffer comme un ensemble d'emplacements mémoire temporairement stockées pour utiliser ses données, récemment stockées dans le stockage secondaire.
 
 Noter de plus que les fichiers sont des objets **itérables**, on peut donc les intégrer à des boucles, comme un *for*.
-
-    for line in f:
-        print(line)
-
+```python
+for line in f:
+    print(line)
+```
 Par défaut, Python print ligne par ligne.
 
 **End of file**
 
 Quand la fin du fichier est atteint, realine() retourne une string vide "" car le fichier se termine automatiquement par une *newline* \n. C'est ce qu'on appelle **la condition de fin de fichier** ou *end of file condition*.
+```python
+f = open("file.txt", "r", encoding = "utf-8")
+while True:
+    c = f.read(1)
 
-    f = open("file.txt", "r", encoding = "utf-8")
-    while True:
-        c = f.read(1)
+    if c == "":
+        print("End of file")
+        break / exit()
 
-        if c == "":
-            print("End of file")
-            break / exit()
-
-        c = infile.read(1)
-
+    c = infile.read(1)
+```
 Si on lit un fichier dans une boucle *for*, la fin du fichier est gérée automatiquement.
-
-    for c in f:
-        print("'", c, "'")
-
+```python
+for c in f:
+    print("'", c, "'")
+```
 Il existe une exception **EOFError** (*End Of File Error*).
 
 On peut aussi retrouver le type d'erreur qui survient :
+```python
+while True:
+    try:
+        c = input()
+        print(c)
 
-    while True:
-        try:
-            c = input()
-            print(c)
-
-        except Exception as x:
-            print(x)
-            break
-
+    except Exception as x:
+        print(x)
+        break
+```
 `EOF when reading a line`
 
 ### Common file input operation
@@ -3547,27 +3617,27 @@ On peut aussi retrouver le type d'erreur qui survient :
 **readline( )**
 
 Une façon "brute" de lire un fichier ligne par ligne serait le suivant :
+```python
+f = open("file.txt", "r", encoding = "utf-8")
 
-    f = open("file.txt", "r", encoding = "utf-8")
+for line in f:
+    print("'", line, "'")
 
-    for line in f:
-        print("'", line, "'")
-
-    f.close()
-
+f.close()
+```
 Dans un fichier texte, on peut lire ligne par ligne à partir de là où est le pointeur dans le fichier grâce à la méthode ***readline( )***. En effet, le programme reconnaît les *newline*. \
 Pour afficher les lignes une par une comme précédemment, on peut utiliser *readline( )* ; il faudra à ce moment-là déterminer explicitement la fin du fichier.
+```python
+f = open("file.txt", "r", encoding = "utf-8")
 
-    f = open("file.txt", "r", encoding = "utf-8")
+line = f.readline()
 
+while line != "":
+    print("'", line, "'")
     line = f.readline()
 
-    while line != "":
-        print("'", line, "'")
-        line = f.readline()
-
-    f.close()
-
+f.close()
+```
 ***readlines( )***
 
 La méthode ***readlines( )*** lit les données ligne par ligne et les retourne sous forme de liste.
@@ -3576,97 +3646,97 @@ La méthode ***readlines( )*** lit les données ligne par ligne et les retourne 
 
 On copie un fichier vers un autre, caractère par caractère. \
 Il faut alors ouvrir le fichier à copier en input, et le fichier vers lequel copier en output.
+```python
+f = open("file.text", "r", encoding = "utf-8")
+g = open("copy.txt", "w", encoding = "utf-8")
 
-    f = open("file.text", "r", encoding = "utf-8")
-    g = open("copy.txt", "w", encoding = "utf-8")
+c = f.read(1)
+while c != "":
+    g.write(c)
+    c = f.readline(1)
 
-    c = f.read(1)
-    while c != "":
-        g.write(c)
-        c = f.readline(1)
-
-    f.close()
-    g.close()
-
+f.close()
+g.close()
+```
 ***filter***
 
 Un **filtre** est un programme qui lit les données d'un fichier et les convertir en une autre forme avant de les écrire. Un filtre peut être utilisé également lors d'une copie :
+```python
+original_file = open("file.text", "r", encoding = "utf-8")
+copied_file = open("copy.txt", "w", encoding = "utf-8")
 
-    original_file = open("file.text", "r", encoding = "utf-8")
-    copied_file = open("copy.txt", "w", encoding = "utf-8")
+line = original_file.read(1)
+while line != "":
+    copied_file.write(line.lower())
+    line = original_file.readline(1)
 
-    line = original_file.read(1)
-    while line != "":
-        copied_file.write(line.lower())
-        line = original_file.readline(1)
-
-    original_file.close()
-    copied_file.close()
+original_file.close()
+copied_file.close()
 
 On peut faire plus simple que cette fonction :
 
-    original_file = open("file.text", "r", encoding = "utf-8")
-    copied_file = open("copy.txt", "w", encoding = "utf-8")
+original_file = open("file.text", "r", encoding = "utf-8")
+copied_file = open("copy.txt", "w", encoding = "utf-8")
 
-    line = original_file.read()
-    copied_file.write(line.lower())
+line = original_file.read()
+copied_file.write(line.lower())
 
-    original_file.close()
-    copied_file.close()
-
+original_file.close()
+copied_file.close()
+```
 ***merging***
 
 Il existe plusieurs manière de **fusionner** deux fichiers. Une manière simple est de copier l'intégralité des fichiers dans un nouveau fichier, l'un après l'autre :
+```python
+original_file1 = open("file.text", "r", encoding = "utf-8")
+final_file = open("copy.txt", "w", encoding = "utf-8")
 
-    original_file1 = open("file.text", "r", encoding = "utf-8")
-    final_file = open("copy.txt", "w", encoding = "utf-8")
+line = original_file1.read()
+final_file.write(line)
 
-    line = original_file1.read()
-    final_file.write(line)
+original_file1.close()
 
-    original_file1.close()
+original_file2 = open("file.text", "r", encoding = "utf-8")
 
-    original_file2 = open("file.text", "r", encoding = "utf-8")
+line = original_file2.read()
+final_file.write(line)
 
-    line = original_file2.read()
-    final_file.write(line)
-
-    original_file2.close()
-    final_file.close()
-
+original_file2.close()
+final_file.close()
+```
 Ici, on a écrit toutes les données du 2ème fichier à la suite de celles du 1er fichier. \
 On ne peut pas utiliser cette méthode si les deux fichiers sont triés et doivent le rester après la fusion.
+```python
+original_file1 = open("file.text", "r", encoding = "utf-8")
+original_file2 = open("file.text", "r", encoding = "utf-8")
+final_file = open("copy.txt", "w", encoding = "utf-8")
 
-    original_file1 = open("file.text", "r", encoding = "utf-8")
-    original_file2 = open("file.text", "r", encoding = "utf-8")
-    final_file = open("copy.txt", "w", encoding = "utf-8")
+line_file1 = original_file1.readline()
+line_file2 = original_file2.readline()
 
-    line_file1 = original_file1.readline()
-    line_file2 = original_file2.readline()
-
-    while line_file1 != "" and line_file2 != "":
-        if line_file1 < line_file2:
-            final_file.write(line_file1)
-            line_file1 = original_file1.readline()
-
-        else:
-            final_file.write(line_file2)
-            line_file2 = original_file2.readline()
-
-    if line_file1 == "":
-        final_file.write(line_file2)        # since the last position of the pointer
-        line_file2 = original_file2.read()
-        final_file.write(line_file2)
+while line_file1 != "" and line_file2 != "":
+    if line_file1 < line_file2:
+        final_file.write(line_file1)
+        line_file1 = original_file1.readline()
 
     else:
-        final_file.write(line_file1)
-        line_file1 = original_file1.read()
-        final_file.write(line_file1)
+        final_file.write(line_file2)
+        line_file2 = original_file2.readline()
 
-    original_file1.close()
-    original_file2.close()
-    final_file.close()
+if line_file1 == "":
+    final_file.write(line_file2)        # since the last position of the pointer
+    line_file2 = original_file2.read()
+    final_file.write(line_file2)
 
+else:
+    final_file.write(line_file1)
+    line_file1 = original_file1.read()
+    final_file.write(line_file1)
+
+original_file1.close()
+original_file2.close()
+final_file.close()
+```
 ###  CSV files
 
 CSV = *Comma Separated Variable. \
@@ -3677,7 +3747,7 @@ Ce format peut être utilisé directement par des tableurs comme Excel et sont s
 
 <center><p style = "color: green"> Exemple typique de CSV avec le fichier <em>planets.txt</em></p>
 
-![Alt text](image-6.png)
+![planets.csv](image-6.png)
 </center>
 
 **Problem: print the names of planets having more than ten moons.**
@@ -3690,23 +3760,23 @@ Etapes :
     - s'il est supérieur à 10, print le nom de la planète (1ère colonne, indice 0)
 
 &emsp;
+```python
+f = open("planets.csv", "r", encoding = "utf-8")
 
-    f = open("planets.csv", "r", encoding = "utf-8")
+moons_planets = []
 
-    moons_planets = []
-
-    f.readline()        # skip the first line
+f.readline()        # skip the first line
 
 
-    for line in f:
-        list_planet = line.strip().split(", ")          # string line convert into a list
-        if int(list_planet[10]) > 10.0:         # string convert into an intéger
-            moons_planets.append(list_planet[0])
+for line in f:
+    list_planet = line.strip().split(", ")          # string line convert into a list
+    if int(list_planet[10]) > 10.0:         # string convert into an intéger
+        moons_planets.append(list_planet[0])
 
-    f.close()
+f.close()
 
-    print(moons_planets)
-
+print(moons_planets)
+```
 `['Jupiter', 'Saturn', 'Uranus', 'Neptune']`
 
 Il existe une bibliothèque Python built-in qui permet de gérer les fichiers CSV. Le module se nomme **CSV**, mais il est assez compliqué donc utiliser le module **simpleCSV** apporté par le bouquin.
@@ -3714,44 +3784,44 @@ Il existe une bibliothèque Python built-in qui permet de gérer les fichiers CS
 Les deux fonctions principales du module simplifié sont ***nextRecord( )*** et ***getData( )***.
 - *nextRecord( )* : lit une ligne entière de données CSV ; cela permet notamment de skip des lignes du fichier (comme le header).
 - *getData( )* : parse (analyse et récupère les données) la dernière ligne lue dans un tuple, chaque élément étant séparés par une virgule.
+```python
+import simpleCSV
 
-        import simpleCSV
+f = open("planets.csv", "r", encoding = "utf-8")
 
-        f = open("planets.csv", "r", encoding = "utf-8")
+simpleCSV.nextRecord(f)         # skip the first line
 
-        simpleCSV.nextRecord(f)         # skip the first line
+for i in range(0,8):
+    simpleCSV.nextRecord(f)
+    p = simpleCSV.getData(f)
+    r = p[10]
+    if int(p[10]) > 10.0:
+        print(p[0])
 
+f.close()
+```
+Il est important d'utiliser *netRecord( )* avant d'utiliser *getData( )* car c'est dans une variable globale de simpleCSV que sont stockées les données de la ligne lue. On ne peut pas utiliser `f.readline()` ou `for line in f` sinon le pointeur sera à un autre endroit du fichier CSV que le module simpleCSV.
+
+### The with statement
+
+L'instruction ***with*** utilisée lors d'ouverture de fichier suit un protocole de *context manager* : elle permet de fermer automatiquement le fichier quand toutes les opérations nécessaires ont été effectuées ==> **gestion automatique de la mémoire**.
+```python
+with open("planets.csv", "r", encoding = "utf_8") as planets_file:
+    planets_data = planets_file.read()
+```
+Ici, les données du fichier CSV sont stockées sous forme de string dans la variable *planets_data*. Le fichier a été ouvert puis fermé impliement à la sortie du bloc d'instruction.
+```python
+import simpleCSV
+
+    with open("planets.csv", "r", encoding = "utf-8") as f:
+        simpleCSV.nextRecord(f)
         for i in range(0,8):
             simpleCSV.nextRecord(f)
             p = simpleCSV.getData(f)
             r = p[10]
             if int(p[10]) > 10.0:
                 print(p[0])
-
-        f.close()
-
-Il est important d'utiliser *netRecord( )* avant d'utiliser *getData( )* car c'est dans une variable globale de simpleCSV que sont stockées les données de la ligne lue. On ne peut pas utiliser `f.readline()` ou `for line in f` sinon le pointeur sera à un autre endroit du fichier CSV que le module simpleCSV.
-
-### The with statement
-
-L'instruction ***with*** utilisée lors d'ouverture de fichier suit un protocole de *context manager* : elle permet de fermer automatiquement le fichier quand toutes les opérations nécessaires ont été effectuées ==> **gestion automatique de la mémoire**.
-
-    with open("planets.csv", "r", encoding = "utf_8") as planets_file:
-        planets_data = planets_file.read()
-
-Ici, les données du fichier CSV sont stockées sous forme de string dans la variable *planets_data*. Le fichier a été ouvert puis fermé impliement à la sortie du bloc d'instruction.
-
-    import simpleCSV
-
-        with open("planets.csv", "r", encoding = "utf-8") as f:
-            simpleCSV.nextRecord(f)
-            for i in range(0,8):
-                simpleCSV.nextRecord(f)
-                p = simpleCSV.getData(f)
-                r = p[10]
-                if int(p[10]) > 10.0:
-                    print(p[0])
-
+```
 ### tell( ) et seek( )
 
 La méthode ***tell( )*** retourne un entier correspondant à l'octet auquel se trouve le pointeur dans le fichier. \
@@ -3759,29 +3829,29 @@ La méthode ***seek( )*** change la position du pointeur dans le fichier. Le pre
 Si le fichier n'est pas de type *byte* (*br* par exemple), Python ne tolère qu'un *whence* = 0, OU = 2 et le premier paramètre doit alors nécessairement être 0.
 
 Voici le texte de mon fichier : `Code is like humor. When you have to explain it, it's bad.`
+```python
+with open("file.txt", "r", encoding = "utf-8") as f:
+print(f.tell())
+f.seek(0, 2)            # the file handle is moved at the end of the file
+print(f.tell())
 
-    with open("file.txt", "r", encoding = "utf-8") as f:
-    print(f.tell())
-    f.seek(0, 2)            # the file handle is moved at the end of the file
-    print(f.tell())
+print()
 
-    print()
-
-    f.seek(20)
-    print(f.tell())
-    print(f.read())
-
+f.seek(20)
+print(f.tell())
+print(f.read())
+```
 `0` \
 `58`
 
 `20` \
 `When you have to explain it, it's bad.`
-
-    with open("file.txt", "br") as f:
-        f.seek(-10, 2)
-        print(f.tell())
-        print(f.read())
-
+```python
+with open("file.txt", "br") as f:
+    f.seek(-10, 2)
+    print(f.tell())
+    print(f.read())
+```
 `48` \
 `b" it's bad."`
 
@@ -3803,17 +3873,17 @@ Il n'y a pas de concept de ligne dans l'écriture, on écrit simplement un carac
 2. On crée une boucle de 0 à 25 ;
 3. On multiplie ce nombre par lui-même et on obtient son carré ;
 4. On l'écrit dans le fichier.
-
-        with open("file.txt", "w", encoding = "utf-8") as f:
-            f.write("   table of squares\n")
-            for i in range(0, 25):
-                f.write(f"square{i} = {i**2}\n")
-
+```python
+with open("file.txt", "w", encoding = "utf-8") as f:
+    f.write("   table of squares\n")
+    for i in range(0, 25):
+        f.write(f"square{i} = {i**2}\n")
+```
 Pas d'output dans le terminal puisque l'écriture se fait dans le fichier, qui contiendra cela :
 
 <center>
 
-![Alt text](image-7.png)
+![table of squares](image-7.png)
 </center>
 
 La méthode ***writelines( )*** prend une liste de strings et les écrit à la suite dans le fichier de destination. Il faut cependant toujours indiquer les sauts de ligne.
@@ -3823,11 +3893,11 @@ La méthode ***writelines( )*** prend une liste de strings et les écrit à la s
 Si *w* écrit au début du fichier, le mode *a* permet d'ouvrir le fichier et de commencer à écrire à la fin de ce fichier s'il existe. C'est préférable pour des fichiers de sauvegarde par exemple.
 
 <p style = "color: green">Exemple : ajouter 20 autres carrés au fichier
-
-    with open("file.txt", "a", encoding= "utf-8") as f:
-    for i in range(25, 45):
-        f.write(f"square{i} = {i**2}\n")
-
+```python
+with open("file.txt", "a", encoding= "utf-8") as f:
+for i in range(25, 45):
+    f.write(f"square{i} = {i**2}\n")
+```
 Cela ajoute 20 nouveaux carrés à la suite des précédents. Au total, le fichier contiendra un titre suivi des carrés de 0 à 44.
 
 ---
@@ -3841,7 +3911,7 @@ Si on imagine un objet *man* traité par un ordinateur, l'ordinateur aurait les 
 
 <center>
 
-![Alt text](image-8.png)
+![Properties of the "man" object](image-8.png)
 </center>
 
 Un *man* est donc un ensemble complexe de données aux types différents, avec un nombre de propriétés.\
@@ -3852,17 +3922,17 @@ On peut donc imaginer une classe *personne* qui présente des caractéristiques 
 Si on considère maintenant l'objet *bar*, c'est une classe d'objets qui peut contenir un certain nombre de *persons* (*men* or *women*). C'est une **classe conteneur**.
 
 La phrase : "*A man walks into a bar*" peut être traduite en langage ordinateur comme ceci :
-
-    aMan.walksInto(aBar)
-
+```python
+aMan.walksInto(aBar)
+```
 - *aMan* est une **instance**, soit une entité spécifique de la classe *man*. \
 - *aBar* est une **instance** de la classe d'objets *bar*.
 
 Cet homme a un nom *Name* (variable) qui est une de ses propriétés. Pour y accéder :
-
-    print(aMan.Name)        # accessing / printing the name
-    aMan.Name = "Ted Smith"     # assigning to the name
-
+```python
+print(aMan.Name)        # accessing / printing the name
+aMan.Name = "Ted Smith"     # assigning to the name
+```
 *On place le point "." après le nom de l'instance de classe.*
 
 *walksInto* est une fonction appartenant à la définition de *man* qui prend un paramètre, du type de *bar*.
@@ -3876,35 +3946,36 @@ La **classe** est un modèle de conteneur de données et opérations (fonctions)
 Pour définir une classe en Python, il faut lui donner un nom et un ensemble de variables et fonctions qui lui appartiennent.
 
 Si on reprend l'exemple de la classe *man*, on sait qu'elle présente une fonction *walksInto()*. On peut commencer par écrire cette classe de la manière suivante :
-
-    class man:
-        def walksInto(aBar):
-            # code
-
+```python
+class man:
+    def walksInto(aBar):
+        # code
+```
 Une fonction appartenant à une classe est généralement référencée par le terme ***méthode***, que nous avons déjà croisé auparavant. Donc, une méthode désigne n'importe quelle fonction appartenant à une classe.
 
 Les classes peuvent aussi avoir leurs propres données, soit des variables propres appartenant à la classe ; ces variables sont utilisées dans le code de la classe mais ne sont pas accessibles en dehors (= ***variables locales de la classe***). On peut donc retrouver le même nom de variable **x** dans une classe et dans une autre sans conflit.
 
 La classe reste une description abstraite d'un fonctionnement, un "patron". On "instancie" des instances de classe, des exemples spécifiques qui utilisent ce modèle pour s'appliquer à un objet précis (ex : *aMan*, instance de la classe *man*). Pour créer une nouvelle instance de classe, on écrit comme ceci :
-
-    aMan = man()
-
+```python
+aMan = man()
+```
 Ainsi, toutes les variables utilisées dans la définition de *man* sont également utilisables par *aMan*. "*man( )*" est ce qu'on appelle un ***constructeur*** (au même titre que *str( )* ou *int( )* - qu'on avait auparavant qualifiés de *type*), lorsqu'il est appelé, les variables sont initiées. Il faut donner un nom à l'instanciation donc le constructeur prend un paramètre :
-
-    aMan = man("Jim Parker")
-
+```python
+aMan = man("Jim Parker")
+```
 Le constructeur prend ici une string comme paramètre, et l'assigne à la variable locale *Name*.
 
 Le constructeur est toujours appelé ***\_\_init__*** :
-
-    def __init__(self, parameter1, parameter2,...):
-
+```python
+def __init__(self, parameter1, parameter2,...):
+```
 Le paramètre initial ***self*** est une référence à la classe ayant été définie. Toute variable appartenant à cette classe est référencée en plaçant le préfixe "self" devant.
-
-    def __init__(self, name):
-        self.Name = name
-
-Ici on fait en sorte que le constructeur *man* prenne un paramètre qu'il assigne ensuite à la variable *Name*.
+```python
+def __init__(self, name):
+    self.Name = name
+```
+Ici on fait en sorte que le constructeur *man* prenne un paramètre qu'il assigne ensuite à la variable *Name*. \
+Notez que si on indique pas *self.* devant une variable, celle-ci sera non pas locale à la classe mais locale à la fonction (sauf si c'est une variable définie préalablement comme variable globale), et sera créée à l'appel de la fonction et disparaîtra à la fin de l'exécution de cette fonction.
 
 ### 6.3. Classes as encapsulated modules
 ---
@@ -3915,38 +3986,38 @@ Les fonctions qui composent ces classes/modules sont appelées des méthodes car
 Quand on écrit : `from random import *`, * est une instance de la classe *random*.
 
 Quand on importe un module, on crée en fait une instance de cette classe (qui est alors un objet de type *module*) dans notre script. On peut parfaitement référencer cette instance avec une variable :
-
-    import random
-    s = random
-    print(s.random())
-
+```python
+import random
+s = random
+print(s.random())
+```
 Il peut y avoir plusieurs instances :
-
-    t = random      # une autre instance de la classe random
-    print(s.random(), t.random())
-
+```python
+t = random      # une autre instance de la classe random
+print(s.random(), t.random())
+```
 Les variables qui sont déclarées dans la classe sont accessibles en utilisant une méthode sur l'instance de la classe. Par exemple, la variable *name* appartenant à la classe *client* :
+```python
+import client
 
-    import client
-
-    print(client.name)
-
+print(client.name)
+```
 Il est évidemment possible de faire cela, mais il est plus clair d'avoir une méthode ***.get( )*** pour chaque variable, et cette méthode retourne la valeur de la variable qu'on souhaite utilsier.
+```python
+import client
 
-    import client
-
-    print(client.get_name())
-
+print(client.get_name())
+```
 `Jimmy Parker`
 
 De la même façon, c'est une bonne pratique que d'avoir une méthode ***set( )*** qui assigne une valeur aux variables appartenant à la classe.
-
-    client.set_name("Parker")
-
+```python
+client.set_name("Parker")
+```
 Une méthode très importante est le **constructeur**, appelé automatiquement par le système quand une instance est créée. Le constructeur peut accepter des arguments et les enregistrer ensuite comme des variables locales de la classe. Si une classe a un constructeur, la syntaxe pour créer une instance est alors la suivante :
-
-    a = client()
-
+```python
+a = client()
+```
 ### 6.4. Classes as data abstractions
 ---
 
@@ -3957,43 +4028,43 @@ On peut définir un *type* comme une *structure de données* et un ensemble d'*o
 Une variable booléenne ne peut prendre qu'une valeur parmi deux choix, *True* ou *False*. Ce sont des constantes, dont les valeurs réelles ne sont pas importantes ; tout ce qui importe est qu'elles existent et sont toujours les mêmes.
 
 En Python, on peut avoir l'instruction :
-
-    flag = True
-
+```python
+flag = True
+```
 Avec *flag* la variable de type *bool* qui prend la valeur *True*. \
 Si on utilise une classe pour représenter le type *bool*, on peut écrire :
-
-    flag = Boolean()
-    flag.set_true()
-
+```python
+flag = Boolean()
+flag.set_true()
+```
 C'est plus compliqué mais montre ce qui se passe réellement : le constructeur *Boolean* établit une instance de la classe *Boolean*, assignée à la variable *flag*. On lui assigne ensuite une valeur en appelant la méthode ***set_true( )*** codée dans la classe *Boolean*. *Une méthode set_false( ) peut aussi exister.* \
 Le résultat de cette opération est que *flag* est une variable booléenne appartenant à la classe *Boolean* et prenant la valeur True.
 
 On peut faire une boucle pour connaître la valeur de flag en utilisant la méthode ***get( )*** :
-
-    while flag.get():
-        #code
-
+```python
+while flag.get():
+    #code
+```
 Les variables booléennes supportent les opérations *and*, *or* et *not*. \
 Par exemple, avec deux variables booléennes *a* et *b*, *a and b* est *True* seulement si *a* est *True* et *b* est *True*. Si on implémente la classe *Boolean*, on peut utiliser une méthode ***and( )*** pour implémenter cette opération. De même, *a or b* ne sera *True** que si au moins *a* ou *b* est *True* (ou les deux, c'est un ou inclusif).
-
-    result = a.and(b)
-    result = a.or(b)
-
+```python
+result = a.and(b)
+result = a.or(b)
+```
 L'opération *not* est unaire, c'est-à-dire qu'elle ne s'applique qu'à une seule valeur. Elle inverse la valeur de la variable booléenne. On ne passe donc pas d'argument à ***not( )***.
-
-    result.not()
-
+```python
+result.not()
+```
 Une classe peut avoir des variables locales, dont un genre spécial qui est une valeur que la classe définie pour que les programmeurs l'utilisent spécifiquement avec cette classe, le plus souvent une constante.
-
-    TRUE = 1000
-    FALSE = 2000
-
+```python
+TRUE = 1000
+FALSE = 2000
+```
 On peut les utiliser hors de la classe :
-
-    Boolean.TRUE            #class_name.var
-    Boolean.FALSE
-
+```python
+Boolean.TRUE            #class_name.var
+Boolean.FALSE
+```
 C'était ici un exemple si on écrivait nous-mêmes la classe *Boolean*, qui est une classe déjà existante sur Python.
 
 ### 6.5. The Python class - syntax and semantics
@@ -4014,19 +4085,20 @@ Quand *\_\_init__* est appelé, un ensemble de paramètres sont passés et utili
 
 <p style = "color: green">Exemple avec la classe <em>person</em> :
 
-    class Person:
-        def __init__(self, name):
-            self.name = name
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name
 
-        def introduce(self):
-            print(f"Hi, my name is {self.name}!")
+    def introduce(self):
+        print(f"Hi, my name is {self.name}!")
 
-    me = person("Jim")      # me = class person's instance - has its characteristics and can use its methods
-    me.introduce()
+me = person("Jim")      # me = class person's instance - has its characteristics and can use its methods
+me.introduce()
 
-    you = person("Mike")
-    you.introduce()
-
+you = person("Mike")
+you.introduce()
+```
 `Hi, my name is Jim!` \
 `Hi, my name is Mike!`
 
@@ -4036,16 +4108,16 @@ Cette classe possède deux méthodes, *\_\_init__( )* et *introduce( )*. Après 
 On peut créer autant d'instances qu'on le souhaite, et un nom de variables peut être assigné à une instance, puis à une autre.
 
 Une méthode peut créer une nouvelle variable class-local :
-
+```python
     def introduce(self):
         # name being a class-local variable created in __init__()
         print(f"Hi, my name is {self.name}!")
         self.introductions = True
 
-    me = person("Jim")
-    me.introduce()
-    print(me.introductions)
-
+me = person("Jim")
+me.introduce()
+print(me.introductions)
+```
 `Hi, my name is Jim!` \
 `True`
 
@@ -4054,59 +4126,59 @@ Une méthode peut créer une nouvelle variable class-local :
 <p style = "color: green"><strong>Point class</strong>
 
 Créons la classe *point* qui correspond à une place dans un avion, dont les coordonnées sont x la rangée et y le numéro dans la rangée.
+```python
+import math
 
-    import math
-
-    class Point:
-        def __init__(self, x, y):
-            self.x = x
-            self.y = y
-
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+```
 <p style = "color: red"><strong>On préfère mettre en lettre majuscule la première lettre du nom de la classe, cela permet de créer une instance du même nom mais minuscule.</strong>
 
 Il faut imaginer que ici ***self* sera remplacé partout où il est écrit dans la classe par l'instance de classe qui sera créée et sur laquelle on appelera les méthodes**. \
 Le *self* est à donner en argument à **chaque méthode** si c'est une méthode qui s'utilise sur l'instance ou qu'elle utilise des caractéristiques qui lui sont propres.
 
 Ici les caractéristiques (ou **attributs**) propres à l'instance sont x et y. Par l'opération *self.x = x* et self.y = y*, on **associe ces variables et leurs valeurs spécifiques à notre instance**. On aura ainsi pas à les donner à chaque fois qu'on appelle une méthode sur la classe.
-
-        # the function is written in the class so think to indentate
-        def distance(self, p):
-            d = (self.x - p.x)**2 + (self.y - p.y)**2
-            return math.sqrt(d)      # square root
-
+```python
+    # the function is written in the class so think to indentate
+    def distance(self, p):
+        d = (self.x - p.x)**2 + (self.y - p.y)**2
+        return math.sqrt(d)      # square root
+```
 Cette formule permet de calculer la distance entre deux points dans un repère bidimensionnel (entre autre).
 
 Pour comparaison, voici comment on aurait écrit une fonction qui calcule la distance entre deux points en dehors d'une classe :
-
+```python
     def distance(p1_x, p2_x, p1_y, p2_y):
         d = (p1_x - p2_x)**2 + (p1_y - p2_y)**2
         return math.sqrt(d)
-
+```
 Il faut passer les paramètres x et y de chaque point à la fonction à chaque fois qu'on l'appelle. \
 Tandis qu'une fois qu'on a créé une instance de classe en mentionnant ses attributs à *\_\_init__*, **on appelle simplement la méthode sur l'instance** (on peut aussi avoir à lui donner une autre instance en argument, comme ci-dessus). On peut ensuite utiliser ses attributs dans le corps de la fonction en écrivant ***instance_name.attribut***. C'est bien plus pratique et rapide pour le développeur, et cela permet de ranger les fonctions avec les classes pour lesquelles elles sont utiles.
 
 Continuons avec notre exemple et créons deux points *point1* et *point2* et leurs coordonnées :
+```python
+point1 = Point(2, 4)
+point2 = Point(5, 2)
 
-    point1 = Point(2, 4)
-    point2 = Point(5, 2)
+distance_point1 = point1.distance(point2)
+print(distance_point1)
 
-    distance_point1 = point1.distance(point2)
-    print(distance_point1)
+distance_point2 = point2.distance(point1)
+print(distance_point2)
 
-    distance_point2 = point2.distance(point1)
-    print(distance_point2)
-
-    distance_point1 = point1.distance(point1)
-    print(distance_point1)
-
+distance_point1 = point1.distance(point1)
+print(distance_point1)
+```
 `3.605551275463989` \
 `3.605551275463989` \
 `0.0`
 
 Les méthodes et attributs (données) d'une classe sont vues comme des données appartenant à un objet (une isntance de la classe). C'est pourquoi on considère qu'une classe peut être vue comme un type.
-
-    print(type(point1))
-
+```python
+print(type(point1))
+```
 `<class '__main__.Point'>`
 
 Les classes sont une des caractéristiques des langages de programmation orientée objet (POO).\
@@ -4115,199 +4187,199 @@ Cela vient du fait que vouloir trouver les valeurs d'une variable et les modifie
 En gros, l'interface de la classe pour le programmeur est différente de celle de l'utilisateur.
 
 Le programmeur peut cependant définir des méthodes au sein de la classe qui rendront accessibles ces variables locales de façon contrôlée ; c'est le principe des méthodes d'accès :
+```python
+    # in the class code
+    def get_x(self):
+        return self.x
+    def get_y(self):
+        return self.y
 
-        # in the class code
-        def get_x(self):
-            return self.x
-        def get_y(self):
-            return self.y
-
-    print(f"{point1.get_x()}, {point1.get_y()}")
-
+print(f"{point1.get_x()}, {point1.get_y()}")
+```
 `2, 4`
 
 Contrairement à d'autres langages POO, il n'existe pas de façon de rendre une variable privée et intouchable en Python. Par convention, si on ajoute un underscore _x devant la variable x, cela veut dire qu'il ne faut pas la modifier, sauf via la méthode set() si le programmeur la définie. Cela permet de contrôler les transformations apportée sur la variable (par exemple s'assurer que le changement de valeur reste un *int*, donc ne change pas de type - autrement, les méthodes et opérations pratiquées sur cet attribut seraient caduques et cela créerait des erreurs).
 
 Si on réécrit la méthode *distance( )* de façon plus sécurisée, en ayant renommé les attributs __x et __y :
-
+```python
     def distance(self, p):
         d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
         return math.sqrt(d)
-
+```
 Les méthodes dites **de mutation** (*mutators*) ou **setters** sont utilisées pour modifier la valeur d'une variable locale de la classe. Elles permettent de checker la range ou le type de la nouvelle valeur par exemple.
+```python
+    def set_x(self, x):
+        # x is a row, so it is an integer and there are 20 rows in the plane
+        if not isinstance(x, int) or x not in range(0, 20):
+            return
+        self.__x = x
 
-        def set_x(self, x):
-            # x is a row, so it is an integer and there are 20 rows in the plane
-            if not isinstance(x, int) or x not in range(0, 20):
-                return
-            self.__x = x
-
-        def set_y(self, y):
-            # y is a place in a row, and there is 6 places in a row
-            if not isinstance(y, int) or y not in range(0, 6):
-                return
-            self.__y = y
-
+    def set_y(self, y):
+        # y is a place in a row, and there is 6 places in a row
+        if not isinstance(y, int) or y not in range(0, 6):
+            return
+        self.__y = y
+```
 On peut ajouter une méthode ***draw( )*** qui print les coordonnées du point et peut être utile pour le débugage.
-
+```python
         def draw(self):
             print(f"({self.__x}, {self.__y})")
 
     point1.draw()
-
+```
 `(2,4)`
 
 <p style = "color: green"><strong>Point Triangle</strong>
 
 Créons maintenant une classe *Triangle*, composé de 3 points.
+```python
+class Triangle:
+    def __init__(self, p0, p1, p2, p3):
+        self.__v0 = p0
+        self.__v1 = p1
+        self.__v2 = p2
+        self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
+        self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
 
-    class Triangle:
-        def __init__(self, p0, p1, p2, p3):
-            self.__v0 = p0
-            self.__v1 = p1
-            self.__v2 = p2
-            self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
-            self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
+    # vertices = sommets
+    def set_vertices(self, p0, p1, p2):
+        self.__v0 = p0
+        self.__v1 = p1
+        self.__v2 = p2
 
-        # vertices = sommets
-        def set_vertices(self, p0, p1, p2):
-            self.__v0 = p0
-            self.__v1 = p1
-            self.__v2 = p2
+    def get_vertices(self):
+        return (self.__v0, self.__v1, self.__v2)
 
-        def get_vertices(self):
-            return (self.__v0, self.__v1, self.__v2)
+    def get_x(self):
+        return self.__x
 
-        def get_x(self):
-            return self.__x
-
-        def get_y(self):
-            return self.__y
-
+    def get_y(self):
+        return self.__y
+```
 Les valeurs __x et __y sont les coordonnées du centre du triangle, qu'on peut aussi considérer comme les coordonnées moyennes en abscisse et ordonnées de ses sommets.
 
 Nous aborderons le traitement graphique dans le prochain chapitre, mais un des objectifs d'une telle classe serait aussi de dessiner ce triangle à l'écran.
-
-        def draw(self):
-            print("Triangle:")
-            self.__v0.draw()
-            self.__v1.draw()
-            self.__v2.draw()
-
+```python
+    def draw(self):
+        print("Triangle:")
+        self.__v0.draw()
+        self.__v1.draw()
+        self.__v2.draw()
+```
 On peut aussi déplacer le triangle à une nouvelle position. Cela correspond simplement à déplacer les coordonnées de ses sommets (et donc de son centre) d'une même distance.
+```python
+    def move(self, dx, dy):
+        coord = self.__v0.get_x()
+        self.__v0.set_x(coord + dx)
 
-        def move(self, dx, dy):
-            coord = self.__v0.get_x()
-            self.__v0.set_x(coord + dx)
+        coord = self.__v0.get_y()
+        self.__v0.set_y(coord + dy)
 
-            coord = self.__v0.get_y()
-            self.__v0.set_y(coord + dy)
+        coord = self.__v1.get_x()
+        self.__v1.set_x(coord + dx)
 
-            coord = self.__v1.get_x()
-            self.__v1.set_x(coord + dx)
+        coord = self.__v1.get_y()
+        self.__v1.set_y(coord + dy)
 
-            coord = self.__v1.get_y()
-            self.__v1.set_y(coord + dy)
+        coord = self.__v2.get_x()
+        self.__v2.set_x(coord + dx)
 
-            coord = self.__v2.get_x()
-            self.__v2.set_x(coord + dx)
+        coord = self.__v2.get_y()
+        self.__v2.set_y(coord + dy)
 
-            coord = self.__v2.get_y()
-            self.__v2.set_y(coord + dy)
-
-            self.__x = self.__x + dx
-            self.__y = self.__y + dy
-
+        self.__x = self.__x + dx
+        self.__y = self.__y + dy
+```
 Cette méthode n'est pas très claire, donc on pourrait plutôt ajouter une méthode *move( )* à la classe *Point*, comme ceci :
-
-        def move(self, dx, dy):
-            self.__x = self.__x + dx
-            self.__y = self.__y + dy
-
+```python
+    def move(self, dx, dy):
+        self.__x = self.__x + dx
+        self.__y = self.__y + dy
+```
 Ainsi, la méthode *move( )* , qui déplace les coordonnées des sommets, serait la suivante :
-
-        def move(self, dx, dy):
-            self.__v0.move(dx, dy)
-            self.__v1.move(dx, dy)
-            self.__v2.move(dx, dy)
-            self.__x = self.__x + dx
-            self.__y = self.__y + dy
-
+```python
+    def move(self, dx, dy):
+        self.__v0.move(dx, dy)
+        self.__v1.move(dx, dy)
+        self.__v2.move(dx, dy)
+        self.__x = self.__x + dx
+        self.__y = self.__y + dy
+```
 Cela rend le script à la fois plus lisible, plus simple et plus explicite.
 
 Le script complet donnerait ceci :
+```python
+import math
 
-    import math
+class Point:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
 
-    class Point:
-        def __init__(self, x, y):
-            self.__x = x
-            self.__y = y
+    def get_x(self):
+        return self.__x
 
-        def get_x(self):
-            return self.__x
+    def get_y(self):
+        return self.__y
 
-        def get_y(self):
-            return self.__y
+    def set_x(self, x):
+        if not isinstance(x, int) or x not in range(0, 20):
+            return
+        self.__x = x
 
-        def set_x(self, x):
-            if not isinstance(x, int) or x not in range(0, 20):
+    def set_y(self, y):
+        if not isinstance(y, int) or y not in range(0, 6):
                 return
-            self.__x = x
+        self.__y = y
 
-        def set_y(self, y):
-            if not isinstance(y, int) or y not in range(0, 6):
-                    return
-            self.__y = y
+    def distance(self, p):
+        d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
+        return math.sqrt(d)
 
-        def distance(self, p):
-            d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
-            return math.sqrt(d)
+    def draw(self):
+        print(f"({self.__x}, {self.__y})")
 
-        def draw(self):
-            print(f"({self.__x}, {self.__y})")
+    def move(self, dx, dy):
+        self.__x = self.__x + dx
+        self.__y = self.__y + dy
 
-        def move(self, dx, dy):
-            self.__x = self.__x + dx
-            self.__y = self.__y + dy
+class Triangle:
+    def __init__(self, p0, p1, p2):
+        self.__v0 = p0
+        self.__v1 = p1
+        self.__v2 = p2
+        self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
+        self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
 
-    class Triangle:
-        def __init__(self, p0, p1, p2):
-            self.__v0 = p0
-            self.__v1 = p1
-            self.__v2 = p2
-            self.__x = (p0.get_x() + p1.get_x() + p2.get_x())/3
-            self.__y = (p0.get_y() + p1.get_y() + p2.get_y())/3
+    def set_vertices(self, p0, p1, p2):
+        self.__v0 = p0
+        self.__v1 = p1
+        self.__v2 = p2
 
-        def set_vertices(self, p0, p1, p2):
-            self.__v0 = p0
-            self.__v1 = p1
-            self.__v2 = p2
+    def get_vertices(self):
+        return (self.__v0, self.__v1, self.__v2)
 
-        def get_vertices(self):
-            return (self.__v0, self.__v1, self.__v2)
+    def get_x(self):
+        return self.__x
 
-        def get_x(self):
-            return self.__x
+    def get_y(self):
+        return self.__y
 
-        def get_y(self):
-            return self.__y
+    def move(self, dx, dy):
+        self.__v0.move(dx, dy)
+        self.__v1.move(dx, dy)
+        self.__v2.move(dx, dy)
+        self.__x = self.__x + dx
+        self.__y = self.__y + dy
 
-        def move(self, dx, dy):
-            self.__v0.move(dx, dy)
-            self.__v1.move(dx, dy)
-            self.__v2.move(dx, dy)
-            self.__x = self.__x + dx
-            self.__y = self.__y + dy
+point1 = Point(2, 4)
+point2 = Point(5, 2)
+point3 = Point(4, 3)
 
-    point1 = Point(2, 4)
-    point2 = Point(5, 2)
-    point3 = Point(4, 3)
+triangle = Triangle(point1, point2, point3)
 
-    triangle = Triangle(point1, point2, point3)
-
-    triangle.move(2, 3)
-
+triangle.move(2, 3)
+```
 ### 6.5.2. Encapsulation
 
 L'encapsulation n'existe pas véritablement en Python, même si certaines conventions d'écriture permettent de protéger les données d'une classe (notamment ses variables) pour inciter l'utilisateur ou les programmeurs qui utiliseront ces classes à ne pas modifier les variables de ses classes. \
@@ -4322,3 +4394,370 @@ Dans notre classe *Point* vue précédemment, la méthode *\_\_init__( )* est **
 ### 6.6. Classes and data types again
 ---
 
+On peut voir les classes comme des "*types*" qu'on crée nous-mêmes pour nos objets. Quand on écrit un programme, on peut se demander quels composants se comportent comme un type : ils ont leurs propres méthodes, éventuellement plusieurs objets de ce type (qui seraient alors les instances d'une classe plus générale), etc. \
+Les classes permettent de cacher des données non utiles la plupart du temps aux programmes et de faire des opérations auxquelles il n'a pas accès.
+
+Ecrire des classes permet aussi d'améliorer la "**portabilité**" du logiciel : si l'implémentation doit changer, la classe peut être ré-écrite sans changer l'interface programmeur (ex : la classe *Triangle* peut changer dans son code, mais l'attribution de l'instance `triangle = Triangle(p0, p1, p2)` et l'appel des méthodes `triangle.move(2, 3)` ne changent pas). \
+"L'interface" d'une classe, c'est plus ou moins ses méthodes : ce sont les opérations qui peuvent être effectuées sur la classe, et si les méthodes sont bien documentées, le programmeur n'a pas besoin de voir le code brut.
+
+### 6.6.1. Example : a deck of cards
+
+Un jeu de cartes traditionnel :
+- 2 types (*colors*) : rouge, noire
+- 4 "couleurs" ou "familles" (*suits*) : pic (*spades*), carreau (*diamonds*), coeur (*hearts*), trèfle (*clubs*)
+- 52 cartes : 13 dans chaque couleur.
+
+Les cartes peuvent être considérées comme un composant individuel du jeu et peuvent être classées ; cependant, la valeur des cartes dépend du jeu pratiqué (ex : l'as ou *ace* peut valoir 1 comme 20). Les attributs d'une carte sont sa couleur (*suit*) et son type (*color*). \
+Souvent, les cartes sont distribuées et un certain nombre passent du deck vers la main du joueur (ex : 13 cartes par joueur au bridge, 5 cartes par joueur pour le poker la plupart du temps).
+
+La valeur des cartes a une importance la plupart du temps. Parfois les cartes sont comparées entre elles (poker), parfois c'est la somme qui importe (blackjack), parfois c'est la famille qui importe.
+
+Les opérations que l'on peut effectuer sur les cartes incluent de les **voir** (*view*), de les **comparer** (*compare*), qui peut lui-même présenter des spécificités, comme par exemple : les as sont-ils supérieurs au roi et inférieurs au 2 ? Certaines couleurs ont-elles des valeurs spécifiques ?
+
+La plupart du temps, on utilise un seul jeu de cartes mais parfois on peut en utiliser plusieurs.
+
+Les opérations sur le deck entier incluent le **mélange** (*shuffle*), de **remplacer** le deck (*replace*) et d'**échanger** (*deal*) une carte ou une main (ensemble des cartes détenues par un joueur).
+
+| class Card | class Deck |
+| --- | --- |
+| `def __init__(self, face, suit):`<br>`def value():`<br>`def suit():`<br>`def facevalue():`<br>`def view():`<br>`def compare():`<br>`def initialize():` | `def __init__(self):`<br>`def deal_card():`<br>`def deal_hand(n_cards):`<br>`def shuffle():`<br>`def replace():` |
+
+La façon d'implémenter une méthode dépend de l'objectif qu'elle présente : quand on appelle la méthode *deal( )*, on s'attend à ce que celle-ci retourne une carte *card*, instance de la classe Card. Ceci représente d'ailleurs l'interface utilisateur ; celui-ci n'a pas à connaître le processus derrière la méthode, simplement comment l'appeler et ce que ça retourne. De plus, le processus peut varier d'un ordinateur à l'autre ; ce qui importe est que l'interface ne change pas.
+
+Il est possible pour une classe de contenir un ensemble de valeurs et de les donner au programmeur comme référence.
+```python
+class Card:
+    CLUBS_1 = 1
+    DIAMONDS_1 = 2
+    ...
+    HEARTS_ACE = 51
+    SPADES_ACE = 52
+
+    def __init__(self, face, suit):
+        ...
+```
+Ce sont des variables qui n'apparaissent pas dans le constructeur, donc qui sont accessibles par toutes les instances.
+
+On peut aussi implémenter la classe en créant un tuple : l'as de carreau serait (Clubs, 1) par exemple. Cette façon de faire peut être intéressante pour les jeux à atouts, tandis que l'implémentation par valeur numérique rend plus facile la détermination des valeurs et les comparaisons entre les cartes. La valeur d'une carte pourrait être stockée dans un tuple appelé **ranks** et `ranks[r]` serait une valeur numérique associée à cette carte.
+
+### 6.6.2. A Bouncing Ball
+
+Les animations et les simulations par ordinateur voient le monde comme un ensemble d'échantillons capturés à des instants précis (*discrete times* comme on les appelle en statistique). \
+Une animation par exemple, est un ensemble d'images d'une scène affichés à des intervalles de temps précis, en général 1/24<sup>th</sup> ou 1/30<sup>th</sup> par seconde. \
+Les simulations utilisent des intervalles de temps dépendant de ce qui est simulé. L'exemple choisi ici est une simulation et une animation d'une balle rebondissante, d'abord dans une dimension, puis dans deux.
+
+Une balle lâchée d'une hauteur *h* tombe au sol quand on la lâche. Sa vitesse augmente au cours de la chute, du fait de la gravité? L'équation basique qui définie son mouvement est la suivante :
+
+<center>
+s = 1/2 * a * t <sup>2</sup> + v<sub>0</sub>t
+</center><br>
+
+**s** = la distance parcourue lors de la chute à un **temps t**, \
+**v<sub>0</sub>** = la vitesse que l'objet avait au temps **t = 0**, \
+**a** = valeur de l'accélération.
+
+Pour un objet à la surface de la Terre, la vitesse d'accélération *a* est de 9.8m/s<sup>2</sup> (= 32 feet/s<sup>2</sup>). Pour une balle lâchée par quelqu'un, v<sub>0</sub> = 0 puisque stationnaire. \
+On calcule les distances à un intervalle de 0.5s :
+
+<center>
+
+![Distance s at successive time intervals](image-9.png)</center>
+
+On peut créer une classe **Ball**. Elle aurait une position (*position*) et une vitesse (*speed*) à n'importe quel moment (*time*), et pourrait avoir une méthode *draw( )* qui la dessinerait sur un écrand d'ordinateur. \
+La faire rebondir revient à donner à la balle une valeur qui indique combien d'énergie elle perd à chaque fois qu'elle rebondit ; cela implique donc qu'elle finirait par arrêter de rebondir et de bouger.
+
+On commence par écrire le constructeur :
+```python
+class Ball:
+    def __init__(self, height, elasticity):
+        self._height = height
+        self._elasticity = elasticity
+        self._speed = 0.0
+        self._acceleration = 32.0   # or 9.8
+```
+Cela permet d'initialiser 4 variables locales qui sont des attributs de la classe *Ball*.
+
+On peut aussi implémenter une méthode qui calcule la hauteur de la balle à un instant t.
+```python
+    def get_height(self):
+        return self.height
+```
+*Le paramètre self doit être passé sinon la fonction ne peut pas accéder à la variable locale height*.
+
+La simulation a besoin de la valeur de la hauteur en fonction du temps, qui augmente graduellement.
+
+Pour implémenter la notion de temps qui passe, soit le programme compte le temps écoulé à partir du moment où la balle est lâchée, soit on utilise l'incrémentation du temps pour calculer la prochaine vitesse et position de la balle. \
+Si on suit la deuxième option, on calculera la nouvelle vitesse à un temps *t* par l'équation :
+
+<center>
+
+v = a * t + v<sub>0</sub></center>
+
+On peut appeler ***delta( )*** la fonction qui met à jour la vitesse et la position de la balle en fonction de l'intervalle de temps *dt* :
+```python
+def delta(self, dt):
+    s = 0.5 * self._acceleration * dt**2 + self._speed * dt
+    self._height = self._height - s
+    self._speed = self._acceleration * dt + self._speed
+```
+On utilise les *feet* comme unité de mesure de la distance :
+```python
+class Ball:
+    def __init__(self, height, elasticity):
+        self._height = height
+        self._elasticity = elasticity
+        self._speed = 0.0
+        self._acceleration = 32.0
+
+    def get_height(self):
+        return self._height
+
+    def delta(self, dt):
+        s = 0.5 * self._acceleration * dt**2 + self._speed * dt
+        self._height = self._height - s
+        self._speed = self._speed + self._acceleration * dt
+
+ball = Ball(12.0, 0.5)
+
+for i in range(0, 5):
+    print(f"At time {i*0.5} seconds, the ball has fallen to {ball.get_height()} feet.")
+    ball.delta(0.5)
+```
+`At time 0.0 seconds, the ball has fallen to 12.0 feet.` \
+`At time 0.5 seconds, the ball has fallen to 8.0 feet.` \
+`At time 1.0 seconds, the ball has fallen to -4.0 feet.` \
+`At time 1.5 seconds, the ball has fallen to -24.0 feet.` \
+`At time 2.0 seconds, the ball has fallen to -52.0 feet.`
+
+Il faut maintenant coder le rebond (*bounce*). Quand la balle est à 0 de hauteur, elle est au niveau du sol. Il faut donc à ce moment-là programmer le rebond, c'est-à-dire un mouvement dans la direction opposée, à la vitesse à laquelle elle était en tombant * la valeur de l'élasticité.
+
+La difficulté réside alors dans le fait que la balle n'atteint pas 0 au moment précis de l'incrémentation temporelle. C'est tant une difficulté de programmation qu'une difficulté arithmétique.
+
+On cherche ici à connaître le temps *t* auquel la balle touche le sol, soit quand la hauteur de la balle h<sub>0</sub> = 0. \
+Cette hauteur h<sub>0</sub> = self._height (*hauteur de laquelle la balle est lâchée*) - s (*distance parcourue par la balle à un temps t*) \
+Cela revient à résoudre une équation de second degré à une inconnue :
+<center>
+
+![Equation quadratique](image-10.png)
+![Résultat équation](image-11.png)</center>
+
+Ce temps t<sub>(sol)</sub> correspond au temps auquel la balle touche le sol. Il est compris entre 0 et dt. La vitesse de la balle à ce moment-là sera : \
+<center>
+v<sub>0</sub> = self._speed + self._acceleration * t<sub>(sol)</sub></center>
+
+La balle changera ensuite de direction et diminuera en vitesse du fait de la gravité, jusqu'à tomber à nouveau vers le sol. Quand elle arrive au maximum de sa hauteur après rebond, sa vitesse est alors de 0.
+
+Si on revoit notre programme, il faut donc :
+- définir le constructeur de notre classe, contenant les attributs hauteur qui sépare la balle du sol (*height*), élasticité de la balle (*elasticity*), vitesse de départ (*speed*) et accélération (*acceleration*, constante dans le référentiel terrestre).
+
+- définir la fonction *delta( )* qui calculera *s*, soit la distance parcourue par la balle après un intervalle de temps donné *dt*, afin de modifier la hauteur qui sépare la balle du sol et la vitesse de la balle à un instant t. \
+
+- Dans cette fonction, il faudra évaluer si la hauteur trouvée suite au calcul du delta est négative, auquel cas on chercher le temps *t_bounce* auquel la balle touche le sol et rebondit(grâce à l'équation quadratique vue précédemment).
+
+- Si la balle a rebondit, on calcule alors la nouvelle vitesse de la balle et sa nouvelle hauteur en tenant compte de l'élasticité. Après rebond, la vitesse de la balle est négative (signifiant qu'on a change de direction). \
+    A chaque rebond, la balle perdra en élasticité et c'est ce qui fera qu'au bout d'un moment elle ne rebondira plus et la hauteur restera 0 après avoir touché le sol.
+
+- Après rebond, si la vitesse atteint 0 à nouveau, c'est qu'on a atteint le maximum de hauteur qu'elle pouvait atteindre (*peak*).
+
+Un aperçu du programme :
+```python
+import math
+
+class Ball:
+    def __init__(self, height, elasticity):
+        # the unit of measurement of distance is the meter
+        self._height = height
+        self._elasticity = elasticity
+        self._speed = 0.0
+        self._acceleration = 9.8
+
+    def get_height(self):
+        return self._height
+
+    def get_speed(self):
+        return self._speed
+
+    def get_elasticity(self):
+        return self._elasticity
+
+    def reset_height(self):
+        self._height = 0
+
+    def reset_speed(self):
+        self._speed = 0
+
+    def update_height(self, s):
+        self._height = self._height - s
+
+    def update_speed(self, dt):
+        self._speed = self._speed + self._acceleration * dt
+
+    def loss_elasticity(self):
+        if self._elasticity < 0.03:
+            self._elasticity = 0.0
+        else:
+            self._elasticity = self._elasticity - 0.03
+
+    def bounce(self, start_speed, start_height):
+        t_bounce = (-start_speed + math.sqrt(start_speed**2 +2 * self._acceleration * start_height))/self._acceleration
+        self._speed = -(self._speed + self._acceleration * t_bounce) * self._elasticity
+        self._height = -self._height * self._elasticity
+        self.loss_elasticity()
+
+    def calculate_fall_distance(self, dt):
+        s = 0.5 * self._acceleration * dt**2 + self._speed * dt
+        return s
+
+    def bouncing_simulation(self, dt):
+        start_height = self.get_height()
+        start_speed = self.get_speed()
+        s = self.calculate_fall_distance(dt)
+        self.update_height(s)
+        self.update_speed(dt)
+        if self.get_height() < 0:
+            self.bounce(start_speed, start_height)
+        elif start_speed * self.get_speed() < 0:
+            self.reset_speed()
+        if self.get_height() < 0:
+            self.reset_height()
+
+
+ball = Ball(3.0, 0.5)
+
+while ball.get_elasticity() != 0:
+    ball.bouncing_simulation(0.1)
+    print(f"The ball's speed is {ball.get_speed():.3f} and the ball is at {ball.get_height():.3f} meters.")
+print("The ball is on the ground. No more bouncing.")
+```
+### 6.6.3. Cat-a-pult
+
+C'est un vieux jeu qui consiste à se tirer dessus avec un canon. Le joueur définit un angle et une puissance de tir et envoie un boulet vers son adversaire, en espérant le toucher. Si le boulet touche l'adversaire, celui-ci est détruit et le joueur gagne ; sinon, le joueur adverse (ou l'ordinateur) joue à son tour. Le jeu se poursuit jusqu'à destruction d'un des chars. \
+*Angry Birds* n'est en fait qu'une variation plus évoluée de ce jeu, mais le principe reste le même.
+
+Pour le moment, les input-output sont du texte puisque nous n'avons pas encore vu la gestion d'une interface graphique. On indique l'angle et la puissance de tir et on tire. On marque l'endroit où atterit notre projectile en printant un caractère, et si on a pas touché la cible, on peut réessayer. L'objectif est de toucher la cible en utilisant le moins de projectile possible.
+
+Basic design
+-
+On classe d'abord les items et les actions du jeux : les items sont *cannon* et *cannonball*, et seront des classes, tandis que les actions sont les méthodes de ces classes.
+
+La classe *cannon* possède des attributs que sont sa localisation, son angle  et sa puissance de tir, avec laquelle le boulet *cannonball* sera éjecté. Les deux derniers facteurs (angle et puissance) affectent la distance parcourue par le projectile. \
+On donne au canon la cible comme paramètre, par exemple une autre instance de *Cannon* pour éviter de redéfinir une autre classe.
+
+La première méthode à définir pour *Cannon* est *fire( )* ; cela correspond à envoyer un boulet, donc une instance de *Cannonball* avec une vitesse et une direction propren depuis la localisation du canon. \
+Quand le canon "tire" (donc quand la méthode *fire( )* est appelée sur l'instance *cannon*), une instance de la classe *Cannonball* est créée. On lui donne alors comme paramètre un angle et une vitesse. \
+*cannonball* a une position (x, y) et une vitesse (dx, dy) propre. Les actions que peut faire le boulet sont : bouger (*step( )*) et percuter (*testCollision( )*).
+
+Detailed design
+-
+| class Cannon | class Cannonball |
+| --- | --- |
+| <strong>Has:</strong> <br>position (x, y)<br>angle (when fired)<br>power (when fired)<br>target (another cannon)<br>ball<br>| <strong>Has:</strong> <br>position (x, y)<br>speed (dx, dy)<br>name (text)<br>target (a Cannon class instance)<br>gravity |
+<strong>Does:</strong><br>`def fire():`<br>`def step():` | <strong>Does:</strong><br>`def step():`<br>`def test_for_collision():` |
+
+Les attributs *Has* sont des variables locales de la classe. Dans notre cas, elles peuvent être initialisées dans le constructeur *\_\_init( )__*. \
+```python
+class Cannon:
+    def __init__(self, x, y):
+        self._w = x
+        self._y = y
+        self._power = 0
+        self._angle = 0
+        self._target = target
+        self._ball = None
+
+class Cannonball:
+    def __init__(self, x, y, dx, dy):
+        self._x = x
+        self._y = y
+        self._dx = dx
+        self._dy = dy
+        self._target = target
+        self._gravity = 1.0
+        self._name = ""
+```
+Le jeu est principalement dans une dimension. Le boulet atterrit à une coordonnée spécifique x et si cette coordonnée est suffisamment près de la coordonnée x de la cible , alors la cible est détruite et le jeu est terminé.
+
+Sans affichage graphique, on peut imaginer un affichage texte avec le canon (représenté par un */*) à un endroit de l'écran, la cible (représentée par un *Y*) à un autre et éventuellement le projectile s'il n'a pas touché la cible. La canon est placé à 12 sur l'axe des abscisses et la cible est placée à 60. Ils sont tous les deux à 0 sur l'axe des ordonnées (terrain plat).
+<center>
+
+![affichage canons](image-12.png)</center>
+
+Quand le canon tire avec la méthode *fire( )*, l'instance *ball* de la classe *Cannonball** est créée aux coordonnées (12, 0). Sa vitesse dépend de l'angle et de la puissance de tir.
+
+On utilise les cosinus et sinus d'un angle pour calculer la vitesse de l'objet *ball*.
+<center>
+
+![cosinus-sinus](image-13.png)</center>
+
+Avec une vitesse = 1 :
+<center><em>dx = sin(angle * 3.1415 / 180.0)<br>dy = cos(angle * 3.1415 / 180.0)</em></center><br>
+
+*pi/180 permet de convertir les degrés en radian car les sinus et cosinus doivent être en radians.*
+
+La méthode *fire( )* prend un angle (de 0 à 360°) et une puissance (de 0 à 100%) en arguments. Cette fonction permet :
+- de claculer les valeurs de dx et dy à partir de l'angle et de la puissance, la puissance max étant 0.1.
+- de créer une instance de Cannonball appelée *ball* en lui donnant des coordonnées (x, y) et un vecteur (dx, dy), un nom ("boulet" par exemple), et une cible ("tank").
+
+La simulation inclue des pas réguliers dans le temps pendant lesquels la position des objets est recalculée. Chaque objet doit avoir une méthode *step( )* qui met à jour le temps.
+
+Le canon ne bouge pas mais tire parfois un boulet, donc le fait de mettre à jour l'état du canon devrait aussi mettre à jour le statut du boulet.
+
+**Step 1** (classe *Cannon*) : pas de paramètre à donner. \
+Si une balle a été tirée, cela met à jour sa position en appelant la méthode *step( )* de l'objet *ball*.
+
+La méthode *step( )* de l'objet *Cannonball* permet de mettre à jour la position de l'objet à partir de sa vitesse actuelle et de sa précédente position. La position **x** est modifiée par **dx** et la position **y** est modifiée par **dy**. La gravité qui s'applique sur l'objet diminue également la vitesse verticale du boulet à chaque intervalle de temps, donc il faut retirer à **dy** la valeur de la gravité à chaque intervalle de temps. \
+Si l'objet touche le sol, il doit s'arrêter de bouger. Un objet touche le sol si **y** est inférieur ou égal à 0. Quand cela arrive, on met à jour **dx** et **dy** à 0 (plus de vecteur de déplacement). On doit ensuite vérifier si l'impact est proche de la cible.
+
+**Step 2** : pas de paramètre à donner. \
+1. on update la position de x : x = x + dx
+2. on update la position de y : y = y + dy
+3. on soustrait la gravité à dy : dy = dy - gravity
+4. Si la balle a touché le sol (y <= 0) : dx = dy = gravity = 0 \
+    Collision avec la cible ?
+
+Le dernier contrôle de collision consiste à vérifier si la position **x** du boulet est suffisamment proche de la position **x** de la cible. On peut établir un intervalle d'erreur de 1.0 par exemple. Cela peut être vérifié par la méthode ***test_collision( )**. Si il y a effectivement collision, le joueur qui tirait l'emporte ; fin du jeu.
+
+**Test collision** : vérifie si le boulet à toucher la cible tank ; si c'est le cas, on passe l'état en *True*. \
+1. on soustrait la valeur de x du boulet à la valeur de x de la cible, le résultat est appelé **d**.
+2. Si d <= 1.0, on set le flag **done** à *True*.
+
+Le main pourrait ressembler à ceci :
+```python
+tank = Cannon(60, 0, None)      # 60 for x, 0 for y, None for target
+player = Cannon(12, 0, tank)        # 12 for x, 0 for y, tank for target
+player.fire(42, 65)         # 42°, 65%
+done = False        # var 'done' initialize
+while not done:     # while no collision, update the position of the ball
+    player.step()
+```
+
+### 6.7. Subclasses and inheritance
+---
+
+Les classes sont des fonctionnalités du langage permettant de représenter une hiérarchie d'information et de structure. Une classe peut être utilisée pour en définir une autre, et les attributs de la première classe sont passées à la seconde ; c'est ce qu'on appelle l'**héritage**. \
+Une classe basée sur une autre est appelée une ***sous-classe*** (*subclass*) de cette classe ; la classe sur laquelle la sous-classe est basée est appelée ***super-classe*** ou classe ***parent*** (*parent class*). \
+La sous-classe est en fait un cas spécifique de sa classe parent.
+
+<p style = "color: green">Ex : une classe <em>pet</em> avec comme sous-classes <em>dog</em> et <em>cat</em> ; une classe <em>polygon</em> avec comme sous-classes <em>triangle</em> et <em>rectangle</em>. Pour revenir sur notre exemple de début de chapitre, une classe <em>person</em> avec comme sous-classe <em>man</em> et <em>woman</em>.
+
+### 6.7.1. Non-trivial example: objects in a video game
+
+A un certain degré, tous les objets d'un jeu vidéo ont des points communs. Ce sont des objets avec lesquels le joueur peut interagir, ou pouvant interagir entre eux ; ils ont une position dans l'espace et une apparence visuelle.
+
+```python
+class game_object:
+    position = (0, 0, 0)         # object position in 3D
+    visual = None           # graphics that represent the object
+
+    def __init__(self, pos, vis)
+    def get_position(self)
+    def set_position(self, p)
+    def set_visual(self, v)
+    def draw(self)
+```
+
+On retrouve à ce moment-là deux types d'objets : les objets qui peuvent se déplacer et ceux qui sont immobiles. Un objet mouvant doit avoir une méthode qui met-à-jour sa position à intervalles réguliers, et peut également avoir une vitesse.
+
+```python
+class moving_object(game_object):
+    
