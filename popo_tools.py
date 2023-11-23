@@ -16,7 +16,7 @@ def input_int(prompt, range=None, quiet=False):
             continue
 
         if not range:
-                return user_input
+            return user_input
 
         min = range[0]
         max = range[1]
@@ -31,12 +31,10 @@ def input_float(prompt, range=None, quiet=False):
     """show the prompt to the user
     return the number if it is actually a floatting number
     repeat the question while the number is not an floatting number"""
-    # On vérifie si le prompt original présente un espace comme dernier caractère.
-    # Si ce n'est pas le cas, on ajoute à la fin du prompt un saut de ligne et >\
-    # suivi d'un espace.
+    # Check if the original prompt has a space as the last character.
+    # If not, add a line break and >space at the end of the prompt.
     if prompt[-1] != " ":
         prompt += "\n> "
-    # "while True" = boucle infinie, pour en sortir il faut un return.
     while True:
         try:
             user_input = float(input(prompt))
@@ -46,7 +44,7 @@ def input_float(prompt, range=None, quiet=False):
             continue
 
         if not range:
-                return user_input
+            return user_input
 
         min = range[0]
         max = range[1]
@@ -107,8 +105,8 @@ def parse_csv(file, separator = ",", index = None):
     f.close()
     return parsed
 
-# le bloc d'instruction ne s'exécute que si on exécute le script dans le terminal
-# print(isinstance(a, int))
+# this block runs only if we execute the script in the shell
+
 if __name__ == "__main__":
     planet_dict = parse_csv("planets.csv", index = "Name")
     print(planet_dict)

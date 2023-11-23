@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"""Jeu dans lequel le joueur doit deviner si le nombre généré aléatoirement par l'ordinateur est premier ou non"""
+"""A game in which the player has to guess whether the given random number is prime or not"""
 
 import random
 
@@ -12,8 +12,8 @@ def is_prime(n):
         return True
     if n % 2 == 0:
         return False
-# On cherche de 2 jusqu'à la racine carrée du nombre + 1.
-# Il faut convertir en entier car for itère sur des entiers et non des nombres flottants.
+# We are searching from 2 to the number's square root + 1.
+# Must be convert into an integer because "range" iterate on integers, not float numbers.
     for i in range(3, int(n ** 0.5) + 1):
         if n % i == 0:
             return False
@@ -43,21 +43,21 @@ def controlled_input(prompt):
             continue
         return user_input[0]
 
-def play_again():
+def play_again(play_time):
+    prompt2 = "Voulez-vous continuer à jouer ? (oui ou non)\n> "
     continue_choice = controlled_input(prompt2)
     if continue_choice == "o":
-        play_time = 1
+        play_time = True
         return play_time
     if continue_choice == "n":
-        play_time = 0
+        play_time = False
         return play_time
 
 # MAIN
 
-play_time = 1
-prompt2 = "Voulez-vous continuer à jouer ? (oui ou non)\n> "
+play_time = True
 
-while play_time == 1:
+while play_time == True:
     computer_number = random.randrange(2, 101)
     prompt1 = f"Le nombre {computer_number} est-il un nombre premier ? (oui ou non)\n> "
     is_prime_computer_number = is_prime(computer_number)
@@ -66,14 +66,14 @@ while play_time == 1:
     if is_prime_computer_number:
         if player_choice == "o":
             print_win_text(is_prime_computer_number, computer_number)
-            play_time = play_again()
+            play_time = play_again(play_time)
         else:
             print_lose_text(is_prime_computer_number, computer_number)
-            play_time = play_again()
+            play_time = play_again(play_time)
     else:
         if player_choice == "n":
             print_win_text(is_prime_computer_number, computer_number)
-            play_time = play_again()
+            play_time = play_again(play_time)
         else:
             print_lose_text(is_prime_computer_number, computer_number)
-            play_time = play_again()
+            play_time = play_again(play_time)

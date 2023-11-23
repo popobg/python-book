@@ -8,22 +8,21 @@ def remove_sticks(choice, sticks_number):
 
 def player_turn(sticks_number):
         upper_limit = 3 if sticks_number >= 3 else sticks_number
-        player_move = popo_tools.input_int(player_prompt, [1, upper_limit])
+        player_move = popo_tools.input_int("It is your turn: ", [1, upper_limit])
         sticks_number = remove_sticks(player_move, sticks_number)
         return sticks_number
 
 def computer_turn(sticks_number):
     computer_move = sticks_number % 4
-    if computer_move == 0 or computer_move > 3:
+    if computer_move == 0:
         computer_move = random.randrange(1, 4)
     print(f"The computer choose {computer_move} {make_stick_words(computer_move)}.")
     sticks_number = remove_sticks(computer_move, sticks_number)
     return sticks_number
 
 def make_stick_words(sticks_number):
-    return "stick" if sticks_number == 1 else "sticks"
+    return "stick" if sticks_number <= 1 else "sticks"
 
-player_prompt = "It is your turn: "
 sticks_number = 21
 
 print("There are 21 sticks. You can remove between 1 and 3 sticks at each round.")
@@ -41,7 +40,7 @@ while True:
         exit()
     time.sleep(1)
     if sticks_number <= 3:
-        print(f"The computer choose 3 sticks, you lose.")
+        print(f"The computer choose {sticks_number} {make_stick_words(sticks_number)}, you lose.")
         exit()
     else:
         sticks_number = computer_turn(sticks_number)
