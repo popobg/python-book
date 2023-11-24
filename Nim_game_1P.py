@@ -3,12 +3,12 @@
 import popo_tools, time, random
 
 def create_random_board():
-    row = []
+    rows = []
     number_row = random.randrange(3, 5)
     for i in range(0, number_row):
         value = random.randrange(1, 11)
-        row.append(value)
-    return row
+        rows.append(value)
+    return rows
 
 def display_board(board):
     for j in range(0, len(board)):
@@ -20,15 +20,15 @@ def display_board(board):
 def remove_sticks(choice, board):
     return board - choice
 
-def controlled_input(inp, board):
-    while board[inp-1] == 0:
-        inp = popo_tools.input_int("This row has no stick. Choose another one :\n> ")
-    return inp
+def controlled_input(user_input, board):
+    while board[user_input-1] == 0:
+        user_input = popo_tools.input_int("This row has no stick. Choose another one :\n> ")
+    return user_input
 
 def player_turn(board):
-    player_row_choice = popo_tools.input_int(player_prompt1, [1, len(board)])
+    player_row_choice = popo_tools.input_int("Which row?", [1, len(board)])
     player_row_choice = controlled_input(player_row_choice, board)
-    player_sticks_choice = popo_tools.input_int(player_prompt2, [1, board[player_row_choice - 1]])
+    player_sticks_choice = popo_tools.input_int("How many sticks?", [1, board[player_row_choice - 1]])
     board[player_row_choice - 1] = remove_sticks(player_sticks_choice, board[player_row_choice - 1])
     return board
 
@@ -39,8 +39,8 @@ def parity(board):
     return parity
 
 def calculate_null_parity(board):
-    new_board = board.copy()
     for i in range(0, len(board)):
+        new_board = board.copy()
         for j in range(1, board[i] + 1):
             new_board[i] = board[i] - j
             if parity(new_board) == 0:
@@ -72,14 +72,15 @@ def game_over(board):
             return False
     return True
 
-player_prompt1 = "Which row?"
-player_prompt2 = "How many sticks?"
-
 print("------ Nim game-----")
 print("-------------------------")
-print("There are 3 row of sticks.")
+time0 = time.sleep(1)
+print("There are between 3 and 5 rows of sticks.")
+time0 = time.sleep(1)
 print("At their turn, the player have to choose a row and pull \nas many sticks as they want out of the row (at least one).")
+time0 = time.sleep(1)
 print("The winner is the one taking the last stick out of the board.\n")
+time0 = time.sleep(2)
 board = create_random_board()
 print("Here is the board :")
 display_board(board)
@@ -97,8 +98,8 @@ while True:
     print("It is the computer turn.")
     board = computer_turn(board)
     display_board(board)
-    time2 = time.sleep(2)
     print()
     if game_over(board):
         print(f"Sorry, you lose")
         break
+    time2 = time.sleep(2)
