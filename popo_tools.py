@@ -73,7 +73,7 @@ def parse_csv(file, separator = ",", index = None):
     header_line = f.readline()
     if separator not in header_line:
         raise Exception(f"Separator '{separator}' not found in first line")
-    header = [e.strip() for e in header_line.split(separator)]
+    header = [element.strip() for element in header_line.split(separator)]
 
     parsed = []
     for line in f:
@@ -108,5 +108,7 @@ def parse_csv(file, separator = ",", index = None):
 # this block runs only if we execute the script in the shell
 
 if __name__ == "__main__":
-    planet_dict = parse_csv("planets.csv", index = "Name")
-    print(planet_dict)
+    planet_dict1 = parse_csv("planets.csv")
+    planet_dict2 = parse_csv("planets.csv", index = 0)
+    print(planet_dict1)
+    print(planet_dict2)
