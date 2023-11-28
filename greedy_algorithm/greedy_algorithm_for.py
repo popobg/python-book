@@ -6,32 +6,26 @@ We randomized the initial number of cents but it could have been an input instea
 import random
 
 def grammatical_agree(money):
-    if money > 1:
-        return "s"
-    else:
-        return ""
+    return "s" if money > 1 else ""
 
 def grammatical_agree_penny(money):
-    if money > 1:
-        return "ies"
-    else:
-        return "y"
+    return "ies" if money > 1 else "y"
 
-cent = random.randrange(100)
+initial_cent = random.randrange(100)
 
+cent = initial_cent
 money = []
-rest_of_cent = [cent]
 
-for i in range(5):
+for i in range(4):
     if i == 0:
-        money.append(rest_of_cent[-1] // 50)
-        rest_of_cent.append(rest_of_cent[-1] % 50)
+        money.append(cent // 50)
+        cent = cent % 50
         divisor = 25
-    elif i == 4:
-        penny = rest_of_cent[-1]
+    elif i == 3:
+        penny = cent
     else:
-        money.append(rest_of_cent[-1] // divisor)
-        rest_of_cent.append(rest_of_cent[-1] % divisor)
+        money.append(cent // divisor)
+        cent = cent % divisor
         divisor = 5
 
-print (f"A partir de {cent} cents, vous obtiendrez {money[0]} half dollar{grammatical_agree(money[0])}, {money[1]} quarter{grammatical_agree(money[1])}, {money[2]} nickel{grammatical_agree(money[2])} et {penny} penn{grammatical_agree_penny(penny)}.")
+print (f"A partir de {initial_cent} cents, vous obtiendrez {money[0]} half dollar{grammatical_agree(money[0])}, {money[1]} quarter{grammatical_agree(money[1])}, {money[2]} nickel{grammatical_agree(money[2])} et {penny} penn{grammatical_agree_penny(penny)}.")

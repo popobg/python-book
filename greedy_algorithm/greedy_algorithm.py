@@ -25,16 +25,10 @@ def make_the_change(change):
     return money_type
 
 def grammatical_agree(money):
-    if money > 1:
-        return "s"
-    else:
-        return ""
+    return "s" if money > 1 else ""
 
 def grammatical_agree_penny(money):
-    if money > 1:
-        return "ies"
-    else:
-        return "y"
+    return "ies" if money > 1 else "y"
 
 cent = random.randrange(100)
 
