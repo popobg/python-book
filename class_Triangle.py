@@ -41,8 +41,6 @@ class Triangle:
         self._v0 = p0
         self._v1 = p1
         self._v2 = p2
-        self._x = (p0.get_x() + p1.get_x() + p2.get_x())/3
-        self._y = (p0.get_y() + p1.get_y() + p2.get_y())/3
 
     def set_vertices(self, p0, p1, p2):
         self._v0 = p0
@@ -52,19 +50,15 @@ class Triangle:
     def get_vertices(self):
         return (self._v0, self._v1, self._v2)
 
-    def get_x(self):
-        return self._x
-
-    def get_y(self):
-        return self._y
+    def get_center(self):
+        return ((self._v0.get_x() + self._v1.get_x() + self._v2.get_x())/3), ((self._v0.get_y() + self._v1.get_y() + self._v2.get_y())/3)
 
     def move(self, dx, dy):
         self._v0.move(dx, dy)
         self._v1.move(dx, dy)
         self._v2.move(dx, dy)
-        self._x = self._x + dx
-        self._y = self._y + dy
 
 triangle = Triangle(point1, point2, point3)
 
 triangle.move(2, 3)
+print(triangle.get_center())
