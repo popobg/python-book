@@ -21,12 +21,13 @@ str6 = "Ans: uqxg oy znk iruykyz znotm zu terut o'bk kbkx kgzkt."
 # FUNCTIONS
 
 def encode(letter, key):
+    if not letter.isalpha():
+        return letter
+
     if letter.isupper():
         alphabet = alphabet_upper
     else:
         alphabet = alphabet_lower
-    if letter not in alphabet:
-        return letter
 
     letter_index = alphabet.index(letter)
     # If letter_index >= 26 or < 0, modulo 26 make one complete loop of the
@@ -37,7 +38,7 @@ def encode(letter, key):
     return alphabet[final_index]
 
 def decode(letter, key):
-    return encode(letter, key * -1)
+    return encode(letter, -key)
 
 def encode_str(string, key):
     return "".join([encode(i, key) for i in string])
