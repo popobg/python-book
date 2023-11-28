@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+import sys
+sys.path.insert(0, '/home/popo/python_book')
 import popo_tools, time, random
 
 def create_random_board():
