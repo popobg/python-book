@@ -39,22 +39,14 @@ def print_set_winner(winner, win_count):
 def determine_overall_winner(win_count):
     """determine the winner of the game."""
     if win_count[0] > win_count[1]:
-        return "ping"
+        return "Ping"
     if win_count[0] < win_count[1]:
-        return "pong"
-    return "tie"
+        return "Pong"
 
-# should I rather make a print_winner_and_exit() function?
 def print_winner(win_count):
     """print the winner of the game."""
-    winner = determine_overall_winner(win_count)
-    if winner == "ping":
-        print(f"Ping won {win_count[0]} vs {win_count[1]}.")
-        return
-    if winner == "pong":
-        print(f"Pong won {win_count[1]} vs {win_count[0]}.")
-        return
-    print(f"It's a tie : {win_count[0]} = {win_count[1]}.")
+    win_count_sorted = sorted(win_count)
+    print(f"{determine_overall_winner(win_count)} won {win_count_sorted[1]} vs {win_count_sorted[0]}")
 
 win_count = [0, 0]
 turn = 0
@@ -68,7 +60,6 @@ while not game_over(win_count):
     else :
         turn += 1
         winner = play_pong_turn()
-        turn += 1
         print_set_winner(winner, win_count)
 
 print("-----------")
