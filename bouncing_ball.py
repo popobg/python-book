@@ -51,8 +51,10 @@ class Ball:
         s = self.calculate_fall_distance(dt)
         self.update_height(s)
         self.update_speed(dt)
+        # when the ball hits the floor and bounce
         if self.get_height() < 0:
             self.bounce(start_speed, start_height)
+        # when the new speed become positive again (peak)
         elif start_speed * self.get_speed() < 0:
             self.reset_speed()
         if self.get_height() < 0:
