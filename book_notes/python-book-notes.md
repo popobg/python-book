@@ -9,13 +9,13 @@ En programmation, on a plutôt besoin d'arithmétique en terme de mathématiques
 ### 1.1. Solving a problem using a computer
 ---
 
-Un programme est un **ensemble d'instructions dans le but de réaliser une tâche à l'aide d'une ordinateur**. Python est un des langages de programmation pouvant être utilisé à cet effet.
+Un programme est un **ensemble d'instructions dans le but de réaliser une tâche à l'aide d'un ordinateur**. Python est un des langages de programmation pouvant être utilisé à cet effet.
 
 Le processus de résolution de problème commence avec une spécification détaillée du problème à résoudre. Il faut comprendre complètement le problème pour que celui-ci puisse être résolu à l'aide d'un ordi. On divise ensuite le problème en une partie qu'on sait résoudre avec nos moyens actuels (méthodes et programmes en notre possession) et en une partie qu'on ne sait pas résoudre.
 
 **Pseudocode** : grandes lignes de la solution, souvent notées par écrit.\
-**Script / source cocde / computer program** : le programme en langage de programmation qui résulte du pseudocode.\
-**Compileur** : programme qui convertit notre code en code machine (0 et 1) que peut comprendre l'ordinateur.
+**Script / source code / computer program** : le programme en langage de programmation qui résulte du pseudocode.\
+**compilateur (compiler)** : programme qui convertit notre code en code machine (0 et 1) que peut comprendre l'ordinateur.
 
 ">>>" en début de ligne = *a prompt*, on se trouve dans l'interpréteur Python.
 
@@ -24,8 +24,8 @@ IDE = "Integrated development environment", c'est un logiciel qui contient un en
 Dans un langage de programmation, on trouve :
 - des symboles ayant une signification (ex : *+* = *add*, *-* = *substract*)
 - des ***reserved words***, des mots-clés qui sont définis par le langage et leur sens ne peut pas être changé par le programmeur (on ne peut pas les utiliser comme noms de variables donc - ex : *if*, *while*, *True*)
-- des ***system variables*** qui ont une signification définie par le langage et peuvent être rétuilisées par le programmeur.
-- des ***variables*** et des ***fonctions*** qui sont des termes définies par le programmeur pour être utilisées ensuite dans le code.
+- des ***system variables*** qui ont une signification définie par le langage et peuvent être réutilisées par le programmeur.
+- des ***variables*** et des ***fonctions*** qui sont des termes définis par le programmeur pour être utilisées ensuite dans le code.
 
 ### 1.2. Guess a number
 ---
@@ -284,7 +284,7 @@ On peut aussi convertir un type en un autre (en remplissant certaines conditions
 <p style="color: green"><em>float(3) = 3.0</em></p>
 
 - ***int(n.x)*** permet de convertir un flottant n.x en un entier n.
-<p style="color: green"><em>int(3.5) = 3*</em>
+<p style="color: green"><em>int(3.5) = 3</em>
 
 - ***round(n.x)*** permet de convertir un nombre flottant en l'entier le plus proche.
 <p style="color: green"><em>round(3.5) = 4</em> ou <em>round(3.3) = 3</em>
@@ -300,7 +300,7 @@ radius = float(input())
 
 *Si ce qu'on souhaite manipuler est un nombre flottant, sinon on peut utiliser **int()**. Il est préférable d'utiliser float() car moins de risque de perte d'information dans ce genre de situation.*
 
-Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également. \
+Si la conversion n'a pas été faite, Python renvoie un message d'erreur de type *TypeError*. Les erreurs sont descriptives en Python, et relativement explicites. La ligne où l'erreur est retrouvée est retranscrite également.
 <p style="color: green"><em>TypeError: can't multiply sequence by non-int of type 'float' → cela signifie qu'un élément qui ne peut pas être multiplié (une string, ici en l'occurence la variable radius retournée par l'utilisateur) a été utilisé dans une expression impliquant une multiplication.</em>
 
 ### 1.7. **if** statements
@@ -341,7 +341,7 @@ La condition *if* peut prendre plusieurs formes :
 
 <br>
 
-Ce qui suit les "*:*" est appelé *consequent* (ou *bloc d'instructions*). Ils prennent une indentation supplémentaire que le *if* et toutes les phrases suivantes prenant la même indentation sont exécutées comme des conséquences du if. Si le *if* est *False*, aucune de ces actions ne sont exécutées. \
+Ce qui suit les "*:*" est appelé *consequent* (ou *bloc d'instructions*). Ils prennent une indentation supplémentaire par rapport au *if* et toutes les phrases suivantes prenant la même indentation sont exécutées comme des conséquences du if. Si le *if* est *False*, aucune de ces actions ne sont exécutées. \
 *Par convention, en Python, une indentation = 4 espaces. La plupart des autres langages ne lisent ni les sauts de ligne ni les espaces et utilisent des séparateurs (; par exemple) pour distinguer les statements.*
 
     if a < b:
@@ -370,7 +370,7 @@ c = a - b
 
 Il existe aussi des opérateurs d'assignation un peu spéciaux, comme les opérateurs d'**incrémentation** (+=) / **décrémentation** (-=). <em>*=, /=, **= et %= existent aussi.</em>
 
-<p style="color: green"><em>a = a + 1 → a += 1</em> et <em>b = b - 1 → b += 1</em></p>
+<p style="color: green"><em>a = a + 1 → a += 1</em> et <em>b = b - 1 → b -= 1</em></p>
 
 L'incrémentation peut aussi s'appliquer à des types non numériques, comme une liste :
 ```python
@@ -392,7 +392,7 @@ else:
     print("a >= b")
 ```
 
-Qui pourrait aussi s'écrre :
+Qui pourrait aussi s'écrire :
 ```python
 if a < b:
     print("a < b")
@@ -401,7 +401,7 @@ if not a < b:
 ```
 
 *else* est :
-- Expressif : il correspond à une façon syntaxique correct d'énoncer une alternative dans le langage humain.
+- Expressif : il correspond à une façon syntaxique correcte d'énoncer une alternative dans le langage humain.
 - Efficace : il évite d'évaluer deux fois la même expression comme dans la deuxième version du code, et permet ainsi de gagner en vitesse d'exécution.
 - Grammaticalement pratique.
 
@@ -462,7 +462,7 @@ Cette méthode réduit considérablement le nombre d'indentation et améliore la
 
 La documentation **externe** est comme un manuel utilisateur. C'est un texte qui explique  ce que fait le programme ; il est plus ou moins long selon le programme. *Il vaut mieux l'écrire en anglais, c'est universel.*
 
-<p style="color: green">Un exemple de documentation pour <em>Guess a number</em> : <em>Guess a number is a simple guessing game. The computer will select a number between 1 and 10 and you are expected to guess what it is. When the program displays 'Please guess a number between 1 and 10: ', you type in your guess followed by the Enter key. Your guess must be an integer in the range 1 to 10. The computer will tell you if you win or lose.</em></p>
+<p style="color: green">Un exemple de documentation pour <em>Guess a number</em> : <em>Guess a number is a simple guessing game. The computer will select a number between 0 and 10 and you are expected to guess what it is. When the program displays 'Please guess a number between 0 and 10: ', you type in your guess followed by the Enter key. Your guess must be an integer in the range 0 to 10. The computer will tell you if you win or lose.</em></p>
 
 La documentation **interne** est destinée aux programmeurs qui ont accès au code source du programme. \
 Ce sont typiquement des **commentaires** laissés dans le code. On l'écrit souvent en anglais aussi, dans une syntaxe humaine car c'est un morceau de code qui sera ignorée par l'ordinateur. Un commentaire commence par ***#*** et se termine au prochain saut de ligne.\
@@ -495,10 +495,10 @@ Pour compter, on utilise toujours une **base** et des **"digits"** auquels on mu
 C'est le système de comptage le plus répandu, probablement car on a 10 doigts.\
 Elle se compose d'un symbole pour chaque digit, soit 10 digits de **0 à 9**. \
 Pour compter au-delà, il faut changer de rang (unité, dizaine, centaine, etc) et recommencer le comptage de 0 à 9 dans le nouveau rang et les unités reviennent à 0. A chaque fois qu'on augmente le digit d'un rang, on recommence le compte de tous les digits dans les rangs précédents de droite à gauche.
-<p style="color: green">Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arriver à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.
+<p style="color: green">Illustration : à 9, on ne peut pas compter plus loin en unité, on ramène donc les unités à 0 et on recommence le compte dans le rang des dizaines : 10. Puis 11, 12,... jusqu'à 19 --> 20. Puis à 219, on remettra à 0 les unités pour augmenter la dizaine : 220. Puis on comptera à nouveau et arrivé à 299, on ne pourra plus augmenter ni le rang des unités ni celui des dizaines --> on augmente le rang suivant : 300.
 
 Chaque rang est à une puissance de 10 supérieure au précédent : un rang = rang précédent * 10.
-<p style="color: green"><em>100 (une centaine) = 10 * 10 (10 dizaines)* et *10 (une dizaine) = 01 * 10 (dix unités)</em></p>
+<p style="color: green"><em>100 (une centaine) = 10 * 10 (10 dizaines) et 10 (une dizaine) = 1 * 10 (dix unités)</em></p>
 
 <p style="color: green">En décomposant en base 10 : <em>216<sub>10</sub> = 200 + 10 + 6 = 2 * 10<sup> 2</sup> + 1 * 10<sup> 1</sup> + 6 * 10<sup> 0</sup></em></p>
 
@@ -543,7 +543,7 @@ On additionne chaque rang en multipliant **son digit avec 2<sup>son rang</sup>**
 Donc 15<sub>10</sub> = 1111<sub>2</sub> \
 *On peut aussi écrire 15<sub>dec</sub> = 1111<sub>bin</sub> ou 15 = **0b**1111*
 
-***Notons aussi qu'on peut écrire les nombres binaires de façon lisible en les regroupant 4bits par 4 bits.***
+***Notons aussi qu'on peut écrire les nombres binaires de façon lisible en les regroupant 4 bits par 4 bits.***
 
 **Convertir du décimal au binaire :**
 
@@ -719,9 +719,6 @@ On peut l'exprimer en n<sub>8</sub> ou *0on*.
     int("10", base= 8)
 `8`
 
-    int(0o10)
-`8`
-
 ***bin()*** permet de convertir un entier en son équivalent en base 2. Le type de l'output est une string.
 
     bin(2)
@@ -754,7 +751,7 @@ A chaque tour de boucle, on évalue le statement du while. Pour sortir d'une bou
 ```python
 a = 0
 while a < 10:
-    a += 1``` # identique : a = a + 1
+    a += 1 # identique : a = a + 1
 print(a)
 ```
 La boucle while fera 10 tours avant que la condition *a < 10* ne soit *False*. Le bloc d'instruction réalise une incrémentation de 1 sur *a*, ainsi *a* change de valeur à chaque tour et la condition prend fin à un moment. \
@@ -789,10 +786,10 @@ Le tirage de nombre aléatoire est utile dans les jeux. \
 Le principe de la **randomisation** est de réaliser un tirage aléatoire et une répartition aléatoire de façon à avoir le moins de biais possible.
 
 La probabilité d'un évènement survenu aléatoirement n'est pas lié à la probabilité des évènements précédents ; mais tout dépend comment on pose la question car la probabilité qu'un évènement survienne n'est pas la même que celle que cet évènement se produise deux fois de suite.
-<p style= "color: green"><em>Par exemple, si je sélectionne des boules triés de 1 à 10, la probabilité que je tire la boule 5 est de 1/10, soit 0.1. Si je remets la boule 5 et que je resélectionne une boule ensuite, la probabilité que je tire à nouveau le 5 est encore de 1/10.<br>
+<p style= "color: green"><em>Par exemple, si je sélectionne des boules triées de 1 à 10, la probabilité que je tire la boule 5 est de 1/10, soit 0.1. Si je remets la boule 5 et que je resélectionne une boule ensuite, la probabilité que je tire à nouveau le 5 est encore de 1/10.<br>
 En revanche, si je me demande quelle est la probabilité que je tire deux fois de suite le 5, alors la probabilité sera de 1/10 * 1/10, soit 1/100 = 0.01.</em></p>
 
-Une **fonction built-in** est comme une fonction mathématiques et correspond à est codée dans le code-source du langage, elle est donc connue par celui-ci.
+Une **fonction built-in** est comme une fonction mathématique et est codée dans le code source du langage, elle est donc connue par celui-ci.
 
 <p style= "color: green">Exemples de fonction built in : <em>print()</em>, <em>int().</em></p>
 
@@ -827,7 +824,7 @@ Pour augmenter l'amplitude de random, il suffit de le multiplier par un certain 
 print(random.random()*100)
 ```
 
-**randint()**
+**randint()** \
 La fonction ***randint()*** accepte deux paramètres (deux nombres). Le premier correspond à la borne inférieure (inclue) et la deuxième est la borne supérieure (inclue) des nombres à produire.
 
 <p style= "color: green">Exemple appliqué au lancer de pièce : pile ou face</p>
@@ -838,6 +835,20 @@ if random.randint(1, 2) == 1:
 else:
     print("Tails")
 ```
+*randrange()* est identique à *randint()* mais la borne supérieure est exclue.
+
+---
+On peut importer un fichier du dossier actuel ou d'un dossier fils, ou bien d'un fichier se trouvant dans le path python en faisant `from folder_name import file_name` (sans avoir à mentionner l'extension du fichier, par exemple *.py*).
+
+Pour importer un module qui n'est ni dans le dossier actuel ni dans le path, on ajoute ce fichier au path :
+```python
+import sys
+sys.path.insert(0, '/path/to/module')        # no file_name, just folder_name at the end of the path
+import module_name
+```
+*insert()* prend pour arguments un index et un path absolu vers le dossier contenant le fichier à importer. L'index indique à quelle position du path on ajoute le dossier (0 pour le début, -1 à la fin). Cela importe si par exemple on a un module du même nom dans notre dossier actuel. Si on met en index 0, on cherchera d'abord le fichier à importer dans le dossier dont on indique le path.
+
+Il existe d'autres moyens, comme `sys.path.append('path/to/module')` mais on ne donne pas d'index ici. Pour retirer un path du sys.path, on utilise la fonction *remove( )* : `sys.path.remove('/path.to/module')`.
 
 ### 2.3. Counting loops : for loops
 ---
@@ -982,7 +993,7 @@ On dit qu'une boucle qui se termine "naturellement" (après toutes les itératio
 
 On peut ajouter un *else* aux boucles *while* et *for* si les boucles se sont réalisées dans leur intégralité (si elles ont *fallen through*), sans *break*.
 
-<p style= "color: green">Exemple avec le programme <em>isprime game</em></p>
+<p style= "color: green">Exemple avec le programme <em>isprime_game</em></p>
 
 ```python
 # for itère sur des entiers donc on doit convertir (k**0.5) en entier car c'est potentiellement un nombre flottant
@@ -998,7 +1009,7 @@ else:
 ### 2.4. Loops that are nested
 ---
 
-On peut évidemment avoir des imbrications des les boucles : des *if* dans des *while* / *for*, des *for* dans des *while* et inversement.
+On peut évidemment avoir des imbrications dans les boucles : des *if* dans des *while* / *for*, des *for* dans des *while* et inversement.
 
 <p style= "color: green">Par exemple, deux boucles for imbriquées :</p>
 
@@ -1024,8 +1035,6 @@ for i in range(0,10):
 
 *Ici, on a 10 itérations pour la première boucle, et 10 itérations pour la deuxième. Mais la deuxième se réalise au sein de la première, donc pour chaque itération de i, on a 10 itérations de j, soit 10 * 10 = 100 itérations ici.*
 
-<p style= "color: green">Si on veut compter le nombre de diviseur d'un nombre
-
 <p style= "color: green">Si on veut savoir quel est l'entier de 0 à 1000 qui a le plus de diviseurs :</p>
 
 ```python
@@ -1037,17 +1046,17 @@ for k in range (1, 1001):           # boucle qui attribue à k les entiers de 1 
         if k % n == 0:
             count += 1           # on compte chaque diviseur de k entre 1 et k/2
         count += 1             # on ajoute 1 pour prendre en compte le fait que k est divisible par k
-    if count > maxdivcount:       # on compare le compte actuel des diviseurs de k avec le précédent max
+    if count > maxdivcount:       # on compare le count actuel des diviseurs de k avec le précédent max
         maxdivcount = count    # si le count actuel > max enregistré, on assigne au max le count de k
         maxdiv = k      # on assigne au maxdiv le k actuel
-print(f"The most divisors is {maxdiv} with {maxdivcount}.")
+print(f"The most divisors is {maxdiv} with {maxdivcount} divisors.")
 ```
-`The most divisors is 840 with 31.`
+`The most divisors is 840 with 31 divisors.`
 
 ### 2.5. Draw a histogram
 ---
 
-Un histogramme est un type de graphique où des valeurs numériques discrètes sont représentées par des rectangles. Il est le plus souvent utilisé pour représenté la fréquence d'un évènement pour une ou plusieurs variables discrètes. Pour en réaliser un, il faut avoir une idée du nombre de catégories et des valeurs numériques de chacune de ces catégories. On met à l'écehelle les nombres pour qu'ils rentrent dans une aire précise et on dessine les rectangles de taille proportionnelle à la valeur qu'ils représentent.
+Un histogramme est un type de graphique où des valeurs numériques discrètes sont représentées par des rectangles. Il est le plus souvent utilisé pour représenter la fréquence d'un évènement pour une ou plusieurs variables discrètes. Pour en réaliser un, il faut avoir une idée du nombre de catégories et des valeurs numériques de chacune de ces catégories. On met à l'écehelle les nombres pour qu'ils rentrent dans une aire précise et on dessine les rectangles de taille proportionnelle à la valeur qu'ils représentent.
 
 <center><figure>
     <img src="image-3.png"
@@ -1068,7 +1077,7 @@ Ensuite, la barre est représentée horizontalement ici. Chaque *#* représente 
 Il faut ensuite définir l'échelle de la barre : si 50 caractères rentrent dans une ligne et que le nombre à représenter est 1M, alors un # = 1 000 000/50, soit 20 000 unités. Ici l'unité est le dollar ($) puisqu'on représente un bénéfice. \
 Donc chaque # représente un lot de 20 000$.
 
-Naturellement, un *print()* ajoute un saut de ligne \n à la fin de la string qu'il imprime. Si on utilise l'argument *end = ''*, on modifie le dernier caractère imprimé. Par exemple :
+Naturellement, un *print()* ajoute un saut de ligne \n à la fin de la string qu'il imprime. Si on utilise l'argument *end = ""*, on modifie le dernier caractère imprimé. Par exemple :
 ```python
 print(i, end= '!')
 ```
@@ -1104,7 +1113,7 @@ A répéter pour chaque quarter (on peut écrire une fonction) et on ajoute un t
 ### 2.6. Loops in general
 ---
 
-En assembleur, les boucles étaient des *branches* ou des *goto* dont la condition initiale était une *adresse* ou *mlabel* et la fin était une instruction disant *go to*. Rapidement, c'est devenu l'instruction *do*.
+En assembleur, les boucles étaient des *branches* ou des *goto* dont la condition initiale était une *adresse* ou *label* et la fin était une instruction disant *go to*. Rapidement, c'est devenu l'instruction *do*.
 
 Il existe dans le langage de programmation *Ada* (*en référence et hommage à Ada Lovelace, première programmeuse supposée de l'Histoire*) une instruction *loop* qui permet, en fonction de la syntaxe employée (où mettre un exit etc) de réaliser tous les types de boucles. \
 En python, ce serait la boucle *while* qui permettrait de remplacer le *for*.
@@ -1121,6 +1130,43 @@ for i in range(a, b):
 ```
 
 Une boucle est composée d'une **initialisation**, d'une **incrémentation** et d'une **condition** (qui termine la boucle). La variable *i* ci-dessus est ce qu'on appelle une *loop control variable*. Ce n'est pas véritablement cette variable qu'on implémente mais un compte fictif qui compte à quelle position du tuple on se trouve ([0], [1], [2],...). *Ce genre de loop sont similaires à celles retrouvées en PHP, et sont des abstractions des langages tels que Java ou C++*.
+
+Une fonction très utile dans les boucles est la fonction ***enumerate(iterable, start=0)***. Elle ajoute un décompte des itérations.
+
+<p style= "color: green">Exemple d'utilisation de la fonction sans boucle :
+
+```python
+list1 = ["eat", "sleep", "repeat"]
+list2 = "geek"
+object1 = enumerate(list1)
+
+print(type(object1))
+print(list(enumerate(list1)))       # without the list conversion, print() only return the object type
+print(list(enumerate(list2, 10)))
+```
+`<class 'enumerate'>` \
+`[(0, 'eat'), (1, 'sleep'), (2, 'repeat')]` \
+`[(10, 'g'), (11, 'e'), (12, 'e'), (13, 'k')]`
+
+<p style= "color: green">Exemple d'utilisation de la fonction avec une boucle :
+
+```python
+list1 = ["eat", "sleep", "repeat"]
+
+for element in enumerate(list1):
+    print(element)
+print()
+
+for count, element in enumerate(list, 100):
+    print(count, element)
+```
+`(0, 'eat')` \
+`(1, 'sleep')` \
+`(2, 'repeat')`
+
+`100 eat` \
+`101 sleep` \
+`102 repeat`
 
 ### 2.7. Exceptions and errors
 
@@ -1144,7 +1190,7 @@ Mais cela peut vite devenir fastidieux s'il y a de nombreuses possibilités à r
 ```python
 try:
     c = a / b
-except:                 # nom d'erreur non spécifié ==> toutes les erreures lèvent une exception
+except:
         c = 1000000
 ```
 
@@ -1183,7 +1229,13 @@ try:
 except k:
     c = 1000000
 ```
-Le nom d'une erreur peut être assignée à une variable qui la référence dans le *except*.
+Le nom d'une erreur peut être assigné à une variable qui la référence dans le *except*.
+
+Notez également qu'on peut lever une erreur avec une condition :
+```python
+if <condition>:
+    raise Exception(f"<print's message>")
+```
 
 ---
 ## Summary
@@ -1200,24 +1252,24 @@ L'instruction *try-except* autorise le programmeur à repérer certains types d'
 Les chaînes de caractères (*string*), les *tuples* et les listes sont des objets qui peuvent contenir plusieurs éléments. On parle de *sequence types*, qui représente une collection d'objets, qui peuvent être des nombres ou des caractères.
 
 En Python, la séquence est un ensemble fini et ordonné d'éléments, dont la position est référencée de *0* (premier élément, le plus à gauche) à *n-1* (dernier élément, le plus à droite) pour n éléments dans la séquence. C'est ce qu'on appelle les indices (*index*). \
-La longueur de la séquence (obtenue par l'usage de la fonction ***len()***) correspond donc au ***indice du dernier élément + 1***.
+La longueur de la séquence (obtenue par l'usage de la fonction ***len()***) correspond donc à l'***indice du dernier élément + 1***.
 
 Dans d'autres langages, la *séquence* est appelée *tableau* (*array* en anglais), correspondant à une séquence d'éléments d'un même type.
 
 ### 3.1. Strings
 ---
 
-La ***string*** est un enchaînement de caractères. Elle appartient au type *séquence*, donc l'ordre des caractères a une importance. Elles sont le plus souvent utilisées pour représenter du texte de langage humain. \
+La ***string*** est un enchaînement de caractères. Elle appartient au type *séquence*, donc l'ordre des caractères a une importance. Elle est le plus souvent utilisée pour représenter du texte de langage humain. \
 L'ordinateur peut effectuer des actions sur la string qu'on appelle des **opérations**. On peut effectuer sur des strings les opérations qu'on imagine pouvoir faire sur du texte : le print, le lire, accéder à certains caractères du texte, lier des chaînes dans de plus longues chaînes et chercher un mot en particulier.
 
 La string est un type en soi : *str*. Pour écrire une string, on la place entre "..." (*quotation mark*) ou '...' (*apostrophe*).
 <p style= "color: red">Attention aux strings qui comportent des apostrophes ; on identifie alors la string entre guillemets "...c'...".
 
 Au même titre que n'importe quelle séquence, la string a une longueur, correspondant au nombre de caractères qui la composent.
-
-    name = "John Doe"       # on attribue une string à la variable name, qui prend alors le type str
-    adress = '121 Second Street'      # idem avec la variable adress
-
+```python
+name = "John Doe"       # on attribue une string à la variable name, qui prend alors le type str
+adress = '121 Second Street'      # idem avec la variable adress
+```
 Une string se comporte comme si ses caractères étaient stockés comme un ensemble consécutif dans la mémoire. Si on veut se rapporter au premier caractère de *name* :
 ```python
 print(name[0])
@@ -1326,7 +1378,7 @@ print(name[-3:])
 `e` \
 `Doe`
 
-Enfin, on peut attribuer un troisième paramètre au slicing : *[a:b:c]*, le paramètre *c*. On rappelle que *a* est l'indice de départ, *b* est l'indice de fin + 1 et *c* est le **pas** (*increment* en anglais). \
+Enfin, on peut attribuer un troisième paramètre au slicing : *[a\:b\:c]*, le paramètre *c*. On rappelle que *a* est l'indice de départ, *b* est l'indice de fin + 1 et *c* est le **pas** (*increment* en anglais). \
 Le pas correspond au saut que peut effectuer le slicing dans la string.
 ```python
 str = "Hello my name is John Doe."
@@ -1369,7 +1421,7 @@ if fname[len(fname)-5:] == ".jpeg":
 ```
 ### 3.1.4. String methods
 
-Les méthodes sont des fonctions qui s'utilisent uniquement *s*ur un type ou une classe d'objets*. Attention, on peut retrouver le même nom de méthode sur la fonction d'un autre type, mais elle aura alors une action différente sur cet autre type. \
+Les méthodes sont des fonctions qui s'utilisent uniquement *s*ur un type ou une classe d'objets. Attention, on peut retrouver le même nom de méthode sur la fonction d'un autre type, mais elle aura alors une action différente sur cet autre type. \
 Syntaxiquement, les méthodes ne s'écrivent pas comme des fonctions : on écrirait une fonction `lower(var)` tandis qu'ici la méthode s'écrit `var.lower()`. Le paramètre est donné avant l'appel de la méthode ; il peut éventuellement y avoir un ou plusieurs autres paramètres entre parenthèse selon la méthode.
 
 Il existe certaines méthodes propres aux strings permettant de les manipuler, notamment pour les comparer plus facilement. \
@@ -1404,7 +1456,7 @@ string = "hello to you all."
 <p style = "color: pink"><strong>Quelques remarques :</strong></p>
 
 - On peut écrire *help(str.method)* dans Python pour obtenir l'aide python liée à l'usage d'une méthode pour un certain type.
-- Avec *split( )*, si le séparateur est aussi le dernier caractère de la chaîne (*terminateur*), la liste contiendre un dernier élément qui sera une chaîne vide. Pour éviter ça, on peut d'abord réaliser un *strip( )* du séparateur pour "clear" le début et la fin de la chaîne, puis un *split( )*.
+- Avec *split( )*, si le séparateur est aussi le dernier caractère de la chaîne (*terminateur*), la liste contiendra un dernier élément qui sera une chaîne vide. Pour éviter ça, on peut d'abord réaliser un *strip( )* du séparateur pour "clear" le début et la fin de la chaîne, puis un *split( )*.
 
         print("abd, def,".split(","))
         print("abc, def,".strip(",").split(","))
@@ -1415,7 +1467,7 @@ string = "hello to you all."
 
         print("des [trucs] et des [machins]".replace("[trucs]", "bidules").replace("[machins]", "chouettes"))
 
-    `"des bidules et des chouettes`
+    `des bidules et des chouettes`
 
 **Aparté formatage :** on peut spécifier un format à l'intérieur des { }, typiquement pour spécifier un arrondi pour les valeurs flottantes.
 ```python
@@ -1542,7 +1594,7 @@ tup1 = (2, 3, 5, 7, 11, 13, 17, 19)
 tup2 = ("Hydrogen", "Helium", "Lithium", "Boron", "Carbon",)
 tup3 = "hi", "ohio", "salut"
 tup4 = ([1, 2, 3], [4, 5, 6],)
-```python
+```
 Ce sont différentes syntaxes que peuvent prendre le tuple.
 
 <br>
@@ -1557,7 +1609,7 @@ tup_2 = (1,)
 <p style= "color: red"><strong>Quelques points d'intérêt :</strong></p>
 
 - Il est préférable de mettre une **virgule terminale** de façon systématique
-- Si un tuple fait plusieurs lignes, on préfèrera faire un apparaître seulement un tuple par ligne :
+- Si un tuple fait plusieurs lignes, on préfèrera l'afficher par ligne :
 ```python
 my_tuple = (
     [1, 2, 3],
@@ -1601,7 +1653,6 @@ tuple1[0] = 6       # on ne peut pas réassigner un nouvel élément à un tuple
 tup3[1:] = (2, 3)   # on ne peut pas remplacer une section du tuple par une autre
 ```
 
----
 Les **tuples** sont un mix entre les strings et les listes. Ils sont plus simples à implémenter que les listes et plus généraux que les strings, qui ne contiennent que des caractères.
 
 ### 3.3.2. Tuples in *for* loops
@@ -1646,7 +1697,7 @@ for i in range(0, len(atoms)):      # la variable loot control ne parcourt pas l
 ### 3.3.3. Membership
 
 On peut pratiquer certaines opérations sur les tuples, comme des ***set union*** ou ***set intersection***. \
-l'**intersection** entre deux lots A et B est un lot d'éléments appartenant à la fois à A et à B. L'opérateur d'**appartenance** en Python est ***in***. Le test de non appartenance ***not in*** est son inverse.
+L'**intersection** entre deux lots A et B est un lot d'éléments appartenant à la fois à A et à B. L'opérateur d'**appartenance** en Python est ***in***. Le test de non appartenance ***not in*** est son inverse.
 ```python
 for i in A:
     if i in B:
@@ -1681,12 +1732,24 @@ print(perfect_square)
 
 On voit ici que pour construire un nouveau tuple et y ajouter des éléments, on peut démarrer avec un tuple vide et ajouter par concaténation des objets du même type dans celui-ci (*l'élément ajouté au tuple doit être un tuple pour obtenir un tuple comme résultat de la concaténation*).
 
+Plus simplement :
+```python
+perfect_square = ()
+for i in range(0, 11):
+    square = i**2
+    if square % 2 == 0:
+        perfect_square += (square,)
+
+print(perfect_square)
+```
+==> temps d'exécution = **0.037ms** environ
+
 Une autre façon de faire en utilisant les listes :
 ```python
 perfect_square = []
 
 for i in range(0, 101):
-    if i%2 == 0:            # on garde les nombres pairs
+    if i % 2 == 0:            # on garde les nombres pairs
         for j in range(0,11):
             if j * j == i:          # on compare les carrés parfaits
                 perfect_square.append(i)
@@ -1715,7 +1778,7 @@ print(perfect_square)
 
 ==> temps d'exécution du programme = **0.0435ms** environ
 
-**Aparté : calculer le temps d'exécution d'un programme, la fonctione *time( )***
+**Aparté : calculer le temps d'exécution d'un programme, le module et la fonction *time( )***
 ```python
 import time
 
@@ -1723,9 +1786,9 @@ start_time = time.time()    # relève le temps à l'initiation du programme
 
 ...
 
-end_time = time.time()
+end_time = time.time()      # relève le temps en fin de programme
 
-elapsed_time = end_time - start_time
+elapsed_time = end_time - start_time        # calcule le temps écoulé entre les deux repères temporels
 ```
 ### 3.3.4. Delete
 
@@ -1735,31 +1798,20 @@ Pour supprimer un élément d'un tuple, il faut créer un nouveau tuple avec les
 
 ```python
 atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
-index = 0
-
-for i in range(0, len(atoms)):
-    if atoms[i] == "Lithium":
-        index = i
-        break
-
+index = atoms.index("Lithium")
 atoms = atoms[0:index] + atoms[index + 1:]
 print(atoms)
 ```
 `('Hydrogen', 'Helium', 'Beryllium', 'Boron', 'Carbon')`
 
-*Ici la précédente variable atoms contenant le tuple a été écrasé pour un nouveau tuple.*
+*Ici la précédente variable atoms contenant le tuple a été écrasée pour un nouveau tuple.*
 
 ### 3.3.5. Update
 
 De façon identique à la suppression, il faut créer un nouveau tuple pour modifier un tuple.
 ```python
 atoms = ("Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",)
-index = 0
-
-for i in range(0, len(atoms)):
-    if atoms[i] == "Lithium":
-        index = i
-        break
+index = atoms.index("Lithium")
 
 atoms = atoms[0:index] + ("Oxygen",) + atoms[index + 1:]
 print(atoms)
@@ -1774,10 +1826,10 @@ Quand un tuple est assigné à une variable, les éléments sont convertis en *p
 <p style= "color: green">Premier exemple : liste d'entiers</p>
 
 ```python
-    a = list(range(3))
-    print(a)
-    x, y, z = a
-    print(x, y, z)
+a = list(range(3))
+print(a)
+x, y, z = a
+print(x, y, z)
 ```
 `[0, 1, 2]` \
 `0 1 2`
@@ -1825,8 +1877,6 @@ print(student_record)
 ("Parker", "Jim", 1980) = ("Jim", "Parker", 1980)   # impossible d'effectuer une opération directement sur le tuple
 ```
 
-<br>
-
 **Extended tuple unpacking :** \
 Cela permet d'**attribuer une variable à plusieurs éléments d'un tuple**. La variable référencera alors **une liste [ ]** de ces éléments. \
 On écrit *x la variable x qui contiendra plusieurs éléments. L'ordre dans lequel elle est placée est important. \
@@ -1866,9 +1916,9 @@ T1 = (1, 2, 3, 4, 5)
 T2 = (-1, 2, 4, 5, 7)
 ```
 
-| Méthode | Explication | Appel de méthode | Résultat |
+| Fonction | Explication | Appel de méthode | Résultat |
 | :---: | :---: | :---: | :---: |
-| *len(tuple)* | Retourne le nombre d'éléments appartenant au * tuple*. | len(T1) | `5` |
+| *len(tuple)* | Retourne le nombre d'éléments appartenant au *tuple*. | len(T1) | `5` |
 | *max(tuple)* | Retourne le plus grand élément du tuple.<br>*Erreur si les éléments ne sont pas du même type.* | max(T2) | `7` |
 | *min(tuple)* | Retourne le plus petit élément du tuple.<br>*Erreur si les éléments ne sont pas du même type.* | min(T2) | `-1` |
 
@@ -1879,7 +1929,7 @@ La ***liste*** est une séquence d'objets hétérogènes, de la même manière q
 
 C'est +/- un équivalent de l'*array* en Java ou en C.
 
-D'apparence, la liste ressemble au tuple mais est délimitée par des [ ] (*brackets* ou *square brackets*).
+D'apparence, la liste ressemble au tuple mais est délimitée par des \[ \] (*brackets* ou *square brackets*).
 ```python
 list1 = [2, 3, 5, 7, 11, 13, 17, 19]
 list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
@@ -1955,7 +2005,7 @@ mean = sum(list1) / len(list1)
 ```
 `9.625`
 
-On retrouve aussi les fonctions qui fonctionnaient sur les tuples sur les listes : ***min( )***, ***max( )***, ***len( )***.
+On retrouve aussi les fonctions qui fonctionnaient sur les tuples : ***min( )***, ***max( )***, ***len( )***.
 
 ### 3.4.1. Editing lists
 
@@ -2026,12 +2076,12 @@ print(list2.extend(list_2))
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']` \
 `['Hydrogen', 'Helium', 'Lithium', 'Boron', 'Carbon', 'Nickel', 'Silver', 'Nitrogen']`
 
-**Avec *extend( )* ou *append( )*, la liste en modifiée en place. On ne peut donc pas leur assigner de variable comme `a = list2.extend(list-2)`, le résultat de `print(a)` sera *None*. \
-La différence avec la concaténation *+* est que celle-ci crée un nouvel objet. On peut donc lui assigner une variable, et il existe toujours la version originale des lsites concaténées.**
+**Avec *extend( )* ou *append( )*, la liste en modifiée en place. On ne peut donc pas leur assigner de variable comme `a = list2.extend(list_2)`; le résultat de `print(a)` serait `None`. \
+La différence avec la concaténation *+* est que celle-ci crée un nouvel objet. On peut donc lui assigner une variable, et il existe toujours la version originale des listes concaténées.**
 
 ### 3.4.5. Remove
 
-La méthode ***remove(element)*** permet d'ôter un élément de la liste. Mais contrairement à *insert( )*, on ne précise pas l'indice. *S'il y a plusieurs occurences de l'élément, seul la première occurence est retirée.*
+La méthode ***remove(element)*** permet d'ôter un élément de la liste. Mais contrairement à *insert( )*, on ne précise pas l'indice. *S'il y a plusieurs occurences de l'élément, seule la première occurence est retirée.*
 ```python
 list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
 list2.remove("Hydrogen")
@@ -2070,7 +2120,8 @@ if "Boron" in list2:
 
 ### 3.4.7. Pop
 
-La méthode ***pop( )*** est l'inverse de la méthode *append( )* ; elle retire le dernier élément de la liste.
+La méthode ***pop( )*** est l'inverse de la méthode *append( )* ; elle **extrait** le dernier élément de la liste. Etant donné que l'élément est extrait, on peut le stocker dans une variable. \
+La liste est modifiée **en place**.
 ```python
 list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
 list2.pop()
@@ -2081,12 +2132,14 @@ print(list2)
 On peut aussi donner un indice à *pop( )* pour qu'il extrait l'élément situé à l'indice donné.
 ```python
 list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
-list2.pop(0)
+a = list2.pop(0)
 print(list2)
+print(a)
 ```
-`['Helium', 'Lithium', 'Boron', 'Carbon']`
+`['Helium', 'Lithium', 'Boron', 'Carbon']` \
+`'Hydrogen'`
 
-L'appel de la fonction sur une liste vide lève une erreur. Si on souhaite éviter l'erreur, on peut vérifier que la liste contient au moins un élément en faisant :
+L'appel de la fonction sur une liste vide lève une exception. Si on souhaite éviter l'erreur, on peut vérifier que la liste contient au moins un élément en faisant :
 ```python
 if len(list2) > 0:
     list2.pop()
@@ -2120,13 +2173,9 @@ print(list_2)
 `[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Lithium', 3]]` \
 `[['Beryllium', 4], ['Boron', 5], ['Helium', 2], ['Hydrogen', 1], ['Hydrogen', 2], ['Lithium', 3]]`
 
-Comme toutes les listes sont compatibles entre elles (un enchaînement str_int), la comparaison peut avoir lieu. Le placement se fait en comparant le premier élément qui diffère entre deux éléments : si les str sont identiques, on compare l'élément suivant qui est le nombre.
+Comme toutes les listes sont compatibles entre elles (un enchaînement [str, int]), la comparaison peut avoir lieu. Le placement se fait en comparant le premier élément qui diffère entre deux éléments : si les str sont identiques, on compare l'élément suivant qui est le nombre.
 
-<br>
-
-Naturellement, un argument *reverse= False* est donné à la fonction. Si on souhaite trier par ordre décroissant, on écrira `list2.sort(reverse= True)`.
-
-<br>
+Naturellement, un argument *reverse= False* est donné à la fonction. Si on souhaite trier par ordre décroissant, on écrira `list2.sort(reverse = True)`.
 
 On ne peut pas faire d'opération d'affectation sur *sort( )* car cela renvoie à l'objet *None* :
 ```python
@@ -2168,12 +2217,12 @@ print(list_number.count(5))
 
 On peut référencer des objets à une liste à l'aide de *for*.
 
-<p style= "color: green">Exemple : créer une liste d'entiers parfaits</p>
+<p style= "color: green">Exemple : créer une liste de carrés parfaits</p>
 
 ```python
 perfect_square = []
 for i in range(0,11):
-    perfect_square = perfect_square + [i**2]
+    perfect_square += [i**2]
 print(perfect_square)
 
 perfect_square = []
@@ -2210,6 +2259,7 @@ La structure d'une compréhension de liste est donc la suivante :
 
 ```python
 list2 = ["Hydrogen", "Helium", "Lithium", "Boron", "Carbon"]
+
 list_2 = []
 for i in list2:
     list_2.append(i.lower())
@@ -2226,7 +2276,7 @@ print(list2)
 ### 3.4.12. Lists and tuples
 
 Un tuple peut être converti en liste et inversement. Les listes présentent plus de fonctionnalités que les tuples, mais nécessitent plus de ressources, il est donc préférable quand on peut de représenter les données dans un tuple. \
-Un tuple est plus pensé comme un *struct* en C u un *record* en Pascal : un recueil d'éléments dont le tout représente un objet plus compliqué. \
+Un tuple est plus pensé comme un *struct* en C ou un *record* en Pascal : un recueil d'éléments dont le tout représente un objet plus compliqué. \
 Une liste est plutôt comme un *array*, un tableau qui référence des données du même type.
 
 Les fonctions ***tuple( )*** et ***list( )*** permettent des opérations de conversion de type.
@@ -2241,7 +2291,7 @@ print(list1)
 `(2, 3, 5, 7, 11, 13, 17, 19)` \
 `[2, 3, 5, 7, 11, 13, 17, 19]`
 
-3.4.13. Exceptions
+### 3.4.13. Exceptions
 
 Les exceptions permettent de checker les erreurs d'indiçage ou d'appartenance au sein des listes. Ce sont des conditions qui permettent d'anticiper et de tester des erreurs potentielles.
 ```python
@@ -2259,7 +2309,7 @@ except AttributeError:
 ```
 `"Can't find Oxygen"`
 
-Si on essaie de convertir en entier dont le type n'est pas convertible en entier, on lève une ***ValueError***.
+Si on essaie de convertir un type qui n'est pas convertible en entier, on lève une ***ValueError***.
 ```python
 try:
     int("Hydrogen")
@@ -2303,24 +2353,24 @@ En Python, on peut réaliser des opérations d'appartenance (**in**), de longueu
 
 Un set est délimité par **{ }** (*curly brackets* ou *braces*).
 
+```python
+set_color = {"cyan", "magenta", "pink"}
+set_tuple = {(2, 4), (3, 9), (6, 36)}
+```
+
 <center>
 
 | opérations | écriture | explication |
 | :---: | :---: | :---: |
 | *Subset* | **set1** < **set2** | Retourne un booléen en fonction de si **set1** est un subset de **set2** |
+| *Equality* | **set1** == **set2** | Retourne un booléen selon si les deux sets sont identiques |
 | *Intersection* | **set1** & **set2** | Crée un nouveau set contenant les objets communs à **set1** et **set2** |
 | *Union* | **set1** \| **set2** | Crée un nouveau set contenant tous les éléments des deux sets |
 | *Difference* | **set1** - **set2** | Crée un nouveau set avec les éléments qui ne sont pas dans les deux sets (inverse de l'*intersection*) |
-| *Equality* | **set1** == **set2** | Retourne un booléen selon si les deux sets sont identiques |
 </center>
-<br>
 <br>
 
 ```python
-set_color = {"cyan", "magenta", "pink"}
-set_tuple = {(2, 4), (3, 9), (6, 36)}
-
-
 set1 = {7, 9, 1, 3, 5}
 set2 = set(range(10))
 
@@ -2336,14 +2386,14 @@ print(set1 == set2)
 `{0, 2, 4, 6, 8}` \
 `False`
 
-Pour ajouter un élément à un set, on utilise ***add( )***.
+Pour ajouter un élément à un set, on utilise la méthode ***add( )***.
 ```python
 set1.add(11)
 print(set1)
 ```
 `{1, 3, 5, 7, 9, 11}`
 
-Pour supprimer un élément d'un set, on utilise ***remove( )*** ou ***discard( )***.
+Pour supprimer un élément d'un set, on utilise la méthode ***remove( )*** ou ***discard( )***.
 ```python
 set1.remove(11)
 print(set1)
@@ -2354,7 +2404,7 @@ print(set1)
 `{1, 3, 5, 7, 9}` \
 `{1, 3, 5, 9}`
 
-Si l'élément donné en argument à *remove( )* n'existe pas dans le set, on lève une ***KeyError***. Ce n'est pas le cas de discard( ).
+Si l'élément donné en argument à *remove( )* n'existe pas dans le set, on lève une ***KeyError***. Ce n'est pas le cas de *discard( )*.
 
 *Exemple : énoncer les combinaisons possibles d'une somme de deux dés*
 ```python
@@ -2367,8 +2417,8 @@ print(f"{roll}\n")
 
 for i in range (1,7):           # on prend la valeur que peut prendre un premier dé
     for j in range (1,7):         # on y associe la valeur que peut prendre le deuxième dé
-        k = i+j             # somme des deux dés
-        roll[k].add( (i,j) )    # on place à l'indice de la somme un tuple les deux dés dans l'ordre
+        k = i + j             # somme des deux dés
+        roll[k].add( (i,j) )    # on place à l'indice de la somme un tuple des deux dés
 
 roll = roll[2:]     # les deux premiers sets sont vides car on ne peut pas obtenir une somme = 0 ou 1
 print(roll)
@@ -2386,8 +2436,6 @@ le joueur (*shooter*) lance deux dés à la fois, sur une à deux manches.
 - si le shooter obtient 7 ou 11, il gagne.
 - s'il fait 2, 3 ou 12 il perd immédiatement.
 - Toute autre somme obtenue marque des points (*point*).
-
-<br>
 
 2.  Si le shooter n'a pas gagné ou perdu au premier lancer, il lance les deux jusqu'à ce qu'une des deux issues suivantes arrivent :
 - si le shooter obtient 7, il perd.
@@ -2426,7 +2474,7 @@ while True:
     die1 = random.randint(1, 6)
     die2 = random.randint(1, 6)
     dice = (die1, die2)
-    print(f"You rolls {die1} and {die2}.")      # répéter plusieurs fois donc on pourrait en faire une fonction
+    print(f"You rolls {die1} and {die2}.")      # répété plusieurs fois donc on pourrait en faire une fonction
 
     if dice in roll[7]:
         print("You lose.")
@@ -2446,7 +2494,7 @@ Il existe beaucoup de fonctions built-in en Python, mais le programmeur peut avo
 
 Pourquoi créer une fonction ?
 - Quand on remarque qu'un bout de code est répété à de multiples reprises dans notre programme ; on peut intégrer cette fonction à un module qui sera appelé dans d'autres programmes.
-- Pour tester plus facilement son code et donc de faire moins d'erreurs ; la fonction peut donc être utilisée pour découper en plusieurs parties un long morceau de code.
+- Pour tester plus facilement son code et donc faire moins d'erreurs ; la fonction peut être utilisée pour découper en plusieurs parties un long morceau de code.
 
 Caractéristiques d'une fonction :
 - Une fonction ne doit avoir qu'**une seule tâche**, ou une seule tâche principale en tout cas.
@@ -2454,7 +2502,7 @@ Caractéristiques d'une fonction :
 - L'objectif de la fonction est de **retourner** une valeur (qui peut aussi être un booléen). Certaines fonctions ne retournent pas directement une valeur (ex : fonction affichant un message d'erreur, ou affichant une fenêtre graphique). Si on ne définit pas d'objet à retourner, la fonction retournera l'objet ***None***.
 
 ***Aparté sur la fonction dir*** \
-La fonction ****dir( )*** retourne une liste de strings. Sans lui donner d'argument, elle retourne le nom des fonctions du programme actuel. Si on lui passe un argument, elle retourne une liste des principaux modules et attributs de l'objet.
+La fonction ***dir( )*** retourne une liste de strings. Sans lui donner d'argument, elle retourne le nom des fonctions du programme actuel. Si on lui passe un argument, elle retourne une liste des principaux modules et attributs de l'objet.
 
 ### 4.1. Function definition : syntax and semantics
 ---
@@ -2468,8 +2516,8 @@ La fonction ****dir( )*** retourne une liste de strings. Sans lui donner d'argum
 
 Le mot-clé ***def*** démarre la définition de la fonction, suivi du nom de la fonction immédiatement suivie de parenthèses dans lesquelles peut apparaître la liste des paramètres qu'on passe à la fonction, sous la forme d'un tuple de variables, puis immédiatement suivies de deux points qui indique que la suite est un bloc d'instruction définissant la fonction.
 
-Notez qu'on peut ne pas donner d'argument/de paramètre à la fonction, les parenthèses sont donc **vides**, mais il y a **toujours des parenthèses après un nom de variable, idem quand on l'appelle dans le code**. Cela permet de distinguer une fonction d'une variable. \
-L'argument passé à la fonction dans sa définition n'existera que dans cette partie du code, et est ensuite remplacée par l'argument donné véritablement dans le main code.
+Notez qu'on peut ne pas donner d'argument/de paramètre à la fonction, les parenthèses sont donc **vides**, mais il y a **toujours des parenthèses après un nom de fonction, idem quand on l'appelle dans le code**. Cela permet de distinguer une fonction d'une variable. \
+L'argument passé à la fonction dans sa définition n'existera que dans cette partie du code, et sera ensuite remplacé par l'argument donné véritablement dans le main code.
 
 <p style= "color: green">Exemple : fonction qui imprime le nombre de pounds # qu'on lui donne en argument.
 
@@ -2530,7 +2578,6 @@ Pour trouver combien de # mettre dans l'histo du premier trimestre, il faut fair
 ```python
 profit_2016[0]/20000       # To convert in integer before giving it to the function because of range()
 ```
-<br>
 
 Un premier exemple de ce que pourrait donner le programme :
 ```python
@@ -2556,8 +2603,6 @@ for i in range(0,4):
 `Q2: #################      340000` \
 `Q3: ###########################################      873000` \
 `Q4: #####################      439833`
-
-<br>
 
 On peut créer une fonction plus précise qui fabriquerait directement l'histogramme des profits à partir de la liste des profits par trimestre pour une certaine année :
 ```python
@@ -2590,9 +2635,10 @@ incomes_histo(profit_2016, 2016)
 `Q3: ###########################################      873000` \
 `Q4: #####################     439833`
 
-**On peut donc appeler une fonction au sein d'une autre fonction.** Cela n'importe pas l'ordre dans lequel on définit et appelle les fonctions en Python, mais ce n'est pas le cas de tous les langages. \
-On voit aussi qu'**on peut donner plusieurs arguments à une fonction**. Leur position importe (puisque c'est un tuple) : le premier argument donné sera traité comme le premier défini dans la fonction et ainsi de suite. \
-En revanche, il est important de définir au préalable les variables du # main qui sont utilisées dans la fonction ensuite.
+**On peut donc appeler une fonction au sein d'une autre fonction.** \
+Cela n'importe pas l'ordre dans lequel on définit puis appelle les fonctions en Python, mais ce n'est pas le cas de tous les langages. \
+On voit aussi qu'**on peut donner plusieurs arguments à une fonction**. Leur position importe (puisque c'est un tuple). \
+En revanche, il est important de définir au préalable les variables du # main (variables globales) qui sont utilisées dans la fonction ensuite. Dans les gros projets, il vaut mieux éviter les variables globales.
 
 Quelques points sur les fonctions en Python :
 - l'instruction *def* n'est pas une *déclaration*, cela n'existe pas en Python.
@@ -2623,7 +2669,7 @@ def square(x):
 print(square(12))
 print(square(12.0))
 ```
-`144`
+`144` \
 `144.0`
 ```python
 def test(x):
@@ -2649,7 +2695,7 @@ print(test(3))
 
 <p style = "color: green">Exemple : écrire une fonction calculant la racine carrée de ses paramètres
 
-Si y * y = y<sup>2</sup> = x, comment trouver y à partir de x ? *x / y* peut n'être qu'une approximation si y est lui-même approximé. \
+Si y * y = y<sup>2</sup> = x, comment trouver y à partir de x ? *x / y* peut n'être qu'une approximation si *y* est lui-même approximé. \
 On fait donc *y<sub>1</sub> = (y + x / y) / 2*, puis *y<sub>2</sub> = (y<sub>1</sub> + x / y<sub>1</sub>) / 2*, et ainsi de suite.
 
 On peut à tout moment **estimer l'erreur relative** par l'expression suivante : **x - y<sub>i</sub><sup>2</sup>**.\
@@ -2696,7 +2742,7 @@ Il faudrait faire énormément de tours de boucle pour tomber sur la valeur exac
 
 ### 4.2.2. Parameters
 
-On peut passer aussi bien une variable qu'une expression à une fonction. La fonction évaluera d'abord le type de l'objet passé : c'est rapide avec une variable car elle prend le type de l'objet qu'elle référence ; la valeur de l'expression est analysée et un nom lui est assignée avant qu'elle soit passée à la fonction afin que celle-ci puisse la retrouver facilement.
+On peut passer aussi bien une variable qu'une expression à une fonction. La fonction évaluera d'abord le type de l'objet passé : c'est rapide avec une variable car elle prend le type de l'objet qu'elle référence ; la valeur de l'expression est analysée et un nom lui est assigné avant qu'elle soit passée à la fonction afin que celle-ci puisse la retrouver facilement.
 
 Ci-dessous une illustration de comment les paramètres sont traités dans la fonction :
 
@@ -2727,12 +2773,12 @@ r = 2.54
 parameter1 = 2 * pi * r
 x = parameter1
 
-return value = x**2
-c = return value
+return_value = x**2
+c = return_value
 print(f"Circumeference is {c}")
 ```
 ---
-Il est important de comprendre une chose : en Python, les paramètres sont des *références d'objets* passés à la fonction et celle-ci ne peut pas assigner une nouvelle valeur à ces *références d'objet* A L'INTERIEUR DE LA FONCTION. Par contre, pour une liste par exemple elle peut modifier les objets qui y sont référencés.
+Il est important de comprendre une chose : en Python, les paramètres sont des *références d'objets* passées à la fonction et celle-ci ne peut pas assigner une nouvelle valeur à ces *références d'objet* A L'INTERIEUR DE LA FONCTION. Par contre, pour une liste par exemple elle peut modifier les objets qui y sont référencés.
 ```python
 def addend(arg):
     arg.append("End")
@@ -2892,7 +2938,7 @@ else:
 ### 4.2.5. Scope
 
 Dans un programme, on distingue les variables **globales** des variables **locales**. \
-Les variables ***globales*** sont définiées (utilisées pour la première fois) dans le *main* du programme ; elle est accessible à toutes les fonctions. \
+Les variables ***globales*** sont définies (utilisées pour la première fois) dans le *main* du programme ; elles sont accessibles à toutes les fonctions. \
 Les variables ***locales*** sont définies dans une fonction et utilisables dans celle-ci (*utilisées* aussi d'ailleurs), mais ni dans d'autres fonctions ni dans le *main*. \
 C'est ce qu'on appelle le ***scoping*** : l'emplacement du programme où la variable est accessible est appelé le *scope*.
 
@@ -2943,7 +2989,7 @@ Les instructions suivantes sont incorrectes :
 - Erreur liée à la longueur des arguments :
 ```python
 print(format_print("f", 12, 13))       # len("f") = 1 != len((12, 13)) = 2
-print(format_print("ffi", 12, 13))       # len("ffi") = 3 != len((12, 13),) = 2
+print(format_print("ffi", 12, 13))       # len("ffi") = 3 != len((12, 13)) = 2
 print(format_print("fi", (12, 13)))     # len("fi") = 2 != len((12, 13),) = 1 (contains one tuple ; a tuple into a tuple)
 
 numbers = [12, 13]
@@ -3036,6 +3082,7 @@ print(type(printNum))
 Si on essaie d'exécuter *printNum* de la sorte `printNum()`, cela lèvera une TypeError.
 
 <p style= "color: red"><em>print1</em> a la valeur de <em>fonction</em> tandis que <em>print1()</em> correspond à un <em>appel de fonction</em>.</p>
+
 ```python
 a = 1
 printList = [print0, print1]
@@ -3046,11 +3093,11 @@ printNum()
 
 <p style = "color: green">Exemple : trouver la valeur maximum d'une fonction
 
-L'énoncé : "Une entreprise de calculette produit une calculatrice scientifique et une calculatrice graphique. Les projections à long terme indiquent une demande d'au moins 100 calculatrices scientifiques et 80 calculatrices graphiques par jour. La production est limitée à un maximum de 200 calculatrices scientifiques et 170 graphiques par jour. Pour satisfaire le contract d'envoi, au moins 200 calculatrices doivent être envoyées chaque jour. \
+L'énoncé : "Une entreprise de calculette produit une calculatrice scientifique et une calculatrice graphique. Les projections à long terme indiquent une demande d'au moins 100 calculatrices scientifiques et 80 calculatrices graphiques par jour. La production est limitée à un maximum de 200 calculatrices scientifiques et 170 graphiques par jour. Pour satisfaire le contrat d'envoi, au moins 200 calculatrices doivent être envoyées chaque jour. \
 Si la vente d'une calculatrice scientifique résulte en un déficit de 2$ mais la vente d'une calculatrice graphique rapporte 5$ de profit, combien de chaque type faut-il faire chaque jour pour maximiser les profits nets ?
 
 *scient_calcul* est le nombre de calculatrices scientifiques et *graph_calcul* est le nombre de calculatrices graphiques. \
-Pour scient_calcul, on sait que le minimum de production journalière attendu est de 100, et le maximum qui peut être produit est de 200 :
+Pour *scient_calcul*, on sait que le minimum de production journalière attendu est de 100, et le maximum qui peut être produit est de 200 :
 ```python
 100 <= scient_calcul <= 200
 ```
@@ -3132,7 +3179,7 @@ printNum()
 La programmation récursive n'est pas propre au langage mais plutôt une technique de programmation qui consiste à remplacer les instructions de boucle par des appels de fonctions. \
 Quelque chose de récursif est décrit au moins en partie par ce qui le compose.
 
-<p style = "color: green">Exemple : une liste est composée de plusieurs items, mais une liste d'un seul item peut quand même être considéré comme une liste- l'item définit donc la liste, de la même façon qu'une succession d'items séparés d'une virgule peut définir la liste.</p>
+<p style = "color: green">Exemple : une liste est composée de plusieurs items, mais une liste d'un seul item peut quand même être considérée comme une liste- l'item définit donc la liste, de la même façon qu'une succession d'items séparés d'une virgule peut définir la liste.</p>
 
 En programmation, on parle de **fonction récursive** pour les fonctions contenant dans leur corps un appel à elles-mêmes. C'est une technique supposée simplifier le code. \
 La difficulté pour les débutants est de s'assurer que la fonction récursive se termine bien et retourne bien une valeur.
@@ -3186,6 +3233,7 @@ Exemple d'application de la fonction récursive : \
 On cherche à trouver dans une liste de noms si le nom *Parker* se trouve dans la liste (sachant que la fonction built-in *in* permet de faire ce travail, mais on cherche une autre façon de faire).
 ```python
 def search_name(name, name_list):
+    name_list = name_list.sort()         # if the list isn't sorted by alphabetic order already
     length_list = len(name_list)
     mean_name = length_list // 2
     if length_list == 1 and name != name_list[0]:       # if there is one item left on the list
@@ -3198,8 +3246,6 @@ def search_name(name, name_list):
         return True
 
 notebook = ["Robert", "Peter", "Lea", "Lisa"]
-notebook.sort()            # if the list isn't sorted by alphabetic order already
-
 print(search_name("Lisa", notebook))
 print(search_name("Gab", notebook))
 ```
@@ -3226,7 +3272,7 @@ Quelques règles simples pour éviter le problème de boucles infinies (dans le 
 ---
 
 Un module correspond à une fonction ou un paquet de fonctions stockées dans un fichier dont le nom termine par *.py* (apporté par le système python ou par un autre développeur). \
-un module peut être appelé dans n'importe quel programme du moment que son importation a été faite avec succès (il faut connaître le chemin (*path*) vers ce fichier et le spécifier). Les fichiers enregistrées dans le dossier Lib de Python présentent un path connu par l'instruction *import*.
+un module peut être appelé dans n'importe quel programme du moment que son importation a été faite avec succès (il faut connaître le chemin (*path*) vers ce fichier et le spécifier). Les fichiers enregistrés dans le dossier Lib de Python présentent un path connu par l'instruction *import*.
 
 Avant de déclarer un module, il faut tester précisément le code qu'il contient pour s'assurer qu'il n'y a pas d'erreur dedans (imaginez le travail si quand une erreur survient dans notre code il faut envisager les erreurs de son code + des modules qu'on importe). Un module doit donc être **fiable**.
 
@@ -3310,12 +3356,14 @@ Les fonctions à définir sont :
 - ***legal_move(r, n)*** : le move est-il autorisé ?
 - ***make_move(r, n)*** : update le board avec le choix du player
 
-    def display_board(val):
-        for j in range(0, 3):
-            print(f"row {j + 1}: ", end = "")
-            for i in range(0, val[j]):
-                print("| ", end = "")
-            print(f" {val[j]}")
+```python
+def display_board(val):
+    for j in range(0, 3):
+        print(f"row {j + 1}: ", end = "")
+        for i in range(0, val[j]):
+            print("| ", end = "")
+        print(f" {val[j]}")
+```
 
 `row 1: | | | | |  5` \
 `row 2: | | | | | | |  7` \
@@ -3363,7 +3411,7 @@ Row 3 = 9 = 8 + 1 = 1 * 2<sup>3</sup> + 1 * 2<sup>0</sup> = 1001 \
 | 1011 = 11 |
 </center>
 
-La partié est calculée selon l'opération bit à bit "ou exclusif", soit *exclusive-OR* (*XOR* ou ^) : en binaire, la ligne de résultat affiche 1 seulement si le chiffre 1 apparaît de façon impaire (au moins un 1 mais pas dans toutes les lignes). Si la colonne binaire est impaire, le chiffre partaire sera 1, si elle est paire, le chiffre sera 0. La stratégie Nim est de faire en sorte que la parité soit nulle pour chaque colonne :
+La partié est calculée selon l'opération bit à bit "ou exclusif", soit *exclusive-OR* (*XOR* ou ^) : en binaire, la ligne de résultat affiche 1 seulement si le chiffre 1 apparaît de façon impaire (au moins un 1 mais pas dans toutes les lignes). Si la colonne binaire est impaire, le chiffre paritaire sera 1, si elle est paire, le chiffre sera 0. La stratégie Nim est de faire en sorte que la parité soit nulle pour chaque colonne :
 
 Si on retire 7 bâtons de la dernière ligne à 9 bâtons, on obtient 2<sub>10</sub> = 0010<sub>2</sub>
 
@@ -3401,7 +3449,7 @@ Cette méthode de développement est particulièrement intéressante si elle imp
 
 ## <center>Chapter 5: Files: input and output
 
-Les fichiers ont été inventés très tôt dans l'histoire des ordinateurs. Ils représentent un paquet d'octets stockés dans un disque ou un appareil similaire. Le stockage qui n'est pas de la mémoire est appelé stockage secondaire et est bien plus lent que la vitesse d'exécution d'une programme liée au stockage mémoire.
+Les fichiers ont été inventés très tôt dans l'histoire des ordinateurs. Ils représentent un paquet d'octets stockés dans un disque ou un appareil similaire. Le stockage qui n'est pas de la mémoire est appelé stockage secondaire et est bien plus lent que la vitesse d'exécution d'un programme liée au stockage mémoire.
 
 Il faut connaître le format du fichier (comment les octets sont ordonnés) et ce qu'il contient pour pouvoir lire un fichier et l'utiliser.
 
@@ -3412,12 +3460,12 @@ Liste non exhaustive des types de fichiers existants :
 | Types | Descriptions |
 | :---: | :---: |
 | Fichier **texte** | Contient des caractères compréhensibles par un humain ; typiquement appelé "document". |
-| Fichier **exécutable** | Contient des instructions exécutables par un ordinateur ; ce sont des "programmes" ou les "applications". |
+| Fichier **exécutable** | Contient des instructions exécutables par un ordinateur ; ce sont des "programmes" ou des "applications". |
 | Fichier **de données**<br>(*data files*) | Peut aussi être un fichier texte si les données sont des caractères, mais elles peuvent aussi être des paquets d'octets représentant des nombres entiers ou flottants. |
 | Fichier **image** | Contient des photos au format digital et leurs propriétés (taille, date de création, etc) ; il en existe de nombreux types (JPEG, GIF, PNG). |
 | Fichier **audio** | Nombreux types mais MP3 le plus souvent. |
 | Fichier **vidéo** | Nombreux types mais le format standard est MPEG ou AVI. |
-| **Page web** | Type particulier, modifiable via un éditeur de texte mais nécessite un navigateur (***browser***) pour être lues proprement. |
+| **Page web** | Type particulier, modifiable via un éditeur de texte mais nécessite un navigateur (***browser***) pour être lue proprement. |
 </center>
 
 Tous les fichiers partagent certaines caractéristiques (pas toutes importantes en Python).
@@ -3499,7 +3547,7 @@ Les étapes sont globalement les mêmes que dans tous les langages.
 
 1- **Ouvrir le fichier**. La fonction *open( )* est appelée en lui passant comme argument une string contenant le nom du fichier. On peut aussi passer le **mode** d'ouverture et l'**encodage** (par défaut utf-8 si non précisé), le tout toujours dans une string.
 
-2- **Lire les données du fichier**. La fonction *read( )* peut être appelée après avoir ouvert le fichier et l'avoir assigné à la variable. Elle affiche les données contenu dans le fichier. A notr qu'elle peut être appelée à plusieurs reprises dans le programme et qu'à l'appel suivant, la lecture reprend là où elle s'était arrêtée.
+2- **Lire les données du fichier**. La fonction *read( )* peut être appelée après avoir ouvert le fichier et l'avoir assigné à la variable. Elle affiche les données contenu dans le fichier. A noter qu'elle peut être appelée à plusieurs reprises dans le programme et qu'à l'appel suivant, la lecture reprend là où elle s'était arrêtée.
 
 OU \
 2 - **Ecrire des données dans le fichier**. La fonction *write( )* permet d'écrire dans le fichier (caractères, nombres, lignes voire plusieurs lignes). Elle peut être appelée à plusieurs reprises et les données s'ajoutent à la suite de celles écrites plus tôt à l'appel de fonction suivante.
@@ -3508,16 +3556,18 @@ OU \
 
 ### 5.3.1. Open a file
 
-*open( )* est une fonction qui retourne une valeur représenter un ensemble complexe de valeurs qui représente le statut du fichier ; on appelle cela un descripteur de fichier (*hancle* ou *file descriptor*). On peut l'imaginer comme présentant le type imaginaire *file*. \
-Cette valeur doit être assignée à une variable lorsqu'on utilise *open( )*, sans quoi ses données ne sont pas utilisables. Souvent on donne à cette variable le nom du fichier à ouvrir, +/- avec mention de si le fichier est en lecture ou écriture.
+*open( )* est une fonction qui retourne un ensemble complexe de valeurs qui représente le statut du fichier ; on appelle cela un descripteur de fichier (*handle* ou *file descriptor*). On peut l'imaginer comme présentant le type imaginaire *file*. \
+Cette valeur doit être assignée à une variable lorsqu'on utilise *open( )*, sans quoi ses données ne sont pas utilisables. Souvent, on donne à cette variable le nom du fichier à ouvrir, +/- avec mention de si le fichier est en lecture ou écriture.
 ```python
-date_file_r = open("datafile.txt", "r", encoding = "utf_8")
+data_file_r = open("datafile.txt", "r", encoding = "utf_8")
 ```
 Cela permet d'ouvrir le fichier texte *datafile* contenu dans le même dossier que le programme actuel. Le *"r"* signifie qu'on est en mode lecture : on ne pourra pas modifier le fichier mais on peut consulter les données qu'il contient.
 
 Si le fichier n'est pas dans le même dossier, on peut indiquer son chemin absolu (*absolute path*). Il faut placer un r (*rawstring*) devant l'adresse sinon les / sont interprétées. On peut aussi doubler les /. *On rappelle que le path est indiqué par / sur Unix et par \ sur Windows.*
 ```python
 data_file_r = open(r"C:/parker/introProgramming/chapter05/datafile.txt")
+# OU
+data_file_r = open(r"/home/popo/introProgramming/chapter05/datafile.txt", "r")
 ```
 C'est utile pour les bases de données importantes utilisées par plusieurs programmes (ex : noms de clients ou de fournisseurs).
 
@@ -3527,14 +3577,14 @@ C'est utile pour les bases de données importantes utilisées par plusieurs prog
 
 - *r* pour *read only*, donc de lire le fichier uniquement. C'est le mode par défaut si on en précise pas à l'ouverture. *= input*
 
-- *w* pour *write*, il permet d'écrire dans le fichier. Si le fichier n'existait pas, il est créé à l'emplacmeent indiqué par le path ; si le fichier existait déjà, cela **écrase les données précédemment entrées dans le fichier**. *= output*
+- *w* pour *write*, il permet d'écrire dans le fichier. Si le fichier n'existait pas, il est créé à l'emplacement indiqué par le path ; si le fichier existait déjà, cela **écrase les données précédemment entrées dans le fichier**. *= output*
 
 - *a* pour *append*, c'est une alternative à *write* qui crée le fichier s'il n'existe pas et permet d'ajouter des données à la suite d'un fichier déjà existant.
 
 - *+* (ou *r+*) pour *read and write*. On peut alors réaliser toutes les opérations de lecture et d'écrire sur le fichier.
 
 - *b* (*wb*, *rb* ou *ab*) pour *binary* (pas d'encodage à préciser dans ce cas), cela ouvre le fichier en mode binaire. C'est utile pour les fichiers MP3 ou vidéo. \
-Précisons qu'il est impératif de le mentionner sur Windows, mieux pour la clarté sur Unix sans nécessité. En effet, Windows modifie les carctères de fin de ligne des fichiers en mode simple ; cela n'a que peut d'importance pour les fichiers .txt ASCII, mais peut corrompre un fichier de type .JPEG ou .exe par exemple.
+Précisons qu'il est impératif de le mentionner sur Windows, mieux pour la clarté sur Unix sans nécessité. En effet, Windows modifie les carctères de fin de ligne des fichiers en mode simple ; cela n'a que peu d'importance pour les fichiers .txt ASCII, mais peut corrompre un fichier de type .JPEG ou .exe par exemple.
 
 ---
 Si le fichier n'existe pas et qu'il a été ouvert pour *input* (*read*), c'est une erreur et cela lève une exception, qui peut être gérée en Python. Il faut aussi anticiper les défauts de permissions. *Se rappeler qu'il vaut toujours mieux anticiper d'éventuelles erreurs et ne pas se dire que tout va marcher parfaitement.*
@@ -3614,7 +3664,7 @@ while True:
 
 ### Common file input operation
 
-**readline( )**
+***readline( )***
 
 Une façon "brute" de lire un fichier ligne par ligne serait le suivant :
 ```python
@@ -3642,7 +3692,7 @@ f.close()
 
 La méthode ***readlines( )*** lit les données ligne par ligne et les retourne sous forme de liste.
 
-**copy( )**
+***copy( )***
 
 On copie un fichier vers un autre, caractère par caractère. \
 Il faut alors ouvrir le fichier à copier en input, et le fichier vers lequel copier en output.
@@ -3672,9 +3722,9 @@ while line != "":
 
 original_file.close()
 copied_file.close()
-
+```
 On peut faire plus simple que cette fonction :
-
+```python
 original_file = open("file.text", "r", encoding = "utf-8")
 copied_file = open("copy.txt", "w", encoding = "utf-8")
 
@@ -3691,15 +3741,15 @@ Il existe plusieurs manière de **fusionner** deux fichiers. Une manière simple
 original_file1 = open("file.text", "r", encoding = "utf-8")
 final_file = open("copy.txt", "w", encoding = "utf-8")
 
-line = original_file1.read()
-final_file.write(line)
+data = original_file1.read()
+final_file.write(data)
 
 original_file1.close()
 
 original_file2 = open("file.text", "r", encoding = "utf-8")
 
-line = original_file2.read()
-final_file.write(line)
+data = original_file2.read()
+final_file.write(data)
 
 original_file2.close()
 final_file.close()
@@ -3724,8 +3774,8 @@ while line_file1 != "" and line_file2 != "":
         line_file2 = original_file2.readline()
 
 if line_file1 == "":
-    final_file.write(line_file2)        # since the last position of the pointer
-    line_file2 = original_file2.read()
+    final_file.write(line_file2)
+    line_file2 = original_file2.read()        # since the last position of the pointer
     final_file.write(line_file2)
 
 else:
@@ -3739,7 +3789,7 @@ final_file.close()
 ```
 ###  CSV files
 
-CSV = *Comma Separated Variable. \
+CSV = *Comma Separated Variable*. \
 C'est un format de fichier courant pour stocker des données. Il tient son nom du fait que les données sont séparées par des virgules. \
 Ce format peut être utilisé directement par des tableurs comme Excel et sont supportés par un ensemble large d'outils d'analyse de données.
 
@@ -3783,7 +3833,7 @@ Il existe une bibliothèque Python built-in qui permet de gérer les fichiers CS
 
 Les deux fonctions principales du module simplifié sont ***nextRecord( )*** et ***getData( )***.
 - *nextRecord( )* : lit une ligne entière de données CSV ; cela permet notamment de skip des lignes du fichier (comme le header).
-- *getData( )* : parse (analyse et récupère les données) la dernière ligne lue dans un tuple, chaque élément étant séparés par une virgule.
+- *getData( )* : parse (analyse et récupère les données) la dernière ligne lue dans un tuple, chaque élément étant séparé par une virgule.
 ```python
 import simpleCSV
 
@@ -3794,33 +3844,31 @@ simpleCSV.nextRecord(f)         # skip the first line
 for i in range(0,8):
     simpleCSV.nextRecord(f)
     p = simpleCSV.getData(f)
-    r = p[10]
     if int(p[10]) > 10.0:
         print(p[0])
 
 f.close()
 ```
-Il est important d'utiliser *netRecord( )* avant d'utiliser *getData( )* car c'est dans une variable globale de simpleCSV que sont stockées les données de la ligne lue. On ne peut pas utiliser `f.readline()` ou `for line in f` sinon le pointeur sera à un autre endroit du fichier CSV que le module simpleCSV.
+Il est important d'utiliser *nextRecord( )* avant d'utiliser *getData( )* car c'est dans une variable globale de simpleCSV que sont stockées les données de la ligne lue. On ne peut pas utiliser `f.readline()` ou `for line in f` sinon le pointeur sera à un autre endroit du fichier CSV que le module simpleCSV.
 
 ### The with statement
 
-L'instruction ***with*** utilisée lors d'ouverture de fichier suit un protocole de *context manager* : elle permet de fermer automatiquement le fichier quand toutes les opérations nécessaires ont été effectuées ==> **gestion automatique de la mémoire**.
+L'instruction ***with*** utilisée lors de l'ouverture de fichier suit un protocole de *context manager* : elle permet de fermer automatiquement le fichier quand toutes les opérations nécessaires ont été effectuées ==> **gestion automatique de la mémoire**.
 ```python
 with open("planets.csv", "r", encoding = "utf_8") as planets_file:
     planets_data = planets_file.read()
 ```
-Ici, les données du fichier CSV sont stockées sous forme de string dans la variable *planets_data*. Le fichier a été ouvert puis fermé impliement à la sortie du bloc d'instruction.
+Ici, les données du fichier CSV sont stockées sous forme de string dans la variable *planets_data*. Le fichier a été ouvert puis fermé implicitement à la sortie du bloc d'instruction.
 ```python
 import simpleCSV
 
-    with open("planets.csv", "r", encoding = "utf-8") as f:
+with open("planets.csv", "r", encoding = "utf-8") as f:
+    simpleCSV.nextRecord(f)
+    for i in range(0,8):
         simpleCSV.nextRecord(f)
-        for i in range(0,8):
-            simpleCSV.nextRecord(f)
-            p = simpleCSV.getData(f)
-            r = p[10]
-            if int(p[10]) > 10.0:
-                print(p[0])
+        p = simpleCSV.getData(f)
+        if int(p[10]) > 10.0:
+            print(p[0])
 ```
 ### tell( ) et seek( )
 
@@ -3831,15 +3879,15 @@ Si le fichier n'est pas de type *byte* (*br* par exemple), Python ne tolère qu'
 Voici le texte de mon fichier : `Code is like humor. When you have to explain it, it's bad.`
 ```python
 with open("file.txt", "r", encoding = "utf-8") as f:
-print(f.tell())
-f.seek(0, 2)            # the file handle is moved at the end of the file
-print(f.tell())
+    print(f.tell())
+    f.seek(0, 2)            # the file handle is moved at the end of the file
+    print(f.tell())
 
-print()
+    print()
 
-f.seek(20)
-print(f.tell())
-print(f.read())
+    f.seek(20)
+    print(f.tell())
+    print(f.read())
 ```
 `0` \
 `58`
@@ -3859,12 +3907,12 @@ with open("file.txt", "br") as f:
 ---
 
 Cette fois, il faut ouvrir le fichier en mode écriture :
-
-    f = open("file.txt", "w", encoding = "utf-8")
-
+```python
+f = open("file.txt", "w", encoding = "utf-8")
+```
 On rappelle que s'il n'y a pas de fichier portant le nom demandé dans la destination, un nouveau fichier sera créé à cet emplacement. Si un fichier déjà existant est présent, les données qu'il contenait se trouvent écrasées et on écrira par dessus.
 
-La fonction ***write( )*** permet d'écrire dans le fichier cible. Elle prend une **string** comme argument ; il faut donc convertir les autres types en string avant de lui donner en argument. \
+La méthode ***write( )*** permet d'écrire dans le fichier cible. Elle prend une **string** comme argument ; il faut donc convertir les autres types en string avant de lui donner en argument. \
 Il n'y a pas de concept de ligne dans l'écriture, on écrit simplement un caractère à la suite dans l'ordre donné. Si on veut sauter une ligne dans le fichier cible, il faudra insérer le caractère saut de ligne *\n* (*backslash n*) = *new line*.
 
 <p style = "color: green">Exemple : écrire une table de carrés dans un fichier
@@ -3893,10 +3941,11 @@ La méthode ***writelines( )*** prend une liste de strings et les écrit à la s
 Si *w* écrit au début du fichier, le mode *a* permet d'ouvrir le fichier et de commencer à écrire à la fin de ce fichier s'il existe. C'est préférable pour des fichiers de sauvegarde par exemple.
 
 <p style = "color: green">Exemple : ajouter 20 autres carrés au fichier
+
 ```python
 with open("file.txt", "a", encoding= "utf-8") as f:
-for i in range(25, 45):
-    f.write(f"square{i} = {i**2}\n")
+    for i in range(25, 45):
+        f.write(f"square{i} = {i**2}\n")
 ```
 Cela ajoute 20 nouveaux carrés à la suite des précédents. Au total, le fichier contiendra un titre suivi des carrés de 0 à 44.
 
@@ -3925,7 +3974,7 @@ La phrase : "*A man walks into a bar*" peut être traduite en langage ordinateur
 ```python
 aMan.walksInto(aBar)
 ```
-- *aMan* est une **instance**, soit une entité spécifique de la classe *man*. \
+- *aMan* est une **instance**, soit une entité spécifique de la classe *man*.
 - *aBar* est une **instance** de la classe d'objets *bar*.
 
 Cet homme a un nom *Name* (variable) qui est une de ses propriétés. Pour y accéder :
@@ -3942,10 +3991,10 @@ Python autorise le programmeur à définir des classes et à les utiliser pour c
 ### 6.2. Classes and types
 ---
 
-La **classe** est un modèle de conteneur de données et opérations (fonctions). Un **objet** est une **instance** de la classe, un élément spécifique de ce modèle. \
+La **classe** est un modèle de conteneur de données et d'opérations (fonctions). Un **objet** est une **instance** de la classe, un élément spécifique de ce modèle. \
 Pour définir une classe en Python, il faut lui donner un nom et un ensemble de variables et fonctions qui lui appartiennent.
 
-Si on reprend l'exemple de la classe *man*, on sait qu'elle présente une fonction *walksInto()*. On peut commencer par écrire cette classe de la manière suivante :
+Si on reprend l'exemple de la classe *man*, on sait qu'elle présente une fonction *walksInto( )*. On peut commencer par écrire cette classe de la manière suivante :
 ```python
 class man:
     def walksInto(aBar):
@@ -3959,7 +4008,8 @@ La classe reste une description abstraite d'un fonctionnement, un "patron". On "
 ```python
 aMan = man()
 ```
-Ainsi, toutes les variables utilisées dans la définition de *man* sont également utilisables par *aMan*. "*man( )*" est ce qu'on appelle un ***constructeur*** (au même titre que *str( )* ou *int( )* - qu'on avait auparavant qualifiés de *type*), lorsqu'il est appelé, les variables sont initiées. Il faut donner un nom à l'instanciation donc le constructeur prend un paramètre :
+Ainsi, toutes les variables utilisées dans la définition de *man* sont également utilisables par *aMan*. \
+"*man( )*" est ce qu'on appelle un ***constructeur*** (au même titre que *str( )* ou *int( )* - qu'on avait auparavant qualifiés de *type*). Lorsqu'il est appelé, les variables sont initiées. Il faut donner un nom à l'instanciation donc le constructeur prend un paramètre :
 ```python
 aMan = man("Jim Parker")
 ```
@@ -3980,7 +4030,7 @@ Notez que si on indique pas *self.* devant une variable, celle-ci sera non pas l
 ### 6.3. Classes as encapsulated modules
 ---
 
-Les *modules* (ou *packages*) comme *math* ou *random* sont des ensembles de variables et de fonction ayant un thème ou un objectif commun. Une classe peut être assimilée à un module. \
+Les *modules* (ou *packages*) comme *math* ou *random* sont des ensembles de variables et de fonctions ayant un thème ou un objectif commun. Une classe peut être assimilée à un module. \
 Les fonctions qui composent ces classes/modules sont appelées des méthodes car elles sont propres à ces classes et utilisables sur les instances de ces classes.
 
 Quand on écrit : `from random import *`, * est une instance de la classe *random*.
@@ -4002,7 +4052,9 @@ import client
 
 print(client.name)
 ```
-Il est évidemment possible de faire cela, mais il est plus clair d'avoir une méthode ***.get( )*** pour chaque variable, et cette méthode retourne la valeur de la variable qu'on souhaite utilsier.
+`Jimmy Parker`
+
+Il est évidemment possible de faire cela, mais il est plus clair d'avoir une méthode ***get( )*** pour chaque variable, et cette méthode retourne la valeur de la variable qu'on souhaite utiliser.
 ```python
 import client
 
@@ -4031,13 +4083,14 @@ En Python, on peut avoir l'instruction :
 ```python
 flag = True
 ```
-Avec *flag* la variable de type *bool* qui prend la valeur *True*. \
+avec *flag* la variable de type *bool* qui prend la valeur *True*.
+
 Si on utilise une classe pour représenter le type *bool*, on peut écrire :
 ```python
 flag = Boolean()
 flag.set_true()
 ```
-C'est plus compliqué mais montre ce qui se passe réellement : le constructeur *Boolean* établit une instance de la classe *Boolean*, assignée à la variable *flag*. On lui assigne ensuite une valeur en appelant la méthode ***set_true( )*** codée dans la classe *Boolean*. *Une méthode set_false( ) peut aussi exister.* \
+C'est plus compliqué mais montre ce qui se passe réellement : le constructeur *Boolean* établit une instance de la classe *Boolean*, assignée à la variable *flag*. On lui assigne ensuite une valeur en appelant la méthode ***set_true( )*** codée dans la classe *Boolean*. Une méthode *set_false( )* peut aussi exister. \
 Le résultat de cette opération est que *flag* est une variable booléenne appartenant à la classe *Boolean* et prenant la valeur True.
 
 On peut faire une boucle pour connaître la valeur de flag en utilisant la méthode ***get( )*** :
@@ -4046,7 +4099,7 @@ while flag.get():
     #code
 ```
 Les variables booléennes supportent les opérations *and*, *or* et *not*. \
-Par exemple, avec deux variables booléennes *a* et *b*, *a and b* est *True* seulement si *a* est *True* et *b* est *True*. Si on implémente la classe *Boolean*, on peut utiliser une méthode ***and( )*** pour implémenter cette opération. De même, *a or b* ne sera *True** que si au moins *a* ou *b* est *True* (ou les deux, c'est un ou inclusif).
+Par exemple, avec deux variables booléennes *a* et *b*, *a and b* est *True* seulement si *a* est *True* et *b* est *True*. Si on implémente la classe *Boolean*, on peut utiliser une méthode ***and( )*** pour implémenter cette opération. De même, *a or b* ne sera *True* que si au moins *a* ou *b* est *True* (ou les deux, c'est un ou inclusif).
 ```python
 result = a.and(b)
 result = a.or(b)
@@ -4078,10 +4131,10 @@ On peut trouver des similitudes entre une fonction et une classe ; par exemple, 
 
 On y retrouve également des variables locales, comme dans une fonction.
 
-La méthode **\_\_init__** est utilisée pour initialiser les variables appartenant à la classe. C'est ce qu'on a appelé un **constructeur** plus haut. \
-Les variables locales ne sont accessibles qu'en utilisant le nom de la classe ou d'une instance de celle-ci (en dehors de la classe), ou en utilisant le nom ***self*** (à l'intérieur de la classe). ***self.name*** référence une variable qui a été définie dans la classe, tandis que ***name*** référence une variable locale de la méthode.
+La méthode **\_\_init__** est utilisée pour initialiser les variables appartenant à la classe. C'est ce qu'on a appelé un **constructeur**. \
+Les variables locales ne sont accessibles qu'en utilisant le nom de la classe ou d'une instance de celle-ci (en dehors de la classe), ou en utilisant le nom ***self*** (à l'intérieur de la classe). ***self.name*** référence une variable qui a été définie dans la classe, tandis que ***name*** référence une variable locale de la fonction.
 
-Quand *\_\_init__* est appelé, un ensemble de paramètres sont passés et utilisés pour initialisés les variables dans la classe. Si le premier paramètre est *self*, cela signifie que la méthode peut accéder à des variables *class-local* ; autrement, elle ne peut pas y accéder. Toute variable initialisée dans *\_\_init__* et précédée de *self* est une variable locale de la classe (*class-local*). Toute méthode à laquelle on passe *self* comme paramètre peut définir une nouvelle variable class-local, bien qu'il soit sensé de toutes les initialisées en même temps.
+Quand *\_\_init__* est appelé, un ensemble de paramètres sont passés et utilisés pour initialiser les variables dans la classe. Si le premier paramètre est *self*, cela signifie que la méthode peut accéder à des variables *class-local* ; autrement, elle ne peut pas y accéder. Toute variable initialisée dans *\_\_init__* et précédée de *self* est une variable locale de la classe (*class-local*). Toute méthode à laquelle on passe *self* comme paramètre peut définir une nouvelle variable class-local, même s'il vaut mieux toutes les initialiser en même temps.
 
 <p style = "color: green">Exemple avec la classe <em>person</em> :
 
@@ -4102,12 +4155,12 @@ you.introduce()
 `Hi, my name is Jim!` \
 `Hi, my name is Mike!`
 
-Cette classe possède deux méthodes, *\_\_init__( )* et *introduce( )*. Après que la classe ait été définie, la variable *me* devient une nouvelle isntance de la classe *person*, possèdant le nom "Jim". Cette variable est ensuite utilisée pour accéder à la méthode *introduce( )*. \
+Cette classe possède deux méthodes, *\_\_init__( )* et *introduce( )*. Après que la classe ait été définie, la variable *me* devient une nouvelle instance de la classe *person*, possèdant le nom "Jim". Cette variable est ensuite utilisée pour accéder à la méthode *introduce( )*. \
 *you* est une seconde instance de la classe *person*, possédant le nom "Mike".
 
 On peut créer autant d'instances qu'on le souhaite, et un nom de variables peut être assigné à une instance, puis à une autre.
 
-Une méthode peut créer une nouvelle variable class-local :
+**Une méthode peut créer une nouvelle variable class-local** :
 ```python
     def introduce(self):
         # name being a class-local variable created in __init__()
@@ -4139,7 +4192,7 @@ class Point:
 Il faut imaginer que ici ***self* sera remplacé partout où il est écrit dans la classe par l'instance de classe qui sera créée et sur laquelle on appelera les méthodes**. \
 Le *self* est à donner en argument à **chaque méthode** si c'est une méthode qui s'utilise sur l'instance ou qu'elle utilise des caractéristiques qui lui sont propres.
 
-Ici les caractéristiques (ou **attributs**) propres à l'instance sont x et y. Par l'opération *self.x = x* et self.y = y*, on **associe ces variables et leurs valeurs spécifiques à notre instance**. On aura ainsi pas à les donner à chaque fois qu'on appelle une méthode sur la classe.
+Ici les caractéristiques (ou **attributs**) propres à l'instance sont x et y. Par l'opération *self.x = x* et *self.y = y*, on **associe ces variables et leurs valeurs spécifiques à notre instance**. Ainsi, on aura pas à les donner à chaque fois qu'on appelle une méthode sur la classe.
 ```python
     # the function is written in the class so think to indentate
     def distance(self, p):
@@ -4175,7 +4228,7 @@ print(distance_point1)
 `3.605551275463989` \
 `0.0`
 
-Les méthodes et attributs (données) d'une classe sont vues comme des données appartenant à un objet (une isntance de la classe). C'est pourquoi on considère qu'une classe peut être vue comme un type.
+Les méthodes et attributs (données) d'une classe sont vues comme des données appartenant à un objet (une instance de la classe). C'est pourquoi on considère qu'une classe peut être vue comme un type.
 ```python
 print(type(point1))
 ```
@@ -4188,50 +4241,50 @@ En gros, l'interface de la classe pour le programmeur est différente de celle d
 
 Le programmeur peut cependant définir des méthodes au sein de la classe qui rendront accessibles ces variables locales de façon contrôlée ; c'est le principe des méthodes d'accès :
 ```python
-    # in the class code
-    def get_x(self):
-        return self.x
-    def get_y(self):
-        return self.y
+# in the class code
+def get_x(self):
+    return self.x
+def get_y(self):
+    return self.y
 
 print(f"{point1.get_x()}, {point1.get_y()}")
 ```
 `2, 4`
 
-Contrairement à d'autres langages POO, il n'existe pas de façon de rendre une variable privée et intouchable en Python. Par convention, si on ajoute un underscore _x devant la variable x, cela veut dire qu'il ne faut pas la modifier, sauf via la méthode set() si le programmeur la définie. Cela permet de contrôler les transformations apportée sur la variable (par exemple s'assurer que le changement de valeur reste un *int*, donc ne change pas de type - autrement, les méthodes et opérations pratiquées sur cet attribut seraient caduques et cela créerait des erreurs).
+Contrairement à d'autres langages POO, il n'existe pas de façon de rendre une variable privée et intouchable en Python. Par convention, si on ajoute un double underscore __x devant la variable x, cela veut dire qu'il ne faut pas la modifier, sauf via la méthode *set( )* si le programmeur l'a définie. Cela permet de contrôler les transformations apportées sur la variable (par exemple s'assurer que le changement de valeur reste un *int*, donc ne change pas de type - autrement, les méthodes et opérations pratiquées sur cet attribut seraient caduques et cela créerait des erreurs).
 
 Si on réécrit la méthode *distance( )* de façon plus sécurisée, en ayant renommé les attributs __x et __y :
 ```python
-    def distance(self, p):
-        d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
-        return math.sqrt(d)
+def distance(self, p):
+    d = (self.__x - p.get_x())**2 + (self.__y - p.get_y())**2
+    return math.sqrt(d)
 ```
 Les méthodes dites **de mutation** (*mutators*) ou **setters** sont utilisées pour modifier la valeur d'une variable locale de la classe. Elles permettent de checker la range ou le type de la nouvelle valeur par exemple.
 ```python
-    def set_x(self, x):
-        # x is a row, so it is an integer and there are 20 rows in the plane
-        if not isinstance(x, int) or x not in range(0, 20):
-            return
-        self.__x = x
+def set_x(self, x):
+    # x is a row, so it is an integer and there are 20 rows in the plane
+    if not isinstance(x, int) or x not in range(0, 20):
+        return
+    self.__x = x
 
-    def set_y(self, y):
-        # y is a place in a row, and there is 6 places in a row
-        if not isinstance(y, int) or y not in range(0, 6):
-            return
-        self.__y = y
+def set_y(self, y):
+    # y is a place in a row, and there is 6 places in a row
+    if not isinstance(y, int) or y not in range(0, 6):
+        return
+    self.__y = y
 ```
 On peut ajouter une méthode ***draw( )*** qui print les coordonnées du point et peut être utile pour le débugage.
 ```python
-        def draw(self):
-            print(f"({self.__x}, {self.__y})")
+def draw(self):
+    print(f"({self.__x}, {self.__y})")
 
-    point1.draw()
+point1.draw()
 ```
 `(2,4)`
 
 <p style = "color: green"><strong>Point Triangle</strong>
 
-Créons maintenant une classe *Triangle*, composé de 3 points.
+Créons maintenant une classe *Triangle*, composée de 3 points.
 ```python
 class Triangle:
     def __init__(self, p0, p1, p2, p3):
@@ -4260,50 +4313,50 @@ Les valeurs __x et __y sont les coordonnées du centre du triangle, qu'on peut a
 
 Nous aborderons le traitement graphique dans le prochain chapitre, mais un des objectifs d'une telle classe serait aussi de dessiner ce triangle à l'écran.
 ```python
-    def draw(self):
-        print("Triangle:")
-        self.__v0.draw()
-        self.__v1.draw()
-        self.__v2.draw()
+def draw(self):
+    print("Triangle:")
+    self.__v0.draw()
+    self.__v1.draw()
+    self.__v2.draw()
 ```
 On peut aussi déplacer le triangle à une nouvelle position. Cela correspond simplement à déplacer les coordonnées de ses sommets (et donc de son centre) d'une même distance.
 ```python
-    def move(self, dx, dy):
-        coord = self.__v0.get_x()
-        self.__v0.set_x(coord + dx)
+def move(self, dx, dy):
+    coord = self.__v0.get_x()
+    self.__v0.set_x(coord + dx)
 
-        coord = self.__v0.get_y()
-        self.__v0.set_y(coord + dy)
+    coord = self.__v0.get_y()
+    self.__v0.set_y(coord + dy)
 
-        coord = self.__v1.get_x()
-        self.__v1.set_x(coord + dx)
+    coord = self.__v1.get_x()
+    self.__v1.set_x(coord + dx)
 
-        coord = self.__v1.get_y()
-        self.__v1.set_y(coord + dy)
+    coord = self.__v1.get_y()
+    self.__v1.set_y(coord + dy)
 
-        coord = self.__v2.get_x()
-        self.__v2.set_x(coord + dx)
+    coord = self.__v2.get_x()
+    self.__v2.set_x(coord + dx)
 
-        coord = self.__v2.get_y()
-        self.__v2.set_y(coord + dy)
+    coord = self.__v2.get_y()
+    self.__v2.set_y(coord + dy)
 
-        self.__x = self.__x + dx
-        self.__y = self.__y + dy
+    self.__x = self.__x + dx
+    self.__y = self.__y + dy
 ```
-Cette méthode n'est pas très claire, donc on pourrait plutôt ajouter une méthode *move( )* à la classe *Point*, comme ceci :
+Cette méthode n'est pas très claire, donc on pourrait plutôt ajouter une méthode *move( )* à la classe ***Point***, comme ceci :
 ```python
-    def move(self, dx, dy):
-        self.__x = self.__x + dx
-        self.__y = self.__y + dy
+def move(self, dx, dy):
+    self.__x = self.__x + dx
+    self.__y = self.__y + dy
 ```
-Ainsi, la méthode *move( )* , qui déplace les coordonnées des sommets, serait la suivante :
+Ainsi, la méthode *move( )* de la classe ***Triangle***, qui déplace les coordonnées des sommets, serait la suivante :
 ```python
-    def move(self, dx, dy):
-        self.__v0.move(dx, dy)
-        self.__v1.move(dx, dy)
-        self.__v2.move(dx, dy)
-        self.__x = self.__x + dx
-        self.__y = self.__y + dy
+def move(self, dx, dy):
+    self.__v0.move(dx, dy)
+    self.__v1.move(dx, dy)
+    self.__v2.move(dx, dy)
+    self.__x = self.__x + dx
+    self.__y = self.__y + dy
 ```
 Cela rend le script à la fois plus lisible, plus simple et plus explicite.
 
@@ -4407,7 +4460,7 @@ Un jeu de cartes traditionnel :
 - 4 "couleurs" ou "familles" (*suits*) : pic (*spades*), carreau (*diamonds*), coeur (*hearts*), trèfle (*clubs*)
 - 52 cartes : 13 dans chaque couleur.
 
-Les cartes peuvent être considérées comme un composant individuel du jeu et peuvent être classées ; cependant, la valeur des cartes dépend du jeu pratiqué (ex : l'as ou *ace* peut valoir 1 comme 20). Les attributs d'une carte sont sa couleur (*suit*) et son type (*color*). \
+Les cartes peuvent être considérées comme un composant individuel du jeu et peuvent être classées ; cependant, la valeur des cartes dépend du jeu pratiqué (ex : l'as ou *ace* peut valoir 1 comme 20). Les attributs d'une carte sont son type (*color*) et sa couleur (*suit*). \
 Souvent, les cartes sont distribuées et un certain nombre passent du deck vers la main du joueur (ex : 13 cartes par joueur au bridge, 5 cartes par joueur pour le poker la plupart du temps).
 
 La valeur des cartes a une importance la plupart du temps. Parfois les cartes sont comparées entre elles (poker), parfois c'est la somme qui importe (blackjack), parfois c'est la famille qui importe.
@@ -4434,7 +4487,8 @@ class Card:
     SPADES_ACE = 52
 
     def __init__(self, face, suit):
-        ...
+        self.__suit = suit
+        self.__face = face
 ```
 Ce sont des variables qui n'apparaissent pas dans le constructeur, donc qui sont accessibles par toutes les instances.
 
@@ -4446,7 +4500,7 @@ Les animations et les simulations par ordinateur voient le monde comme un ensemb
 Une animation par exemple, est un ensemble d'images d'une scène affichés à des intervalles de temps précis, en général 1/24<sup>th</sup> ou 1/30<sup>th</sup> par seconde. \
 Les simulations utilisent des intervalles de temps dépendant de ce qui est simulé. L'exemple choisi ici est une simulation et une animation d'une balle rebondissante, d'abord dans une dimension, puis dans deux.
 
-Une balle lâchée d'une hauteur *h* tombe au sol quand on la lâche. Sa vitesse augmente au cours de la chute, du fait de la gravité? L'équation basique qui définie son mouvement est la suivante :
+Une balle lâchée d'une hauteur *h* tombe au sol quand on la lâche. Sa vitesse augmente au cours de la chute, du fait de la gravité. L'équation basique qui définit son mouvement est la suivante :
 
 <center>
 s = 1/2 * a * t <sup>2</sup> + v<sub>0</sub>t
@@ -4463,7 +4517,7 @@ On calcule les distances à un intervalle de 0.5s :
 
 ![Distance s at successive time intervals](image-9.png)</center>
 
-On peut créer une classe **Ball**. Elle aurait une position (*position*) et une vitesse (*speed*) à n'importe quel moment (*time*), et pourrait avoir une méthode *draw( )* qui la dessinerait sur un écrand d'ordinateur. \
+On peut créer une classe **Ball**. Elle aurait une position (*position*) et une vitesse (*speed*) à n'importe quel moment (*time*), et pourrait avoir une méthode *draw( )* qui la dessinerait sur un écran d'ordinateur. \
 La faire rebondir revient à donner à la balle une valeur qui indique combien d'énergie elle perd à chaque fois qu'elle rebondit ; cela implique donc qu'elle finirait par arrêter de rebondir et de bouger.
 
 On commence par écrire le constructeur :
@@ -4541,7 +4595,7 @@ Cela revient à résoudre une équation de second degré à une inconnue :
 ![Equation quadratique](image-10.png)
 ![Résultat équation](image-11.png)</center>
 
-Ce temps t<sub>(sol)</sub> correspond au temps auquel la balle touche le sol. Il est compris entre 0 et dt. La vitesse de la balle à ce moment-là sera : \
+Ce temps t<sub>(sol)</sub> correspond au temps auquel la balle touche le sol. Il est compris entre 0 et dt. La vitesse de la balle à ce moment-là sera :
 <center>
 v<sub>0</sub> = self._speed + self._acceleration * t<sub>(sol)</sub></center>
 
@@ -4550,12 +4604,12 @@ La balle changera ensuite de direction et diminuera en vitesse du fait de la gra
 Si on revoit notre programme, il faut donc :
 - définir le constructeur de notre classe, contenant les attributs hauteur qui sépare la balle du sol (*height*), élasticité de la balle (*elasticity*), vitesse de départ (*speed*) et accélération (*acceleration*, constante dans le référentiel terrestre).
 
-- définir la fonction *delta( )* qui calculera *s*, soit la distance parcourue par la balle après un intervalle de temps donné *dt*, afin de modifier la hauteur qui sépare la balle du sol et la vitesse de la balle à un instant t. \
+- définir la fonction *delta( )* qui calculera *s*, soit la distance parcourue par la balle après un intervalle de temps donné *dt*, afin de modifier la hauteur qui sépare la balle du sol et la vitesse de la balle à un instant t.
 
-- Dans cette fonction, il faudra évaluer si la hauteur trouvée suite au calcul du delta est négative, auquel cas on chercher le temps *t_bounce* auquel la balle touche le sol et rebondit(grâce à l'équation quadratique vue précédemment).
+- Dans cette fonction, il faudra évaluer si la hauteur trouvée suite au calcul du delta est négative, auquel cas on cherchera le temps *t_bounce* auquel la balle touche le sol et rebondit (grâce à l'équation quadratique vue précédemment).
 
-- Si la balle a rebondit, on calcule alors la nouvelle vitesse de la balle et sa nouvelle hauteur en tenant compte de l'élasticité. Après rebond, la vitesse de la balle est négative (signifiant qu'on a change de direction). \
-    A chaque rebond, la balle perdra en élasticité et c'est ce qui fera qu'au bout d'un moment elle ne rebondira plus et la hauteur restera 0 après avoir touché le sol.
+- Si la balle a rebondi, on calcule alors la nouvelle vitesse de la balle et sa nouvelle hauteur en tenant compte de l'élasticité. Après rebond, la vitesse de la balle est négative (signifiant qu'on a changé de direction). \
+    A chaque rebond, la balle perdra en élasticité et c'est ce qui fera qu'au bout d'un moment elle ne rebondira plus et la hauteur restera 0 après avoir touché le sol. C'est une approximation très grossière de la réalité mais cela permet d'écrire du code sans manipuler trop de variables et faire des calculs trop compliqués.
 
 - Après rebond, si la vitesse atteint 0 à nouveau, c'est qu'on a atteint le maximum de hauteur qu'elle pouvait atteindre (*peak*).
 
@@ -4638,12 +4692,12 @@ Pour le moment, les input-output sont du texte puisque nous n'avons pas encore v
 
 Basic design
 -
-On classe d'abord les items et les actions du jeux : les items sont *cannon* et *cannonball*, et seront des classes, tandis que les actions sont les méthodes de ces classes.
+On classe d'abord les items et les actions du jeu : les items sont *cannon* et *cannonball*, et seront des classes, tandis que les actions sont les méthodes de ces classes.
 
 La classe *cannon* possède des attributs que sont sa localisation, son angle  et sa puissance de tir, avec laquelle le boulet *cannonball* sera éjecté. Les deux derniers facteurs (angle et puissance) affectent la distance parcourue par le projectile. \
 On donne au canon la cible comme paramètre, par exemple une autre instance de *Cannon* pour éviter de redéfinir une autre classe.
 
-La première méthode à définir pour *Cannon* est *fire( )* ; cela correspond à envoyer un boulet, donc une instance de *Cannonball* avec une vitesse et une direction propren depuis la localisation du canon. \
+La première méthode à définir pour *Cannon* est *fire( )* ; cela correspond à envoyer un boulet, donc une instance de *Cannonball* avec une vitesse et une direction propres depuis la localisation du canon. \
 Quand le canon "tire" (donc quand la méthode *fire( )* est appelée sur l'instance *cannon*), une instance de la classe *Cannonball* est créée. On lui donne alors comme paramètre un angle et une vitesse. \
 *cannonball* a une position (x, y) et une vitesse (dx, dy) propre. Les actions que peut faire le boulet sont : bouger (*step( )*) et percuter (*testCollision( )*).
 
@@ -4654,7 +4708,7 @@ Detailed design
 | <strong>Has:</strong> <br>position (x, y)<br>angle (when fired)<br>power (when fired)<br>target (another cannon)<br>ball<br>| <strong>Has:</strong> <br>position (x, y)<br>speed (dx, dy)<br>name (text)<br>target (a Cannon class instance)<br>gravity |
 <strong>Does:</strong><br>`def fire():`<br>`def step():` | <strong>Does:</strong><br>`def step():`<br>`def test_for_collision():` |
 
-Les attributs *Has* sont des variables locales de la classe. Dans notre cas, elles peuvent être initialisées dans le constructeur *\_\_init( )__*. \
+Les attributs *Has* sont des variables locales de la classe. Dans notre cas, elles peuvent être initialisées dans le constructeur *\_\_init( )__*.
 ```python
 class Cannon:
     def __init__(self, x, y):
@@ -4682,7 +4736,7 @@ Sans affichage graphique, on peut imaginer un affichage texte avec le canon (rep
 
 ![affichage canons](image-12.png)</center>
 
-Quand le canon tire avec la méthode *fire( )*, l'instance *ball* de la classe *Cannonball** est créée aux coordonnées (12, 0). Sa vitesse dépend de l'angle et de la puissance de tir.
+Quand le canon tire avec la méthode *fire( )*, l'instance *ball* de la classe *Cannonball* est créée aux coordonnées (12, 0). Sa vitesse dépend de l'angle et de la puissance de tir.
 
 On utilise les cosinus et sinus d'un angle pour calculer la vitesse de l'objet *ball*.
 <center>
@@ -4708,17 +4762,17 @@ Si une balle a été tirée, cela met à jour sa position en appelant la méthod
 La méthode *step( )* de l'objet *Cannonball* permet de mettre à jour la position de l'objet à partir de sa vitesse actuelle et de sa précédente position. La position **x** est modifiée par **dx** et la position **y** est modifiée par **dy**. La gravité qui s'applique sur l'objet diminue également la vitesse verticale du boulet à chaque intervalle de temps, donc il faut retirer à **dy** la valeur de la gravité à chaque intervalle de temps. \
 Si l'objet touche le sol, il doit s'arrêter de bouger. Un objet touche le sol si **y** est inférieur ou égal à 0. Quand cela arrive, on met à jour **dx** et **dy** à 0 (plus de vecteur de déplacement). On doit ensuite vérifier si l'impact est proche de la cible.
 
-**Step 2** : pas de paramètre à donner. \
+**Step 2** : pas de paramètre à donner.
 1. on update la position de x : x = x + dx
 2. on update la position de y : y = y + dy
 3. on soustrait la gravité à dy : dy = dy - gravity
 4. Si la balle a touché le sol (y <= 0) : dx = dy = gravity = 0 \
     Collision avec la cible ?
 
-Le dernier contrôle de collision consiste à vérifier si la position **x** du boulet est suffisamment proche de la position **x** de la cible. On peut établir un intervalle d'erreur de 1.0 par exemple. Cela peut être vérifié par la méthode ***test_collision( )**. Si il y a effectivement collision, le joueur qui tirait l'emporte ; fin du jeu.
+Le dernier contrôle de collision consiste à vérifier si la position **x** du boulet est suffisamment proche de la position **x** de la cible. On peut établir un intervalle d'erreur de 1.0 par exemple. Cela peut être vérifié par la méthode ***test_collision( )***. Si il y a effectivement collision, le joueur qui tirait l'emporte ; fin du jeu.
 
-**Test collision** : vérifie si le boulet à toucher la cible tank ; si c'est le cas, on passe l'état en *True*. \
-1. on soustrait la valeur de x du boulet à la valeur de x de la cible, le résultat est appelé **d**.
+**Test collision** : vérifie si le boulet a touché la cible *tank* ; si c'est le cas, on passe l'état en *True*.
+1. On soustrait la valeur de x du boulet à la valeur de x de la cible, le résultat est appelé **d**.
 2. Si d <= 1.0, on set le flag **done** à *True*.
 
 Le main pourrait ressembler à ceci :
@@ -4735,10 +4789,50 @@ while not done:     # while no collision, update the position of the ball
 ---
 
 Les classes sont des fonctionnalités du langage permettant de représenter une hiérarchie d'information et de structure. Une classe peut être utilisée pour en définir une autre, et les attributs de la première classe sont passées à la seconde ; c'est ce qu'on appelle l'**héritage**. \
-Une classe basée sur une autre est appelée une ***sous-classe*** (*subclass*) de cette classe ; la classe sur laquelle la sous-classe est basée est appelée ***super-classe*** ou classe ***parent*** (*parent class*). \
+Une classe basée sur une autre est appelée une ***sous-classe*** (*subclass*) de cette classe ; la classe sur laquelle la sous-classe est basée est appelée ***super-classe*** ou ***classe parent*** (*parent class*). \
 La sous-classe est en fait un cas spécifique de sa classe parent.
 
 <p style = "color: green">Ex : une classe <em>pet</em> avec comme sous-classes <em>dog</em> et <em>cat</em> ; une classe <em>polygon</em> avec comme sous-classes <em>triangle</em> et <em>rectangle</em>. Pour revenir sur notre exemple de début de chapitre, une classe <em>person</em> avec comme sous-classe <em>man</em> et <em>woman</em>.
+
+La syntaxe est la suivante :
+```python
+class subclass(parent_class):
+
+# if the parent class is defined in another module:
+
+class subclass(mod_name.parent_class):
+```
+Une sous-classe peut avoir plusieurs classes parentes :
+```python
+class subclass(parent_class1, parent_class2, parent_class3):
+```
+<br>
+
+Il existe deux fonctions qui vérifient si les objets appartiennent à une classe:
+```python
+isinstance(obj, type/class)
+issubclass(subclass, parent_class)
+```
+
+<br>
+
+On peut aussi utiliser des classes de données (*data classes*) pour stocker des données de façon ordonnée. On les range souvent dans un fichier séparé dont on importe ensuite les données dans le fichier du *main*. :
+```python
+# in a file named "dataclasses"
+class Employee:
+    name: str
+    dept : str
+    salary: int
+
+# in another file:
+import dataclasses
+john = Employee('john', 'computer lab', 1000)
+
+john.dept
+john.salary
+```
+`computer lab` \
+`1000`
 
 ### 6.7.1. Non-trivial example: objects in a video game
 
