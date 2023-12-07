@@ -79,7 +79,7 @@ class Display:
         self.__sprites.append(sprite)
 
     def remove_sprite(self, sprite: Sprite):
-        self.__sprites.pop()
+        self.__sprites.remove(sprite)
 
     def __init_display__(self):
         """create a list of lists defining the range of the field"""
