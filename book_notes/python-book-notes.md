@@ -1688,8 +1688,8 @@ for i in atoms:
 Une autre façon de faire, en obtenant le même résultat, est de manipuler les indices du tuple :
 ```python
 for i in range(0, len(atoms)):      # la variable loot control ne parcourt pas le tuple cette fois
-    if i%2 == 1:        # si le nombre est impair, on entre dans la condition
-        j = atoms[i]*2      # atoms[i] est un indice se rapportant à un élément du tuple atoms
+    if i % 2 == 1:        # si le nombre est impair, on entre dans la condition
+        j = atoms[i] * 2      # atoms[i] est un indice se rapportant à un élément du tuple atoms
         print(f"has {atoms[i]} protons and {j} nucleons.")
     else:
         print(f"Element {atoms[i]} ", end= "")
@@ -1714,11 +1714,11 @@ Le tuple C est l'intersection de A et B puisqu'on n'entre dans le bloc d'instruc
 ```python
 even_number = ()
 for i in range(0, 51):
-    even_number = even_number + (i*2,)      # concaténation tuple + singleton
+    even_number = even_number + (i * 2,)      # concaténation tuple + singleton
 
 square = ()
 for i in range(0, 11):
-    square = square + (i*i,)
+    square = square + (i * i,)
 
 perfect_square = ()
 for i in even_number:
@@ -4816,30 +4816,14 @@ issubclass(subclass, parent_class)
 
 <br>
 
-On peut aussi utiliser des classes de données (*data classes*) pour stocker des données de façon ordonnée. On les range souvent dans un fichier séparé dont on importe ensuite les données dans le fichier du *main*. :
-```python
-# in a file named "dataclasses"
-class Employee:
-    name: str
-    dept : str
-    salary: int
-
-# in another file:
-import dataclasses
-john = Employee('john', 'computer lab', 1000)
-
-john.dept
-john.salary
-```
-`computer lab` \
-`1000`
+On peut aussi utiliser des classes de données (*data classes*) pour stocker des données de façon ordonnée. On les range souvent dans un fichier séparé dont on importe ensuite les données dans le fichier du *main*.
 
 ### 6.7.1. Non-trivial example: objects in a video game
 
 A un certain degré, tous les objets d'un jeu vidéo ont des points communs. Ce sont des objets avec lesquels le joueur peut interagir, ou pouvant interagir entre eux ; ils ont une position dans l'espace et une apparence visuelle.
 
 ```python
-class game_object:
+class Game_object:
     position = (0, 0, 0)         # object position in 3D
     visual = None           # graphics that represent the object
 
@@ -4853,5 +4837,170 @@ class game_object:
 On retrouve à ce moment-là deux types d'objets : les objets qui peuvent se déplacer et ceux qui sont immobiles. Un objet mouvant doit avoir une méthode qui met-à-jour sa position à intervalles réguliers, et peut également avoir une vitesse.
 
 ```python
-class moving_object(game_object):
-    
+class Moving_object(Game_object):
+    speed = (0, 0, 0)   # speed in pixels per frame
+                        # x, y, z directions
+    def __init__(self, speed)
+    def get_speed(self)
+    def set_speed(self, s)
+    def move(self)
+    def collision(self, game_object)
+```
+Si on crée une instance de la superclasse *Game_object*, la méthode __init__() d'initialisation des variables locales de la classe est appelée, et toutes les méthodes de la superclasse peuvent être appelées sur l'instance. \
+Si on crée une instance de la sous-classe *Moving_object*, la méthode __init__() est appelée, mais pas celle de la superclasse, à moins de le spécifier :
+
+```python
+class Moving_object(Game_object):
+    def __init__(self, pos, vis, speed):
+        self.__speed = speed
+        Game_object.__init__(self, pos, vis)
+
+        # OU
+
+        super().__init__(pos, vis)
+```
+Cela n'empêche pas que même sans appeler son *__init__()*, toutes les méthodes de la superclasse sont accessibles depuis la sous-classe et on peut appeler sur l'instance aussi bien les méthodes de la superclasse que celles de la sous-classe. C'est parce que l'instance de la sous-classe est aussi une instance de la superclasse.
+
+Si on reprend la première écriture de la classe *Moving_object*, l'instance crée à partir de cette classe n'aura pas d'attributs de position et de visuel car ils ne sont pas donnés au constructeur *__init__*. Si des variables locales ont été définies dans la superclasse, l'instance prendra ces valeurs ; s'il n'y en a pas, si on cherche à utiliser sur l'instance des méthodes nécessitant ces valeurs, cela lèvera une exception.
+
+Exemple de code :
+```python
+
+class Game_object:
+    position = (0, 0, 0)         # object position in 3D
+    visual = None           # graphics that represent the object
+
+    def __init__(self, pos, vis):
+        self.position = pos
+        self.visual = vis
+        print("game_object init")
+
+    def get_position(self):
+        print("get position")
+        return self.position
+
+    def set_position(self, p):
+        self.position = p
+        print("set position")
+
+    def set_visual(self, v):
+        self.visual = v
+        print("set visual")
+
+    def draw(self):
+        print("draw")
+
+class Moving_object(Game_object):
+    speed = (0, 0, 0)
+    def __init__(self, speed):
+        self.speed = speed
+        super().__init__((10, 10, 10), None)
+        print("moving_object init")
+
+    def get_speed(self):
+        print("get speed")
+        return self.speed
+
+    def set_speed(self, s):
+        self.speed = s
+        print("set speed")
+
+    def move(self):
+        print("move")
+
+    def collision(self, Game_object):
+        print("collision")
+
+# MAIN
+
+g = Game_object((12, 12, 12), None)
+m = Moving_object((13, 13, 13))
+
+print(m.get_position())
+m. move()
+m.draw()
+```
+`game_object init`  # for g \
+`game_object init`  # for m \
+`moving_object init` \
+`get position` \
+`(10, 10, 10)` \
+`move` \
+`draw`
+
+On peut évidemment définir nous-mêmes tous les attributs :
+```python
+class Moving_object(Game_object):
+    speed = (0, 0, 0)
+    def __init__(self, pos, vis, speed):
+        self.speed = speed
+        super().__init__(pos, vis)
+        print("moving_object init")
+```
+`game_object init` \
+`game_object init` \
+`moving_object init` \
+`get position` \
+`(13, 13, 13)` \
+`move` \
+`draw`
+
+Il faut aussi une fonction qui permettrait à l'instance de *Moving_object* d'éviter un objet appartenant lui à *Game_object*, donc non déplaçable avec la méthode *move( )*.
+```python
+def dodge(self, x, dx, dy):             # c being the object to move
+    if isinstance(x, Game_object):
+        self.position += (dx, dy, 0)
+    else:
+        c = x.get_position()
+        c += (dx, dy, 0)
+        x.set_position(c)
+```
+
+### 6.8. Duck Typing
+
+On ne s'intéresse pas forcément au type qu'on manipule en Python, du moment qu'il possède les propriétés nécessaires pour être utilisé dans les opérations qu'on souhaite. \
+De la même façon, si on crée dans nos classes *Triangle* et *Point* une méthode *move_away( )* qui utiliserait les méthodes *get_x()*, *get_y()* et *move()*, cela ne fait pas de différence qu'on lui passe une instance de *Point* ou de *Triangle* puisqu'elles ont toutes les deux ces trois méthodes.
+
+Le *duck typing*, c'est le fait que tant qu'un objet a les propriétés qu'il faut (le bon nom de méthode avec le bon ensemble de paramètres) pour être appelé par une autre méthode, alors on peut utiliser cette méthode sur celui-ci. \
+Il existe une fonction built-in ***hasattr( )*** qui permet de s'assurer si une instance de classe possède une méthode particulière :
+```python
+if hasattr(v1, "get_x"):
+    x = v1.get_x()
+```
+
+Le premier argument est l'instance de classe et le second est le nom de la méthode sous forme de string. Cette fonction retourne un booléen (*True* si la méthode existe).
+
+<center>
+
+![Origin of "duck typing"](image-14.png)
+</center>
+
+---
+## Summary
+
+Une classe est un patron, un modèle de données et d'opérations (méthodes/fonctions). Une instance de classe est un objet spécifique suivant ce patron, avec ses propres attributs. \
+Définir une classe en python implique de lui donner un nom ainsi qu'un ensemble de variables et de fonctions qui lui appartiennent.
+
+Voici comment créer une instance de la classe *Thing* :
+```python
+thing = Thing(x)
+```
+En faisant cela, on appelle, si elle existe, la méthode ***__init__( )***, qui initie les variables locales de la classe et les attribue à l'objet instancié. Cette méthode est appelée **constructeur** (ou *initializer*).
+
+La méthode est une fonction qui appartient à une classe, et qui a donc accès à ses variables locales. Quand on écrit une méthode dans une classe, il faut lui donner ***self*** comme premier paramètre, qui sera implicitement remplacé par le nom de l'instance quand on appelera la méthode, et permettra ainsi d'accéder à ses attributs propres. Ainsi, quand on fait référence à *self.x* dans une méthode, cela se rapporte à la variable *x* de l'instance de classe qui appelle la méthode. Cette variabke *x* est définie en début de classe ou dans la méthode ***__init__( )***.
+
+Voici comment appeler une méthode à partir d'une instance de classe :
+```python
+thing.method()          # give no parameter if there is just self in the class method
+```
+
+Une **sous-classe**, ou **classe fille** (*child class*),  est une classe qui possède toutes les propriétés d'une autre classe, appelée **classe parent** ou **super-classe**, plus d'autres attributs ou méthodes potentiellement. Les données et méthodes de la classe parent sont accessibles depuis la sous-classe. C'est ce qu'on appelle l'**héritage**.
+
+Voici comment créer une sous-classe de Thing :
+```python
+class Something(Thing):
+```
+
+Les variables dites **publiques** (ex : *var*) sont des variables crées dans la classe mais accessibles et modifiables en dehors de la classe. Les variables **protégées** (ex : *_var*) sont accessibles, mais non modifiables en dehors de la classe sans une méthode setter, comme par exemple *set_var( )*. Enfin, les variables **privées** (ex : *__var*) ne sont ni accessibles ni modifiables en dehors de la classe, et nécessitent des méthodes particulières : un getter *get_var( )* et un setter *set_var( )*.
+*C'est en réalité fictif, il n'y a pas de protection comme dans d'autres langages, c'est plutôt une règle entre développeur en python.*
+
