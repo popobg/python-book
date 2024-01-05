@@ -4162,10 +4162,10 @@ On peut créer autant d'instances qu'on le souhaite, et un nom de variables peut
 
 **Une méthode peut créer une nouvelle variable class-local** :
 ```python
-    def introduce(self):
-        # name being a class-local variable created in __init__()
-        print(f"Hi, my name is {self.name}!")
-        self.introductions = True
+def introduce(self):
+    # name being a class-local variable created in __init__()
+    print(f"Hi, my name is {self.name}!")
+    self.introductions = True
 
 me = person("Jim")
 me.introduce()
@@ -4975,6 +4975,105 @@ Le premier argument est l'instance de classe et le second est le nom de la méth
 ![Origin of "duck typing"](image-14.png)
 </center>
 
+### 6.9. Good practice for __init__
+
+Il est préférable de faire des fonctions init simples, explicites et sans appel de fonction en cascade. Pour cela, on évite ce type de code :
+
+```python
+class Configuration:
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self._initialize()
+
+    def _initialize(self):
+        self._parse_config_file()
+        self._precompute_stuff()
+
+    def _parse_config_file(self):
+        # parse the file in self.filepath, and store
+        # data in a number of variables self.<attr>      
+        ...
+
+    def _precompute_stuff(self):
+        # use the variables defined in
+        # self._parse_config_file to compute and set
+        # new instance variables
+        ...
+```
+Les problèmes avec ce code :
+- Sur des fonctions init très longues, cela devient très très dur de distinguer les self.\<attr> s'ils ne sont pas dans le bloc d'init.
+- Une modification de variable (permise par le fait que Python ait un typage dynamique) devient très compliqué, puisqu'il ne suffit pas d'avoir un setter qui modifierait l'attribut dans la fonction init, et cela donnerait lieu à du code encore plus complexe.
+
+Pour améliorer cela, on ne crée plus une instance de classe mais on utilise une méthode statique (introduite par `@`) qui agit sur la classe et non sur l'instance :
+
+```python
+class Configuration:
+    def __init__(self, attr1: int, attr2: int) -> None:
+        self._attr1 = attr1
+        self._attr2 = attr2
+
+    @property
+    def get_attr1(self) -> int:
+        return self._attr1
+
+    @property
+    def get_attr2(self) -> int:
+        return self._attr2
+
+    @classmethod
+    def from_file(cls, filepath: str) -> Configuration:
+        parsed_data = cls._parse_config_file(filepath)
+        computed_data = cls._precompute_stuff(parsed_data)
+        return cls(
+            attr1 = parsed_data,
+            attr2 = computed_data,
+        )
+
+    @classmethod
+    def _parse_config_file(cls, filepath: str) -> int:
+        # parse the file in filepath and return the data
+        ...
+
+    @classmethod
+    def _precompute_stuff(cls, data: int) -> int:
+        # use data parsed from a config file to calculate new data
+        ...
+```
+Plusieurs bonnes pratiques dans le code ci-dessus :
+- **Simulation d'encapsulation** avec les _ pour indiquer que les variables sont privées.
+- **Restriction du typage dynamique** en indiquant dans la définition de fonction le type attendu, et le type de l'objet retourné par la fonction.
+- **Privilégier les types immuables**, comme le tuple.
+
+Pour mieux comprendre et tester ce code, nous allons le simplifier :
+```python
+class Configuration:
+    def __init__(self, attr1: str) -> None:
+        print("init")
+        self.attr1 = attr1
+
+    # optional
+    @property
+    def get_var(self) -> str:
+        return self.attr1
+
+    @classmethod
+    # cls is the instance's name created in the function
+    # the only arg the user give in filepath
+    def from_file(cls, filepath: str) -> Configuration:
+        print("from_file")
+        return cls(
+            attr1=filepath,
+        )
+
+c = Configuration.from_file("hello")
+print(c.get_var())
+```
+`from_file`\
+`init`\
+`hello`
+
+On lance donc d'abord la fonction `@classmethod` ***from-file( )***, qui n'est pas privée (pas d'underscore) et qui peut donc être appelée dans le *main* de notre programme. Cette fonction crée elle-même une instance de la classe Configuration et lui donne les attributs qu'elle a calculé. On peut aussi avoir des méthodes propres à l'instance `@property`, comme ***get( )*** et ***set( )***.
+
 ---
 ## Summary
 
@@ -5003,4 +5102,232 @@ class Something(Thing):
 
 Les variables dites **publiques** (ex : *var*) sont des variables crées dans la classe mais accessibles et modifiables en dehors de la classe. Les variables **protégées** (ex : *_var*) sont accessibles, mais non modifiables en dehors de la classe sans une méthode setter, comme par exemple *set_var( )*. Enfin, les variables **privées** (ex : *__var*) ne sont ni accessibles ni modifiables en dehors de la classe, et nécessitent des méthodes particulières : un getter *get_var( )* et un setter *set_var( )*.
 *C'est en réalité fictif, il n'y a pas de protection comme dans d'autres langages, c'est plutôt une règle entre développeur en python.*
+
+---
+## <center>Chapter 7: graphics
+
+### 7.1. Introduction to graphics programming
+---
+
+Le plus bas-niveau concernant la gestion de l'affichage dans un logiciel est la manipulation des pixels. Viennent ensuite des fonctions qui gèrent les lignes et les courbes, puis on retrouve des fonctions qui manipulent ces lignes pour créer des objets, comme des rectangles, des cercles, des ellipses,... On peut ensuite y ajouter de la couleur, puis vient le texte, les ombres et les images, et enfin les objets en 3D (avec perspective et textures).
+
+L'interface graphique standard pour Python est ***tkinter***. Ce module permet de créer des fenêtres, des dessins, des widgets comme des boutons,... \
+On trouve bien sûr des bibliothèques Python avec plus de modules graphiques si nécessaire.
+
+Pour les graphiques plus complexes, un autre module ***Pygame*** peut être utilisé.
+
+#### 7.1.1. Tkinter doc
+
+#### Illustration
+
+```python
+# import tkinter and its function ttk
+from tkinter import *
+from tkinter import ttk
+
+# initializes Tk and creates its associated Tcl interpreter
+# Creates the root window, main window of the application
+root = Tk()
+# Creates a frame widget, which in this case will contain a label and a button, created next
+# The frame is fit inside the root window
+frm = ttk.Frame(root, padding = 10)
+
+# grid() = specify the position of the label within its containing frame widget
+frm.grid()
+# Creates a label widget holding a static text string
+ttk.Label(frm, text = "Hello World!").grid(column = 0, row = 0)
+# Creates a button widget, placed to the right of the label
+# when pressed, will call the destroy() method of the root window
+ttk.Button(frm, text = "Quit", command = root.destroy).grid(column = 1, row = 0)
+
+# Puts everything on the display and responds to user input until the program terminates
+root.mainloop()
+```
+Les ***widgets*** sont des objets Python constituant l'interface utilisateur de Tkinter. Ils sont des instances de classes, comme `ttk.Frame`, `ttk.Label`, `ttk. Button`. \
+Il y a une **hiérarchie dans ces widgets** :  les labels et les buttons sont contenus dans la frame, elle-même contenue dans la fenêtre root. Quand on construit un *child* widget, on donne toujours son *parent* widget en premier argument au widget constructer.
+
+Ces widgets ont des options de configuration permettant de changer leur comportement et leur apparence.
+
+Les widgets ne sont pas automatiquement ajoutés à l'interface utilisateur ; il faut un *geometry manager* comme `grid` pour gérer l'agencement dans l'interface.
+
+Pour update l'intergace, il faut une *event loop* dans le programme.
+
+#### Understanding how Tkinter wraps Tcl/Tk
+
+Tcl est un langage de prommation dynamique interprété. Comme beaucoup de langage shell, le premier mot est la commande à exécuter, puis viennent les arguments.\
+Si on réécrit le code précédent en Tcl :
+
+```Tcl
+ttk::frame .frm -padding 10
+grid .frm
+grid [ttk::label .frm.lbl -text "Hello World!"] -column 0 -row 0
+grid [ttk::button .frm.btn -text "Quit" -command "destroy ."] -column 1 -row 0
+```
+La commande `ttk::---` permet de créer des widgets en Tcl.\
+Les widgets sont référencés par un *pathname* comme `frm.btn`. La hiérarchie est indiquée par l'ordre du pathname : *frm*, puis *btn* (*.* est un *path separator*).\
+
+#### Display the window
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# creating a variable for the window
+window = tk.Tk()
+window.title("Tkinter Variables")
+
+# run the program
+window.mainloop()
+```
+
+#### Setting options
+
+Les options permettent de gérer des attributs, comme la couleur ou l'épaisseur de la bordure d'un widget. Il existe trois manières de les paramétrer :
+- A la création de l'objet, en les mettant en arguments
+```python
+fred = Button(self, fg = "red", bg = "blue")
+```
+- Après la création de l'objet, en traitant l'option comme un index de dictionnaire (une *key*)
+```python
+fred["fg"] = "red"
+fred["bg"] = "blue"
+```
+- En utilisant la méthode ***config( )*** permettant de modifier un certain nombre d'attributs configurés lors de la création de l'objet
+```python
+fred.config(fg = "red", bg = "blue")
+```
+
+#### The packer
+
+L'un des mécanismes de gestion de l'espace (***geometry-management***). La dimension de la *master* widget est déterminée par les dimensions des *slave* widgets. On peut pack les widgets dans des frames, et les frames dans d'autres frames. **Il est nécessaire de configurer l'espace occupé par le widget dans la frame, sinon elle n'apparaîtra pas.**
+
+Un exemple de package :
+```python
+fred.pack()
+# defaults to side is "top"
+fred.pack(side = "left")
+fred.pack(expand = 1)
+```
+
+**Packer options:**
+- `anchor` : indique où le packer placera chaque *slave* widget
+- `expand` : booléen, `0` ou `1`
+- `fill` : legal values = `"x"`, `"y"`, `"both"`, `"none"`
+- `ipadx` et `ipady` : indique une distance = internal padding de chaque côté de la *slave widget*
+- `padx` et `pady` : indique une distance = external padding de chaque côté de la *slave widget*
+- `side` : legal values = `"left"`, `"right"`, `"top"`, `"bottom"`
+
+#### Coupling widget variables
+
+Tkinter propose des variables built-in permettant un update automatique et mutuel des widgets. Elles restent des structures de données basiques, comme des strings, des entiers ou des booléens.
+
+Imaginons que nous avons un `label` et un `Entry` qui doivent en permanence affichés le même texte. On peut alors utiliser une StringVar intermédiaire qui stocke la valeur d'entrée `Entry` et l'attribue automatiquement au `Label`.
+
+<center>
+
+![Alt text](image-15.png)
+</center>
+
+La StringVar fonctionne aussi dans l'autre sens : obtenir la valeur du `Label` et changer celle de l'`Entry`.
+
+Sans StringVar, il n'y a pas de connexion entre les deux widgets :
+```python
+import tkinter as tk
+from tkinter import ttk
+
+window = tk.Tk()
+window.title('Tkinter variables')
+
+# widgets
+label = ttk.Label(master = window, text = 'label')
+label.pack()
+
+entry = ttk.Entry(master = window)
+entry.pack()
+
+window.mainloop()
+```
+
+Ajoutons une StringVar :
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# if we press the button, the text in StringVar (so the one in label and entry)
+# is printed in the terminal output
+def button_func():
+    print(string_var.get())
+    # we update the text of the StringVar after pulling off the button
+    string_var.set('button pressed')
+
+window = tk.Tk()
+window.title('Tkinter variables')
+
+# tkinter variable
+# the argument given in StringVar() is the text we will see in label and entry
+# by running the program
+string_var = tk.StringVar(value = 'start value')
+# to change it later, we can do string_var.set('start value')
+
+# widgets
+label = ttk.Label(master = window, text = 'label', textvariable = string_var)
+label.pack()
+
+entry = ttk.Entry(master = window, textvariable = string_var)
+entry.pack()
+
+button = ttk.Button(master = window, text = 'button', command = button_func)
+button.pack()
+
+window.mainloop()
+```
+
+---
+### Aparté sur le typage :
+
+Depuis la version 3.10 du Python, on peut indiquer les types des variables (particulièrement utile en argument de fonction).
+
+```python
+hello: str = "hello world!"
+
+# | shows that we tolerate one type or another ; allowed since the version 3.10.
+# Before 3.10, we have to use the function Union in the typing module
+def add(x: int | float, y: int | float) -> int:
+    return x + y
+
+new_val: int = add(7, 4)
+```
+<br>
+
+Exemple avec un dictionnaire :
+```python
+str_int = {'one': 5, 'two': 7}
+
+def sum_dict(var: dict):
+    return sum(var[key] for key in var.keys())
+
+print(sum_dict(str_int))
+```
+`3`
+
+On peut aussi ajouter un argument optionnel à l'aide du module typing. La fonction attendra alors soit un argument None, soit un argument du type indiqué :
+
+```python
+from typing import Optional
+
+def add(x: int, y: int, op: Optional[str]) -> int:
+    ...
+
+new_val: int = add(7, 4, None)
+```
+Ce typage n'est cependant qu'informatif car Python ne lève pas d'erreur si l'argument passé n'est pas du type spécifié.
+
+#### 7.1.2. Tkinter beginner - Python GUI dev
+
+Vidéo youtube Tkinter.
+
+Dans le terminal, la commande `python -m tkinter` permet d'afficher une interface Tk avec la version installée.
+
+### 7.2. Graphics in Python-Pygame
+---
 
