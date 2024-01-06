@@ -5166,20 +5166,6 @@ grid [ttk::button .frm.btn -text "Quit" -command "destroy ."] -column 1 -row 0
 La commande `ttk::---` permet de créer des widgets en Tcl.\
 Les widgets sont référencés par un *pathname* comme `frm.btn`. La hiérarchie est indiquée par l'ordre du pathname : *frm*, puis *btn* (*.* est un *path separator*).\
 
-#### Display the window
-
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# creating a variable for the window
-window = tk.Tk()
-window.title("Tkinter Variables")
-
-# run the program
-window.mainloop()
-```
-
 #### Setting options
 
 Les options permettent de gérer des attributs, comme la couleur ou l'épaisseur de la bordure d'un widget. Il existe trois manières de les paramétrer :
@@ -5285,7 +5271,7 @@ window.mainloop()
 ---
 ### Aparté sur le typage :
 
-Depuis la version 3.10 du Python, on peut indiquer les types des variables (particulièrement utile en argument de fonction).
+Depuis la version 3.10 du Python, on peut indiquer les types des variables (particulièrement utile lors de la défintion d'une fonction).
 
 ```python
 hello: str = "hello world!"
@@ -5327,6 +5313,220 @@ Ce typage n'est cependant qu'informatif car Python ne lève pas d'erreur si l'ar
 Vidéo youtube Tkinter.
 
 Dans le terminal, la commande `python -m tkinter` permet d'afficher une interface Tk avec la version installée.
+
+3 concepts fondamentaux de l'affichage graphique Tkinter :
+- **Widgets** : principalement bouton (button), texte (text, label), zone d'entrée de texte (entry field)
+- **Layout** : définit l'arrangement des widgets dans la fenêtre (selon des colonnes et des lignes)
+- **Style** : définit l'apparence (taille du texte, police, couleur, couleur de l'arrière-plan, etc)
+
+#### Display the window
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# create a variable for the window
+window = tk.Tk()
+window.title("Tkinter Variables")
+# define the size of the window ('widthxheight' - pixels)
+window.geometry('300x150')
+
+# run the program
+window.mainloop()
+```
+#### Add widgets
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# create a variable for the window
+window = tk.Tk()
+window.title("Tkinter Variables")
+# define the size of the window ('widthxheight' - pixels)
+window.geometry('300x150')
+
+# title label
+# the master is the parent, which is the window for the first label
+# font = 'font fontsize format'
+title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
+# add the packer to see it into the window
+title_label.pack()
+
+# input field
+# creating the parent/master frame of other widgets
+input_frame = ttk.Frame(master = window)
+
+entry = ttk.Entry(master = input_frame)
+button = ttk.Button(master = input_frame, text = 'Convert')
+entry.pack()
+button.pack()
+input_frame.pack()
+
+# run the program
+window.mainloop()
+```
+
+L'ordre dans lequel on écrit les widgets importe : le `title label` est sur la première ligne (row), l'`input field` est sur la ligne suivante car mentionné ensuite dans le script. De la même façon, `entry.pack()` apparaît au-dessus de `button.pack()` dans la fenêtre.
+
+On gère plus en détail l'affichage des widgets dans la fenêtre :
+```python
+# side: move the widgets near each other
+# padx: distance between the two widgets in the abscissa axis, in pixels
+entry.pack(side = 'left', padx = 10)
+button.pack(side = 'left')
+# pady: distance between widgets in the ordinate axis, in pixels
+input_frame.pack(pady = 10)
+```
+
+#### Output
+```python
+output_label = ttk.Label(master = window, text = 'Output', font = 'Calibri 12')
+output_label.pack(pady = 5)
+```
+Il nous faut alors ajouter un argument `command` au bouton pour qu'il ait une réaction lorsqu'on appuie dessus, qui appellera une fonction que nous devrons définir. Nous allons aussi créer une variable qui permettra de synchroniser le bouton et l'output.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# functions
+def convert():
+    # print the entry_int variable that stocks the value of entry
+    print(entry_int.get())
+    # displays a text in the output label
+    output_string.set('test')
+
+# window
+window = tk.Tk()
+window.title("Tkinter Variables")
+window.geometry('300x150')
+
+# title label
+title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
+title_label.pack()
+
+# input field
+input_frame = ttk.Frame(master = window)
+
+# create a separate var that stores the value of entry and updates it
+entry_int = tk.IntVar()
+entry = ttk.Entry(master = input_frame, textvariable = entry_int)
+entry.pack()
+
+# no function's call in command
+button = ttk.Button(master = input_frame, text = 'Convert', command = convert)
+button.pack()
+input_frame.pack()
+
+# output
+output_string = tk.StringVar()
+output_label = ttk.Label(
+    master = window,
+    text = 'Output',
+    font = 'Calibri 12',
+    # the textvariable overwrites any text
+    textvariable = output_string)
+output_label.pack(pady = 5)
+
+# run the program
+window.mainloop()
+```
+
+Le programme final permettant intégrant la conversion est le suivant :
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+def convert():
+    mile_input = entry_int.get()
+    km_output = mile_input * 1.61
+    output_string.set(km_output)
+
+window = tk.Tk()
+window.title("Tkinter Variables")
+window.geometry('300x150')
+
+title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
+title_label.pack()
+
+input_frame = ttk.Frame(master = window)
+
+entry_int = tk.IntVar()
+entry = ttk.Entry(master = input_frame, textvariable = entry_int)
+entry.pack()
+
+button = ttk.Button(master = input_frame, text = 'Convert', command = convert)
+button.pack()
+input_frame.pack()
+
+output_string = tk.StringVar()
+output_label = ttk.Label(
+    master = window,
+    font = 'Calibri 12',
+    textvariable = output_string)
+output_label.pack(pady = 5)
+
+window.mainloop()
+```
+#### ttkbootstrap
+CSS framework proposant des templates pour la typographie, la forme,...\
+Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
+
+*Il est possible, à l'importation, de remplacer les strings données en paramètre par des constantes en majuscule : `from ttkbootstrap.constants import *` ; au lieu de `side = "left"`, on écrira alors `side = LEFT`.*
+
+On peut ensuite soit créer la fenêtre avec Tk : `window = tk.Tk()`, soit avec la classe ttkbootstrap `Window` : `window = ttk.Window()`. Il est plus intéressant d'utiliser Window() car on peut lui donner `style` comme paramètre plutôt que de l'utiliser comme méthode de l'instance window.
+
+***theme*** :\
+Le thème par défaut est litera. On trouve des thèmes clairs, dont fait partie litera : cosmo, flatly, journal, lumen, minty, pulse, sandstone, united, yeti, morph, simplex, cerculean. Les thèmes sombres sont : solar, superhero, darkly, cyborg, vapor.\
+*Je préfère personnellement superhero et darkly en thèmes sombres, et cosmo, litera ou cerculean en thèmes clairs.*
+
+```python
+window = ttk.Tk()
+style = ttk.Style("darkly")
+```
+OU
+```python
+window = ttk.Window(themename = "darkly")
+```
+
+<br>
+
+***style colors***:\
+On définit le style comme paramètre de la création des boutons : `b1 = ttk.Button(window, text = 'primary', bootstyle = 'primary')`.
+
+Pour afficher toutes les couleurs de boutons disponibles, il suffit de taper le code suivant :
+```python
+for color in window.style.colors:
+    b = ttk.Button(window, text = color, bootstyle = color)
+    b.pack(side = "left", padx = 5, pady = 5)
+```
+
+![Alt text](image-16.png)
+
+<br>
+
+***type of widget***:\
+On distingue par exemple des boutons **solid** ou **outline**.
+
+```python
+import ttkbootstrap as ttk
+
+window = ttk.Window()
+
+b1 = ttk.Button(root, text = "Solid Button", bootstyle = "success")
+b1.pack(side = "left", padx = 5, pady = 10)
+
+b2 = ttk.Button(root, text = "Outline Button", bootstyle = ("success", "outline"))
+b2.pack(side = "left", padx = 5, pady = 10)
+
+root.mainloop()
+```
+
+![Alt text](image-17.png)
+
+
 
 ### 7.2. Graphics in Python-Pygame
 ---
