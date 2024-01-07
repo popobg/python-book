@@ -5470,7 +5470,7 @@ output_label.pack(pady = 5)
 
 window.mainloop()
 ```
-#### ttkbootstrap
+### ttkbootstrap
 CSS framework proposant des templates pour la typographie, la forme,...\
 Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
 
@@ -5478,7 +5478,8 @@ Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. O
 
 On peut ensuite soit créer la fenêtre avec Tk : `window = tk.Tk()`, soit avec la classe ttkbootstrap `Window` : `window = ttk.Window()`. Il est plus intéressant d'utiliser Window() car on peut lui donner `style` comme paramètre plutôt que de l'utiliser comme méthode de l'instance window.
 
-***theme*** :\
+#### Theme
+
 Le thème par défaut est litera. On trouve des thèmes clairs, dont fait partie litera : cosmo, flatly, journal, lumen, minty, pulse, sandstone, united, yeti, morph, simplex, cerculean. Les thèmes sombres sont : solar, superhero, darkly, cyborg, vapor.\
 *Je préfère personnellement superhero et darkly en thèmes sombres, et cosmo, litera ou cerculean en thèmes clairs.*
 
@@ -5491,41 +5492,44 @@ OU
 window = ttk.Window(themename = "darkly")
 ```
 
-<br>
+#### Style colors
 
-***style colors***:\
-On définit le style comme paramètre de la création des boutons : `b1 = ttk.Button(window, text = 'primary', bootstyle = 'primary')`.
-
-Pour afficher toutes les couleurs de boutons disponibles, il suffit de taper le code suivant :
-```python
-for color in window.style.colors:
-    b = ttk.Button(window, text = color, bootstyle = color)
-    b.pack(side = "left", padx = 5, pady = 5)
-```
+On définit le style avec le paramètre `bootstyle` à la création des widgets. Si on prend l'exemple d'un bouton : `b1 = ttk.Button(window, text = 'primary', bootstyle = 'primary')` (couleur par défaut).
 
 ![Alt text](image-16.png)
 
-<br>
-
-***type of widget***:\
-On distingue par exemple des boutons **solid** ou **outline**.
+#### Button types
+---
+On distingue des boutons **solid** (par défaut), **outline** ou encore **link**.
 
 ```python
 import ttkbootstrap as ttk
 
 window = ttk.Window()
 
-b1 = ttk.Button(root, text = "Solid Button", bootstyle = "success")
+b1 = ttk.Button(window, text = "Solid Button", bootstyle = "success")
 b1.pack(side = "left", padx = 5, pady = 10)
 
-b2 = ttk.Button(root, text = "Outline Button", bootstyle = ("success", "outline"))
+b2 = ttk.Button(window, text = "Outline Button", bootstyle = ("success", "outline"))
 b2.pack(side = "left", padx = 5, pady = 10)
 
-root.mainloop()
+window.mainloop()
 ```
 
 ![Alt text](image-17.png)
 
+```python
+for color in window.style.colors:
+    b = ttk.Button(window, text = color, bootstyle = (color, "link"))
+    b.pack(side = "left", padx = 5, pady = 5)
+```
+
+![Alt text](image-18.png)
+
+On peut aussi désactiver le bouton, soit lors de sa création `b = Button(state = "disabled")`, soit à l'aide de la méthode *configure( )* `b.configure(state = "disabled")`.
+
+#### Checkbutton
+---
 
 
 ### 7.2. Graphics in Python-Pygame
