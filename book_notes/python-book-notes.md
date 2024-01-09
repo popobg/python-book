@@ -5528,8 +5528,35 @@ for color in window.style.colors:
 
 On peut aussi désactiver le bouton, soit lors de sa création `b = Button(state = "disabled")`, soit à l'aide de la méthode *configure( )* `b.configure(state = "disabled")`.
 
-#### Checkbutton
+#### Checkbutton types
 ---
+
+```python
+# default = square checkbox and label
+c1 = ttk.Checkbutton(window, text = "default", bootstyle = "success")
+c1.pack(side = "left", padx = 5, pady = 5)
+
+# toolbutton = solid button that toggles between an off and on color
+# outline toolbutton = same, with outline button
+c2 = ttk.Checkbutton(window, text = "toolbutton", bootstyle = "success", "toolbutton")
+c3 = ttk.Checkbutton(window, text = "outline toolbutton", bootstyle = "success", "outline toolbutton")
+c2.pack(side = "left", padx = 5, pady = 5)
+c3.pack(side = "left", padx = 5, pady = 5)
+
+# round toggle button = rounded button with a round indicator that changes color and position when toggled off and on
+c4 = ttk.Checkbutton(window, text = "round toggle", bootstyle = "success", "round-toggle")
+c4.pack(side = "left", padx = 5, pady = 5)
+
+# square toggle button = same, with a square indicator
+c5 = ttk.Checkbutton(window, text = "square toggle", bootstyle = "success", "square-toggle")
+c5.pack(side = "left", padx = 5, pady = 5)
+
+# disabled checkbutton
+c6 = ttk.Checkbutton(window, text = "disabled", bootstyle = "success", state = "disabled")
+c6.pack(side = "left", padx = 5, pady = 5)
+```
+
+![Alt text](image-19.png)
 
 
 ### 7.2. Graphics in Python-Pygame
