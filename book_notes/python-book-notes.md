@@ -3256,7 +3256,7 @@ Attention à utiliser correctement les fonctions récursives ; quand le plus eff
 
 ### Avoiding infinite recursion
 
-Il y a évidemment un maximum de récursives que peut faire une fonction, étant donné que cela consomme de la mémoire et que la mémoire est une ressource finie. Lorsqu'on atteint ce nombre max d'itérations, la fonction est considérée comme une *inifinite recursion* et lève une erreur.
+Il y a évidemment un maximum de récursives que peut faire une fonction, étant donné que cela consomme de la mémoire et que la mémoire est une ressource finie. Lorsqu'on atteint ce nombre max d'itérations (situation de "stack overflow"), la fonction est considérée comme une *inifinite recursion* et lève une erreur.
 
 Quelques règles simples pour éviter le problème de boucles infinies (dans le cas où les variables globales n'ont pas été référencées) :
 
@@ -5496,7 +5496,7 @@ window = ttk.Window(themename = "darkly")
 
 On définit le style avec le paramètre `bootstyle` à la création des widgets. Si on prend l'exemple d'un bouton : `b1 = ttk.Button(window, text = 'primary', bootstyle = 'primary')` (couleur par défaut).
 
-![Alt text](image-16.png)
+![style colors](image-16.png)
 
 #### Button types
 ---
@@ -5516,7 +5516,7 @@ b2.pack(side = "left", padx = 5, pady = 10)
 window.mainloop()
 ```
 
-![Alt text](image-17.png)
+![type buttons](image-17.png)
 
 ```python
 for color in window.style.colors:
@@ -5524,7 +5524,7 @@ for color in window.style.colors:
     b.pack(side = "left", padx = 5, pady = 5)
 ```
 
-![Alt text](image-18.png)
+![style colors](image-18.png)
 
 On peut aussi désactiver le bouton, soit lors de sa création `b = Button(state = "disabled")`, soit à l'aide de la méthode *configure( )* `b.configure(state = "disabled")`.
 
@@ -5556,8 +5556,88 @@ c6 = ttk.Checkbutton(window, text = "disabled", bootstyle = "success", state = "
 c6.pack(side = "left", padx = 5, pady = 5)
 ```
 
-![Alt text](image-19.png)
+![different buttons](image-19.png)
 
+#### Combobox
+---
+```python
+# default = input box with a styled border and arrow
+c1 = ttk.Combobox(window, text = "default")
+c1.pack(side = "left", padx = 5, pady = 5)
+
+# disabled
+c2 = ttk.Combobox(window, text = "disabled", state = "disabled")
+c2.pack(side = "left", padx = 5, pady = 5)
+
+# readonly
+c4 = ttk.Combobox(window, text = "read only", state = "readonly")
+c4.pack(side = "left", padx = 5, pady = 5)
+```
+
+#### DateEntry
+---
+```python
+# default = Entry widget + Button widget
+d = ttk.DateEntry(window)
+d.pack()
+```
+Il y a là aussi un mode disabled et readonly configurable.\
+On peut aussi afficher directement une DatePickerPopup.
+
+#### Entry
+---
+```python
+# an input box with a styled border (primary by default)
+# disabled and readonly mods available
+e = ttk.Entry(window)
+e.pack()
+```
+
+#### Floodgauge
+---
+```python
+# a progress bar with an optional display text
+f1 = ttk.Floodgauge(window, text = "success", bootstyle = "success")
+f1.pack()
+```
+
+#### Frame
+---
+```python
+# text with background color which matches the theme background by default
+f2 = ttk.Frame(window, text = "success", bootstyle = "success")
+f2.pack()
+```
+
+#### Label
+---
+```python
+# default = colored text without a background
+l1 = ttk.Label(window, text = "success", bootstyle = "success")
+l1.pack(side = "left", padx = 5, pady = 5)
+
+# inverse label = colored background with matching color text
+l2 = ttk.Label(window, text = "success", bootstyle = ("inverse", "success"))
+l2.pack(side = "left", padx = 5, pady = 5)
+```
+
+![label](image-20.png)
+
+#### Labelframe
+---
+```python
+# colored border and label
+l3 = ttk.Labelframe(window, text = "success", bootstyle = "success")
+l3.pack(side = "left", padx = 5, pady = 5)
+```
+
+#### Meter
+---
+```python
+# colored border and label
+l3 = ttk.Labelframe(window, text = "success", bootstyle = "success")
+l3.pack(side = "left", padx = 5, pady = 5)
+```
 
 ### 7.2. Graphics in Python-Pygame
 ---
