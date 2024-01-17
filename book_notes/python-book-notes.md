@@ -4917,7 +4917,7 @@ g = Game_object((12, 12, 12), None)
 m = Moving_object((13, 13, 13))
 
 print(m.get_position())
-m. move()
+m.move()
 m.draw()
 ```
 `game_object init`  # for g \
@@ -4991,7 +4991,7 @@ class Configuration:
 
     def _parse_config_file(self):
         # parse the file in self.filepath, and store
-        # data in a number of variables self.<attr>      
+        # data in a number of variables self.<attr>
         ...
 
     def _precompute_stuff(self):
@@ -5051,7 +5051,7 @@ class Configuration:
         print("init")
         self.attr1 = attr1
 
-    # optional
+    # optional: it makes you a getter function
     @property
     def get_var(self) -> str:
         return self.attr1
@@ -5066,7 +5066,7 @@ class Configuration:
         )
 
 c = Configuration.from_file("hello")
-print(c.get_var())
+print(c.attr1)
 ```
 `from_file`\
 `init`\
