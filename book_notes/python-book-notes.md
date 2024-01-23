@@ -5150,7 +5150,7 @@ Ces widgets ont des options de configuration permettant de changer leur comporte
 
 Les widgets ne sont pas automatiquement ajoutés à l'interface utilisateur ; il faut un *geometry manager* comme `grid` pour gérer l'agencement dans l'interface.
 
-Pour update l'intergace, il faut une *event loop* dans le programme.
+Pour update l'interface, il faut une *event loop* dans le programme.
 
 #### Understanding how Tkinter wraps Tcl/Tk
 
@@ -5164,7 +5164,7 @@ grid [ttk::label .frm.lbl -text "Hello World!"] -column 0 -row 0
 grid [ttk::button .frm.btn -text "Quit" -command "destroy ."] -column 1 -row 0
 ```
 La commande `ttk::---` permet de créer des widgets en Tcl.\
-Les widgets sont référencés par un *pathname* comme `frm.btn`. La hiérarchie est indiquée par l'ordre du pathname : *frm*, puis *btn* (*.* est un *path separator*).\
+Les widgets sont référencés par un *pathname* comme `frm.btn`. La hiérarchie est indiquée par l'ordre du pathname : *frm*, puis *btn* (*.* est un *path separator*).
 
 #### Setting options
 
@@ -5203,18 +5203,217 @@ fred.pack(expand = 1)
 - `padx` et `pady` : indique une distance = external padding de chaque côté de la *slave widget*
 - `side` : legal values = `"left"`, `"right"`, `"top"`, `"bottom"`
 
-#### Coupling widget variables
+#### 7.1.2. Tkinter beginner - Python GUI dev
 
-Tkinter propose des variables built-in permettant un update automatique et mutuel des widgets. Elles restent des structures de données basiques, comme des strings, des entiers ou des booléens.
+Vidéo youtube Tkinter.
 
-Imaginons que nous avons un `label` et un `Entry` qui doivent en permanence affichés le même texte. On peut alors utiliser une StringVar intermédiaire qui stocke la valeur d'entrée `Entry` et l'attribue automatiquement au `Label`.
+Dans le terminal, la commande `python -m tkinter` permet d'afficher une interface Tk avec la version installée.
+
+3 concepts fondamentaux de l'affichage graphique Tkinter :
+- **Widgets** : principalement bouton (button), texte (text, label), zone d'entrée de texte (entry field)
+- **Layout** : définit l'arrangement des widgets dans la fenêtre (selon des colonnes et des lignes)
+- **Style** : définit l'apparence (taille du texte, police, couleur, couleur de l'arrière-plan, etc)
+
+#### 7.1.2.1. Display the window
+
+La fenêtre porte souvent le nom de variable ***window*** ou ***root***, ou encore ***app***.\
+`mainloop()` vérifie régulièrement s'il y a eu des "events" (bouton cliqué, mouvement de souris, fermeture de la fenêtre...) et met à jour l'interface (gui). L'affichage ne peut pas fonctionner sans cette fonction. Notons égalmement que la ligne de commande `window.mainloop()` s'exécute toute la durée de l'affichage de la fenêtre, et s'il y a d'autres commandes après cette ligne, elles ne seront exécutées qu'après fermeture de la fenêtre.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# create a variable for the window
+window = tk.Tk()
+window.title("Tkinter Variables")
+
+# define the size of the window ('widthxheight' - pixels)
+window.geometry('300x150')
+
+# run the program
+window.mainloop()
+```
+#### 7.1.2.2. Add widgets
+
+Les premiers widgets sont les tk widgets, des ttk widgets ont été ajoutés ensuite et sont plus modernes, ont plus de fonctionnalités, etc
+
+**tk widgets** (plus rarement utilisés).
+```python
+# Text = basic text input box
+# the master is the parent, which is the window for the first label
+# without parameter, pack places the widget in the middle of the window (center)
+tk.Text(master = window).pack()
+
+# or with a variable
+text = tk.Text(window)
+text.pack()
+```
+
+**ttk widgets**
+```python
+# Label
+# font = 'font fontsize format'
+title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
+# add the packer to see it into the window
+title_label.pack()
+
+# input field
+# creating the parent/master frame of other widgets
+input_frame = ttk.Frame(master = window)
+
+# widgets added in the input frame
+# Entry = single line entry widget
+entry = ttk.Entry(master = input_frame)
+button = ttk.Button(master = input_frame, text = 'Convert')
+entry.pack()
+button.pack()
+input_frame.pack()
+```
+
+Il existe de nombreux types de boutons. Les principaux sont : `Button`, `Checkbutton` et `Radiobutton`. Ils ne sont utilisables correctement qu'avec les variables tkinter, car `Checkbutton` et `Radiobutton` n'ont pas de méthode *get( )*. Le `Button` a un paramètre `textvariable`, mais la `Checkbox` a un paramètre `variable`.\
+Si elles ne sont pas liées par une variable tkinter, plusieurs checkbuttons peuvent être cochées. Au contraire, les radiobuttons sont par défaut tous à la valeur 0 donc si on en coche un, on les active tous. En leur donnant des valeurs différentes dans les paramètres de création de l'objet, un seul peut être coché, et cliquer sur un annulera le cochage d'un autre.
+
+```python
+# basic solid button and its tkinter variable
+def button_func():
+    button_string.set('button pressed')
+    # pressing the button inform you about the value of the radiobutton currently checked
+    print(radio_var.get())
+
+button_string = tk.StringVar(value = "start")
+
+button = ttk.Button(window, text = "A simple button", command = button_func, textvariable = button_string)
+button.pack()
+
+# checkbutton and its tkinter variable
+# the tkinter variable is necessary to store
+# if the box is clicked (1 / True) or not (0 / False)
+# we can use a StringVar, an IntVar or a BooleanVar
+check_var = tk.IntVar(value = 10)
+
+# parameter onvalue sets the value if the box is clicked
+# parameter offvalue sets the value if the box is unclicked
+check1 = ttk.Checkbutton(window, text = "checkbox 1", command = lambda: print(check_var.get()), variable = check_var, onvalue = 10, offvalue = 5)
+check1.pack()
+
+check2 = ttk.Checkbutton(window, text = "checkbox 2", command = lambda: print("test"))
+check2.pack()
+
+# radiobuttons and their tkinter variable
+# without a different parameter in value (or no parameter at all = default value = 0), all the radiobutton are linked
+radio_var = tk.StringVar(value = 2)
+
+radio1 = ttk.Radiobutton(window, text = "Radiobutton 1", value = "radio 1", variable = radio_var, command = lambda: print(radio_var.get()))
+radio1.pack()
+
+radio2 = ttk.Radiobutton(window, text = "Radiobutton 2", value = 2, variable = radio_var)
+radio2.pack()
+```
+![Buttons](image-23.png)
+
+Dans le programme suivant nous connectons la checkbox et les radiobuttons de façon à ce qu'en cliquant sur la checkbox elle print la valeur du radiobutton actif, et que lorsqu'on coche un radiobutton la checkbox soit unchecked.
+```python
+def uncheck_checkbox():
+    check_var2.set(False)
+    print(radio_string.get())
+
+# checkbutton and its tkinter variable
+check_var2 = tk.BooleanVar()
+
+check3 = ttk.Checkbutton(window, text = "checkbox 3", command = lambda: print(radio_string.get()), variable = check_var2)
+check3.pack()
+
+# radiobuttons and their tkinter variable
+radio_string = tk.StringVar()
+
+radioA = ttk.Radiobutton(window, text = "Radio A", value = "A", variable = radio_string, command = uncheck_checkbox)
+radioA.pack()
+
+radioB = ttk.Radiobutton(window, text = "Radio B", value = "B", variable = radio_string, command = uncheck_checkbox)
+radioB.pack()
+```
+
+#### 7.1.2.3. Layout
+
+L'ordre dans lequel on écrit les widgets importe : le `title label` est sur la première ligne (row), l'`input field` est sur la ligne suivante car mentionné ensuite dans le script. De la même façon, `entry.pack()` apparaît au-dessus de `button.pack()` dans la fenêtre.
+
+On gère plus en détail l'affichage des widgets dans la fenêtre :
+```python
+# side: move the widgets near each other
+# padx/pady: distance between the two widgets in the abscissa/ordinate axis, in pixels
+# ipady/ipadx : distance between the border of the widget and its text
+entry.pack(side = 'left', padx = 10)
+button.pack(side = 'left', ipady = 10)
+
+# parameters of the global frame handle the position of the frame relative to the other frames
+input_frame.pack(pady = 10)
+```
+![](image-22.png)
+
+#### 7.1.2.5. setting/getting widget data
+
+***get method***
+
+/!\ Tous les widgets n'ont pas de méthode *get( )* (*le label n'en a pas par exemple*).
+```python
+import tkinter as tk
+from tkinter import ttk
+
+def button_func():
+    """get the content of the entry"""
+    print(entry.get())
+
+# window
+window = tk.Tk()
+window.title("Getting and setting widgets")
+window.geometry("300x200")
+
+# widgets
+label = ttk.Label(window, text = "I'm the label")
+label.pack()
+
+entry = ttk.Entry(window)
+entry.pack()
+
+button = ttk.Button(window, text = "I'm a button", command = button_func)
+button.pack()
+
+# run
+window.mainloop()
+```
+
+***config or configure method***
+
+Cette méthode permet de changer de nombreux paramètres définis initialement avec la création de l'objet
+```python
+label.configure(text = "some new text")
+
+# or
+label["text"] = "some new text"
+```
+On peut aussi par exemple changer l'état d'un widget, de actif à désactivé :
+
+```python
+entry.configure(state = "disabled")
+
+# or
+entry['state'] = "disabled"
+```
+De nombreux attributs peuvent être modifiés avec *configure( )*, on peut les retrouver : `print(widget.configure())` retourne toutes les options disponibles pour le widget qui nous intéresse.
+
+***Tkinter variables or coupling widget variables***
+
+Tkinter propose des variables built-in permettant de metter à jour automatiquement un widget si un autre est modifié et inversement. Elles stockent des structures de données basiques, comme des strings, des entiers ou des booléens.
+
+Imaginons que nous avons un `Label` et un `Entry` qui doivent en permanence afficher le même texte. On peut alors utiliser une StringVar intermédiaire qui stocke la valeur d'entrée `Entry` et l'attribue automatiquement au `Label`. L'input de *Entry* est une string, donc on crée une `tk.StringVar()`.\
+Il existe aussi des `IntVar()`, des `DoubleVar()` ou des `BooleanVar()`
 
 <center>
 
-![Alt text](image-15.png)
+![Tkinter variables](image-15.png)
 </center>
 
-La StringVar fonctionne aussi dans l'autre sens : obtenir la valeur du `Label` et changer celle de l'`Entry`.
+La StringVar fonctionne aussi dans l'autre sens : obtenir la valeur du `Label` et changer celle de l'`Entry`. Elles partagent les mêmes données.
 
 Sans StringVar, il n'y a pas de connexion entre les deux widgets :
 ```python
@@ -5267,124 +5466,203 @@ button.pack()
 
 window.mainloop()
 ```
+#### 7.1.2.5. Functions and event binding
 
----
-### Aparté sur le typage :
+**Que faire si notre fonction comporte des arguments ?**
 
-Depuis la version 3.10 du Python, on peut indiquer les types des variables (particulièrement utile lors de la défintion d'une fonction).
+Il faut d'abord savoir que tous les widgets ne supportent pas de paramètre `command`.
+
+2 solutions:
+- Utiliser lambda (manière la plus simple et la plus utilisée)
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("buttons, functions and arguments")
+window.geometry("300x150")
+
+# functions
+def button_func(entry_string):
+    print('a button was pressed')
+    print(entry_string.get())
+
+# widgets
+entry_string = tk.StringVar(value = "start")
+entry = ttk.Entry(window, textvariable = entry_string)
+entry.pack()
+
+# by default, the lambda function is not being code when the object is created
+button = ttk.Button(window, text = "Button", command = lambda: button_func(entry_string))
+button.pack()
+
+# run
+window.mainloop()
+```
+- Créer une fonction qui retourne une autre fonction prenant des arguments
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("buttons, functions and arguments")
+window.geometry("300x150")
+
+# functions
+def outer_func(arg):
+    def inner_func():
+        print('a button was pressed')
+        print(arg.get())
+    return inner_func
+
+# widgets
+entry_string = tk.StringVar(value = "start")
+entry = ttk.Entry(window, textvariable = entry_string)
+entry.pack()
+
+# by default, the lambda function is not being code when the object is created
+button = ttk.Button(window, text = "Button", command = outer_func(entry_string))
+button.pack()
+
+# run
+window.mainloop()
+```
+
+<br>**Event binding**
+
+Le fait d'assigner une fonction à un évènement survenu sur un widget est appelé ***event binding***. On utilise pour cela la méthode `bind(event, function, add = None)`.
+
+Un "évènement" peut être un input venant du clavier (*keyboard input*), un widget modifié, sélectionné/désélectionné, un mouvement, un clic ou un coup de molette de la souris.\
+On peut détecter et utiliser ces "events", par exemple lancer une fonction si un bouton est pressé.
+
+Pour l'utiliser, il faut donc lier l'évènement à un widget : `widget.bind(event, function)`.\
+Le format de l'event est toujours le suivant : **"\<modifier-type-detail>"**, comme par exemple *"\<Alt-KeyPress-a>"*.
+
+<center>
+
+| Event modifier | Meaning |
+| :---: | :---: |
+| Alt | maintenir la touche Alt |
+| Control | maintenir la touche Ctrl |
+| Shift | maintenir la touche Maj |
+| Any | pas de modifier |
+
+<br>
+
+| Most commonly used event types | Description |
+| :---: | :---: |
+| Activate (36) / Deactivate (37) | le paramètre *state* d'un widget passe **d'inactif à actif** / **d'actif à inactif** |
+| Button (4) / ButtonRelease (5) | un bouton de souris est pressé/relâché |
+| KeyPress (2) / KeyRelease (3) | une touche est pressée / relâchée |
+| Configure (22) | la taille du widget est modifiée |
+| Destroy (17) | le widget est détruit |
+| FocusIn (9) / FocusOut (10) | l'input focus (zone de texte) est déplacé **dans un widget** / **hors du widget** |
+| Leave (8) | le pointeur de la souris est déplacé **hors du widget** |
+| MouseWheel (38) | l'utilisateur scrolle haut/bas |
+<br>
+
+| Most commonly used event details | Description |
+| :---: | :---: |
+| Alt_L/R | touche Alt gauche/droite |
+| Control_L/R | touche Ctrl gauche/droite |
+| Shift_L/R | touche Maj gauche/droite |
+| Caps_Lock | touche Verr Maj |
+| Tab | touche Tab |
+| BackSpace | touche retour arrière (effacer) |
+| Return | touche Entrée |
+| Delete | touche suppr |
+| Escape | touche esc |
+| space | touche espace |
+| Fi | touche Fi avec i [1, 12] |
+| Home | touche Début / home |
+| Insert | touche Inser |
+| KP_i | touche nombre i sur le pavé numérique |
+| KP_Add / KP_Decimal / KP_Divide / KP_Multiply / KP_Substract | touches +, ., /, *, - du pavé numérique |
+| KP_Down/Up/RIght/Left | touches directionnelles du clavier |
+| Print | touche Impr écran |
+| Key | n'importe quelle touche |
+
+</center>
+<br>
 
 ```python
-hello: str = "hello world!"
+import tkinter as tk
+from tkinter import ttk
 
-# | shows that we tolerate one type or another ; allowed since the version 3.10.
-# Before 3.10, we have to use the function Union in the typing module
-def add(x: int | float, y: int | float) -> int:
-    return x + y
+# window
+window = tk.Tk()
+window.title("Event binding")
+window.geometry("600x500")
 
-new_val: int = add(7, 4)
+# widgets
+text = tk.Text(window)
+text.pack()
+
+entry = ttk.Entry(window)
+entry.pack()
+
+btn = ttk.Button(window, text = "a button")
+btn.pack()
+
+# events
+# we can bind an event to a widget or to the top-level window
+
+# when we are using a lambda function to catch an event,
+# we have to write "lambda event" before the fuction
+window.bind("<Alt-KeyPress-a>", lambda event: print("an event"))
+
+# run
+window.mainloop()
+```
+
+Le dernier argument que peut prendre bind, `add`, permet d'ajouter un appel de fonction à un event déjà défini. Il suffit alors de noter `add = "+"`. Si on oublie de préciser cet argument, la dernière ligne de code entrée pour ce binding écrasera la précédente.
+
+```python
+# functions
+def return_pressed(event):
+    print("Return key pressed.")
+
+def log(event):
+    print(event)
+
+# widget
+btn = ttk.Button(window, text = "Save")
+
+# binding
+# <Return> is the <Entrée> button in french
+# it calls 2 functions when it is pressed when focusing the button
+btn.bind("<Return>", return_pressed)
+btn.bind("<Return>", log, add = "+")
+
+# layout
+# the method focus bind the cursor on the widget
+btn.focus()
+btn.pack()
 ```
 <br>
 
-Exemple avec un dictionnaire :
+On peut bind à deux niveaux : une instance du widget, comme quand on lie `btn` (**instance-level binding**), ou une classe (**class-level binding**) :
 ```python
-str_int = {'one': 5, 'two': 7}
-
-def sum_dict(var: dict):
-    return sum(var[key] for key in var.keys())
-
-print(sum_dict(str_int))
+# the event will be bind to all the instances of the class that are on the program
+window.bind_class('Entry', '<Control-V>', paste)
 ```
-`3`
+<br>
 
-On peut aussi ajouter un argument optionnel à l'aide du module typing. La fonction attendra alors soit un argument None, soit un argument du type indiqué :
+On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : `widget.unbind(event)`, comme par exemple `btn.unbind('<Return>')`.
 
-```python
-from typing import Optional
+Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
 
-def add(x: int, y: int, op: Optional[str]) -> int:
-    ...
-
-new_val: int = add(7, 4, None)
-```
-Ce typage n'est cependant qu'informatif car Python ne lève pas d'erreur si l'argument passé n'est pas du type spécifié.
-
-#### 7.1.2. Tkinter beginner - Python GUI dev
-
-Vidéo youtube Tkinter.
-
-Dans le terminal, la commande `python -m tkinter` permet d'afficher une interface Tk avec la version installée.
-
-3 concepts fondamentaux de l'affichage graphique Tkinter :
-- **Widgets** : principalement bouton (button), texte (text, label), zone d'entrée de texte (entry field)
-- **Layout** : définit l'arrangement des widgets dans la fenêtre (selon des colonnes et des lignes)
-- **Style** : définit l'apparence (taille du texte, police, couleur, couleur de l'arrière-plan, etc)
-
-#### Display the window
-
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# create a variable for the window
-window = tk.Tk()
-window.title("Tkinter Variables")
-# define the size of the window ('widthxheight' - pixels)
-window.geometry('300x150')
-
-# run the program
-window.mainloop()
-```
-#### Add widgets
-
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# create a variable for the window
-window = tk.Tk()
-window.title("Tkinter Variables")
-# define the size of the window ('widthxheight' - pixels)
-window.geometry('300x150')
-
-# title label
-# the master is the parent, which is the window for the first label
-# font = 'font fontsize format'
-title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
-# add the packer to see it into the window
-title_label.pack()
-
-# input field
-# creating the parent/master frame of other widgets
-input_frame = ttk.Frame(master = window)
-
-entry = ttk.Entry(master = input_frame)
-button = ttk.Button(master = input_frame, text = 'Convert')
-entry.pack()
-button.pack()
-input_frame.pack()
-
-# run the program
-window.mainloop()
-```
-
-L'ordre dans lequel on écrit les widgets importe : le `title label` est sur la première ligne (row), l'`input field` est sur la ligne suivante car mentionné ensuite dans le script. De la même façon, `entry.pack()` apparaît au-dessus de `button.pack()` dans la fenêtre.
-
-On gère plus en détail l'affichage des widgets dans la fenêtre :
-```python
-# side: move the widgets near each other
-# padx: distance between the two widgets in the abscissa axis, in pixels
-entry.pack(side = 'left', padx = 10)
-button.pack(side = 'left')
-# pady: distance between widgets in the ordinate axis, in pixels
-input_frame.pack(pady = 10)
-```
-
-#### Output
+#### 7.1.2.6. Output
 ```python
 output_label = ttk.Label(master = window, text = 'Output', font = 'Calibri 12')
 output_label.pack(pady = 5)
 ```
-Il nous faut alors ajouter un argument `command` au bouton pour qu'il ait une réaction lorsqu'on appuie dessus, qui appellera une fonction que nous devrons définir. Nous allons aussi créer une variable qui permettra de synchroniser le bouton et l'output.
+Il nous faut alors ajouter un argument `command` au bouton pour qu'il ait une réaction lorsqu'on appuie dessus, qui appellera une fonction que nous devrons définir. On peut aussi utiliser des *lambdas functions* pour des fonctions très simples (`command = lambda: print("hello")`).\
+*Certaines fonctions sont déjà définies, comme destroy() pour les boutons qui met fin au programme.*
+
+Nous allons aussi créer une variable qui permettra de synchroniser le bouton et l'output.
 
 ```python
 import tkinter as tk
@@ -5433,7 +5711,7 @@ output_label.pack(pady = 5)
 window.mainloop()
 ```
 
-Le programme final permettant intégrant la conversion est le suivant :
+Le programme final intégrant la conversion est le suivant :
 
 ```python
 import tkinter as tk
@@ -5470,6 +5748,7 @@ output_label.pack(pady = 5)
 
 window.mainloop()
 ```
+---
 ### ttkbootstrap
 CSS framework proposant des templates pour la typographie, la forme,...\
 Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
@@ -5631,14 +5910,116 @@ l3 = ttk.Labelframe(window, text = "success", bootstyle = "success")
 l3.pack(side = "left", padx = 5, pady = 5)
 ```
 
-#### Meter
+#### Progressbar
 ---
 ```python
-# colored border and label
-l3 = ttk.Labelframe(window, text = "success", bootstyle = "success")
-l3.pack(side = "left", padx = 5, pady = 5)
+import ttkbootstrap as ttk
+
+# put a dark theme in the window, otherwise the progressbar can not be visible
+window = ttk.Window(themename = "darkly")
+window.geometry('500x250')
+
+# progress bar
+# bootstyle defines the color of the bar, maximum is the max value (max 200),
+# mode can be determinate or indeterminate if you don't want to choose the value of the bar,
+# length is the length of the total bar, value is the value displays in the bar
+# no text parameter
+pb1 = ttk.Progressbar(window, bootstyle = "danger", maximum = 100, mode = "determinate", length = 100, value = 80)
+pb1.pack(pady = 40)
+
+# striped can be add as a boostyle
+pb2 = ttk.Progressbar(window, bootstyle = ("light", "striped"), maximum = 200, mode = "determinate", length = 200, value = 100)
+pb2.pack(pady = 20)
+
+window.mainloop()
+```
+![progress bars](image-21.png)
+
+#### Radiobutton
+---
+```python
+# by default, its a round indicator button with text on its right
+# the indicator is filled when in a selected state, it can be disabled in the state parameter
+rd1 = ttk.Radiobutton(window, text = "success", bootstyle = "success")
+rd1.pack(padx = 5, pady = 5)
+
+# it can also be solid by adding "toolbutton" in the boostyle parameter,
+# outline by adding "outline" and "toolbutton" (or "outline-toolbutton")
+rd2 = ttk.Radiobutton(window, text = "success", bootstyle = ("success", "outline", "toolbutton"))
+rd2.pack(padx = 5, pady = 5)
+```
+#### Scale
+---
+```python
+# a thin gray trough with a round slider handle
+# no text parameter
+s = ttk.Scale(window, bootstyle = "success")
+s.pack(padx = 5, pady = 5)
+```
+
+#### Separator
+```python
+# a thin horizontal/vertical line drawn in the color defined in bootstyle
+# no text parameter
+s = ttk.Separator(window, bootstyle = "success")
+s.pack(padx = 5, pady = 5)
+```
+
+#### Sizegrip
+```python
+# a pattern of squares that allows you to manage the size of the window by clicking on it
+s = ttk.Separator(window, bootstyle = "success")
+s.pack(padx = 5, pady = 5)
+```
+
+#### Treeview
+```python
+# a solid background header that is the default theme background by default
+tv = ttk.Treeview(window, bootstyle = "success")
+tv.pack(padx = 5, pady = 5)
 ```
 
 ### 7.2. Graphics in Python-Pygame
 ---
 
+
+
+---
+### Aparté sur le typage :
+
+Depuis la version 3.10 du Python, on peut indiquer les types des variables (particulièrement utile lors de la défintion d'une fonction).
+
+```python
+hello: str = "hello world!"
+
+# | shows that we tolerate one type or another ; allowed since the version 3.10.
+# Before 3.10, we have to use the function Union in the typing module
+def add(x: int | float, y: int | float) -> int:
+    return x + y
+
+new_val: int = add(7, 4)
+```
+<br>
+
+Exemple avec un dictionnaire :
+```python
+str_int = {'one': 5, 'two': 7}
+
+def sum_dict(var: dict):
+    return sum(var[key] for key in var.keys())
+
+print(sum_dict(str_int))
+```
+`3`
+
+On peut aussi ajouter un argument optionnel à l'aide du module typing. La fonction attendra alors soit un argument None, soit un argument du type indiqué :
+
+```python
+from typing import Optional
+
+def add(x: int, y: int, op: Optional[str]) -> int:
+    ...
+
+new_val: int = add(7, 4, None)
+```
+Ce typage n'est cependant qu'informatif car Python ne lève pas d'erreur si l'argument passé n'est pas du type spécifié.
