@@ -3951,6 +3951,136 @@ Cela ajoute 20 nouveaux carrés à la suite des précédents. Au total, le fichi
 
 ---
 
+### 5.5. Argument parser
+
+`argparse` est un module d'analyse de ligne de commande (CLI) appartenant à la bibliothèque standard de Python. Un équivalent en C par exemple est `getop`. `argparse` se base sur `optparse`, ils sont donc très similaires.
+
+**Global use**
+```python
+import argparse
+
+# defines the parser
+parser = argparse.ArgumentParser(
+    prog="prog_name",
+    description="usage of the prog"
+)
+
+# defines a name for the positional arg given.
+parser.add_argument("first", help="the first argument is an int", type=int)
+parser.add_argument("second", help="the second argument is a str", type=str)
+
+# defines a name for the optional second arg given.
+parser.add_argument("-o", "--opt", help="optional arg")
+
+# parse the command line
+args = parser.parse_args()
+
+# to test the code without typing into the CLI,
+# give the args in a list to parse_args :
+# args = parser.parse_args(["0", "hello", "-o"])
+
+# print the first arg, the one who was given the name "first"
+print(args.first)
+```
+Les informations saisies en argument de la méthode `ArgumentParser()` s'afficheront dans l'invit de commande si on sasit `python path/to/prog -h`.\
+La méthode `add_argument` précise qu'à l'appel du script, il faudra préciser un ou plusieurs arguments, en fonction du nombre d'arguments précisés. Le paramètre `help` affichera la string qu'on lui donne comme valeur si jamais l'utilisateur oublie un argument dans la ligne de commande. Le paramètre `type` est très important puisqu'il définit le type de la variable qui stockera l'argument, et donc les opérations autorisées dessus.
+
+Un argument peut être **positionnel** (il est alors obligatoire), **optionnel** (le nom débute par `--`) ou **raccourcis** (le nom débute par `-`). Les arguments raccourcis sont des raccourcissements des arguments optionnels : `-v` est un raccourci de `--verbose`.\
+Si plusieurs arguments obligatoires sont nécessaires, c'est l'ordre dans lequel ils sont donnés qui détermine le nom auquel ils sont rattachés.\
+Si un argument optionnel/raccourci est défini et qu'aucun n'est présent dans la CLI, il se voit donner la valeur `None`. *On rappelle que `if None` == `False`.*\
+Si on ajoute le paramètre `action="store_true"`, cela signifie que si le paramètre optionnel est donné, `args.opt` == `True`, sinon `args.opt` = `False`.
+
+La ligne de commande doit ressembler à cela : `python path/to/prog_name first_arg second_arg --opt_arg` ou `python path/to/prog_name --opt_arg first_arg second_arg` ; l'ordre d'apparition des paramètres optionnels et obligatoires n'importe pas.\
+Le `parser` reconnaît donc dans la ligne de commande d'une part l'appel de python, puis le chemin vers le programme, et enfin le premier argument, nommé avec `add_argument`, puis éventuellement un second argument.
+
+**Optional argument**\
+Un argument optionnel peut aussi exiger qu'on lui donne une valeur associée. Par exemple, si on veut avoir plusieurs niveaux de verbosité sur un programme qui calcule le carré d'un nombre :
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("square", type=int,
+                    help="display a square of a given number")
+
+# the "choices" parameter limits the possibility of what value can be given to -v
+parser.add_argument("-v", "--verbosity", type=int, choices=[0, 1, 2],
+                    help="increase output verbosity")
+
+args = parser.parse_args()
+
+answer = args.square**2
+
+if args.verbosity == 2:
+    print(f"the square of {args.square} equals {answer}")
+
+elif args.verbosity == 1:
+    print(f"{args.square}^2 = {answer}")
+
+else:
+    print(answer)
+```
+
+On peut aussi écrire : `parser.add_argument("-v", "--verbosity", action="count", default=0, help="increase output verbosity")`. Cela nous autorise à écrire -v ou -vv, au lieu de donner 0, 1 ou 2 comme argument à -v, pour indiquer le niveau de verbosité attendu. Il faut spécifier la valeur par défaut si aucun argument optionnel n'est donné, sinon la valeur est `None` et suivant les opérations menées sur la valeur de cette option, cela peut conduire à des bugs.
+
+**Multiple args: nargs**\
+Pour indiquer qu'un paramètre peut prendre plusieurs arguments, on écrit dans `parser.add_argument("name", nargs = "*")`. *nargs = number of arguments*.
+
+| symbol | meaning |
+| :---: | :---: |
+| *n* | un nombre *n* (ex : 3)
+| *?* | un seul élément, qui peut être optionnel |
+| * | un nombre fini de valeurs (de **0** à >>>) qui seront rassemblées en liste |
+| + | un nombre fini de valeurs (de **1** à >>>) qui seront rassemblées en liste |
+| *argparse.REMAINDER* | toutes les valeurs données **non attribuées à des variables positionnelles, donc obligatoires**.<br>On ne peut pas utiliser cette méthode en présence d'argument optionnel. |
+<br>
+
+Des situations ambiguës peuvent survenir, avec un nombre inconnu d'arguments positionnels et optionnels. Soit on fait apparaître en premier les arguments positionnels puis les optionnels, soit on sépare les deux par "--" :
+```python
+parser = argparse.ArgumentParser(prog='PROG')
+
+parser.add_argument('-n', nargs='+')
+parser.add_argument('args', nargs='*')
+
+# ambiguous, so parse_args assumes it's an option
+parsed = parser.parse_args(['-f'])
+print(f"-n: {parsed.n}, args: {parsed.args}")
+
+# ambiguous, so no option and 1 args "-f"
+parsed = parser.parse_args(['--', '-f'])
+print(f"-n: {parsed.n}, args: {parsed.args}")
+
+# every elements go in -n
+parsed = parser.parse_args(['-n', '1', '2', '3'])
+print(f"-n: {parsed.n}, args: {parsed.args}")
+
+# good way to distinguishe the two types of args
+parsed = parser.parse_args(['-n', '1', '--', '2', '3'])
+print(f"-n: {parsed.n}, args: {parsed.args}")
+```
+Output :\
+`error: unrecognized arguments: -f`\
+`-n: None, args: ["-f"]`\
+`-n: ["1", "2", "3"], args: []`\
+`-n: ["1"], args: ["2", "3"]`
+
+**Conflicting options**\
+La méthode `parser.add_mutually_exclusive_group()` autorise la définition d'options qui entrent en conflit l'une avec l'autre (comme une option `--verbose` et une option `--quiet` par exemple).
+
+**sys.argv**\
+C'est une autre façon de récupérer les informations du CLI, mais avec beaucoup moins d'options.\
+La méthode `argv` vient du module `sys`.
+
+```python
+import sys
+
+# name of the script
+first_arg = sys.argv[0]
+
+# arg given
+second_arg = sys.argv[1]
+```
+
 ## Chapter 6: classes
 
 ### 6.1. A casual introduction to classes
@@ -5276,7 +5406,7 @@ radio1.pack()
 radio2 = ttk.Radiobutton(window, text = "Radiobutton 2", value = 2, variable = radio_var)
 radio2.pack()
 ```
-![Buttons](image-23.png)
+![Buttons](image-22.png)
 
 Dans le programme suivant nous connectons la checkbox et les radiobuttons de façon à ce qu'en cliquant sur la checkbox elle print la valeur du radiobutton actif, et que lorsqu'on coche un radiobutton la checkbox soit unchecked.
 ```python
@@ -5573,7 +5703,7 @@ style.configure("TLabel", font = ("Helvetica", 11), background = "purple", foreg
 # run
 window.mainloop()
 ```
-![Style 1](image-24.png)
+![Style 1](image-23.png)
 
 Si on veut par contre que notre style ne s'applique pas à toute la classe *Label* mais seulement à une instance, on ajoute un paramètre `style` à la création de l'objet, dans lequel on lui assigne une instance particulière avant le nom du style *TLabel*. La construction est la suivante : `new_style.built-in_style`.\
 On peut créer une instance `label.TLabel`, d'où découlerait deux sous-instances `Warning.label.Tlabel` (bg = "red" par exemple) et `Info.label.TLabel` (bg = "blue") par exemple.\
@@ -5585,7 +5715,7 @@ label.pack(side = "top")
 style = ttk.Style(window)
 style.configure("label.TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
 ```
-![Style 2](image-25.png)
+![Style 2](image-24.png)
 
 Si on veut appliquer à tous les widgets un style, il suffit de donner `"."` comme premier argument à `style.configure`. Ce . représente la fenêtre entière.
 
@@ -5755,7 +5885,7 @@ button.pack(side = 'left', ipady = 10)
 
 input_frame.pack(pady = 10)
 ```
-![](image-22.png)
+![](image-21.png)
 
 | pack() parameters | Meaning |
 | :---: | :---: |
@@ -5797,7 +5927,7 @@ style.configure("label3.TLabel", background = "#8c7172")
 # run
 window.mainloop()
 ```
-![Pack](image-26.png)
+![Pack](image-25.png)
 
 Autre exemple avec une fenêtre de connexion :
 ```python
@@ -5828,7 +5958,7 @@ ttk.Button(window, text = "Login").pack(anchor = "w", padx = 10, pady = 5, fill 
 # run
 window.mainloop()
 ```
-![Login tkinter window](image-27.png)
+![Login tkinter window](image-26.png)
 
 2. **grid()**
 
@@ -6405,17 +6535,17 @@ c1.pack(side = "left", padx = 5, pady = 5)
 
 # toolbutton = solid button that toggles between an off and on color
 # outline toolbutton = same, with outline button
-c2 = ttk.Checkbutton(window, text = "toolbutton", bootstyle = "success", "toolbutton")
-c3 = ttk.Checkbutton(window, text = "outline toolbutton", bootstyle = "success", "outline toolbutton")
+c2 = ttk.Checkbutton(window, text = "toolbutton", bootstyle = ("success", "toolbutton"))
+c3 = ttk.Checkbutton(window, text = "outline toolbutton", bootstyle = ("success", "outline toolbutton"))
 c2.pack(side = "left", padx = 5, pady = 5)
 c3.pack(side = "left", padx = 5, pady = 5)
 
 # round toggle button = rounded button with a round indicator that changes color and position when toggled off and on
-c4 = ttk.Checkbutton(window, text = "round toggle", bootstyle = "success", "round-toggle")
+c4 = ttk.Checkbutton(window, text = "round toggle", bootstyle = ("success", "round-toggle"))
 c4.pack(side = "left", padx = 5, pady = 5)
 
 # square toggle button = same, with a square indicator
-c5 = ttk.Checkbutton(window, text = "square toggle", bootstyle = "success", "square-toggle")
+c5 = ttk.Checkbutton(window, text = "square toggle", bootstyle = ("success", "square-toggle"))
 c5.pack(side = "left", padx = 5, pady = 5)
 
 # disabled checkbutton
@@ -6424,57 +6554,6 @@ c6.pack(side = "left", padx = 5, pady = 5)
 ```
 
 ![different buttons](image-19.png)
-
-#### Combobox
----
-```python
-# default = input box with a styled border and arrow
-c1 = ttk.Combobox(window, text = "default")
-c1.pack(side = "left", padx = 5, pady = 5)
-
-# disabled
-c2 = ttk.Combobox(window, text = "disabled", state = "disabled")
-c2.pack(side = "left", padx = 5, pady = 5)
-
-# readonly
-c4 = ttk.Combobox(window, text = "read only", state = "readonly")
-c4.pack(side = "left", padx = 5, pady = 5)
-```
-
-#### DateEntry
----
-```python
-# default = Entry widget + Button widget
-d = ttk.DateEntry(window)
-d.pack()
-```
-Il y a là aussi un mode disabled et readonly configurable.\
-On peut aussi afficher directement une DatePickerPopup.
-
-#### Entry
----
-```python
-# an input box with a styled border (primary by default)
-# disabled and readonly mods available
-e = ttk.Entry(window)
-e.pack()
-```
-
-#### Floodgauge
----
-```python
-# a progress bar with an optional display text
-f1 = ttk.Floodgauge(window, text = "success", bootstyle = "success")
-f1.pack()
-```
-
-#### Frame
----
-```python
-# text with background color which matches the theme background by default
-f2 = ttk.Frame(window, text = "success", bootstyle = "success")
-f2.pack()
-```
 
 #### Label
 ---
@@ -6490,39 +6569,6 @@ l2.pack(side = "left", padx = 5, pady = 5)
 
 ![label](image-20.png)
 
-#### Labelframe
----
-```python
-# colored border and label
-l3 = ttk.Labelframe(window, text = "success", bootstyle = "success")
-l3.pack(side = "left", padx = 5, pady = 5)
-```
-
-#### Progressbar
----
-```python
-import ttkbootstrap as ttk
-
-# put a dark theme in the window, otherwise the progressbar can not be visible
-window = ttk.Window(themename = "darkly")
-window.geometry('500x250')
-
-# progress bar
-# bootstyle defines the color of the bar, maximum is the max value (max 200),
-# mode can be determinate or indeterminate if you don't want to choose the value of the bar,
-# length is the length of the total bar, value is the value displays in the bar
-# no text parameter
-pb1 = ttk.Progressbar(window, bootstyle = "danger", maximum = 100, mode = "determinate", length = 100, value = 80)
-pb1.pack(pady = 40)
-
-# striped can be add as a boostyle
-pb2 = ttk.Progressbar(window, bootstyle = ("light", "striped"), maximum = 200, mode = "determinate", length = 200, value = 100)
-pb2.pack(pady = 20)
-
-window.mainloop()
-```
-![progress bars](image-21.png)
-
 #### Radiobutton
 ---
 ```python
@@ -6535,14 +6581,6 @@ rd1.pack(padx = 5, pady = 5)
 # outline by adding "outline" and "toolbutton" (or "outline-toolbutton")
 rd2 = ttk.Radiobutton(window, text = "success", bootstyle = ("success", "outline", "toolbutton"))
 rd2.pack(padx = 5, pady = 5)
-```
-#### Scale
----
-```python
-# a thin gray trough with a round slider handle
-# no text parameter
-s = ttk.Scale(window, bootstyle = "success")
-s.pack(padx = 5, pady = 5)
 ```
 
 #### Separator
@@ -6558,13 +6596,6 @@ s.pack(padx = 5, pady = 5)
 # a pattern of squares that allows you to manage the size of the window by clicking on it
 s = ttk.Separator(window, bootstyle = "success")
 s.pack(padx = 5, pady = 5)
-```
-
-#### Treeview
-```python
-# a solid background header that is the default theme background by default
-tv = ttk.Treeview(window, bootstyle = "success")
-tv.pack(padx = 5, pady = 5)
 ```
 
 ### 7.2. Graphics in Python-Pygame
