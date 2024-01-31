@@ -5299,9 +5299,192 @@ radioA.pack()
 radioB = ttk.Radiobutton(window, text = "Radio B", value = "B", variable = radio_string, command = uncheck_checkbox)
 radioB.pack()
 ```
-**Combobox and spinbox widgets**
+**Combobox and spinbox widgets**\
+La `Combobox` correspond à un menu déroulant (*drop down menu*) dans lequel on peut sélectionner un item.\
+La `Spinbox` est une entry avec des flèches de sélection (ex : incrémentation).\
+Elles ont toutes les deux une **liste de valeurs** qu'elles peuvent prendre et peuvent être connectées à une variable Tkinter.
 
+```python
+import tkinter as tk
+from tkinter import ttk
 
+# window
+window = tk.Tk()
+window.title("Combo & spin")
+window.geometry("300x300")
+
+# combobox and Tkinter var
+# objects used later in the creation of an object
+# have to be defined first
+items = ("ice cream", "pizza", "broccoli")
+food_string = tk.StringVar(value = items[0])
+
+combobox = ttk.Combobox(window, values = items, textvariable = food_string)
+combobox.pack(side = "top", pady = 10)
+
+# event
+# combobox has a special event that calls a function
+# everytime an item of the combobox is selected
+combobox.bind('<<ComboboxSelected>>', lambda event: label.configure(text = f"{food_string.get()}. Yummy!"))
+
+# frame and labels
+frame = ttk.Frame(window)
+frame.pack()
+
+label_not_linked = ttk.Label(frame, text = "favorite food is: ")
+label_not_linked.pack(side = "left", pady = 20)
+
+label = ttk.Label(frame, text = "any food")
+label.pack(side = "left")
+
+# spinbox and its tkinter var
+spin_int = tk.IntVar(value = 2)
+
+# we can set values from a value to another.
+# increment defines a pas.
+# note that the spinbox has a "command" parameter.
+spinbox = ttk.Spinbox(window, from_ = 0, to = 10, increment = 2, textvariable = spin_int)
+spinbox.pack(pady = 30)
+
+# events
+spinbox.bind("<<Increment>>", lambda event : print("up"))
+spinbox.bind("<<Decrement>>", lambda event : print("down"))
+
+# run
+window.mainloop()
+```
+Petite précision sur le pas de la `Spinbox` : quel que soit le pas défini, la plus haute/plus basse valeurs affichées seront celles données comme bornes. De plus, l'incrémentation/décrémentation se base sur la dernière borne atteinte. Ex : un pas de 3 entre 0 et 10 donnera l'output suivant en incrémentation : `0, 3, 6, 9, 10` puis l'output suivant en décrémentation : `10, 7, 4, 1, 0`
+
+**Tables with Treeview widget**\
+*Rappel : on peut sélectionner plusieurs lignes à la fois en cliquant sur ctrl ou Shift pour sélectionner les lignes entre deux bornes.*
+
+Comme les Combobox et les Spinbox, les Treeview ont des options d'event bindings particulières.
+```python
+import random
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("Tables with treeview")
+window.geometry("600x400")
+
+# data
+first_names = ["Bob", "Maria", "Alex", "Henry", "Lisa", "Anna", "Lisa"]
+last_names = ["Smith", "Brown", "Wilson", "Thomson", "Cook", "Walker", "Clark"]
+
+# treeview
+# the parameter show = "headings" is necessary so we can see the text in it
+table = ttk.Treeview(window, columns = ("first", "last", "email"), show = "headings")
+
+# the headings are necessary to see the name of the columns
+table.heading("first", text = "First name")
+table.heading("last", text = "Last name")
+table.heading("email", text = "Email")
+
+# layout
+# fill in the x and y directions in all the extra space available
+table.pack(fill = "both", expand = True)
+
+# insert values into a table
+for i in range(100):
+    first = random.choice(first_names)
+    last = random.choice(last_names)
+    email = f"{first}{last}@email.com"
+
+    data = (first, last, email)
+
+    # parent is usually a blank string
+    table.insert(parent = "", index = 0, values = data)
+
+# index (0 by default) determines where the values will be put in the table
+# to place the item in the end, index = tk.END
+table.insert(parent = "", index = tk.END, values = ("Bob", "Bob", "BobBob@email.com"))
+
+# functions
+def item_select(_):
+    # table.selection returns the specific ID of the item
+    # (placed in a specific space in the table) on a tuple
+    for i in table.selection():
+        # get the item from the tuple
+        print(table.item(i)["values"])
+
+def delete_items(_):
+    # delete the selected item by pressing the delete key (suppr)
+    for i in table.selection():
+        table.delete(i)
+
+# events
+# specific treeview event binding
+# calls the function when a line is selected
+table.bind("<<TreeviewSelect>>", item_select)
+
+table.bind("<Delete>", delete_items)
+
+# run
+window.mainloop()
+```
+**Scales and sliders**\
+Les objets **progress bar** et **slider** affichent tous les deux une progression dans une dimension. Le slider est créé par `ttk.Scale`.\
+La `scale` peut être manipulée par l'utilisateur ou avoir un mouvement indépendant, tandis que la `progress bar` ne fonctionne qu'indépendamment.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import scrolledtext
+
+# window
+window = tk.Tk()
+window.title("Scales and sliders")
+window.geometry("600x500")
+
+# Tkinter VAR
+# DoubleVar store floatting values
+# the slicer will be set initially at the value of the tkinter var
+scale_var = tk.DoubleVar(value = 15)
+
+# SLIDER
+# set on vertical slider
+scale = ttk.Scale(window,
+                  # parameter "command value" is activated anytime
+                  # we are clicking on the scale (like a button).
+                  # progress.stop() : stop the motion of the progress bar
+                  command = lambda value: progress.stop(),
+                  # don't forget the underscore for from_
+                  from_ = 0,
+                  to = 25,
+                  # determines the length of the slider
+                  length = 300,
+                  # by default, orient = "horizontal"
+                  orient = "vertical",
+                  variable = scale_var)
+scale.pack()
+
+# PROGRESS BAR
+progress = ttk.Progressbar(window,
+                           variable = scale_var,
+                           maximum = 25,
+                           orient = "horizontal",
+                           # the progress bar is full
+                           # if set on "indeterminate",
+                           # it is a slider
+                           mode = "determinate",
+                           length = 400)
+progress.pack(side = "left", pady = 20)
+
+# set the progress bar into motion
+# the set value is the frequency of update in ms (1000ms = 1s)
+progress.start(1000)
+
+# SCROLLED TEXT
+# we can also create our own scrolled text with a slider and a textbox
+# this scrolled text is a particular widget already programed in tkinter
+scrolled_text = scrolledtext.ScrolledText(window, width = 50, height = 5)
+scrolled_text.pack()
+
+# run
+window.mainloop()
+```
 
 #### 7.1.2.3. Style and themes
 ---
@@ -5455,14 +5638,112 @@ style.map("TButton", background = [("pressed", "blue"), ("active", "red")])
 ```
 
 #### 7.1.2.4. Layout and geometry managers
+---
+La dimension de la *master* widget est déterminée par les dimensions des *slave* widgets par défaut. La taille des widgets "enfants" écrasera les dimensions des "master" widgets définies lors de la création de l'instance.
 
-La dimension de la *master* widget est déterminée par les dimensions des *slave* widgets. On peut pack les widgets dans des frames, et les frames dans d'autres frames. **Il est nécessaire de configurer l'espace occupé par le widget dans la frame, sinon elle n'apparaîtra pas.**
+L'ordre dans lequel on place les widgets est important : un objet `pack()` en premier sera affiché sur haut dans la fenêtre qu'un objet pack ensuite, même si l'instance de l'objet est créé plus tôt. **C'est l'ordre dans lequel on place les instances à l'aide du geometry manager qui importe**.\
+Evidemment, l'instance de l'objet doit être définie avant d'appeler le geometry manager dessus, puisque ce sont des méthodes.
 
-L'ordre dans lequel on écrit les widgets est important : le `title label` est sur la première ligne (row), l'`input field` est sur la ligne suivante car mentionné ensuite dans le script. De la même façon, le layout doit être écrit après la création de l'instance du widget.
+On peut pack les widgets dans des frames, et les frames dans d'autres frames. **Il est nécessaire de configurer l'espace occupé par le widget dans la frame, sinon elle n'apparaîtra pas.**
+
+**Frames and parenting**\
+Une `Frame` est un widget **vide** qui peut être utilisé comme "master" en paramètre d'autres widgets.\
+C'est un widget "contenant" qui permet de mieux organiser sa fenêtre. On organise les widgets "enfants" dans la Frame, qu'on place ensuite dans la fenêtre (dont elle est elle-même l'enfant).
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import scrolledtext
+
+# window
+window = tk.Tk()
+window.title("Frames and parenting")
+window.geometry("600x400")
+
+# FRAME
+frame = ttk.Frame(window,
+                  width = 200,
+                  height = 200,
+                  borderwidth = 10,
+                  # by default, relief = tk.FLAT, which is invisible
+                  # we also have tk.RAISED, tk.SUNKEN or tk.RIDGE
+                  relief = tk.GROOVE)
+
+# width and height are overwright by the size of their children.
+# the method below, set to False, do the opposite
+frame.pack_propagate(False)
+frame.pack(side = "left")
+
+# MASTER SETTING
+
+# frame's slave widgets
+label = ttk.Label(frame, text = "Label in frame")
+label.pack()
+
+button = ttk.Button(frame, text = "button on the frame")
+button.pack()
+
+# window's slave widget
+label2 = ttk.Label(window, text = "Label oustide frame")
+label2.pack()
+
+# run
+window.mainloop()
+```
+
+**Tabs**\
+Ce widget provient du `ttk.Notebook`. Le **notebook** est le master d'un ensemble de widgets "enfants", le plus souvent des `frames`. Chaque `frame` est un `tab`.\
+Ce système permet de rendre certains widgets visibles / invisibles.
+
+Les widgets "enfants" (les frames) partagent tous la même taille, définies elle-même par la taille des widgets qu'ils contiennent. C'est donc celui qui occupe le plus d'espace qui défini la taille des autres.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import scrolledtext
+
+# window
+window = tk.Tk()
+window.title("Frames and parenting")
+window.geometry("600x400")
+
+# notebook widget
+notebook = ttk.Notebook(window)
+
+# tab 1
+tab1 = ttk.Frame(notebook, relief = tk.GROOVE)
+
+label1 = ttk.Label(tab1, text = "Label in tab 1")
+label1.pack()
+
+entry1 = ttk.Entry(tab1)
+entry1.pack(pady = 20)
+
+# tab2
+# less space occupied but same size as tab1
+tab2 = ttk.Frame(notebook, relief = tk.GROOVE)
+
+button1 = ttk.Button(tab2, text = "Button in tab 2")
+button1.pack()
+
+# add to notebook
+notebook.add(tab1, text = "first tab")
+notebook.add(tab2, text = "second tab")
+
+# pack everything
+notebook.pack()
+
+# run
+window.mainloop()
+```
+
+**Menus**\
+
+
+**Geometry managers**\
+Les geometry managers (gestion de l'espace) sont des méthodes appelées sur les widgets qui permettent de les agencer les uns par aux autres et dans la fenêtre.
 
 La première chose à comprendre dans l'affichage graphique est que x est l'abscisse (horizontal) et y l'orodonnée (vertical), et les coordonnées (0, 0) sont placées en haut à gauche de la fenêtre.
-
-Les geometry managers (gestion de l'espace) sont des méthodes appelées sur les widgets qui permettent de les agencer les uns par aux autres et dans la fenêtre.
 
 1. **pack()**
 
@@ -5636,6 +5917,7 @@ widget.place(relwidth = 0.5, relheight = 0.5)
 ```
 
 #### 7.1.2.5. setting/getting widget data
+---
 
 ***get method***
 
@@ -5685,6 +5967,7 @@ entry['state'] = "disabled"
 ```
 
 #### 7.1.2.6. Tkinter variables or coupling widget variables
+---
 
 Tkinter propose des variables built-in permettant de metter à jour automatiquement un widget si un autre est modifié et inversement. Elles stockent des structures de données basiques, comme des strings, des entiers ou des booléens.
 
@@ -5750,6 +6033,7 @@ button.pack()
 window.mainloop()
 ```
 #### 7.1.2.7. Functions and event binding
+---
 
 **Que faire si notre fonction comporte des arguments ?**
 
@@ -5916,6 +6200,8 @@ window.bind("<Motion>", get_pos)
 # run
 window.mainloop()
 ```
+Pour rappel, certains objets ttk ont des events particuliers leur permettant d'appeler une fonction quand une partie est sélectionnée (Combobox, Spinbox, Treeview). La syntaxe est particuière, souvent l'option s'écrit `widget.bind("<<WidgetSelected>>", function)`.
+
 <br>
 
 Le dernier argument que peut prendre bind, `add`, permet d'ajouter un appel de fonction à un event déjà défini. Il suffit alors de noter `add = "+"`. Si on oublie de préciser cet argument, la dernière ligne de code entrée pour ce binding écrasera la précédente.
@@ -5956,6 +6242,7 @@ On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : 
 Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
 
 #### 7.1.2.8. Output
+---
 ```python
 output_label = ttk.Label(master = window, text = 'Output', font = 'Calibri 12')
 output_label.pack(pady = 5)
