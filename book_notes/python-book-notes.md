@@ -5366,9 +5366,11 @@ entry.pack()
 button.pack()
 input_frame.pack()
 ```
-**Buttons**\
+**Buttons and related types**\
 Il existe de nombreux types de boutons. Les principaux sont : `Button`, `Checkbutton` et `Radiobutton`. Ils ne sont utilisables correctement qu'avec les variables tkinter, car `Checkbutton` et `Radiobutton` n'ont pas de méthode *get( )*. Le `Button` a un paramètre `textvariable`, mais la `Checkbox` a un paramètre `variable`.\
 Si elles ne sont pas liées par une variable tkinter, plusieurs checkbuttons peuvent être cochées. Au contraire, les radiobuttons sont par défaut tous à la valeur 0 donc si on en coche un, on les active tous. En leur donnant des valeurs différentes dans les paramètres de création de l'objet, un seul peut être coché, et cliquer sur un annulera le cochage d'un autre.
+
+Notez également qu'une option partagée par les boutons, mais pas par tous les widgets, est l'option `command` qui permet de rattacher l'appel d'une fonction au fait d'activer le bouton (appuyer dessus / cocher sa case).
 
 ```python
 # basic solid button and its tkinter variable
@@ -5776,7 +5778,8 @@ Evidemment, l'instance de l'objet doit être définie avant d'appeler le geometr
 
 On peut pack les widgets dans des frames, et les frames dans d'autres frames. **Il est nécessaire de configurer l'espace occupé par le widget dans la frame, sinon elle n'apparaîtra pas.**
 
-**Frames and parenting**\
+1. **Frames and parenting**
+
 Une `Frame` est un widget **vide** qui peut être utilisé comme "master" en paramètre d'autres widgets.\
 C'est un widget "contenant" qui permet de mieux organiser sa fenêtre. On organise les widgets "enfants" dans la Frame, qu'on place ensuite dans la fenêtre (dont elle est elle-même l'enfant).
 
@@ -5795,11 +5798,11 @@ frame = ttk.Frame(window,
                   width = 200,
                   height = 200,
                   borderwidth = 10,
-                  # by default, relief = tk.FLAT, which is invisible
+                  # by default, relief = tk.FLAT, which is invisible.
                   # we also have tk.RAISED, tk.SUNKEN or tk.RIDGE
                   relief = tk.GROOVE)
 
-# width and height are overwright by the size of their children.
+# width and height are overwrite by the size of their children.
 # the method below, set to False, do the opposite
 frame.pack_propagate(False)
 frame.pack(side = "left")
@@ -5868,17 +5871,128 @@ window.mainloop()
 ```
 
 **Menus**\
+Le `Menu` est un widget `tk`, et non `ttk` comme la plupart des autres menus.\
+Les menus correspondent à des imbrications de menus, ce qui peut vite devenir brouillons. Si on place un `tk.Menu` dans un autre `tk.Menu`, alors le premier devient une option du second ; cela peut s'échelonner sur plusieurs niveaux, avec des submenus, etc.
 
+| Options | Meaning|
+| :---: | :---: |
+| **bg** | couleur d'arrière-plan "non actif" (pas de focus) |
+| **bd** | largeur de la bordure (1pi par défaut) |
+| **fg** | couleur de l'avant-plan "non actif" (écriture) |
+| **font** | police de caractères des items |
+| **activebackground** | couleur d'arrière-plan de l'item qui a le focus |
+| **activeborderwidth** | largeur de la bordure de l'item qui a le focus (1pi par défaut) |
+| **activeforeground** | couleur d'avant-plan de l'item qui a le focus |
+| **relief** | effet 3D (par défaut `"raised"`) |
+| **image** | affiche une image sur cet item |
+| **tearoff** | par défaut, le premier item est un menu détachable (True).<br>Désactive cette option en le mettant sur 0 /False |
+| **title** | écrase le texte entré dans d'autres configurations (ex celui défini dans la méthode cascade).<br>Valeur = str |
+|  |  |
 
-**Geometry managers**\
-Les geometry managers (gestion de l'espace) sont des méthodes appelées sur les widgets qui permettent de les agencer les uns par aux autres et dans la fenêtre.
+<br>
+
+| Methods | Meaning |
+| :---: | :---: |
+| **add_command(opt)** | ajoute un item menu au menu principal |
+| **add_rabiobutton(opt)** | crée un radiobutton / checkbutton |
+| **add_cascade(opt)** | ordonne la hiérarchie des menus (une espèce de geometry manager).<br>Cette méthode est appelée sur le master menu et prend notamment comme argument `label` (nom du submenu affiché) et `menu` (nom de l'instance de menu qui sera le submenu). |
+| **add_separator()** | ajoute une ligne séparatrice |
+| **insert_separator(index)** | ajoute une ligne séparatrice à l'index donné |
+| **add(type, opt)** | ajoute un type spécifique d'item menu |
+| **delete(startindex [, endindex])** | supprime les items situés à l'index ou dans l'intervalle donné |
+| **index(item_label)** | retourne l'index de l'item donné |
+| **entryconfig(index, opt)** | permet de modifier les options de l'item à l'index donné |
+|  |  |
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.geometry("300x250")
+window.title("Menu")
+
+# MENU
+global_menu = tk.Menu(window)
+
+# SUBMENUS
+# FIRST SUBMENU
+file_menu = tk.Menu(global_menu, tearoff = False, bg = "light blue", activebackground = "red")
+
+# add items in the submenu
+file_menu.add_command(label = "New", command = lambda: print("New file"))
+file_menu.add_command(label = "Open", command = lambda: print("Open file"))
+
+# add a bar to separate the entries in a menu
+file_menu.add_separator()
+
+# create an exit button
+# pas besoin de lambda pour appeler cette fonction
+file_menu.add_command(label = "Exit", command = window.destroy)
+
+# method called on the menu that countains our submenu
+global_menu.add_cascade(label = "File", menu = file_menu)
+
+# SECOND SUBMENU
+help_menu = tk.Menu(global_menu, tearoff = 0)
+
+help_menu.add_command(label = "Help...", command = lambda: print(help_check_string.get()))
+
+help_check_string = tk.StringVar(value = "off")
+help_menu.add_checkbutton(label = "Check", onvalue = "on", offvalue = "off", variable = help_check_string)
+
+global_menu.add_cascade(label = "Help", menu = help_menu)
+
+# SUB-SUBMENUS
+other_menu = tk.Menu(help_menu, tearoff = 0)
+
+other_menu.add_command(label = "Call", command = lambda: print("Call assistance"))
+
+help_menu.add_cascade(label = "Assistance", menu = other_menu)
+
+# LAYOUT
+# replaces the geometry manager
+# it allows your submenus to be seen in the parent menu
+window.configure(menu = global_menu)
+
+# MENU BUTTON
+menu_button = ttk.Menubutton(window, text = "Menu Button")
+menu_button.pack()
+
+# create a submenu in the button
+button_sub_menu = tk.Menu(menu_button, tearoff = False)
+button_sub_menu.add_command(label = "entry 1", command = lambda: print("test 1"))
+button_sub_menu.add_checkbutton(label = "Check 1")
+
+# == menu_button["menu"] = button_sub_menu
+menu_button.configure(menu = button_sub_menu)
+
+# run
+window.mainloop()
+```
+<br>
+
+2. **Geometry managers**
+
+Les geometry managers (gestion de l'espace) sont des méthodes appelées sur les widgets qui permettent de les agencer les uns par aux autres et dans la fenêtre. On peut utiliser plusieurs types de geometry manager dans un programme.
+
+![Layouts](image-30.png)
 
 La première chose à comprendre dans l'affichage graphique est que x est l'abscisse (horizontal) et y l'orodonnée (vertical), et les coordonnées (0, 0) sont placées en haut à gauche de la fenêtre.
 
-1. **pack()**
+Les geometry managers sont intimement liés au parenting : on place les widgets dans la frame, qu'on place ensuite dans la fenêtre globale.
+
+1.1. **pack( )**
 
 Par défaut, `pack()` place les widgets au centre de l'écran, les uns en dessous des autres (`side = "top"`). Par défaut, le widget occupe juste la place nécessaire pour afficher son contenu (`expand = false` et `fill = none`).\
-Ses options permettent de gérer plus en détail l'affichage des widgets dans leur frame.
+Ses options permettent de gérer plus en détail l'affichage des widgets dans leur frame, par exemple de prendre tout l'espace horizontal/vertical d'une frame.
+
+<center>
+
+![pack](image-27.png)
+</center>
+
 ```python
 entry.pack(side = 'left', padx = 10, expand = true)
 button.pack(side = 'left', ipady = 10)
@@ -5887,44 +6001,49 @@ input_frame.pack(pady = 10)
 ```
 ![](image-21.png)
 
-| pack() parameters | Meaning |
+| Options | Meaning |
 | :---: | :---: |
 | **anchor** | Indique où le packer placera chaque widget dans son *master*, par rapport aux points cardinaux **nsew** (accepte l'association de deux points cardinaux, comme "nw", ou "center"). |
-| **side** | Organise les widgets les uns par rapport aux autres. <br> Les valeurs légales sont **"left", "right", "top", "bottom"**. |
-| **expand** | C'est un booléen(**0/false ou 1/true**) qui détermine si le widget peut occuper tout l'espace disponible dans le contenant ou non.<br> *Si plusieurs widgets sont set à true, l'espace restant sera réparti équitablement entre ces widgets.* |
-| **fill** | Ressemble à `expand`, mais concerne aussi la bordure du widget.<br> Les valeurs légales sont **"x", "y", "both", "none"**. |
-| **ipadx / ipady** | *Internal padding* = distance entre le texte et la bordure du widget (en pixel) de gauche à droite (x), ou de haut en bas (y). |
+| **side** | Organise les widgets les uns par rapport aux autres. <br> Les valeurs légales sont **"left", "right", "top", "bottom"**. Par défaut, la valeur est **"top"** et les widgets s'alignent les uns en dessous des autres. |
+| **expand** | C'est un booléen(**0/False ou 1/True**) qui détermine si le widget peut occuper tout l'espace disponible dans le contenant ou non. Par défaut, la valeur est **False**.<br> *Si plusieurs widgets sont set à True, l'espace restant sera réparti équitablement entre ces widgets.*<br><br>**Le widget ne peut s'expandre que dans une direction !** |
+| **fill** | Ressemble à `expand`, mais concerne aussi la bordure du widget.<br> Les valeurs légales sont **"x", "y", "both", None**. Par défaut, la valeur est **None**, et le widget n'occupe que la place nécessaire à l'affichage de son contenu. |
+| **ipadx / ipady** | *Internal padding* = distance entre le texte et la bordure du widget (en pixel) de gauche à droite (x),<br>ou de haut en bas (y). |
 | **padx / pady** | *External padding* = distance entre la bordure du widget et son environnement (en pixel) de gauche à droite (x), ou de haut en bas (y). |
+|
 
-Les paramètres `side` et `expand` sont dépendants : en saisissant `top / bottom`, le widget occupera autant d'espace qu'il le peut en largeur, le paramètre `expand` déterminera donc la **hauteur** occupée dans le conteant. En saisissant `left / right`, le widget occupera autant d'espace qu'il le peut en hauteur et `expand` déterminera la **largeur** qu'occupera le widget dans son contenant.
+Les paramètres `side` et `expand` sont dépendants. On rappelle que `expand` n'autorise l'expansion que dans une direction, en l'occurence celle dans laquelle les widgets se placent (sur l'axe x ou y). Le widget occupera par défaut tout l'espace qu'il peut sur l'autre axe.\
+Si `side = "top" / "bottom"`, le paramètre `expand` déterminera la **hauteur** (*height*) occupée par le widget dans son parent/master ; il occupe par défaut tout l'espace en largeur. Si `side = "left" / "right"`, le widget occupera autant d'espace qu'il le peut en hauteur et `expand` déterminera la **largeur** (*width*) qu'occupera le widget dans son contenant.
 
+
+On peut évidemment combiner des widgets pack qui prennent des `side` différentes, mais l'ordre dans lequel on les pack est alors très important. En effet, le premier widget packé à qui on donne l'option `side` aura la **priorité** sur les autres et occupera autant d'espace qu'il le pourra. C'est d'autant plus vrai s'il a aussi l'option `expand`, et cela même si les autres widgets ont aussi cette option set sur True.\
+C'est plus lisible et plus propre d'utiliser le parenting et les frames dans les organisations spatiales complexes (*complex layout*).
 ```python
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
 
-# window
+# WINDOW
 window = tk.Tk()
-window.title("style test")
-window.configure(bg = "light blue")
-window.geometry("300x300")
+window.geometry("600x450")
+window.title("Pack")
+window.configure(bg = "black")
 
-# widgets
-label1 = ttk.Label(window, text = "Label 1", style = "label1.TLabel")
-label1.pack(side = "left", expand = 1, fill = "both", anchor = "center")
+# get the default font of the text
+my_font = font.nametofont("TkDefaultFont")
 
-label2 = ttk.Label(window, text = "Label 2", style = "label2.TLabel")
-label2.pack(side = "left", fill = "y", pady = 10)
+# WIDGETS
+label1 = ttk.Label(window, text = "First label", background = "red", font = (my_font.actual(), 10, "bold", "underline"), anchor = "center")
+label2 = ttk.Label(window, text = "Label 2", background = "#6fa8dc")
+label3 = ttk.Label(window, text = "Last of the label", background = "light green", anchor = "e")
+button = ttk.Button(window, text = "Button")
 
-label3 = ttk.Label(window, text = "label 3", style = "label3.TLabel")
-label3.pack(padx = 30, ipady = 50, anchor = "e")
+# pack LAYOUT
+label1.pack(side = "top", expand = True, fill = "both", pady = 10, padx = 10)
+label2.pack(side = "left", expand = True, fill = "both")
+label3.pack(side = "top", fill = "both")
+button.pack(side = "top", expand = True, fill = "y")
 
-# style
-style = ttk.Style(window)
-style.configure("label1.TLabel", background = "#d8989a")
-style.configure("label2.TLabel", background = "#283c44", foreground = "white")
-style.configure("label3.TLabel", background = "#8c7172")
-
-# run
+# RUN
 window.mainloop()
 ```
 ![Pack](image-25.png)
@@ -5960,31 +6079,175 @@ window.mainloop()
 ```
 ![Login tkinter window](image-26.png)
 
-2. **grid()**
+**pack and frames**\
+Pour rester organisé, penser à créer des layouts **dans une seule direction**. Cependant, au sein d'une frame, on peut organiser les widgets dans une autre direction.
 
-Ce geometry manager divise l'espace de la fenêtre en ligne (*row*) et colonne (*column*) pour organiser les widgets. Le décompte démarre à 0 et chaque cellule (*cell*) de la grille est identifiée par un **index (*column*, *row*)**. Il peut y avoir des "trous" dans la grille, c'est-à-dire qu'on peut placer des widgets aux colonnes 1, 2, 10 et 11 par exemple.
+On rappelle que c'est l'ordre dans lequel les éléments sont `pack()` qui détermine leur place à l'affichage, et non l'ordre dans lequel ils sont créés.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import font
+
+# WINDOW
+window = tk.Tk()
+window.geometry("500x600")
+window.title("pack and frames")
+
+# 1st level (window)
+frame1 = ttk.Frame(window, relief = "groove")
+# allows the frame to take all the place it can have
+frame1.pack(expand = True, fill = "both")
+
+label1 = ttk.Label(window, text = "Another label", background = "green", anchor = "center")
+# without the fill option, the label will take only the space needed to display the text
+label1.pack(expand = True)
+
+frame2 = ttk.Frame(window, relief = "sunken")
+frame2.pack(expand = True, fill = "both", padx = 20, pady = 20)
+
+# 2nd level
+# frame 1
+label2 = ttk.Label(frame1, text = "First label", background = "red")
+# without expand = True, the label will fill only the x axis (because side = "up")
+label2.pack(expand = True, fill = "both")
+
+label3 = ttk.Label(frame1, text = "Label 2", background = "blue")
+label3.pack(expand = True, fill = "both")
+
+# frame 2
+button1 = ttk.Button(frame2, text = "Button 1")
+button1.pack(side = "left", expand = True, fill = "both")
+
+label4 = ttk.Label(frame2, text = "Last of the labels", background = "yellow")
+label4.pack(side = "left", expand = True, fill = "both")
+
+button2 = ttk.Button(frame2, text = "Button 2")
+button2.pack(side = "left", expand = True, fill = "both")
+
+frame3 = ttk.Frame(frame2)
+frame3.pack(side = "left", expand = True, fill = "both")
+
+# 3rd level (frame3)
+button3 = ttk.Button(frame3, text = "Button 3")
+button3.pack(expand = True, fill = "both")
+
+button4 = ttk.Button(frame3, text = "Button 4")
+button4.pack(expand = True, fill = "both")
+
+button5 = ttk.Button(frame3, text = "Button 5")
+button5.pack(expand = True, fill = "both")
+
+# RUN
+window.mainloop()
+```
+![pack and frames](image-31.png)
+
+1.2. **grid( )**
+
+Ce geometry manager divise l'espace de la fenêtre en ligne (*row*) et colonne (*column*) pour organiser les widgets ; il forme une **grille**, d'où son nom. Le décompte démarre à 0 et chaque cellule (*cell*) de la grille est identifiée par un **index (*column*, *row*)**. Il peut y avoir des "trous" dans la grille, c'est-à-dire qu'on peut placer des widgets aux colonnes 1, 2, 10 et 11 par exemple.\
+Cet outil est beaucoup plus flexible que `pack` et permet, entre autre, la superposition de widgets et de dimensionner une cellule. Elle est plus appropriée pour une organisation complexe.
+
+<center>
+
+![grid](image-28.png)
+</center>
 
 Une cellule ne peut contenir qu'un widget ; deux widgets aux mêmes coordonnées se superposeront. Si on souhaite placer plusieurs widgets dans une cellule, il faut alors placer une `Frame` ou `LabelFrame` dans cette cellule pour contenir les autres widgets.
 
-Les dimensions d'une cellule dépend de la taille des widgets qu'elle contient.
+Les dimensions d'une cellule dépendent de la taille des widgets qu'elle contient.
+
+Un des points forts de cette méthode est que **la position des widgets s'adapte à la taille de la fenêtre**.
 
 **Setting up the grid**\
 On commence par configurer la taille de la grille :
 ```python
 # the weight determines how wide the column/row will occupy, relatively to other columns/rows
+# we can also set the width / height of each column/row
 container.columnconfigure(index, weight)
 container.rowconfigure(index, weight)
 ```
-**positioning a widget on the grid**\
-`widget.grid(**options)`
+Une option importante à connaître lors de la configuration de la grille est `uniform`.\
+Cette option prend une string comme valeur, ce qu'elle contient n'a pas vraiment d'importance, on peut mettre un `"a"` par exemple. Cela permet d'assurer que même vides, les colonnes/lignes auront la même taille (uniformité de la grille). Sans cet argument, les cellules pleines ont tendance à "pousser" les cellules vides, et à leur laisser moins de place.
 
-| grid() parameters/options | Meaning |
+**positioning a widget on the grid**
+```python
+# widgets can occupy myltiple cells and have padding
+# sticky determines what area will be filled
+widget.grid(**options)
+```
+
+| grid() options | Meaning |
 | :---: | :---: |
 | **column** / **row** | **L'index** de la cellule qu'occupera le widget sur les axes x et y. |
 | **rowspan** / **columnspan** | Le nombre de colonnes/lignes adjacentes qu'occupera le widget. |
-| **sticky** | Détermine le comportement si le widget n'occupe pas la cellule entièrement.<br> Valeur "center" par défaut mais on peut lui donner les points cardinaux "nsew".  |
+| **sticky** | Détermine le comportement si le widget n'occupe pas la cellule entièrement.<br> Valeur `"center"` par défaut mais on peut lui donner les points cardinaux `"nsew"`.<br><br>Si on donne `"nsew"` comme valeur à un widget, cela aura un effet semblable à l'option "expand" du packer et le widget remplira l'ensemble de l'espace disponible de la cellule.  |
 | **ipadx / ipady** | *Internal padding* = distance entre le texte et la bordure du widget (en pixel) de gauche à droite (x), ou de haut en bas (y). |
 | **padx / pady** | *External padding* = distance entre la bordure du widget et son environnement (en pixel) de gauche à droite (x), ou de haut en bas (y). |
+|
+
+Précisions à propos de l'option `sticky` : **ils jouent le rôle des options `expand-fill` de la méthode `pack()`**.\
+Si on donne deux directions à `sticky`, il occupera tout l'espace entre ces deux directions.
+
+| `grid()` | = | `pack()` | *meaning |
+|:---:|:---:| :---: | :---: |
+| `sticky = "ns"` | = | `expand = True, fill = "y"` | le widget occupera tout l'espace de la cellule de haut en bas |
+| `sticky = "ew"` | = | `expand = True, fill = "x"` | le widget occupera tout l'espace de la cellule de gauche à droite |
+| `sticky = "nsew"` | = | `expand = True, fill = "both"` | le widget occupera tout l'espace de la cellule dans toutes les directions
+|
+
+<br>
+En revanche, le rendu peut paraître bizarre si certaines cellules restent vides car elles auront moins de place que celles qui contiennent des widgets. Pour éviter ce redimensionnele
+
+<br>
+
+Exemple d'utilisation de `grid()` :
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import font
+
+# WINDOW
+window = tk.Tk()
+window.geometry("600x400")
+window.title("grid")
+
+# define a grid
+# at least one row and one column must be created to use grid as geometry manager
+window.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+window.columnconfigure(3, weight = 3, uniform = "a")
+
+window.rowconfigure((0, 1, 2), weight = 1, uniform = "a")
+window.rowconfigure(3, weight = 3, uniform = "a")
+
+# widgets and layout
+
+label1 = ttk.Label(window, text = "Label 1", background = "red", anchor = "center")
+# widget.grid(index_row, index_column)
+label1.grid(row = 0, column = 0, sticky = "new")
+
+label2 = ttk.Label(window, text = "Label 2", background = "blue", foreground = "white", anchor = "w")
+label2.grid(row = 1, column = 1, rowspan = 3, sticky = "ns")
+
+label3 = ttk.Label(window, text = "Label 3", background = "green", anchor = "center")
+label3.grid(row = 1, column = 0, columnspan = 3, sticky = "nsew", padx = 10)
+
+label4 = ttk.Label(window, text = "Label 4", background = "yellow")
+label4.grid(row = 3, column = 3, sticky = "se")
+
+button1 = ttk.Button(window, text = "Button 1")
+button1.grid(row = 0, column = 3, sticky = "nsew")
+
+button2 = ttk.Button(window, text = "Button 2")
+button2.grid(row = 2, column = 2, sticky = "nsew")
+
+entry = ttk.Entry(window)
+entry.grid(row = 2, rowspan = 2, column = 3)
+
+# RUN
+window.mainloop()
+```
+![grid](image-32.png)
 
 Le programme de login vu avec `pack()`, refait avec `grid()` :
 ```python
@@ -5994,8 +6257,12 @@ from tkinter import ttk
 # window
 window = tk.Tk()
 window.title("Login")
+
+# configure the grid
+window.columnconfigure((0, 1), wieght = 1)
 window.columnconfigure(2, weight = 2)
-window.rowconfigure(2, weight = 1)
+
+window.rowconfigure((0, 1, 2), weight = 1)
 
 # widgets & layout
 username = ttk.Label(window, text = "Username: ")
@@ -6017,32 +6284,42 @@ login.grid(column = 2, row = 2, padx = 5, pady = 5, sticky = "e")
 window.mainloop()
 ```
 
-3. **place()**
+1.3. **place( )**
 
 Ce geometry manager permet de positionner les widgets dans la fenêtre en utilisant les coordonnées systèmes (x, y) : `widget.place(**options)`.
 
+<center>
+
+![place](image-29.png)
+</center>
+
+Précisons que c'est le **coin supérieur gauche du widget (`anchor = "nw"`) qui se place aux coordonnées indiquées**, sauf si on change l'option `anchor`.Par exemple, `anchor = "center"`placera le centre du widget aux coordonnées ; `anchor = "e"` placera le point centré droit aux coordonnées.
+
 **Absolute positioning**\
-On utilise les paramètres `x` et `y`.\
+On utilise les paramètres `x` et `y`.
 ``` python
 # place the widget in the center of its parent
-widget.place(x = 50, y = 50, anchor = "center")
+widget.place(x = 50, y = 50, anchor = "nsew")
 ```
 
 **Relative positioning**\
-On utilise les paramètres `relx` et `rely`, qui se base sur des points d'ancrage `anchor`.\
+On utilise les paramètres `relx` et `rely`, qui se base sur des points d'ancrage `anchor`. Les coordonnées du coin supérieur gauche de l'écran est (0.0, 0.0) et celles du coin inférieur droit de l'écran est (1.0, 1.0).\
+*De la même façon, en théorie, le coin supérieur droit sera donc à (1.0, 0.0) et le coin inférieur gauche sera à (0.0, 1.0). En pratique la bordure occupe de l'espace aussi donc pour le voir, il faut remplacer 1.0 par [0.8-0.95] suivant la taille du widget.*
 ``` python
 # place the widget in the center of its parent
 # value between 0.0 and 1.0
 widget.place(relx = 0.5, rely = 0.5, anchor = "center")
 ```
+Ce type de positionnement s'adapte donc à la taille de la fenêtre, tandis que le placement absolu non.
 
 **Width & height**\
+Les hauteurs/largeurs absolues/relatives peuvent être utilisées autant sur un positionnement absolu ou relatif.
 ```python
 # absolute
 widget.place(width = 120, height = 60)
 
-# relative to the parent container
-# 50% of the parent's dimensions
+# relative
+# percentage relative to the parent container dimensions (here the window)
 widget.place(relwidth = 0.5, relheight = 0.5)
 ```
 
@@ -6188,7 +6465,7 @@ entry_string = tk.StringVar(value = "start")
 entry = ttk.Entry(window, textvariable = entry_string)
 entry.pack()
 
-# by default, the lambda function is not being code when the object is created
+# by default, the lambda function is not being call when the object is created
 button = ttk.Button(window, text = "Button", command = lambda: button_func(entry_string))
 button.pack()
 
@@ -6371,63 +6648,8 @@ On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : 
 
 Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
 
-#### 7.1.2.8. Output
+#### 7.1.2.8. Conversion
 ---
-```python
-output_label = ttk.Label(master = window, text = 'Output', font = 'Calibri 12')
-output_label.pack(pady = 5)
-```
-Il nous faut alors ajouter un argument `command` au bouton pour qu'il ait une réaction lorsqu'on appuie dessus, qui appellera une fonction que nous devrons définir. On peut aussi utiliser des *lambdas functions* pour des fonctions très simples (`command = lambda: print("hello")`).\
-*Certaines fonctions sont déjà définies, comme destroy() pour les boutons qui met fin au programme.*
-
-Nous allons aussi créer une variable qui permettra de synchroniser le bouton et l'output.
-
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# functions
-def convert():
-    # print the entry_int variable that stocks the value of entry
-    print(entry_int.get())
-    # displays a text in the output label
-    output_string.set('test')
-
-# window
-window = tk.Tk()
-window.title("Tkinter Variables")
-window.geometry('300x150')
-
-# title label
-title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
-title_label.pack()
-
-# input field
-input_frame = ttk.Frame(master = window)
-
-# create a separate var that stores the value of entry and updates it
-entry_int = tk.IntVar()
-entry = ttk.Entry(master = input_frame, textvariable = entry_int)
-entry.pack()
-
-# no function's call in command
-button = ttk.Button(master = input_frame, text = 'Convert', command = convert)
-button.pack()
-input_frame.pack()
-
-# output
-output_string = tk.StringVar()
-output_label = ttk.Label(
-    master = window,
-    text = 'Output',
-    font = 'Calibri 12',
-    # the textvariable overwrites any text
-    textvariable = output_string)
-output_label.pack(pady = 5)
-
-# run the program
-window.mainloop()
-```
 
 Le programme final intégrant la conversion est le suivant :
 
