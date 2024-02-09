@@ -5334,11 +5334,11 @@ La méthode `resizable()` permet de définir si la taille de la fenêtre peut ê
 
 Les premiers widgets sont les tk widgets, des ttk widgets ont été ajoutés ensuite et sont plus modernes, ont plus de fonctionnalités, etc
 
-**tk widgets** (plus rarement utilisés).
+#### 1. **tk widgets** (plus rarement utilisés)
 ```python
 # Text = basic text input box
 # the master is the parent, which is the window for the first label
-# without parameter, pack places the widget in the middle of the window (center)
+# without parameter, pack places the widget into the window
 tk.Text(master = window).pack()
 
 # or with a variable
@@ -5346,7 +5346,7 @@ text = tk.Text(window)
 text.pack()
 ```
 
-**ttk widgets**
+#### 2. **ttk widgets**
 ```python
 # Label
 # font = 'font fontsize format'
@@ -5597,7 +5597,7 @@ progress = ttk.Progressbar(window,
                            variable = scale_var,
                            maximum = 25,
                            orient = "horizontal",
-                           # the progress bar is full
+                           # the progress bar is full.
                            # if set on "indeterminate",
                            # it is a slider
                            mode = "determinate",
@@ -5617,8 +5617,334 @@ scrolled_text.pack()
 # run
 window.mainloop()
 ```
+#### 7.1.2.3. setting/getting widget data
+---
 
-#### 7.1.2.3. Style and themes
+***get method***
+
+/!\ Tous les widgets n'ont pas de méthode *get( )* (*le label n'en a pas par exemple*).
+```python
+import tkinter as tk
+from tkinter import ttk
+
+def button_func():
+    """get the content of the entry"""
+    print(entry.get())
+
+# window
+window = tk.Tk()
+window.title("Getting and setting widgets")
+window.geometry("300x200")
+
+# widgets
+label = ttk.Label(window, text = "I'm the label")
+label.pack()
+
+entry = ttk.Entry(window)
+entry.pack()
+
+button = ttk.Button(window, text = "I'm a button", command = button_func)
+button.pack()
+
+# run
+window.mainloop()
+```
+
+***config or configure method***
+
+Cette méthode permet de changer de nombreux paramètres définis initialement avec la création de l'objet
+```python
+label.configure(text = "some new text")
+entry.configure(state = "disabled")
+```
+De nombreux attributs peuvent être modifiés avec *configure( )*, on peut les retrouver : `print(widget.configure())` retourne toutes les options disponibles pour le widget qui nous intéresse.
+
+***dictionary index***
+
+C'est équivalent à la méthode *configure()* mais plus rapide.
+```python
+label["text"] = "some new text"
+entry['state'] = "disabled"
+```
+
+#### 7.1.2.4. Tkinter variables or coupling widget variables
+---
+
+Tkinter propose des variables built-in permettant de metter à jour automatiquement un widget si un autre est modifié et inversement. Elles stockent des structures de données basiques, comme des strings, des entiers ou des booléens.
+
+Imaginons que nous avons un `Label` et un `Entry` qui doivent en permanence afficher le même texte. On peut alors utiliser une StringVar intermédiaire qui stocke la valeur d'entrée `Entry` et l'attribue automatiquement au `Label`. L'input de *Entry* est une string, donc on crée une `tk.StringVar()`.\
+Il existe aussi des `IntVar()`, des `DoubleVar()` ou des `BooleanVar()`
+
+<center>
+
+![Tkinter variables](image-15.png)
+</center>
+
+La StringVar fonctionne aussi dans l'autre sens : obtenir la valeur du `Label` et changer celle de l'`Entry`. Elles partagent les mêmes données.
+
+Sans StringVar, il n'y a pas de connexion entre les deux widgets :
+```python
+import tkinter as tk
+from tkinter import ttk
+
+window = tk.Tk()
+window.title('Tkinter variables')
+
+# widgets
+label = ttk.Label(master = window, text = 'label')
+label.pack()
+
+entry = ttk.Entry(master = window)
+entry.pack()
+
+window.mainloop()
+```
+
+Ajoutons une StringVar :
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# if we press the button, the text in StringVar (so the one in label and entry)
+# is printed in the terminal output
+def button_func():
+    print(string_var.get())
+    # we update the text of the StringVar after pulling off the button
+    string_var.set('button pressed')
+
+window = tk.Tk()
+window.title('Tkinter variables')
+
+# tkinter variable
+# the argument given in StringVar() is the text we will see in label and entry
+# by running the program
+string_var = tk.StringVar(value = 'start value')
+# to change it later, we can do string_var.set('start value')
+
+# widgets
+label = ttk.Label(master = window, text = 'label', textvariable = string_var)
+label.pack()
+
+entry = ttk.Entry(master = window, textvariable = string_var)
+entry.pack()
+
+button = ttk.Button(master = window, text = 'button', command = button_func)
+button.pack()
+
+window.mainloop()
+```
+<br>
+
+#### 7.1.2.5. Functions and event binding
+---
+
+**Que faire si notre fonction comporte des arguments ?**
+
+2 solutions:
+- Utiliser lambda (manière la plus simple et la plus utilisée)
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("buttons, functions and arguments")
+window.geometry("300x150")
+
+# functions
+def button_func(entry_string):
+    print('a button was pressed')
+    print(entry_string.get())
+
+# widgets
+entry_string = tk.StringVar(value = "start")
+entry = ttk.Entry(window, textvariable = entry_string)
+entry.pack()
+
+# by default, the lambda function is not being call when the object is created
+button = ttk.Button(window, text = "Button", command = lambda: button_func(entry_string))
+button.pack()
+
+# run
+window.mainloop()
+```
+- Créer une fonction qui retourne une autre fonction prenant des arguments
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("buttons, functions and arguments")
+window.geometry("300x150")
+
+# functions
+def outer_func(arg):
+    def inner_func():
+        print('a button was pressed')
+        print(arg.get())
+    return inner_func
+
+# widgets
+entry_string = tk.StringVar(value = "start")
+entry = ttk.Entry(window, textvariable = entry_string)
+entry.pack()
+
+# by default, the lambda function is not being code when the object is created
+button = ttk.Button(window, text = "Button", command = outer_func(entry_string))
+button.pack()
+
+# run
+window.mainloop()
+```
+Malgré tout il y a des limites à cela :
+- Le paramètre `command` n'est pas disponible sur tous les widgets.
+- Le paramètre `command` est naturellement lié (*bind*) au clique gauche de la souris et à la barre espace (*space* key) mais pas à la touche Entrée par exemple.
+
+L'event binding permet de faire face à ces limites.
+
+**Event binding**
+
+Le fait d'assigner une fonction à un évènement survenu sur un widget est appelé ***event binding***. On utilise pour cela la méthode `bind(event, function, add = None)`.
+
+Un "évènement" peut être un input venant du clavier (*keyboard input*), un widget modifié, sélectionné/désélectionné, un mouvement, un clic ou un coup de molette de la souris.\
+On peut détecter et utiliser ces "events", par exemple lancer une fonction si un bouton est pressé.
+
+Pour l'utiliser, il faut donc lier l'évènement à un widget : `widget.bind(event, function)`. Il faut avoir le focus sur le widget en question pour que l'event se produise *(par exemple, si le widget est un Button, il faut avoir cliqué sur le bouton et qu'il soit sélectionné en pointillé)*.\
+Le format de l'event est toujours le suivant : **"\<modifier-type-detail>"**, comme par exemple *"\<Alt-KeyPress-a>"*.
+
+<center>
+
+| Event modifier | Meaning |
+| :---: | :---: |
+| Alt | maintenir la touche Alt |
+| Control | maintenir la touche Ctrl |
+| Shift | maintenir la touche Maj |
+| Any | pas de modifier |
+
+<br>
+
+| Most commonly used event types | Description |
+| :---: | :---: |
+| Activate (36) / Deactivate (37) | le paramètre *state* d'un widget passe **d'inactif à actif** / **d'actif à inactif** |
+| Button (4) / ButtonRelease (5) | un bouton de souris est pressé/relâché |
+| KeyPress (2) / KeyRelease (3) | une touche est pressée / relâchée |
+| Configure (22) | la taille du widget est modifiée |
+| Destroy (17) | le widget est détruit |
+| FocusIn (9) / FocusOut (10) | l'input focus (zone de texte) est déplacé **dans un widget** / **hors du widget** |
+| Leave (8) | le pointeur de la souris est déplacé **hors du widget** |
+| *MouseWheel* (38) - WIndows | l'utilisateur scrolle haut/bas |
+| *Button-4* (up) / *Button-5* (down) (38) - Linux | l'utilisateur scrolle haut/bas |
+<br>
+
+| Most commonly used event details | Description |
+| :---: | :---: |
+| Alt_L/R | touche Alt gauche/droite |
+| Control_L/R | touche Ctrl gauche/droite |
+| Shift_L/R | touche Maj gauche/droite |
+| Caps_Lock | touche Verr Maj |
+| Tab | touche Tab |
+| BackSpace | touche retour arrière (effacer) |
+| Return | touche Entrée |
+| Delete | touche suppr |
+| Escape | touche esc |
+| space | touche espace |
+| Fi | touche Fi avec i [1, 12] |
+| Home | touche Début / home |
+| Insert | touche Inser |
+| KP_i | touche nombre i sur le pavé numérique |
+| KP_Add / KP_Decimal / KP_Divide / KP_Multiply / KP_Substract | touches +, ., /, *, - du pavé numérique |
+| KP_Down/Up/RIght/Left | touches directionnelles du clavier |
+| Print | touche Impr écran |
+| Key | n'importe quelle touche |
+
+</center>
+<br>
+
+Si on veut connaître les informations d'une touche particulière, on peut saisir l'event binding suivant : `window.bind("<key>", lambda event: print(event))`. Cela nous retournera les informations sur la touche pressée, et notamment son `keysym`, qui correspond au nom qu'on donne en premier argument à la méthode `bind`.\
+Cela nous indique également la position sur x et y où nous étions sur le widget (ici la fenêtre) lorsqu'on a pressé la touche, on le caractère pressé. On peut avoir ces informations par `event.x` / `event.y` /`event.char`.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("Event binding")
+window.geometry("600x500")
+
+# widgets
+text = tk.Text(window)
+text.pack()
+
+entry = ttk.Entry(window)
+entry.pack()
+
+btn = ttk.Button(window, text = "a button")
+btn.pack()
+
+# function
+# the function binding take event as an argument
+def get_pos(event):
+    print(f"x: {event.x}, y: {event.y}")
+
+# events
+# we can bind an event to a widget or to the top-level window
+
+# when we are using a lambda function to catch an event,
+# we have to write "lambda event" before the fuction
+window.bind("<Alt-KeyPress-a>", lambda event: print(event.char))
+entry.bind("<FocusIn>", print("the entry field was selected"))
+entry.bind("<FocusOut>", print("the entry field was unselected"))
+
+# print the position of the cursor on the window anytime the mouse moves
+window.bind("<Motion>", get_pos)
+
+# run
+window.mainloop()
+```
+Pour rappel, certains objets ttk ont des events particuliers leur permettant d'appeler une fonction quand une partie est sélectionnée (Combobox, Spinbox, Treeview). La syntaxe est particuière, souvent l'option s'écrit `widget.bind("<<WidgetSelected>>", function)`.
+
+<br>
+
+Le dernier argument que peut prendre bind, `add`, permet d'ajouter un appel de fonction à un event déjà défini. Il suffit alors de noter `add = "+"`. Si on oublie de préciser cet argument, la dernière ligne de code entrée pour ce binding écrasera la précédente.
+
+```python
+# functions
+def return_pressed(event):
+    print("Return key pressed.")
+
+def log(event):
+    print(event)
+
+# widget
+btn = ttk.Button(window, text = "Save")
+
+# binding
+# <Return> is the <Entrée> button in french
+# it calls 2 functions when it is pressed when focusing the button
+btn.bind("<Return>", return_pressed)
+btn.bind("<Return>", log, add = "+")
+
+# layout
+# the method focus bind the cursor on the widget
+btn.focus()
+btn.pack()
+```
+<br>
+
+On peut bind à deux niveaux : une instance du widget, comme quand on lie `btn` (**instance-level binding**), ou une classe (**class-level binding**) :
+```python
+# the event will be bind to all the instances of the class that are on the program
+window.bind_class('Entry', '<Control-V>', paste)
+```
+<br>
+
+On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : `widget.unbind(event)`, comme par exemple `btn.unbind('<Return>')`.
+
+Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
+
+#### 7.1.2.6. Style and themes
 ---
 **Theme**
 
@@ -5769,7 +6095,7 @@ style.configure("TButton", font = ("Helvetica", 12))
 style.map("TButton", background = [("pressed", "blue"), ("active", "red")])
 ```
 
-#### 7.1.2.4. Layout and geometry managers
+#### 7.1.2.7. Layout and geometry managers
 ---
 La dimension de la *master* widget est déterminée par les dimensions des *slave* widgets par défaut. La taille des widgets "enfants" écrasera les dimensions des "master" widgets définies lors de la création de l'instance.
 
@@ -5824,7 +6150,7 @@ label2.pack()
 window.mainloop()
 ```
 
-**Tabs**\
+1.1. **Tabs**\
 Ce widget provient du `ttk.Notebook`. Le **notebook** est le master d'un ensemble de widgets "enfants", le plus souvent des `frames`. Chaque `frame` est un `tab`.\
 Ce système permet de rendre certains widgets visibles / invisibles.
 
@@ -5833,7 +6159,6 @@ Les widgets "enfants" (les frames) partagent tous la même taille, définies ell
 ```python
 import tkinter as tk
 from tkinter import ttk
-from tkinter import scrolledtext
 
 # window
 window = tk.Tk()
@@ -5870,7 +6195,7 @@ notebook.pack()
 window.mainloop()
 ```
 
-**Menus**\
+1.2. **Menus**\
 Le `Menu` est un widget `tk`, et non `ttk` comme la plupart des autres menus.\
 Les menus correspondent à des imbrications de menus, ce qui peut vite devenir brouillons. Si on place un `tk.Menu` dans un autre `tk.Menu`, alors le premier devient une option du second ; cela peut s'échelonner sur plusieurs niveaux, avec des submenus, etc.
 
@@ -5983,7 +6308,7 @@ La première chose à comprendre dans l'affichage graphique est que x est l'absc
 
 Les geometry managers sont intimement liés au parenting : on place les widgets dans la frame, qu'on place ensuite dans la fenêtre globale.
 
-1.1. **pack( )**
+2.1. **pack( )**
 
 Par défaut, `pack()` place les widgets au centre de l'écran, les uns en dessous des autres (`side = "top"`). Par défaut, le widget occupe juste la place nécessaire pour afficher son contenu (`expand = false` et `fill = none`).\
 Ses options permettent de gérer plus en détail l'affichage des widgets dans leur frame, par exemple de prendre tout l'espace horizontal/vertical d'une frame.
@@ -5999,7 +6324,7 @@ button.pack(side = 'left', ipady = 10)
 
 input_frame.pack(pady = 10)
 ```
-![](image-21.png)
+![miles to kilometers](image-21.png)
 
 | Options | Meaning |
 | :---: | :---: |
@@ -6009,6 +6334,7 @@ input_frame.pack(pady = 10)
 | **fill** | Ressemble à `expand`, mais concerne aussi la bordure du widget.<br> Les valeurs légales sont **"x", "y", "both", None**. Par défaut, la valeur est **None**, et le widget n'occupe que la place nécessaire à l'affichage de son contenu. |
 | **ipadx / ipady** | *Internal padding* = distance entre le texte et la bordure du widget (en pixel) de gauche à droite (x),<br>ou de haut en bas (y). |
 | **padx / pady** | *External padding* = distance entre la bordure du widget et son environnement (en pixel) de gauche à droite (x), ou de haut en bas (y). |
+| **before** | Indique à un widget de se placer avant un autre widget ; on donne donc comme valeur à `before` le nom de la variable contenant l'instance du widget en question. |
 |
 
 Les paramètres `side` et `expand` sont dépendants. On rappelle que `expand` n'autorise l'expansion que dans une direction, en l'occurence celle dans laquelle les widgets se placent (sur l'axe x ou y). Le widget occupera par défaut tout l'espace qu'il peut sur l'autre axe.\
@@ -6017,6 +6343,7 @@ Si `side = "top" / "bottom"`, le paramètre `expand` déterminera la **hauteur**
 
 On peut évidemment combiner des widgets pack qui prennent des `side` différentes, mais l'ordre dans lequel on les pack est alors très important. En effet, le premier widget packé à qui on donne l'option `side` aura la **priorité** sur les autres et occupera autant d'espace qu'il le pourra. C'est d'autant plus vrai s'il a aussi l'option `expand`, et cela même si les autres widgets ont aussi cette option set sur True.\
 C'est plus lisible et plus propre d'utiliser le parenting et les frames dans les organisations spatiales complexes (*complex layout*).
+
 ```python
 import tkinter as tk
 from tkinter import ttk
@@ -6046,7 +6373,7 @@ button.pack(side = "top", expand = True, fill = "y")
 # RUN
 window.mainloop()
 ```
-![Pack](image-25.png)
+![pack example](image-25.png)
 
 Autre exemple avec une fenêtre de connexion :
 ```python
@@ -6087,7 +6414,6 @@ On rappelle que c'est l'ordre dans lequel les éléments sont `pack()` qui déte
 ```python
 import tkinter as tk
 from tkinter import ttk
-from tkinter import font
 
 # WINDOW
 window = tk.Tk()
@@ -6143,7 +6469,7 @@ window.mainloop()
 ```
 ![pack and frames](image-31.png)
 
-1.2. **grid( )**
+2.2. **grid( )**
 
 Ce geometry manager divise l'espace de la fenêtre en ligne (*row*) et colonne (*column*) pour organiser les widgets ; il forme une **grille**, d'où son nom. Le décompte démarre à 0 et chaque cellule (*cell*) de la grille est identifiée par un **index (*column*, *row*)**. Il peut y avoir des "trous" dans la grille, c'est-à-dire qu'on peut placer des widgets aux colonnes 1, 2, 10 et 11 par exemple.\
 Cet outil est beaucoup plus flexible que `pack` et permet, entre autre, la superposition de widgets et de dimensionner une cellule. Elle est plus appropriée pour une organisation complexe.
@@ -6205,7 +6531,6 @@ Exemple d'utilisation de `grid()` :
 ```python
 import tkinter as tk
 from tkinter import ttk
-from tkinter import font
 
 # WINDOW
 window = tk.Tk()
@@ -6247,7 +6572,7 @@ entry.grid(row = 2, rowspan = 2, column = 3)
 # RUN
 window.mainloop()
 ```
-![grid](image-32.png)
+![grid example](image-32.png)
 
 Le programme de login vu avec `pack()`, refait avec `grid()` :
 ```python
@@ -6284,9 +6609,9 @@ login.grid(column = 2, row = 2, padx = 5, pady = 5, sticky = "e")
 window.mainloop()
 ```
 
-1.3. **place( )**
+2.3. **place( )**
 
-Ce geometry manager permet de positionner les widgets dans la fenêtre en utilisant les coordonnées systèmes (x, y) : `widget.place(**options)`.
+Ce geometry manager permet de positionner les widgets dans la fenêtre en utilisant les coordonnées systèmes (x, y) : `widget.place(**options)`. Ces deux paramètres sont indispensables, mais il est aussi important (bien que facultatif) de préciser la hauteur (*height*) et la largeur (*width*) du widget.
 
 <center>
 
@@ -6299,395 +6624,536 @@ Précisons que c'est le **coin supérieur gauche du widget (`anchor = "nw"`) qui
 On utilise les paramètres `x` et `y`.
 ``` python
 # place the widget in the center of its parent
-widget.place(x = 50, y = 50, anchor = "nsew")
+widget.place(x = 100, y = 200, anchor = "nw")
+widget.place(x = 0, y = 500)
 ```
+![absolute positioning](image-33.png)
 
 **Relative positioning**\
 On utilise les paramètres `relx` et `rely`, qui se base sur des points d'ancrage `anchor`. Les coordonnées du coin supérieur gauche de l'écran est (0.0, 0.0) et celles du coin inférieur droit de l'écran est (1.0, 1.0).\
-*De la même façon, en théorie, le coin supérieur droit sera donc à (1.0, 0.0) et le coin inférieur gauche sera à (0.0, 1.0). En pratique la bordure occupe de l'espace aussi donc pour le voir, il faut remplacer 1.0 par [0.8-0.95] suivant la taille du widget.*
+*De la même façon, le coin supérieur droit sera donc à (1.0, 0.0) et le coin inférieur gauche sera à (0.0, 1.0). Mais pour bien voir le widget, il faudra bien le placer avec `anchor`.*
 ``` python
 # place the widget in the center of its parent
 # value between 0.0 and 1.0
-widget.place(relx = 0.5, rely = 0.5, anchor = "center")
+widget.place(relx = 0.1, rely = 0.2, anchor = "nw")
+widget.place(relx = 0, rely = 0.7)
 ```
 Ce type de positionnement s'adapte donc à la taille de la fenêtre, tandis que le placement absolu non.
 
+![relative positioning](image-34.png)
+
 **Width & height**\
-Les hauteurs/largeurs absolues/relatives peuvent être utilisées autant sur un positionnement absolu ou relatif.
+Les hauteurs/largeurs absolues/relatives peuvent être utilisées autant sur un positionnement absolu ou relatif. Sans préciser cette option, le widget fait la taille du texte qu'il contient.
 ```python
 # absolute
-widget.place(width = 120, height = 60)
+widget.place(width = 200, height = 100)
 
 # relative
 # percentage relative to the parent container dimensions (here the window)
-widget.place(relwidth = 0.5, relheight = 0.5)
+widget.place(relwidth = 0.4, relheight = 0.2)
 ```
 
-#### 7.1.2.5. setting/getting widget data
----
-
-***get method***
-
-/!\ Tous les widgets n'ont pas de méthode *get( )* (*le label n'en a pas par exemple*).
+Exemple de code simple avec `place()`:
 ```python
 import tkinter as tk
 from tkinter import ttk
 
-def button_func():
-    """get the content of the entry"""
-    print(entry.get())
-
-# window
+# WINDOW
 window = tk.Tk()
-window.title("Getting and setting widgets")
-window.geometry("300x200")
+window.geometry("400x600")
+window.title("place")
 
-# widgets
-label = ttk.Label(window, text = "I'm the label")
-label.pack()
+# widgets and layout
 
-entry = ttk.Entry(window)
-entry.pack()
+label1 = ttk.Label(window, text = "Label 1", background = "red", anchor = "center")
+# the two types (relative and absolute) can be combined
+label1.place(x = 300, y = 100, relwidth = 0.1, height = 200)
 
-button = ttk.Button(window, text = "I'm a button", command = button_func)
-button.pack()
+label2 = ttk.Label(window, text = "Label 2", background = "blue", foreground = "white", anchor = "w")
+# relative positioning is much more flexible because it updates itself when the size of the window changes
+label2.place(relx = 0.5, rely = 0.5, relwidth = 0.3, relheight = 0.5, anchor = "center")
 
-# run
+label3 = ttk.Label(window, text = "Label 3", background = "green", anchor = "center")
+label3.place(x = 80, y = 60, width = 160, height = 300)
+
+button1 = ttk.Button(window, text = "Button 1")
+# without the anchor set to "se", the widget will not be visible
+button1.place(relx = 1, rely = 1, anchor = "se")
+
+# frame and layout
+frame = ttk.Frame(window)
+frame.place(relx = 0, rely = 0, relwidth = 0.3, relheight = 1)
+
+frame_label = ttk.Label(frame, text = "Frame label", background = "yellow")
+# here the relative positions are related to the size of the countainer, which is the frame
+frame_label.place(relx = 0, rely = 0, relwidth = 1, relheight = 0.5)
+
+frame_button = ttk.Button(frame, text = "Frame button")
+frame_button.place(relx = 0, rely = 0.5, relwidth = 1, relheight = 0.5)
+
+# RUN
 window.mainloop()
 ```
 
-***config or configure method***
+![place example](image-35.png)
 
-Cette méthode permet de changer de nombreux paramètres définis initialement avec la création de l'objet
+3. **Understanding tkinter sizes**
+
+Chaque widget peut avoir une taille personnalisée ; en revanche, cette taille est écrasée par la taille donnée par certaines options dans les layouts.\
+`fill` est une action prioritaire dans `pack`, mais `ipad` ne l'est pas. De la même façon, le comportement sera différent dans `grid` si on donne une taille au widget lors de sa création.
+
 ```python
-label.configure(text = "some new text")
-entry.configure(state = "disabled")
+# the width unity of measure is not in pixel
+# it is the width of n char, here 50 characters
+label = ttk.Label(parent, text = "label", width = 50)
+# the option in pack overwrite the width defined in the Label
+label.pack(fill = "x")
 ```
-De nombreux attributs peuvent être modifiés avec *configure( )*, on peut les retrouver : `print(widget.configure())` retourne toutes les options disponibles pour le widget qui nous intéresse.
-
-***dictionary index***
-
-C'est équivalent à la méthode *configure()* mais plus rapide.
-```python
-label["text"] = "some new text"
-entry['state'] = "disabled"
-```
-
-#### 7.1.2.6. Tkinter variables or coupling widget variables
----
-
-Tkinter propose des variables built-in permettant de metter à jour automatiquement un widget si un autre est modifié et inversement. Elles stockent des structures de données basiques, comme des strings, des entiers ou des booléens.
-
-Imaginons que nous avons un `Label` et un `Entry` qui doivent en permanence afficher le même texte. On peut alors utiliser une StringVar intermédiaire qui stocke la valeur d'entrée `Entry` et l'attribue automatiquement au `Label`. L'input de *Entry* est une string, donc on crée une `tk.StringVar()`.\
-Il existe aussi des `IntVar()`, des `DoubleVar()` ou des `BooleanVar()`
-
-<center>
-
-![Tkinter variables](image-15.png)
-</center>
-
-La StringVar fonctionne aussi dans l'autre sens : obtenir la valeur du `Label` et changer celle de l'`Entry`. Elles partagent les mêmes données.
-
-Sans StringVar, il n'y a pas de connexion entre les deux widgets :
-```python
-import tkinter as tk
-from tkinter import ttk
-
-window = tk.Tk()
-window.title('Tkinter variables')
-
-# widgets
-label = ttk.Label(master = window, text = 'label')
-label.pack()
-
-entry = ttk.Entry(master = window)
-entry.pack()
-
-window.mainloop()
-```
-
-Ajoutons une StringVar :
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# if we press the button, the text in StringVar (so the one in label and entry)
-# is printed in the terminal output
-def button_func():
-    print(string_var.get())
-    # we update the text of the StringVar after pulling off the button
-    string_var.set('button pressed')
-
-window = tk.Tk()
-window.title('Tkinter variables')
-
-# tkinter variable
-# the argument given in StringVar() is the text we will see in label and entry
-# by running the program
-string_var = tk.StringVar(value = 'start value')
-# to change it later, we can do string_var.set('start value')
-
-# widgets
-label = ttk.Label(master = window, text = 'label', textvariable = string_var)
-label.pack()
-
-entry = ttk.Entry(master = window, textvariable = string_var)
-entry.pack()
-
-button = ttk.Button(master = window, text = 'button', command = button_func)
-button.pack()
-
-window.mainloop()
-```
-#### 7.1.2.7. Functions and event binding
----
-
-**Que faire si notre fonction comporte des arguments ?**
-
-2 solutions:
-- Utiliser lambda (manière la plus simple et la plus utilisée)
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# window
-window = tk.Tk()
-window.title("buttons, functions and arguments")
-window.geometry("300x150")
-
-# functions
-def button_func(entry_string):
-    print('a button was pressed')
-    print(entry_string.get())
-
-# widgets
-entry_string = tk.StringVar(value = "start")
-entry = ttk.Entry(window, textvariable = entry_string)
-entry.pack()
-
-# by default, the lambda function is not being call when the object is created
-button = ttk.Button(window, text = "Button", command = lambda: button_func(entry_string))
-button.pack()
-
-# run
-window.mainloop()
-```
-- Créer une fonction qui retourne une autre fonction prenant des arguments
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# window
-window = tk.Tk()
-window.title("buttons, functions and arguments")
-window.geometry("300x150")
-
-# functions
-def outer_func(arg):
-    def inner_func():
-        print('a button was pressed')
-        print(arg.get())
-    return inner_func
-
-# widgets
-entry_string = tk.StringVar(value = "start")
-entry = ttk.Entry(window, textvariable = entry_string)
-entry.pack()
-
-# by default, the lambda function is not being code when the object is created
-button = ttk.Button(window, text = "Button", command = outer_func(entry_string))
-button.pack()
-
-# run
-window.mainloop()
-```
-Malgré tout il y a des limites à cela :
-- Le paramètre `command` n'est pas disponible sur tous les widgets.
-- Le paramètre `command` est naturellement lié (*bind*) au clique gauche de la souris et à la barre espace (*space* key) mais pas à la touche Entrée par exemple.
-
-L'event binding permet de faire face à ces limites.
-
-**Event binding**
-
-Le fait d'assigner une fonction à un évènement survenu sur un widget est appelé ***event binding***. On utilise pour cela la méthode `bind(event, function, add = None)`.
-
-Un "évènement" peut être un input venant du clavier (*keyboard input*), un widget modifié, sélectionné/désélectionné, un mouvement, un clic ou un coup de molette de la souris.\
-On peut détecter et utiliser ces "events", par exemple lancer une fonction si un bouton est pressé.
-
-Pour l'utiliser, il faut donc lier l'évènement à un widget : `widget.bind(event, function)`. Il faut avoir le focus sur le widget en question pour que l'event se produise *(par exemple, si le widget est un Button, il faut avoir cliqué sur le bouton et qu'il soit sélectionné en pointillé)*.\
-Le format de l'event est toujours le suivant : **"\<modifier-type-detail>"**, comme par exemple *"\<Alt-KeyPress-a>"*.
-
-<center>
-
-| Event modifier | Meaning |
-| :---: | :---: |
-| Alt | maintenir la touche Alt |
-| Control | maintenir la touche Ctrl |
-| Shift | maintenir la touche Maj |
-| Any | pas de modifier |
-
 <br>
 
-| Most commonly used event types | Description |
-| :---: | :---: |
-| Activate (36) / Deactivate (37) | le paramètre *state* d'un widget passe **d'inactif à actif** / **d'actif à inactif** |
-| Button (4) / ButtonRelease (5) | un bouton de souris est pressé/relâché |
-| KeyPress (2) / KeyRelease (3) | une touche est pressée / relâchée |
-| Configure (22) | la taille du widget est modifiée |
-| Destroy (17) | le widget est détruit |
-| FocusIn (9) / FocusOut (10) | l'input focus (zone de texte) est déplacé **dans un widget** / **hors du widget** |
-| Leave (8) | le pointeur de la souris est déplacé **hors du widget** |
-| MouseWheel (38) - WIndows | l'utilisateur scrolle haut/bas |
-| Button-4 (up) / Button-5 (down) (38) - Linux | l'utilisateur scrolle haut/bas |
-<br>
+4. **Understanding the stacking order**
 
-| Most commonly used event details | Description |
-| :---: | :---: |
-| Alt_L/R | touche Alt gauche/droite |
-| Control_L/R | touche Ctrl gauche/droite |
-| Shift_L/R | touche Maj gauche/droite |
-| Caps_Lock | touche Verr Maj |
-| Tab | touche Tab |
-| BackSpace | touche retour arrière (effacer) |
-| Return | touche Entrée |
-| Delete | touche suppr |
-| Escape | touche esc |
-| space | touche espace |
-| Fi | touche Fi avec i [1, 12] |
-| Home | touche Début / home |
-| Insert | touche Inser |
-| KP_i | touche nombre i sur le pavé numérique |
-| KP_Add / KP_Decimal / KP_Divide / KP_Multiply / KP_Substract | touches +, ., /, *, - du pavé numérique |
-| KP_Down/Up/RIght/Left | touches directionnelles du clavier |
-| Print | touche Impr écran |
-| Key | n'importe quelle touche |
+Qui se place au-dessus de qui ? C'est en particulier important à comprendre pour les méthodes `grid` et `place` car elles permettent la superposition de widgets.
 
-</center>
-<br>
+Les widgets sont toujours placés **au-dessus des autres** lorsqu'ils sont **créés** (et non *placés* cette fois) !\
+Les méthodes `lift()` et `lower()` appelées sur un widget permettent de modifier son positionnement dans la superposition. `tkraise()` permet d'obtenir le même résultat que `lift()`. Si on ne leur donne pas de paramètres, ils placent le widget au premier plan ; on peut également lui donner un argument, `aboveThis`, qui le fasse passer seulement au plan au-dessus du widget qui le superpose.
 
-Si on veut connaître les informations d'une touche particulière, on peut saisir l'event binding suivant : `window.bind("<key>", lambda event: print(event))`. Cela nous retournera les informations sur la touche pressée, et notamment son `keysym`, qui correspond au nom qu'on donne en premier argument à la méthode `bind`.\
-Cela nous indique également la position sur x et y où nous étions sur le widget (ici la fenêtre) lorsqu'on a pressé la touche, on le caractère pressé. On peut avoir ces informations par `event.x` / `event.y` /`event.char`.
-
+Voici un script permettant de modifier la superposition des widgets :
 ```python
 import tkinter as tk
 from tkinter import ttk
 
-# window
+# WINDOW
 window = tk.Tk()
-window.title("Event binding")
-window.geometry("600x500")
+window.geometry("400x600")
+window.title("Stacking order")
 
 # widgets
-text = tk.Text(window)
-text.pack()
+# 1st to be defined, background widget
+label1 = ttk.Label(window, text = "Label 1", background = "green")
+# 2nd to be defined so on top of the previous one, middleground widget
+label2 = ttk.Label(window, text = "Label 2", background = "red")
+# last to be defined, foreground widget
+label3 = ttk.Label(window, text = "Label 3", background = "purple")
 
-entry = ttk.Entry(window)
-entry.pack()
-
-btn = ttk.Button(window, text = "a button")
-btn.pack()
-
-# function
-# the function binding take event as an argument
-def get_pos(event):
-    print(f"x: {event.x}, y: {event.y}")
-
-# events
-# we can bind an event to a widget or to the top-level window
-
-# when we are using a lambda function to catch an event,
-# we have to write "lambda event" before the fuction
-window.bind("<Alt-KeyPress-a>", lambda event: print(event.Char))
-entry.bind("<FocusIn>", print("the entry field was selected"))
-entry.bind("<FocusOut>", print("the entry field was unselected"))
-
-# print the position of the cursor on the window anytime the mouse moves
-window.bind("<Motion>", get_pos)
-
-# run
-window.mainloop()
-```
-Pour rappel, certains objets ttk ont des events particuliers leur permettant d'appeler une fonction quand une partie est sélectionnée (Combobox, Spinbox, Treeview). La syntaxe est particuière, souvent l'option s'écrit `widget.bind("<<WidgetSelected>>", function)`.
-
-<br>
-
-Le dernier argument que peut prendre bind, `add`, permet d'ajouter un appel de fonction à un event déjà défini. Il suffit alors de noter `add = "+"`. Si on oublie de préciser cet argument, la dernière ligne de code entrée pour ce binding écrasera la précédente.
-
-```python
-# functions
-def return_pressed(event):
-    print("Return key pressed.")
-
-def log(event):
-    print(event)
-
-# widget
-btn = ttk.Button(window, text = "Save")
-
-# binding
-# <Return> is the <Entrée> button in french
-# it calls 2 functions when it is pressed when focusing the button
-btn.bind("<Return>", return_pressed)
-btn.bind("<Return>", log, add = "+")
+# elevate the widget on top of the other widget
+button1 = ttk.Button(window, text = "Raise label 1", command = lambda: label1.lift())
+# get the widget behind the others
+button2 = ttk.Button(window, text = "Lower label 1", command = lambda: label1.lower())
+# same as lift
+button3 = ttk.Button(window, text = "Raise label 3 above label 1", command = lambda: label3.tkraise(aboveThis = label1))
 
 # layout
-# the method focus bind the cursor on the widget
-btn.focus()
-btn.pack()
+label1.place(x = 50, y = 100, width = 200, height = 150)
+label2.place(x = 150, y = 60, width = 140, height = 100)
+label3.place(x = 20, y = 80, width = 180, height = 100)
+
+button1.place(rely = 1, relx = 0.75, anchor = "se")
+button2.place(rely = 1, relx = 1, anchor = "se")
+button3.place(rely = 1, relx = 0.5, anchor = "se")
+
+# RUN
+window.mainloop()
 ```
 <br>
 
-On peut bind à deux niveaux : une instance du widget, comme quand on lie `btn` (**instance-level binding**), ou une classe (**class-level binding**) :
-```python
-# the event will be bind to all the instances of the class that are on the program
-window.bind_class('Entry', '<Control-V>', paste)
-```
-<br>
+5. **Combining tkinter layout methods**
 
-On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : `widget.unbind(event)`, comme par exemple `btn.unbind('<Return>')`.
-
-Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
-
-#### 7.1.2.8. Conversion
----
-
-Le programme final intégrant la conversion est le suivant :
+On décortique le programme : on place en premier 2 frames dans la fenêtre, placés avec `place`.\
+Dans le contenant de gauche, on place principalement les widgets avec `grid`, et les checkbox sont placées à l'aide de `pack`, tandis que le dernier et discret widget est placé avec `place`.\
+Dnas la frame de droite, on place deux autres frames avec `pack`, puis deux widgets dans chaque, placés avec `pack`.
 
 ```python
 import tkinter as tk
 from tkinter import ttk
 
-def convert():
-    mile_input = entry_int.get()
-    km_output = mile_input * 1.61
-    output_string.set(km_output)
-
+# WINDOW
 window = tk.Tk()
-window.title("Tkinter Variables")
-window.geometry('300x150')
+window.geometry("600x600")
+window.title("Combined layout")
+# minimum size : the user can not reduce the window below this values
+window.minsize(600, 600)
 
-title_label = ttk.Label(master = window, text = 'Miles to kilometers', font = 'Calibri 12 italic')
-title_label.pack()
+# main layout widgets (frames)
+menu_frame = ttk.Frame(window, relief = "raised")
+menu_frame.place(x = 0, y = 0, relwidth = 0.35, relheight = 1)
 
-input_frame = ttk.Frame(master = window)
+main_frame = ttk.Frame(window, relief = "groove")
+main_frame.place(relx = 0.35, y = 0, relwidth = 0.65, relheight = 1)
 
-entry_int = tk.IntVar()
-entry = ttk.Entry(master = input_frame, textvariable = entry_int)
-entry.pack()
+# MENU
+# first, widgets creation
+menu_button1 = ttk.Button(menu_frame, text = "Button 1")
+menu_button2 = ttk.Button(menu_frame, text = "Button 2")
+menu_button3 = ttk.Button(menu_frame, text = "Button 3")
 
-button = ttk.Button(master = input_frame, text = 'Convert', command = convert)
-button.pack()
-input_frame.pack()
+menu_slider1 = ttk.Scale(menu_frame, orient = "vertical")
+menu_slider2 = ttk.Scale(menu_frame, orient = "vertical")
 
-output_string = tk.StringVar()
-output_label = ttk.Label(
-    master = window,
-    font = 'Calibri 12',
-    textvariable = output_string)
-output_label.pack(pady = 5)
+toggle_frame = ttk.Frame(menu_frame)
+menu_toggle1 = ttk.Checkbutton(toggle_frame, text = "Check 1")
+menu_toggle2 = ttk.Checkbutton(toggle_frame, text = "Check 2")
+
+entry = ttk.Entry(menu_frame)
+
+# then, the layout
+# menu_frame grid
+menu_frame.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+menu_frame.rowconfigure((0, 1, 2, 3, 4), weight = 1, uniform = "a")
+
+# buttons layout
+menu_button1.grid(row = 0, column = 0, columnspan = 2, sticky = "nsew")
+menu_button2.grid(row = 0, column = 2, sticky = "nsew")
+menu_button3.grid(row = 1, column = 0, columnspan = 3, sticky = "nsew")
+
+# sliders layout
+menu_slider1.grid(row = 2, column = 0, rowspan = 2, sticky = "nsew", pady = 20, padx = 5)
+menu_slider2.grid(row = 2, column = 2, rowspan = 2, sticky = "nsew", pady = 20, padx = 5)
+
+# toggle_frame layout
+toggle_frame.grid(row = 4, column = 0, columnspan = 3, sticky = "nsew")
+menu_toggle1.pack(side = "left", expand = True)
+menu_toggle2.pack(side = "left", expand = True)
+
+# entry layout
+entry.place(relx = 0.5, rely = 1, relwidth = 0.9, anchor = "s")
+
+# MAIN
+# creating widgets
+entry_frame1 = ttk.Frame(main_frame)
+main_label1 = ttk.Label(entry_frame1, text = "Label 1", background = "red", anchor = "center")
+main_button1 = ttk.Button(entry_frame1, text = "Button 1", width = 15)
+
+entry_frame2 = ttk.Frame(main_frame)
+main_label2 = ttk.Label(entry_frame2, text = "Label 2", background = "blue", foreground = "white", anchor = "center")
+main_button2 = ttk.Button(entry_frame2, text = "Button 2")
+
+# frames layout
+entry_frame1.pack(side = "left", expand = True, fill = "both", padx = 20, pady = 20)
+entry_frame2.pack(side = "left", expand = True, fill = "both", padx = 20, pady = 20)
+
+# entry_frame1 layout
+main_label1.pack(expand = True, fill = "both")
+main_button1.pack(pady = 100)
+
+# entry_frame2 layout
+main_label2.pack(expand = True, fill = "both")
+main_button2.pack(expand = True)
+
+# RUN
+window.mainloop()
+```
+<br>
+
+6. **Toggle widgets**
+
+*"toggle"* un widget, c'est le faire apparaître/disparaître. En pratique, cela signifie qu'on ajoute ou retire le widget du layout.\
+Les geometry manager ont une méthode `**manag_forget()` (*ex : `pack_forget()`*) qui permet de supprimer l'action du geometry manager.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# WINDOW
+window = tk.Tk()
+window.geometry("400x350")
+window.title("Stacking order")
+
+# PLACE
+# function
+def toggle_label_place():
+    # var accessible from outside the function
+    global glabel1_visible
+
+    if glabel1_visible:
+        label1.place_forget()
+        glabel1_visible = False
+    else:
+        glabel1_visible = True
+        label1.place(relx = 0.1, rely = 0.5, anchor = "center")
+
+# button
+button1 = ttk.Button(window, text = "toggle label 1", command = toggle_label_place)
+button1.place(relx = 0, rely = 1, anchor = "sw")
+
+# var
+glabel1_visible = True
+# label
+label1 = ttk.Label(window, text = "Label 1")
+label1.place(relx = 0.1, rely = 0.5, anchor = "center")
+
+# GRID
+window.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+window.rowconfigure(0, weight = 1, uniform = "a")
+
+# function
+def toggle_label_grid():
+    global glabel2_visible
+
+    if glabel2_visible:
+            label2.grid_forget()
+            glabel2_visible = False
+    else:
+        glabel2_visible = True
+        label2.grid(row = 0, column = 1)
+
+# button
+button2 = ttk.Button(window, text = "toggle label 2", command = toggle_label_grid)
+button2.grid(row = 0, column = 1, sticky = "s")
+
+# var
+glabel2_visible = True
+# label
+label2 = ttk.Label(window, text = "Label 2")
+label2.grid(row = 0, column = 1)
+
+# PACK
+# function
+def toggle_label_pack():
+    global glabel3_visible
+
+    if glabel3_visible:
+            label3.pack_forget()
+            glabel3_visible = False
+    else:
+        glabel3_visible = True
+        label3.pack(expand = True)
+
+# frame
+frame = ttk.Frame(window)
+frame.place(relx = 0.7, rely = 0, relwidth = 0.3, relheight = 1)
+
+# var
+glabel3_visible = True
+# label
+label3 = ttk.Label(frame, text = "Label 3")
+label3.pack(expand = True)
+
+# button
+button3 = ttk.Button(frame, text = "toggle label 3", command = toggle_label_pack)
+button3.pack(side = "bottom")
+
+# RUN
+window.mainloop()
+```
+<br>
+
+#### 7.1.2.8. Create responsive layouts
+---
+Un layout "réactif" (*responsive*) est un layout qui s'adapte aux changement de taille de la fenêtre.\
+Tkinter n'a pas d'outils intégrés pour créer cela, donc on ne peut pas à propre parler mettre-à-jour simplement un layout déjà existant. On doit donc créer un layout différent pour chaque taille de fenêtre.
+
+On crée donc la classe `App`, classe principale qui contient les widgets et différentes méthodes selon la taille de la fenêtre. Une seconde classe checkera la taille de la fenêtre et indiquera à la première classe quelle méthode appeler.
+
+Pour cela on établit des "breaking points" pour la taille minimum (notamment la largeur) d'un layout. Par exemple, le layout pour une petite fenêtre (*small layout*) peut commencer à une largeur de 300pi, si la largeur dépasse 600pi, on passe au *medium layout*, et au-delà de 1200pi, on a recours au *large layout*.\
+ A chaque fois que la fenêtre est recadrée, on check la largeur et on construit le nouveau layout si cette largeur a dépassé un breaking point.
+
+ Certes il existe un event binding qui check si la fenêtre est modifiée, mais elle se lance à chaque modification de la fenêtre ; or, on ne souhaite lancer la méthode que lorsque la largeur dépasse une certaine limite. C'est la difficulté majeure de ce programme.
+
+
+#### 7.1.2.9. Classes and custom components
+---
+
+**Classes**\
+Cela rend tout le code plus maniable et lisible.\
+Le principe est de prendre un objet tkinter (souvent une frame) avec l'héritage des classes et d'y placer des widgets. Cela permet d'organiser un grand nombre de widgets facilement.
+
+On reprend le code qui avait été fait dans la partie **Combining tkinter layout methods**.
+
+```python
+#! /usr/bin/env python3
+
+import tkinter as tk
+from tkinter import ttk
+
+# App will be the main window and inherits from tk.Tk
+class App(tk.Tk):
+
+    def __init__(self, name: str, size: tuple[int]):
+
+        # MAIN SETUP
+        # we are calling the function from tk.Tk to create the window
+        super().__init__()
+
+        # title is a method of tk.Tk, so we can use it
+        self.title(name)
+        # width x height
+        self.geometry(f"{size[0]}x{size[1]}")
+        self.minsize(size[0], size[1])
+
+        # WIDGETS
+        self.menu = Menu(self)
+        self.main = Main(self)
+
+        # RUN
+        self.mainloop()
+
+
+# new object, inherits from ttk.Frame
+class Menu(ttk.Frame):
+
+    def __init__(self, parent):
+        super().__init__(parent, relief = "raised")
+        # place the created frame
+        self.place(x = 0, y = 0, relwidth = 0.35, relheight = 1)
+
+        self.create_widgets()
+        self.create_layout()
+
+    def create_widgets(self):
+        """create the widgets as attributes of the class so they become accessible outside of the function"""
+        self.menu_button1 = ttk.Button(self, text = "Button 1")
+        self.menu_button2 = ttk.Button(self, text = "Button 2")
+        self.menu_button3 = ttk.Button(self, text = "Button 3")
+
+        self.menu_slider1 = ttk.Scale(self, orient = "vertical")
+        self.menu_slider2 = ttk.Scale(self, orient = "vertical")
+
+        self.toggle_frame = ttk.Frame(self)
+        self.menu_toggle1 = ttk.Checkbutton(self.toggle_frame, text = "Check 1")
+        self.menu_toggle2 = ttk.Checkbutton(self.toggle_frame, text = "Check 2")
+
+        self.entry = ttk.Entry(self)
+
+    def create_layout(self):
+        # create the grid
+        self.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+        self.rowconfigure((0, 1, 2, 3, 4), weight = 1, uniform = "a")
+
+        # place the widgets
+        # buttons layout
+        self.menu_button1.grid(row = 0, column = 0, columnspan = 2, sticky = "nsew")
+        self.menu_button2.grid(row = 0, column = 2, sticky = "nsew")
+        self.menu_button3.grid(row = 1, column = 0, columnspan = 3, sticky = "nsew")
+
+        # sliders layout
+        self.menu_slider1.grid(row = 2, column = 0, rowspan = 2, sticky = "nsew", pady = 20, padx = 5)
+        self.menu_slider2.grid(row = 2, column = 2, rowspan = 2, sticky = "nsew", pady = 20, padx = 5)
+
+        # toggle_frame layout
+        self.toggle_frame.grid(row = 4, column = 0, columnspan = 3, sticky = "nsew")
+        self.menu_toggle1.pack(side = "left", expand = True)
+        self.menu_toggle2.pack(side = "left", expand = True)
+
+        # entry layout
+        self.entry.place(relx = 0.5, rely = 1, relwidth = 0.9, anchor = "s")
+
+
+class Main(ttk.Frame):
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.place(relx = 0.35, y = 0, relwidth = 0.65, relheight = 1)
+
+        self.frame1 = Main_frame(self, "Label 1", "Button 1", "red")
+        self.frame2 = Main_frame(self, "Label 2", "Button 2", "blue", fg_color = "white")
+
+
+class Main_frame(ttk.Frame):
+
+    def __init__(self, parent, label_text: str, button_text: str, bg_color: str, fg_color: str = "black"):
+        super().__init__(parent)
+
+        self.create_widgets(bg_color, fg_color, label_text, button_text)
+        self.create_layout()
+
+    def create_widgets(self, bg_color, fg_color, label_text, button_text):
+        self.label = ttk.Label(self, text = label_text, background = bg_color, foreground = fg_color, anchor = "center")
+        self.button = ttk.Button(self, text = button_text, width = 15)
+
+    def create_layout(self):
+        self.pack(side = "left", expand = True, fill = "both", padx = 20, pady = 20)
+        self.label.pack(expand = True, fill = "both")
+        self.button.pack(pady = 100)
+
+
+# MAIN
+# creates an instance of the class App
+App("Class based app", (600, 600))
+```
+![Classes with Tkinter](image-36.png)
+
+**Creating custom components in tkinter**
+
+Pour créer des customisations, on peut avoir recours aux **classes** (*class-based approach*), ou avoir une approche à l'aide de **fonctions** (*functional approach*).
+
+Les classes permettent d'hériter d'un parent un certain nombre d'attributs et de définitions, et de pouvoir ajouter des parties propres à notre classe. Cela permet d'organiser des layouts complexes\
+La classe `Main_frame` est un exemple de composant customisé.\
+Le souci avec les classes, c'est qu'on peut se retrouver à créer de nombreuses classes.
+
+L'approche fonctionnelle consiste à créer un widget dans une fonction et de le retourner. On se retrouve plus limité par rapport à ce qu'on peut faire avec les layouts, mais c'est mieux organisé si on ne crée que de petits composants.
+
+On combine en fait souvent les deux. On organise globalement à l'aide de classes, et on utilise une approche fonctionnelle pour organiser les composants intrinsèques à la classe.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# FUNCTION
+def create_segment(parent, label_text: str, button_text: str) -> ttk.Frame:
+    frame = ttk.Frame(parent, relief = "groove")
+
+    # creating the grid
+    frame.rowconfigure(0, weight = 1)
+    frame.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+
+    # widgets
+    ttk.Label(frame, text = label_text, anchor = "center").grid(row = 0, column = 0)
+    ttk.Button(frame, text = button_text).grid(row = 0, column = 1, sticky = "nsew")
+
+    return frame
+
+# CLASS
+class Segment(ttk.Frame):
+
+    def __init__(self, parent, label_text: str, button_text:str, btn: str = "button"):
+        # creating the frame and placing it
+        super().__init__(parent, relief = "sunken")
+        self.pack(expand = True, fill = "both", padx = 10, pady = 5)
+
+        # creating the layout grid
+        self.create_grid()
+
+        # layout and widgets
+        ttk.Label(self, text = label_text, anchor = "center").grid(row = 0, column = 0)
+        ttk.Button(self, text = button_text).grid(row = 0, column = 1, sticky = "nsew")
+
+        # example of function inside a class
+        self.create_subframe(btn).grid(row = 0, column = 2, sticky = "nsew")
+
+    def create_grid(self):
+        self.rowconfigure(0, weight = 1)
+        self.columnconfigure((0, 1, 2), weight = 1, uniform = "a")
+
+    def create_subframe(self, btn: str):
+        frame = ttk.Frame(self)
+
+        ttk.Entry(frame).pack(expand = True, fill = "both", padx = 5)
+        ttk.Button(frame, text = btn).pack(pady = 10)
+
+        return frame
+
+
+# MAIN
+window = tk.Tk()
+window.title("Custom components")
+window.geometry("300x400")
+
+# class-based approach
+Segment(window, "label", "button", "click me")
+Segment(window, "test", "click")
+Segment(window, "hello", "text")
+
+# functionnal approach
+# don't forget the layout method of the frame
+frame3 = create_segment(window, "saving", "launch").pack(expand = True, fill = "both", padx = 10, pady = 5)
+frame3 = create_segment(window, "bye", "exit").pack(expand = True, fill = "both", padx = 10, pady = 5)
 
 window.mainloop()
 ```
+
+![custom components](image-37.png)
+
 ---
 ### ttkbootstrap
 CSS framework proposant des templates pour la typographie, la forme,...\
