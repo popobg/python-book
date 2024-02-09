@@ -28,9 +28,9 @@ def get_pos(event):
 # we have to write "lambda event" before the fuction
 window.bind("<Alt-KeyPress>", lambda event: print(event.char))
 
-# don't work on the wsl
-entry.bind("<FocusIn>", print("the entry field was selected"))
-entry.bind("<FocusOut>", print("the entry field was unselected"))
+# doesn't work on the wsl
+entry.bind("<FocusIn>", lambda event: print("the entry field was selected"))
+entry.bind("<FocusOut>", lambda event: print("the entry field was unselected"))
 
 # print the position of the cursor on the window anytime the mouse moves
 window.bind("<Motion>", get_pos)

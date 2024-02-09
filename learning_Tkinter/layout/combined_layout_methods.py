@@ -50,7 +50,7 @@ menu_toggle1.pack(side = "left", expand = True)
 menu_toggle2.pack(side = "left", expand = True)
 
 # entry layout
-entry.place(relx = 0.5, rely = 1, relwidth = 0.9, anchor = "s")
+entry.place(relx = 0.5, rely = 0.99, relwidth = 0.9, anchor = "s")
 
 # MAIN
 # creating widgets

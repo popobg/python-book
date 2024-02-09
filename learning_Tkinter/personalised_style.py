@@ -23,7 +23,7 @@ btn2.pack(pady = 20)
 style = ttk.Style(window)
 style.configure("label.TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
 
-style.map("btn.TButton", background = [("pressed", "blue"), ("active", "light blue")], foreground = [("pressed", "white")])
+style.map("btn.TButton", background = [("pressed", "blue"), ("active", "green")], foreground = [("pressed", "white")])
 
 # run
 window.mainloop()
