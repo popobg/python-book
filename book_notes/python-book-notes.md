@@ -5617,6 +5617,117 @@ scrolled_text.pack()
 # run
 window.mainloop()
 ```
+<br>
+
+#### 3. Scroll widgets
+
+**Understanding scrolling in Tkinter**\
+Avec Tkinter, 3 types de widgets sotn "scrollables" : les `Canvas`, les `Text` et les `Treeview`. Le canva est le plus utilse car il peut afficher des widgets.
+
+Les canvas prennent un argument `scrollregion` qui permet de set les dimensions du canvas, afin de le rendre scrollable. Cet argument prend lui-même 4 arguments : `left`, `top`, `right`, `bottom`. `left` et `top` sont le plus souvent set à 0.
+
+Une fois le canvas défini et placé, et ses widgets-enfants placés, on place les scrollbars (une horizontale et une verticale si besoin). Il faudra ensuite les lier mutuellement :
+- Pour **lier la scrollbar au canvas**, il faut donner en argument à la scrollbar `command = canvas.yview/xview`.
+- Pour **lier le canvas à la scrollbar** et ainsi voir la barre défiler dans la scrollbar, il faut configurer le canvas : `canvas.configure(yscrollcommand/xscrollcommand = scrollbar.set)`.
+
+<br>
+
+A propos du binding event `MouseWheel`, il fonctionne sur Windows mais est différent sur Unix (cf les options de la partie "event binding"). Pour savoir si on scroll vers le haut ou le bas, il faut checker son `delta`. `delta` = 120 quand on scroll vers le haut, `delta` = -120 quand on scroll vers le bas.\
+Pour associer à l'évènement le scroll, il faut ensuite utiliser sur le canvas `canvas.xview_scroll(amount, "what")`. `amount` peut correspondre à `-1` (scroll up) ou `1` (scroll down). `"what"` correspond soit à `"units"`, pour un défilement "smooth", soit à `"page"` pour un défilement plus saccadé mais plus rapide.\
+La façon la plus simple de faire est comme ceci : `canvas.bind("<MouseWheel>", lambda event: canvas.yview_scroll(-1 * int(event.delta/120), "units"))`. `-1` permet d'inverser les directions de yviewscroll qui ne sont pas très naturelles de base.
+
+```python
+import random
+import tkinter as tk
+from tkinter import ttk
+
+# setup window
+window = tk.Tk()
+window.title("Scrolling")
+window.geometry("600x400")
+window.minsize(400, 300)
+window.configure(bg = "black")
+
+# CANVAS
+# scrollregion = (left, top, right, bottom)
+canvas = tk.Canvas(window, bg = "white", scrollregion = (0, 0, 2000, 5000))
+
+# creating a line that go all the way through the canvas
+# create_**(l, t, r, b, fill = color, width = size)
+canvas.create_line(0, 0, 2000, 5000, fill = "green", width = 10)
+
+# creating 100 rectangles
+for i in range(1):
+    # left side coordonates
+    l = random.randint(0, 2000)
+    # top side coordonates
+    t = random.randint(0, 5000)
+    # right side coordonates
+    r = l + random.randint(10, 500)
+    # bottom side coordonates
+    b = t + random.randint(10, 500)
+    color = random.choice(("red", "blue", "yellow", "green", "pink", "purple", "black", "orange"))
+
+    canvas.create_rectangle(l, t, r, b, fill = color)
+
+canvas.pack(expand = True, fill = "both")
+
+# SCROLLBARS
+# in the command, the scrollbar influences the canvas
+scrollbar_y = ttk.Scrollbar(window, orient = "vertical", command = canvas.yview)
+# here, we set the canvas to update the scrollbar too,
+# so that we can see the update on the scrollbar.
+# it tells the scrollbar how tall the canvas is, and where we are in it
+canvas.configure(yscrollcommand = scrollbar_y.set)
+scrollbar_y.place(relx = 1, rely = 0, relheight = 1, anchor = "ne")
+
+scrollbar_x = ttk.Scrollbar(window, orient = "horizontal", command = canvas.xview)
+canvas.configure(xscrollcommand = scrollbar_x.set)
+scrollbar_x.place(relx = 0, rely = 1, relwidth = 1, anchor = "sw")
+
+# FUNCTIONS
+def scroll_y(event):
+    # event(mousewheel).delta == 120 if scroll up
+    if event.delta > 0:
+        # yview(amount, "what")
+        # scroll up
+        canvas.yview_scroll(-1, "units")
+
+    # event(mousewheel).delta == -120 if scroll down
+    else:
+        # scroll down
+        canvas.yview_scroll(1, "units")
+
+def scroll_x(event):
+    # same as before, on the horizontal axis
+    if event.delta > 0:
+        canvas.xview_scroll(-1, "units")
+
+    else:
+        canvas.xview_scroll(1, "units")
+
+# EVENT BIDING
+# bind the vertical scrollbar to the mousewheel
+# canvas.bind("<MouseWheel>", scroll_y)
+
+# easier, with a lambda function
+# -1 inverses the direction
+canvas.bind("<MouseWheel>", lambda event: canvas.yview_scroll(-1 * int(event.delta/120), "units"))
+
+# bind the horizontal scrollbar to shift + mousewheel
+canvas.bind("<Shift-MouseWheel>", scroll_x)
+
+# run
+window.mainloop()
+```
+La logique est la même avec les Treeview et les Text.
+
+**Scrollable widgets**
+
+```python
+
+```
+
 #### 7.1.2.3. setting/getting widget data
 ---
 
@@ -5833,8 +5944,8 @@ Le format de l'event est toujours le suivant : **"\<modifier-type-detail>"**, co
 | Destroy (17) | le widget est détruit |
 | FocusIn (9) / FocusOut (10) | l'input focus (zone de texte) est déplacé **dans un widget** / **hors du widget** |
 | Leave (8) | le pointeur de la souris est déplacé **hors du widget** |
-| *MouseWheel* (38) - WIndows | l'utilisateur scrolle haut/bas |
-| *Button-4* (up) / *Button-5* (down) (38) - Linux | l'utilisateur scrolle haut/bas |
+| *MouseWheel* (38) - WIndows | l'utilisateur scroll haut/bas |
+| *Button-4* (up) / *Button-5* (down) (38) - Linux | l'utilisateur scroll haut/bas |
 <br>
 
 | Most commonly used event details | Description |
@@ -6950,6 +7061,123 @@ Pour cela on établit des "breaking points" pour la taille minimum (notamment la
 
  Certes il existe un event binding qui check si la fenêtre est modifiée, mais elle se lance à chaque modification de la fenêtre ; or, on ne souhaite lancer la méthode que lorsque la largeur dépasse une certaine limite. C'est la difficulté majeure de ce programme.
 
+```python
+import tkinter as tk
+from tkinter import ttk
+
+class App(tk.Tk):
+    def __init__(self, size: tuple[int]):
+        super().__init__()
+
+        self.title("Responsive layouts")
+        self.geometry(f"{size[0]}x{size[1]}")
+
+        # necessary for the first time the methods will be executed
+        # for the forget method to work
+        self.frame = ttk.Frame(self)
+        self.frame.pack()
+
+        # dict : {window_width: window.method_appropriate_to_the_size}
+        # don't call the method, just passing the name (no ())
+        Size_notifier(self,
+                      {
+                        300: self.create_small_layout,
+                        600: self.create_medium_layout,
+                        1200: self.create_large_layout
+                        })
+
+        self.mainloop()
+
+    def create_small_layout(self):
+        # necessary to erase the already displayed layout
+        self.frame.forget()
+
+        self.frame = ttk.Frame(self)
+        self.frame.pack(expand = True, fill = "both")
+
+        ttk.Label(self.frame, text = "Label 1", background = "red", anchor = "center").pack(expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 2", background = "green", anchor = "center").pack(expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 3", background = "light blue", anchor = "center").pack(expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 4", background = "yellow", anchor = "center").pack(expand = True, fill= "both", padx = 5, pady = 5)
+
+    def create_medium_layout(self):
+        self.frame.forget()
+
+        self.frame = ttk.Frame(self)
+        self.frame.pack(expand = True, fill = "both")
+
+        self.frame.columnconfigure((0, 1), weight = 1, uniform = "a")
+        self.frame.rowconfigure((0, 1), weight = 1, uniform = "a")
+
+        # there is no efficient way in Tkinter to copy one master to another,
+        # so we have to reimplement all the labels
+        ttk.Label(self.frame, text = "Label 1", background = "red", anchor = "center").grid(row = 0, column = 0, sticky = "nsew", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 2", background = "green", anchor = "center").grid(row = 0, column = 1, sticky = "nsew", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 3", background = "light blue", anchor = "center").grid(row = 1, column = 0, sticky = "nsew", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 4", background = "yellow", anchor = "center").grid(row = 1, column = 1, sticky = "nsew", padx = 5, pady = 5)
+
+    def create_large_layout(self):
+        self.frame.forget()
+
+        self.frame = ttk.Frame(self)
+        self.frame.pack(expand = True, fill = "both")
+
+        ttk.Label(self.frame, text = "Label 1", background = "red", anchor = "center").pack(side = "left", expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 2", background = "green", anchor = "center").pack(side = "left", expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 3", background = "light blue", anchor = "center").pack(side = "left", expand = True, fill= "both", padx = 5, pady = 5)
+        ttk.Label(self.frame, text = "Label 4", background = "yellow", anchor = "center").pack(side = "left", expand = True, fill= "both", padx = 5, pady = 5)
+
+class Size_notifier:
+    """Check if we are crossing the breaking points of width of the window"""
+
+    def __init__(self, window, size_dict: dict):
+        self.window = window
+        # before storing it, we are making sure that the dict is sorted
+        self.size_dict = {key: value for key, value in sorted(size_dict.items())}
+        self.current_min_size = None
+
+        # event = when the widget (here the window/app) is resized
+        self.window.bind("<Configure>", self.check_size)
+
+        # place the elements in the window to get the right values
+        # have to do the event binding BEFORE updating
+        self.window.update()
+
+        # winfo_width get the height of the window, after update
+        min_height = self.window.winfo_height()
+        # turn the keys into a list
+        min_width = list(self.size_dict)[0]
+
+        # enable the resize under 300 width/height
+        # that way, we will never have a smaller size than the smaller threshold
+        # (doesn't work on wsl)
+        self.window.minsize(min_width, min_height)
+
+    def check_size(self, event):
+
+        # check only the resize of the window, not the frame
+        if event.widget == self.window:
+            # current window width
+            window_width = event.width
+            checked_size = None
+
+            for threshold_size in self.size_dict:
+                # for each positive number, we have exceeded a breaking point
+                delta = window_width - threshold_size
+
+                if delta >= 0:
+                    checked_size = threshold_size
+
+            # check if the current size is different from the last overtaked threshold
+            if checked_size != self.current_min_size:
+                self.current_min_size = checked_size
+
+                # [key] is replaced by the value (the function self.create_*_layout)
+                # then () call the method on the window (because the self above refers to the app)
+                self.size_dict[self.current_min_size]()
+
+app = App((300, 300))
+```
 
 #### 7.1.2.9. Classes and custom components
 ---
