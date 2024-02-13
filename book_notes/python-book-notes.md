@@ -5724,8 +5724,125 @@ La logique est la même avec les Treeview et les Text.
 
 **Scrollable widgets**
 
-```python
+Il n'y a pas d'outils built-in dans Tkinter pour créer des objets scrollables. On utilise donc le plus souvent le `Canvas`.\
+On a fait en sorte que le canvas s'ajuste à la taille de la fenêtre et que les outils de scrolling (event binding, scrollbar) disparaissent quand ils ne sont plus nécessaires.
 
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# CLASS
+class List_frames(ttk.Frame):
+
+    # item_height = height of one frame
+    def __init__(self, parent, text_data: list, item_height: int):
+        self.parent = parent
+
+        super().__init__(master = self.parent)
+        self.pack(expand = True, fill = "both")
+
+        # attributes - widget data
+        self.text_data = text_data
+        self.item_number = len(text_data)
+        # how many space in the y axis is going to be used
+        self.list_height = self.item_number * item_height
+
+        # canvas
+        # the canvas has to be larger than the window to be scrollable
+        # for our use here, we need it to be at the same width as the window
+        self.canvas = tk.Canvas(self, background = "white", scrollregion = (0, 0, self.winfo_width(), self.list_height))
+        self.canvas.pack(expand = True, fill = "both")
+
+        # display frame
+        self.frame = ttk.Frame(self)
+
+        # placing the widgets into the frame
+        for index, item in enumerate(self.text_data):
+            self.create_widgets(index, item).pack(side = "top", expand = True, fill = "both", pady = 5, padx = 10)
+
+        # scrollbar
+        self.create_scrollbar()
+
+        # events binding
+        # bind_all binds the event at the widget and its children
+        self.canvas.bind_all("<MouseWheel>", lambda event: self.canvas.yview_scroll(-1 * int(event.delta/120), "units"))
+
+        # Configure is lauched everytime the window is resized
+        # (including when the window is created)
+        self.bind("<Configure>", self.update_size)
+
+
+    def create_widgets(self, index: int, item: list[str]):
+        """create a frame with two labels and one button horizontally aligned"""
+        # subframe into frame
+        subframe = ttk.Frame(self.frame)
+
+        # grid
+        subframe.columnconfigure((0, 1, 2, 3), weight = 1, uniform = "a")
+        subframe.rowconfigure(0, weight = 1, uniform = "a")
+
+        # widgets into the subframe
+        ttk.Label(subframe, text = f"#{index}", border = 10, anchor = "center").grid(row = 0, column = 0, padx = 10)
+        ttk.Label(subframe, text = item[0], border = 10, anchor = "center").grid(row = 0, column = 1, padx = 10)
+        ttk.Button(subframe, text = item[1]).grid(row = 0, column = 2, columnspan = 2, sticky = "nsew")
+
+        # avoid creating an attribute self.subframe that will last outside of the function
+        return subframe
+
+
+    def create_scrollbar(self):
+        """create a vertical scrollbar linked to the canvas"""
+        self.scrollbar = ttk.Scrollbar(self.parent, orient = "vertical", command = self.canvas.yview)
+        self.canvas.configure(yscrollcommand = self.scrollbar.set)
+        self.scrollbar.place(relx = 1, rely = 0, relheight = 1, anchor = "ne")
+
+
+    def update_size(self, event):
+        """placing the frame into the canvas
+        and adjusting the size of the canvas and the display in it
+        to the size of the window"""
+
+        if self.list_height >= self.winfo_height():
+            # the height of the canvas is the height of the data list.
+            height = self.list_height
+            # re-bind the scrolling
+            self.canvas.bind_all("<MouseWheel>", lambda event: self.canvas.yview_scroll(-1 * int(event.delta/120), "units"))
+            # re-place the scrollbar
+            self.scrollbar.place(relx = 1, rely = 0, relheight = 1, anchor = "ne")
+
+        else:
+            # the height of the canvas is the height of the window.
+            height = self.winfo_height()
+            # to avoid weird scrolling in fullscreen,
+            # we unbind the event binding of scrolling
+            self.canvas.unbind_all("<MouseWheel>")
+            # no scrollbar if it is not needed
+            self.scrollbar.place_forget()
+
+        # create_window(**mandatories arguments**: position, window = a widget)
+        self.canvas.create_window((0, 0),
+                                  window = self.frame,
+                                  # "center" by default
+                                  anchor = "nw",
+                                  # the length of the widget defined in "window" by default
+                                  # here, it is the width of the window itself
+                                  width = self.winfo_width(),
+                                  height = height)
+
+
+# MAIN
+# setup window
+window = tk.Tk()
+window.title("Scrollable canvas")
+window.geometry("600x400")
+window.minsize(400, 300)
+window.configure(bg = "black")
+
+text_list = [("label", "button"), ("thing", "click"), ("third", "something"), ("label1", "button"), ("label2", "button1")]
+list_frame = List_frames(window, text_list, 100)
+
+# run
+window.mainloop()
 ```
 
 #### 7.1.2.3. setting/getting widget data
@@ -5916,7 +6033,7 @@ L'event binding permet de faire face à ces limites.
 
 **Event binding**
 
-Le fait d'assigner une fonction à un évènement survenu sur un widget est appelé ***event binding***. On utilise pour cela la méthode `bind(event, function, add = None)`.
+Le fait d'assigner une fonction à un évènement survenu sur un widget est appelé ***event binding***. On utilise pour cela la méthode `bind(event, function, add = None)`. `bind_all()`permet de lier l'event à un widget et son contenu (utile pour les canvas notamment).
 
 Un "évènement" peut être un input venant du clavier (*keyboard input*), un widget modifié, sélectionné/désélectionné, un mouvement, un clic ou un coup de molette de la souris.\
 On peut détecter et utiliser ces "events", par exemple lancer une fonction si un bouton est pressé.
@@ -6057,7 +6174,7 @@ Il existe de très nombreux *event*, répertoriés sur https://www.pythontutoria
 
 #### 7.1.2.6. Style and themes
 ---
-**Theme**
+**Themes**
 
 Un **theme** est un ensemble qui change l'apparence des ttk widgets.\
 On peut modifier les styles built-in ou créer de nouveaux styles soi-même. Pour connaître les styles disponibles, puis appliquer le style qui nous intéresse, on procède ainsi :
@@ -7189,8 +7306,6 @@ Le principe est de prendre un objet tkinter (souvent une frame) avec l'héritage
 On reprend le code qui avait été fait dans la partie **Combining tkinter layout methods**.
 
 ```python
-#! /usr/bin/env python3
-
 import tkinter as tk
 from tkinter import ttk
 
@@ -7381,6 +7496,95 @@ window.mainloop()
 ```
 
 ![custom components](image-37.png)
+
+####  7.1.2.10. Using multiple windows in Tkinter
+---
+
+On peut avoir plusieurs fenêtres Tkinter +/- dépendantes.
+
+Il existe deux options sur Tkinter pour ouvrir des fenêtres externes : les `messagebox`(messages d'alerte, boîtes de dialogue yes/no), ou la méthode `tk.Toplevel` qui ouvre une nouvelle fenêtre.
+
+**Messagebox**\
+Exemples courants de `messagebox`:
+![messagebox](image-38.png)
+
+| Messagebox types | Explanations |
+| :---: | :---: |
+| `tkinter.messagebox.showinfo(title = None, message = None, **options)` | Affiche une messagebox informative avec le titre et le message donnés. |
+| `tkinter.messagebox.showwarning(title = None, message = None, **options)` / `tkinter.messagebox.showerror(title = None, message = None, **options)` | Crée une warning box/ error message box avec le titre et le message spécifiés. |
+| `tkinter.messagebox.askquestion(title = None, message = None, *, type = YESNO, **options)` | Pose une question ; les boutons par défaut sont "yes" / "no". Retourne le nom symbolique du bouton sélectionné. |
+| `tkinter.messagebox.askokcancel(title = None, message = None, **options)` | Demande si l'opération doit se poursuivre ; les boutons par défaut sont "OK" / "CANCEL". Retourne True si OK, False si CANCEL. |
+| `tkinter.messagebox.askretrycancel(title = None, message = None, **options)` | Demande si l'opération doit être retentée ; les boutons par défaut sont "RETRY" / "CANCEL". Retourne True si RETRY, False si CANCEL. |
+| `tkinter.messagebox.askyesno(title = None, message = None, **options)` | Pose une question ; les boutons par défaut sont "yes" / "no". Retourne True si "yes", False si "no". |
+| `tkinter.messagebox.askyesnocancel(title = None, message = None, **options)` | Pose une question ; les boutons par défaut sont "yes" / "no" / "CANCEL". Retourne True si "yes", False si "no", None si CANCEL. |
+
+On peut aussi simplement afficher des boutons qui renvoient à leurs noms symboliques (ex : `messagebox.OK` = "ok", `messagebox.RETRY` = "retry").
+
+Parmi les options, on peut notamment définir `message`, `title`, `icon` (*ERROR*, *QUESTION*, *INFO*, *WARNING*), `detail` (message auxilliaire sous le `message`), `default` (change le nom symbolique des boutons affectés à la box), `type` (influence le type de boutons affiché), `parent` (la fenêtre messagebox s'affichera au-dessus de sa fenêtre parent).
+
+**tk.Toplevel**\
+Ce widget se comporte comme `tk.Tk()` et a globalement les mêmes méthodes. On peut créer des widgets et les placer dans ce widget.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+
+# FUNCTIONS
+def ask_yes_no():
+    messagebox.showinfo(title = "Info title", message = "Here is some information", detail = "How interesting!")
+
+def create_window():
+    global extra_window
+
+    extra_window = Extra_window()
+
+def destroy_window():
+    # acessible because global variable
+    extra_window.destroy()
+
+# CLASS
+class Extra_window(tk.Toplevel):
+
+    def __init__(self):
+        super().__init__()
+
+        # set up
+        self.title("Extra_window")
+        self.geometry("250x300")
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        label1 = ttk.Label(self, text = "A label")
+        label1.pack()
+
+        button1 = ttk.Button(self, text = "A button")
+        button1.pack(pady = 50)
+
+        label2 = ttk.Label(self, text = "Another label")
+        label2.pack(expand = True)
+
+# MAIN
+# setup window
+window = tk.Tk()
+window.title("Multiple windows")
+window.geometry("600x400")
+window.minsize(400, 300)
+
+# widgets
+create_window_button = ttk.Button(window, text = "Open main window", command = create_window)
+create_window_button.pack(expand = True)
+
+destroy_window_button = ttk.Button(window, text = "Close main window", command = destroy_window)
+destroy_window_button.pack(expand = True)
+
+info_box_button = ttk.Button(window, text = "Create yes/no window", command = ask_yes_no)
+info_box_button.pack(expand = True)
+
+# run
+window.mainloop()
+```
 
 ---
 ### ttkbootstrap
