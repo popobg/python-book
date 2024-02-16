@@ -5617,6 +5617,7 @@ scrolled_text.pack()
 # run
 window.mainloop()
 ```
+
 <br>
 
 #### 3. Scroll widgets
@@ -6172,158 +6173,7 @@ On peut aussi lever la liaison qui existe à l'aide de la méthode `unbind()` : 
 
 Il existe de très nombreux *event*, répertoriés sur https://www.pythontutorial.net/tkinter/tkinter-event-binding/.
 
-#### 7.1.2.6. Style and themes
----
-**Themes**
-
-Un **theme** est un ensemble qui change l'apparence des ttk widgets.\
-On peut modifier les styles built-in ou créer de nouveaux styles soi-même. Pour connaître les styles disponibles, puis appliquer le style qui nous intéresse, on procède ainsi :
-```python
-# create a new instance of the ttk.Style class
-style = ttk.Style(window)
-style.theme_names()
-
-# get the current theme
-current_theme = style.theme_use()
-
-# apply a new theme
-# default, clam, alt, classic in Linux
-style.theme_use("theme_name")
-```
-Les thèmes changent en fonction des systèmes d'exploitation. Il en existe très peu de différents sur Linux, d'où l'intérêt d'utiliser la bibliothèque ***ttkbootstrap***.
-
-Pour changer la couleur d'arrière-plan de la fenêtre, le plus simple est d'utiliser Tk.
-```python
-import Tkinter as Tk
-
-window = tk.Tk()
-window.title("window color")
-# use the configure method, like for the widgets
-# bg for background
-window.configure(bg = "blue") / window["bg"] = "blue"
-
-window.mainloop()
-```
----
-**Style**
-
-Le **style** influence l'apparence d'une widget class. En général, le nom du style d'un widget ttk "Twidgetname", par exemple `TLabel` ou `TButton`. Seul `Treeview` ne prend pas de T supplémentaire, et `Progressbar`, `Scale` et `Scrollbar` s'écrivent `Horizontal/Vertical.TProgressbar/TScale/TScrollbar` en fonction de leur orientation.\
-Pour connaître le nom de la classe d'un widget, il suffit d'appeler la méthode `winfo_class()` sur une instance du widget :
-```python
-btn = ttk.Button(window, text = "Click me")
-print(btn.winfo_class())
-```
-Output
-```python
-TButton
-```
-<br>
-
-Pour modifier ce style, il faut modifier les options de ce style à l'aide de la méthode `configure()`.
-
-```python
-# we can create a variable with ttk.Style(window) in it too
-ttk.Style(window).configure(style_name, **options)
-
-# example
-label = ttk.Label(window, text = "label")
-label.pack()
-
-style = ttk.Style(window)
-style.configure("TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
-```
-En intégrant ce code dans un programme :
-```python
-import tkinter as tk
-from tkinter import ttk
-
-# window
-window = tk.Tk()
-window.title("style test")
-window.geometry("150x100")
-
-# widgets
-label = ttk.Label(window, text = "Label")
-label.pack(side = "top")
-
-btn = ttk.Button(window, text = "button")
-btn.pack()
-
-label2 = ttk.Label(window, text = "Label 2")
-label2.pack()
-
-# style
-style = ttk.Style(window)
-style.configure("TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
-
-# run
-window.mainloop()
-```
-![Style 1](image-23.png)
-
-Si on veut par contre que notre style ne s'applique pas à toute la classe *Label* mais seulement à une instance, on ajoute un paramètre `style` à la création de l'objet, dans lequel on lui assigne une instance particulière avant le nom du style *TLabel*. La construction est la suivante : `new_style.built-in_style`.\
-On peut créer une instance `label.TLabel`, d'où découlerait deux sous-instances `Warning.label.Tlabel` (bg = "red" par exemple) et `Info.label.TLabel` (bg = "blue") par exemple.\
-Si on applique cette logique à l'exemple précédent, on obtient cela :
-```python
-label = ttk.Label(window, text = "Label", style = "label.TLabel")
-label.pack(side = "top")
-
-style = ttk.Style(window)
-style.configure("label.TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
-```
-![Style 2](image-24.png)
-
-Si on veut appliquer à tous les widgets un style, il suffit de donner `"."` comme premier argument à `style.configure`. Ce . représente la fenêtre entière.
-
-Plutôt que d'utiliser le nom d'une couleur, on peut aussi utiliser son **code HEX** (par exemple le code HEX de mauve est "#856ff8", et correspond à une association de valeurs RGB).
-
----
-**ttk elements**
-
-Le style se compose d'un à plusieurs éléments ; c'est ce qu'on appelle le **layout**. Ce layout dépend du thème.\
-Par exemple, un `Label` est composé d'une `border`, contenant un `padding`, contenant lui-même le `label`.\
-Pour connaître les différents éléments d'une classe widget, on utilise la méthode `layout()` sur l'objet `style` créé plus tôt : `style.layout(widget_class)`. Si la classe n'est pas composée de plusieurs couches, la fonction lève une exception `tk.TclError` ; autrement, elle retourne une liste de tuples `(element_name, description)`, avec `description` un dictionnaire qui décrit l'élément.
-
-Si on reprend l'exemple du `TLabel`, on trouve trois éléments nichés :
-- `Label.border` : il possède les clés `sticky`, `border` et `children`.
-- `Label.padding` : il possède les mêmes clés que border et consiste en une liste de tuples correspond à la valeur de la clé `children` de `Label.border`.
-- `Label.label` : il possède une seule clé `sticky` et correspond à la valeur de la clé `children` de `Label.padding`.
-
-<br>
-
-**element options**\
-Pour obtenir la liste des options de chaque élément, on utilise la méthode `element_options()` : `style.element_options(style_name)` *(style_name = Label.border, Label.padding, Label.label)*. Par exemple, `border` n'a que l'option `relief` tandis que `label` a de nombreuses options telles que `font`, `foreground`, `with`,...
-
-Le padding permet de changer la taille qu'occupe le label dans la frame qui le contient. On peut lui donner une unique valeur, qui s'appliquera à toutes les directions, ou un tuple de deux nombres, avec le premier définissant la distance sur l'axe x et le deuxième sur l'axe y.
-
-**attributes of element options**\
-Pour obtenir la liste des attributs associés à une option, on utilise la méthode `lookup()` sur l'objet `style` : `style.lookup(layout_name, option_name)`, par exemple `style.lookup('Label.label', 'font')`, l'output étant `TkDefaultFont`.
-
----
-**ttk Style map**
-
-Cette méthode permet de changer l'apparence d'un widget de façon dynamique à partir d'un état spécifique : `style.map(style_name, query)`. L'argument `query` est une liste de clés où chaque clé est une *style option*, dont la valeur est une liste de tuples `(state, value)`.
-
-| List of widget state | Meaning |
-| :---: | :---: |
-| **active** | le curseur de la souris pointe actuellement le widget |
-| **focus** | le widget a actuellement le focus |
-| **selecte**d | le widget est sélectionné (ex : radiobutton checked) |
-| **pressed** | le widget est cliqué (ex : button pressed) |
-| **disabled**| le widget ne répond à aucune action |
-| **readonly** | on ne peut pas changer la valeur du widget |
-
-Voici l'exemple du changement de couleur dynamique d'un bouton selon son état :
-```python
-button = ttk.Button(window, text = "Save")
-button.pack()
-
-style = ttk.Style(window)
-style.configure("TButton", font = ("Helvetica", 12))
-style.map("TButton", background = [("pressed", "blue"), ("active", "red")])
-```
-
-#### 7.1.2.7. Layout and geometry managers
+#### 7.1.2.6. Layout and geometry managers
 ---
 La dimension de la *master* widget est déterminée par les dimensions des *slave* widgets par défaut. La taille des widgets "enfants" écrasera les dimensions des "master" widgets définies lors de la création de l'instance.
 
@@ -6457,6 +6307,10 @@ Les menus correspondent à des imbrications de menus, ce qui peut vite devenir b
 | **entryconfig(index, opt)** | permet de modifier les options de l'item à l'index donné |
 |  |  |
 
+<br>
+
+Le script suivant couvre aussi un `ttk.Menubutton`, qui est un menu déroulant apparaissant dans la fenêtre et dans lequel on met un menu, puis on peut ajouter des entrées, des checkbox.
+
 ```python
 import tkinter as tk
 from tkinter import ttk
@@ -6524,6 +6378,65 @@ menu_button.configure(menu = button_sub_menu)
 # run
 window.mainloop()
 ```
+
+**Optionmenu**\
+C'est un widget qui permet d'avoir un certain nombre d'options prédéfini dans un menu déroulant.
+
+Pour créer un `OptionMenu`, on utilise un constructeur : `OptionMenu(parent, variable, default = None, *values, **kwargs)`, avec `variable` = une variable tkinter qui stocke la valeur sélectionnée, `default` = option sélectionnée à l'exécution, `values` = une liste de valeurs proposées dans le menu déroulant. Notez que les arguments doivent être donnés dans cet ordre, et sans mot-clé (variable, values,...).\
+Dans les `**kwargs`, on retrouve `direction` pour changer la direction dans laquelle le menu se déroule (`above`, `below`, `left`, `right`, `flush`), `style` et `command`, qui appelle une fonction lorsqu'un bouton est sélectionné.
+
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# WINDOW
+window = tk.Tk()
+window.title("Option menu")
+window.geometry("350x150")
+window.minsize(350, 100)
+
+# FUNCTIONS
+def option_changed(window):
+    output_label["text"] = f"You selected {string_var.get()}"
+
+# VARIABLES
+# values
+languages = ("Python", "Javascript", "Java", "Swift", "GoLang", "C#", "C++", "Scala")
+
+# tkinter variable
+string_var = tk.StringVar()
+
+# WIDGETS
+# label
+label = ttk.Label(window, text = "Select your favorite language:")
+
+# option menu
+option_menu = ttk.OptionMenu(window,
+                             string_var,
+                             languages[0],
+                             *languages,
+                             command = option_changed)
+
+# output label
+output_label = ttk.Label(window, foreground = "red")
+
+# grid layout
+window.columnconfigure((0, 1), weight = 1, uniform = "a")
+window.rowconfigure((0, 1), weight = 1, uniform = "a")
+
+# paddings for layout
+paddings = {"padx" : 5, "pady" : 5}
+
+# **paddings report the values of the set
+label.grid(column = 0, row = 0, sticky = "w", **paddings)
+option_menu.grid(column = 1, row = 0, **paddings)
+output_label.grid(column = 0, row = 1, columnspan = 2, ** paddings)
+
+# RUN
+window.mainloop()
+```
+
+
 <br>
 
 2. **Geometry managers**
@@ -7166,7 +7079,7 @@ window.mainloop()
 ```
 <br>
 
-#### 7.1.2.8. Create responsive layouts
+#### 7.1.2.7. Create responsive layouts
 ---
 Un layout "réactif" (*responsive*) est un layout qui s'adapte aux changement de taille de la fenêtre.\
 Tkinter n'a pas d'outils intégrés pour créer cela, donc on ne peut pas à propre parler mettre-à-jour simplement un layout déjà existant. On doit donc créer un layout différent pour chaque taille de fenêtre.
@@ -7296,7 +7209,7 @@ class Size_notifier:
 app = App((300, 300))
 ```
 
-#### 7.1.2.9. Classes and custom components
+#### 7.1.2.8. Classes and custom components
 ---
 
 **Classes**\
@@ -7497,7 +7410,7 @@ window.mainloop()
 
 ![custom components](image-37.png)
 
-####  7.1.2.10. Using multiple windows in Tkinter
+####  7.1.2.9. Using multiple windows in Tkinter
 ---
 
 On peut avoir plusieurs fenêtres Tkinter +/- dépendantes.
@@ -7585,10 +7498,631 @@ info_box_button.pack(expand = True)
 # run
 window.mainloop()
 ```
+#### 7.1.2.10. Style and themes
+---
+
+Pour gérer le style sur Tkinter, on a plusieurs options :
+- Outils built-in : les options des widgets, et l'objet Style.
+- Thèmes externes
+- Modules externes : `ttkbootstrap`, `customtkinter`
+
+Les modules externes sont souvent bien plus intéressants pour obtenir une customisation intéressante.
+
+#### 1. Built-in tools
+
+**Inbuild themes**
+
+Un **theme** est un ensemble qui change l'apparence des ttk widgets.\
+On peut modifier les styles built-in ou créer de nouveaux styles soi-même. Pour connaître les styles disponibles, puis appliquer le style qui nous intéresse, on procède ainsi :
+```python
+# create a new instance of the ttk.Style class
+style = ttk.Style(window)
+style.theme_names()
+
+# get the current theme
+current_theme = style.theme_use()
+
+# apply a new theme
+# default, clam, alt, classic in Linux
+style.theme_use("theme_name")
+```
+Les thèmes changent en fonction des systèmes d'exploitation. Il en existe très peu de différents sur Linux, d'où l'intérêt d'utiliser la bibliothèque ***ttkbootstrap***.
+
+Pour changer la couleur d'arrière-plan de la fenêtre, le plus simple est d'utiliser Tk.
+```python
+import Tkinter as Tk
+
+window = tk.Tk()
+window.title("window color")
+# use the configure method, like for the widgets
+# bg for background
+window.configure(bg = "blue") / window["bg"] = "blue"
+
+window.mainloop()
+```
+---
+**Inbuild style**
+
+Le **style** influence l'apparence d'une widget class. En général, le nom du style d'un widget ttk "Twidgetname", par exemple `TLabel` ou `TButton`. Seul `Treeview` ne prend pas de T supplémentaire, et `Progressbar`, `Scale` et `Scrollbar` s'écrivent `Horizontal/Vertical.TProgressbar/TScale/TScrollbar` en fonction de leur orientation.\
+Pour connaître le nom de la classe d'un widget, il suffit d'appeler la méthode `winfo_class()` sur une instance du widget :
+```python
+btn = ttk.Button(window, text = "Click me")
+print(btn.winfo_class())
+```
+Output
+```python
+TButton
+```
+<br>
+
+Pour modifier ce style, il faut modifier les options de ce style à l'aide de la méthode `configure()`.
+
+```python
+# we can create a variable with ttk.Style(window) in it too
+ttk.Style(window).configure(style_name, **options)
+
+# example
+label = ttk.Label(window, text = "label")
+label.pack()
+
+style = ttk.Style(window)
+style.configure("TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
+```
+En intégrant ce code dans un programme :
+```python
+import tkinter as tk
+from tkinter import ttk
+
+# window
+window = tk.Tk()
+window.title("style test")
+window.geometry("150x100")
+
+# widgets
+label = ttk.Label(window, text = "Label")
+label.pack(side = "top")
+
+btn = ttk.Button(window, text = "button")
+btn.pack()
+
+label2 = ttk.Label(window, text = "Label 2")
+label2.pack()
+
+# style
+style = ttk.Style(window)
+style.configure("TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
+
+# run
+window.mainloop()
+```
+![Style 1](image-23.png)
+
+Si on veut par contre que notre style ne s'applique pas à toute la classe *Label* mais seulement à une instance, on ajoute un paramètre `style` à la création de l'objet, dans lequel on lui assigne une instance particulière avant le nom du style *TLabel*. La construction est la suivante : `new_style.built-in_style`.\
+On peut créer une instance `label.TLabel`, d'où découlerait deux sous-instances `Warning.label.Tlabel` (bg = "red" par exemple) et `Info.label.TLabel` (bg = "blue") par exemple.\
+Si on applique cette logique à l'exemple précédent, on obtient cela :
+```python
+label = ttk.Label(window, text = "Label", style = "label.TLabel")
+label.pack(side = "top")
+
+style = ttk.Style(window)
+style.configure("label.TLabel", font = ("Helvetica", 11), background = "purple", foreground = "white")
+```
+![Style 2](image-24.png)
+
+Si on veut appliquer à tous les widgets un style, il suffit de donner `"."` comme premier argument à `style.configure`. Ce . représente la fenêtre entière.
+
+Plutôt que d'utiliser le nom d'une couleur, on peut utiliser les valeurs hexadécimales à l'aide du **code HEX** de la couleur (par exemple le code HEX de mauve est "#856ff8").\
+Dans le code Hex, on retrouve en fait une combinaison de trois valeurs hexadécimales qui donnent la valeur de chaque couleur RGB, précédées d'un #. Chaque valeur fait entre un et deux chiffres, ce qui fait que le code hex peut prendre entre 3 et 6 valeurs. Evidemment, plus on utilise de valeurs, plus on est précis.\
+On peut utiliser le "colour picker" de Google.\
+`#000` = `black`\
+`#888` = `grey`\
+`#fff` = `white`
 
 ---
-### ttkbootstrap
-CSS framework proposant des templates pour la typographie, la forme,...\
+**ttk elements**
+
+Le style se compose d'un à plusieurs éléments ; c'est ce qu'on appelle le **layout**. Ce layout dépend du thème.\
+Par exemple, un `Label` est composé d'une `border`, contenant un `padding`, contenant lui-même le `label`.\
+Pour connaître les différents éléments d'une classe widget, on utilise la méthode `layout()` sur l'objet `style` créé plus tôt : `style.layout(widget_class)`. Si la classe n'est pas composée de plusieurs couches, la fonction lève une exception `tk.TclError` ; autrement, elle retourne une liste de tuples `(element_name, description)`, avec `description` un dictionnaire qui décrit l'élément.
+
+Si on reprend l'exemple du `TLabel`, on trouve trois éléments nichés :
+- `Label.border` : il possède les clés `sticky`, `border` et `children`.
+- `Label.padding` : il possède les mêmes clés que border et consiste en une liste de tuples correspond à la valeur de la clé `children` de `Label.border`.
+- `Label.label` : il possède une seule clé `sticky` et correspond à la valeur de la clé `children` de `Label.padding`.
+
+<br>
+
+**element options**\
+Pour obtenir la liste des options de chaque élément, on utilise la méthode `element_options()` : `style.element_options(style_name)` *(style_name = Label.border, Label.padding, Label.label)*. Par exemple, `border` n'a que l'option `relief` tandis que `label` a de nombreuses options telles que `font`, `foreground`, `with`,...
+
+Le padding permet de changer la taille qu'occupe le label dans la frame qui le contient. On peut lui donner une unique valeur, qui s'appliquera à toutes les directions, ou un tuple de deux nombres, avec le premier définissant la distance sur l'axe x et le deuxième sur l'axe y.
+
+**attributes of element options**\
+Pour obtenir la liste des attributs associés à une option, on utilise la méthode `lookup()` sur l'objet `style` : `style.lookup(layout_name, option_name)`, par exemple `style.lookup('Label.label', 'font')`, l'output étant `TkDefaultFont`.
+
+---
+**ttk Style map**
+
+Cette méthode permet de changer l'apparence d'un widget de façon dynamique à partir d'un état spécifique : `style.map(style_name, query)`. L'argument `query` est une liste de clés où chaque clé est une *style option*, dont la valeur est une liste de tuples `(state, value)`.
+
+| List of widget state | Meaning |
+| :---: | :---: |
+| **active** | le curseur de la souris pointe actuellement le widget |
+| **focus** | le widget a actuellement le focus |
+| **selecte**d | le widget est sélectionné (ex : radiobutton checked) |
+| **pressed** | le widget est cliqué (ex : button pressed) |
+| **disabled**| le widget ne répond à aucune action |
+| **readonly** | on ne peut pas changer la valeur du widget |
+
+Voici l'exemple du changement de couleur dynamique d'un bouton selon son état :
+```python
+button = ttk.Button(window, text = "Save")
+button.pack()
+
+style = ttk.Style(window)
+style.configure("TButton", font = ("Helvetica", 12))
+style.map("TButton", background = [("pressed", "blue"), ("active", "red")])
+```
+
+**Inbuild tkinter styling methods**
+```python
+import tkinter as tk
+from tkinter import ttk, font
+
+# WINDOW
+window = tk.Tk()
+window.title("built-in style")
+window.geometry("250x300")
+
+# print all the font usable in tkinter (sorted)
+print(sorted(font.families()))
+
+# WIDGETS
+label = ttk.Label(window,
+                  text = "Label\nAnd then type on\nanother line",
+                  anchor = "center",
+                  background = "orange",
+                  # font = ("style_name", size)
+                  font = ("Jokerman", 12),
+                  # anchro places the widget in the place available,
+                  # justify places it in the area available after the anchor
+                  justify = "right")
+label.pack(expand = True, fill = "both")
+
+# ttk.Button has no style options
+btn1 = ttk.Button(window, text = "button")
+btn1.pack()
+
+# set the style name to use the style.configure for this style name
+label2 = ttk.Label(window, text = "Label 2",  style = "label.TLabel")
+label2.pack()
+
+btn2 = ttk.Button(window, text = "Save", style = "btn.TButton")
+btn2.pack(pady = 20)
+
+# Frame
+# no style options
+frame = ttk.Frame(window)
+frame.pack(expand = True, fill = "both")
+
+# STYLE
+# creating style object
+style = ttk.Style()
+
+# print the themes available in the OS
+print(style.theme_names())
+
+# global window style
+style.theme_use("clam")
+
+# Twidget = all of the widget in the app.
+# "." = all the widgets in the app,
+# but doesn't overwrite the options of a widget
+style.configure("label.TLabel",
+                font = ("Stencil", 11),
+                # hexadecimal color
+                background = "#b0e1c3",
+                foreground = "#322933")
+
+# map : ("Twidget", opt = [(), ()])
+style.map("btn.TButton",
+          background = [("pressed", "blue"), ("active", "green")],
+          foreground = [("pressed", "white")])
+
+style.configure("TFrame", background = "pink")
+
+# RUN
+window.mainloop()
+```
+
+#### 2. External themes
+Les thèmes externes : https://wiki.tcl-lang.org/page/List+of+ttk+Themes \
+Je recommande : Azure et Forest.
+
+Les thèmes externes ne nous laissent que très peu de possibilités de customisation propres.\
+Si on prend Azure par exemple, on a la possibilité d'un thème sombre et d'un thème clair. Par contre, les sliders ne s'affichent correctement que si on les place en utilisant que deux directions (`ns` / `ew`).
+
+Pour utiliser un thème externe, il faut télécharger ce thème, puis importer le thème dans notre programme :
+```python
+# theme
+# call("source", path) = import a file
+self.tk.call("source", os.path.join(Path(__file__).parent, "Azure_theme/azure.tcl"))
+
+self.tk.call("set_theme", "light" / "dark")
+```
+
+De plus, l'utilisation d'un thème externe repose sur l'utilisation d'images à afficher pour chaque widget, ce qui diminue beaucoup les performances de l'app (délai quand on modifie la taille de la fenêtre par exemple).
+
+#### 3. CustomTkinter
+C'est une bibliothèque UI externe à télécharger qui utilise les mêmes widgets que ttk mais comporte bien plus d'options de customisation. On peut parfaitement associer dans son code des widgets customtkinter et ttk/tk.\
+Il comporte aussi quelques widgets propres.\
+Chaque widget a une version claire et une version sombre.
+
+**3.1. Color and themes**\
+**Color**
+
+![customtkinter colors](image-39.png)
+bg_color est la couleur de l'arrière-plan si le widget comporte des bords arrondis et fg_color est la couleur de l'arrière-plan.
+
+On peut donner comme couleur :
+- le nom de la couleur (ex : `"red"`)
+- le code hex de la couleur (ex : `"#FF0000"`)
+- un tuple de couleur pour le light/dark mode (`("red", "darkred")`)
+
+```python
+button = customtkinter.CTkButton(root_tk, fg_color="red")  # single color name
+button = customtkinter.CTkButton(root_tk, fg_color="#FF0000")  # single hex string
+button = customtkinter.CTkButton(root_tk, fg_color=("#DB3E39", "#821D1A"))  # tuple color
+```
+<br>
+
+**Appearance mode**\
+Cela décide quelle couleur sera choisie dans un tuple de couleur. Elle peut être changée à n'importe quel moment.
+
+```python
+customtkinter.set_appearance_mode("system")  # default, detects the appearance mode of the OS
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_appearance_mode("light")
+```
+
+Le mode `system` s'adapte aussi pendant le temps d'exécution du programme, si le mode est changé sur l'OS. Sur Linux en revanche, le thème du `system` sera toujours `light`.
+
+**Theme**\
+Le thème standard est `"blue"`. On trouve aussi un thème `"dark-blue"` et `"green"`.
+
+```python
+customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
+```
+
+On peut aussi créer son propre thème en modifiant le fichier .json. On importe ensuite le nouveau thème dans notre programme.
+
+```python
+customtkinter.set_default_color_theme("path/to/your/custom_theme.json")
+```
+<br>
+
+**CTkFont**\
+Pour paramétrer une police de caractères, la méthode la plus simple est de définir `font` avec comme valeur un tuple à la création du widget : `customtkinter.CTkButton(app, font = ("<family_name>", <size in pixel>, **<"normal"/"bold">, **<"roman"/"italic">, **<"underline">, **<"overstrike">))`.
+
+Pour modifier ensuite le `font`, on peut utiliser les méthodes `get` et `configure` :
+```python
+button = customtkinter.CTkButton(app, font=customtkinter.CTkFont(family="<family name>", size=<size in px>, <optional keyword arguments>))
+
+button.cget("font").configure(size=new_size)  # configure font afterwards
+```
+
+Néanmoins, la façon la plus simple est de définir un style qui pourra ensuite être réutilisé pour plusieurs widgets :
+```python
+my_font = customtkinter.CTkFont(family="<family name>", size=<size in px>, <optional keyword arguments>)
+
+button_1 = customtkinter.CTkButton(app, font = my_font)
+button_2 = customtkinter.CTkButton(app, font = my_font)
+
+my_font.configure(family = "new name")  # changes apply to button_1 and button_2
+```
+<br>
+
+**3.2. DPI Scaling**\
+DPI = "dot per inches", c'est le nombre de pixel/cm². Les écrans à forte DPI ont une bonne résolution, mais les icônes et le texte peut du coup apparaître très petit pour un oeil humain. Les OS autorisent donc le scaling pour grossir les widgets.
+
+Avec Customtkinter, le scaling est géré automatiquement sur MacOS et Windows. On peut le désactiver cependant : `customtkinter.deactivate_automatic_dpi_awareness()` (Windows). Le résultat cependant sera une fenêtre floue si le scaling dépasse 100%.
+
+On peut aussi gérer le scaling soi-même :
+```python
+customtkinter.set_widget_scaling(float_value)  # widget dimensions and text size
+customtkinter.set_window_scaling(float_value)  # window geometry dimensions
+```
+<br>
+
+**3.3. CTk windows**\
+Pour créer une fenêtre avec CustomTkinter :
+```python
+# replaces tk.Tk(), only difference
+app = customtkinter.CTk()
+app.title("CTk window")
+app.geometry("600x500")
+
+app.mainloop()
+```
+
+Les méthodes sont globalement identiques aux options Tkinter.
+
+| Méthods | Explanation | Example |
+| :---: | :---: | :---: |
+| `.configure(attribute = value,...)` | modifier des attributs de la classe | `app.configure(fg_color = "new_color")` |
+| `.cget(attribute_name)` | on donne le nom d'un attribut sous forme de string comme paramètre et cela nous retourne la valeur de cet attribut | `fg_color = app.cget("fg_color")` |
+| `.title(str)` | donne un titre à la fenêtre | `app.title("CTk")` |
+| `.geometry(geometry_str)` | on donne `"<width>x<height>` pour configurer la taille de la fenêtre | `app.geometry("600x400")` |
+| `.minsize(width, height)` | configure une dimension minimum pour la fenêtre | `app.minsize(300, 250)` |
+| `.maxsize(width, height)` | configure une dimension maximum pour la fenêtre | `app.maxsize(700, 650)` |
+| `.resizable(width, height)` | définit si la largeur/longueur peuvent être redéfinies ;<br>on passe des booléens comme options | `app.maxsize(700, 650)` |
+| `.after(milliseconds, command)` | exécute une commande après un certain temps d'exécution sans bloquer la boucle principale | / |
+| `.withdraw()` | cache la fenêtre et son icône | `app.withdraw()` |
+| `.iconify()` | "iconifie" la fenêtre | `app.iconify()` |
+| `.deiconify()` | restaure la fenêtre entièrement (contre les deux précédentes méthodes) | `app.deiconify()` |
+| `.state(**new_state)` | si on ne lui passe pas d'arguments, retourne l'état actuel de la fenêtre ;<br>permet de définir un nouvel état en le passant en argument ("normal", "iconic", "withdraw", "zoomed") | `app.maxsize(700, 650)` |
+|
+
+**CTkInputDialog**\
+C'est l'équivalent de la `Messagebox` de Tkinter.
+
+```python
+app = customtkinter.CTk()
+app.geometry("400x300")
+
+
+def button_click_event():
+    dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="Test")
+    # .get_input() is the only method of the CTkInputDialog
+    # returns the text of the entry;
+    # waits for Ok or Cancel button to be pressed
+    print("Number:", dialog.get_input())
+
+
+button = customtkinter.CTkButton(app, text="Open Dialog", command=button_click_event)
+button.pack(padx=20, pady=20)
+
+app.mainloop()
+```
+
+Les arguments qu'elle peut prendre lors de sa création :
+| Argument | Value |
+| :---: | :---: |
+| `title = str` | définit le titre de la boîte de dialogue |
+| `text = str` | définit le texte affiché au-dessus de l'entry |
+| `fg_color = tuple("light", "dark")/str` | définit la couleur de l'arrière-plan de la fenêtre |
+| `button_fg_color = tuple("light", "dark")/str` | définit la couleur de l'arrière-plan du button |
+| `button_hover_color = tuple("light", "dark")/str` | définit la couleur que prend le button lorsqu'on passe la souris dessus |
+| `button_text_color = tuple("light", "dark")/str` | définit la couleur du texte du button |
+| `entry_fg_color = tuple("light", "dark")/str` | définit la couleur de l'arrière-plan de l'entry |
+| `entry_border_color = tuple("light", "dark")/str` | définit la couleur de la bordure de l'entry |
+| `entry_text_color = tuple("light", "dark")/str` | définit la couleur du texte de l'entry |
+|
+
+**CTkToplevel**\
+C'est l'équivalent de la `tk.Toplevel` de Tkinter.
+
+```python
+toplevel = CTkToplevel(app)  # master argument is optional
+```
+
+**3.4. CTk widgets**
+
+Les widgets de CustomTkinter sont créés comme ceci : `widget = customtkinter.CTkWidget(master)`.\
+*Exemple : `button = customtkinter.CTkButton(app, text="CTkButton", command=button_event)`*.
+
+Il existe une classe `CTkScrollableFrame` dont le rôle est semblable au `Canvas` de Tk (mais le fonctionnement n'est pas identique).
+
+La classe `CTkTabview` sur CustomTkinter crée un objet semblable au `Notebook` de Tkinter. Ces tabs peuvent être utilisées comme des CTkFrames ; on peut y placer n'importe quel widget. Petit exemple de setup simple avec Tabview :
+```python
+# creation and layout
+tabview = customtkinter.CTkTabview(master=app)
+tabview.pack(padx=20, pady=20)
+
+# creation of the tabs
+tab_1 = tabview.add("tab 1")
+tab_2 = tabview.add("tab 2")
+
+# set which tab is visible at the execution
+tabview.set("tab 2")
+
+# button placed into the tab 1
+button = customtkinter.CTkButton(tab_1)
+button.pack(padx=20, pady=20)
+```
+
+La `CTkTextbox` est un objet semblable à la `Tk.Textbox` qui peut être scrollée verticalement et horizontalement et dans laquelle on saisit du texte.
+
+```python
+textbox = customtkinter.CTkTextbox(app)
+
+textbox.insert("0.0", "new text to insert")  # insert at line 0 character 0
+text = textbox.get("0.0", "end")  # get text from line 0 character 0 till the end
+textbox.delete("0.0", "end")  # delete all text
+textbox.configure(state="disabled")  # configure textbox to be read-only
+```
+
+---
+Les options disponibles :
+| Options | Explanation | With which widget |
+| :--: | :--: | :--: |
+| ***master** = widget/app* | widget parent dans lequel sera placé le widget | **tous les widgets** |
+| ***width** = int* | largeur du widget complet en pixel | **tous les widgets**|
+| ***height** = int* | longueur du widget complet en pixel | **tous les widgets** |
+| ***widget_width** = int* | largeur d'une partie du widget (ex : checkbox) en pixel | checkbox(`checkbox_width`), radiobutton (`radiobutton_width`), switch (`switch_width`) |
+| ***widget_height** = int* | longueur d'une partie du widget (ex : checkbox) en pixel | checkbox, radiobutton |
+| ***corner_radius** = int* | angle du coin du widget en pixel (arrondi) | ***tous les widgets sauf frame*** |
+| ***border_width** = int* | épaisseur de la bordure en pixel | button, checkbox, combobox, frame, progressbar, scrollable frame, segmented button, slider, switch, tabview, textbox |
+| ***border_width_checked*** / ***border_width_unchecked** = int* | épaisseur de la bordure dans un état actif/inactif en pixel | radiobutton |
+| ***border_spacing** = int* | espace entre le texte/l'image et la bordure en pixel, 2px par défaut | button, checkbox, scrollbar, textbox |
+| ***fg_color** = tuple("light", "dark")/str/"transparent"* | couleur de l'arrière-plan | **tous les widgets** |
+| ***label_fg_color** = tuple("light", "dark")/str/"transparent"* | couleur de l'arrière-plan du label | scrollbar frame |
+| ***segmented_button_fg_color** = tuple("light", "dark")/str/"transparent"* | couleur de l'arrière-plan du segmented button | tabview |
+| ***dropdown_fg_color** = tuple("light", "dark")/str/"transparent"* | couleur de l'arrière-plan du menu dépliant | option menu |
+| ***scrollbar_fg_color** = tuple("light", "dark")/str/"transparent"* | couleur de la scrollbar | scrollbar frame |
+| ***selected_color*** / ***unselected_color** = tuple("light", "dark")/str/"transparent"* | couleur du bouton sélectionné/non sélectionné (peut être "transparent" si non sélectionné) | segmented button |
+| ***segmented_button_selected_color*** / ***segmented_button_unselected_color** = tuple("light", "dark")/str/"transparent"* | couleur du bouton sélectionné/non sélectionné | tabview |
+| ***border_color** = tuple("light", "dark")/str* | couleur de la bordure | button, checkbox, combobox, frame, progressbar, radiobutton, scrollbar frame, slider, switch, tabview, textbox |
+| ***hover_color** = tuple("light", "dark")/str* | couleur que prend le widget quand on passe la souris dessus | button, checkbox, radiobutton, switch |
+| ***selected_hover_color*** / ***unselected_hover_color** = tuple("light", "dark")/str* | couleur que prend le widget quand on passe la souris dessus ou non | segmented button |
+| ***segmented_button_selected_hover_color*** / ***segmented_button_unselected_hover_color** = tuple("light", "dark")/str* | couleur que prend le segmented button quand on passe la souris dessus ou non | tabview |
+| ***button_color** = tuple("light", "dark")/str* | couleur du bouton de droite | combobox, option menu, scrollbar, slider, switch |
+| ***scrollbar_button_color** = tuple("light", "dark")/str* | couleur du bouton de scrollbar | scrollbar frame, textbox |
+| ***button_hover_color** = tuple("light", "dark")/str* | couleur du bouton de droite de la combobox en passant la souris dessus | combobox, option menu, scrollbar, slider, switch |
+| ***scrollbar_button_hover_color** = tuple("light", "dark")/str* | couleur du bouton de scrollbar en passant la souris dessus | scrollbar frame, textbox |
+| ***dropdown_hover_color** = tuple("light", "dark")/str* | couleur du menu dépliant en passant la souris dessus | combobox, option menu |
+| ***progress_color** = tuple("light", "dark")/str* | couleur de la barre de progression | progressbar, slider, switch |
+| ***text_color** = tuple("light", "dark")/str* | couleur du texte | button, checkbox, combobox, entry, label, option menu, radiobutton, segmented button, switch, tabview,  textbox |
+| ***text_color_disabled** = tuple("light", "dark")/str* | couleur du texte quand l'état du widget est "disabled" | button, checkbox, combobox, option menu, radiobutton, segmented button, tabview |
+| ***dropdown_text_color** = tuple("light", "dark")/str* | couleur du texte du menu dépliant | combobox, option menu |
+| ***placeholder_text_color** = tuple("light", "dark")/str* | couleur du texte affiché automatiquement avant complétion par l'utilisateur | entry |
+| ***label_text_color** = tuple("light", "dark")/str/"transparent"* | couleur du texte du label | scrollbar frame |
+| ***text** = str* | couleur du texte quand l'état du widget est "disabled" | button, checkbox, label, radiobutton, switch |
+| ***label_text** = str* | texte du label (titre de la frame) | scrollbar frame |
+| ***placeholder_text** = str* | texte affiché automatiquement dans la zone de texte avant complétion par l'utilisateur, disparaît quand le focus est sur le widget; `None` par défaut, incompatible avec `textvariable` | entry |
+| ***values** = list(str)* | valeurs que proposent le widget | combobox, option menu, segmented button |
+| ***font** = tuple(str, int)* | police de caractère du texte; args (font_name, size, **"underline"/"bold"/"italic") | button, checkbox, combobox, entry, label, option menu, radiobutton, segmented button, switch, textbox |
+| ***label_font** = tuple(str, int)* | police de caractère du texte; args (font_name, size, **"underline"/"bold"/"italic") | scrollbar frame |
+| ***dropdown_font** = tuple(str, int)* | police de caractère du texte du menu dépliant; args (font_name, size, **"underline"/"bold"/"italic") | button, checkbox, combobox, option menu |
+| ***textvariable** = tkinter.StringVar/IntVar/BoolVar/DoubleVar* | Lie une variable Tkinter pour récupérer du texte | button, checkbox, entry, label, radiobutton (StringVar), switch (StringVar) |
+| ***variable** = tkinter.StringVar/IntVar/BoolVar/DoubleVar* | Lie une variable Tkinter à l'état d'une box par exemple | checkbox, combobox (StringVar), option menu (StringVar), radiobutton (état de la checkbox), segmented button (StringVar), slider (IntVar / DoubleVar), switch (état de la checkbox) |
+| ***value** = str/int* | valeur prise par `variable` si le widget est sélectionné | radiobutton |
+| ***image*** | retire le texte au profit d'une image, qui doit être de la classe `PhotoImage` | button |
+| ***state** = "normal"/"disabled"* | par défault, l'état est "normal" ; sur "disabled", on ne peut plus interagir avec le widget | button, checkbox, combobox, entry, option menu, radiobutton, segmented button, slider, switch, tabview, textbox |
+| ***onvalue** = str/int* | attribue une valeur quand le widget est actif | checkbox, switch |
+| ***offvalue** = str/int* | attribue une valeur quand le widget est inactif | checkbox, switch |
+| ***hover** = bool* | "True" = active l'effet hover, "False" = désactive | button, checkbox, combobox, option menu, radiobutton, scrollbar, slider |
+| ***command** = function* | appel de fonction quand on interagit avec le widget | button, checkbox, combobox, option menu, radiobutton, scrollbar, segmented button, slider, switch, tabview |
+| ***compound** = str* | définit l'orientation d'une image si une image et du texte sont donnés ("top"/"left"/"bottom"/"right") | button, label |
+| ***anchor** = str* | définit l'alignement du texte/image dans le widget ("center" ou points cardinaux) | button, label, option menu, tabview ("n" par défaut) |
+| ***label_anchor** = str* | définit l'alignement du texte dans le widget ("center" ou points cardinaux) | scrollbar frame |
+| ***orientation** = str* | "horizontal" ou "vertical" | progressbar ("horizontal" par défaut), scrollbar frame ("vertical" par défaut), scrollbar ("vertical" par défaut), slider ("horizontal" par défaut) |
+| ***active_scrollbars** = bool* | autorise l'affichage des scrollbars, par défaut "True" | textbox |
+| ***justify** = str* | définit l'alignement du texte dans l'entry ("center" ou "right"/"left");<br>par défaut, "left" | button, label |
+| ***padx*** / ***pady**  = int* | définit l'espace à droite et à gauche/au-dessus et en dessous du texte, 1 par défaut | label |
+| ***dynamic_resizing** = bool* | active/désactive l'adaptation de la taille de la pièce au texte pour le faire rentrer dans le menu; "True" par défaut | option menu, segmented button |
+| ***mode** = str* | "determinate" ==> progression linéaire (par défaut), "indeterminate" | option menu |
+| ***determinate_speed***/***indeterminate_speed** = int* | vitesse de progression, 1 par défaut | option menu |
+| ***minimum_pixel_length** = int* | longueur minimale de la scrollbar en pixel | scrollbar |
+| ***from_** = int* | valeur la plus basse du slider | slider |
+| ***to** = int* | valeur la plus hate du slider | slider |
+| ***tnumber_of_steps** = int* | nombre d'étapes sur lesquelles le slider peut se positionner | slider |
+| ***wrap** = str* | comment terminer les lignes; "char" par défaut, sinon "word" ou "none" (pas de wrap et autorise le scrolling horizontal) | textbox |
+|
+
+Tous les arguments ne sont pas forcément détaillés ici, certains sont partagés entre Tkinter et CustomTkinter ; le `CTklabel` ou le `CTkTextbox` par exemple prennent d'autres arguments partagés avec leur équivalent Tkinter.
+
+<br>
+
+Les méthodes disponibles:
+| Méthods | Explanation | With which widget |
+| :--: | :--: | :--: |
+| `.configure(attribute = value, ...)` | configure les attributs du widget | **tous les widgets** |
+| `.cget(attribute_name)` | retourne la valeur actuelle de l'attribut donné sous forme de string | **tous les widgets** |
+| `.get()` / `.get(index1, index2 = None)` (textbox - index2 exclu) | récupère la valeur actuelle | checkbox, combobox, entry, option menu, progressbar, scrollbar, segmented button, slider, switch, tabview, textbox |
+| `.set(value)` / `.set(star_value, end_value)` (scrollbar) | change la valeur actuelle du widget ;<br> pour la combobox et l'option menu, la valeur peut ne pas exister dans la liste ; pour le segmented button, si la valeur n'existe pas, aucun bouton ne sera sélectionné | combobox, option menu, progressbar (range 0-1), scrollbar, segmented button, slider, tabview |
+| `.select()` | active un widget (valeur = 1) sans appeler l'option `command` | checkbox, radiobutton, switch |
+| `.deselect()` | désactive un widget (valeur = 0) sans appeler l'option `command` | checkbox, radiobutton, switch |
+| `.toggle()` | inverse la valeur du widget, l'option `command` sera appelée | checkbox, switch |
+| `.bind(sequence = None, command = None, add = None)` | lie l'évènement entré dans séquence à l'appel de fonction de command (event binding) | entry, frame, label, textbox |
+| `.unbind(sequence,funcid = None)` | délie l'évènement à la commande | textbox |
+| `.delete(value)` / `.delete(first_index, last_index = None)` (entry, textbox) | supprimer les caractères du widget, du premier index entré au second index exclu;<br> si un seul argument donné, supprime uniquement le caractère à l'indice donné | entry, segmented button, tabview, textbox |
+| `.insert(index, str)` | insère la string donnée à l'indice donné (soit juste avant le caractère auquel il correspond avant insertion) | entry, segmented button, tabview (le nom de la tab créée doit être unique), textbox |
+| `.move(new_index, value)` | déplace une valeur existante à un nouvel index | segmented button, tabview |
+| `.focus()`/`focus_force()` / `focus_set()` (textbox) | place le focus sur le widget | entry, textbox |
+| `.index(str)` | retourne le nom à l'index donné | entry, tabview |
+| `.invoke()` | appelle l'option `command` si le bouton est "disabled" | button, radiobutton |
+| `.start()` | démarre la progression automatique | progressbar |
+| `.stop()` | stoppe la progression automatique | progressbar |
+| `.step()` | définit un pas | progressbar |
+| `.tab(name)` | retourne la référence de la tab avec le nom donné | tabview |
+| `.add(name)` | ajoute une tab, avec un nom unique | tabview |
+| `.rename(old_name, new_name)` | renomme une tab | tabview |
+|
+
+`Entry` et `Textbox` ont de nombreuses autres méthodes non détaillées ici.
+
+**CustomTkinter program**
+```python
+import customtkinter as ctk
+
+# window
+window = ctk.CTk()
+window.title("Customtkinter app")
+window.geometry("400x350")
+window.minsize(300, 250)
+
+# functions
+def segmented_button_callback(value):
+    print("segmented button clicked:", value)
+
+def change_theme():
+    if ctk.get_appearance_mode() == "Dark":
+        ctk.set_appearance_mode("light")
+    else:
+        ctk.set_appearance_mode("dark")
+
+# widgets
+label = ctk.CTkLabel(window,
+                     text = "A ctk label",
+                    fg_color = ("red", "blue"),
+                    text_color = ("black", "white"),
+                    font = ("Helvetica", 25, "italic", "underline"),
+                    # round corner
+                    corner_radius = 10)
+label.pack()
+
+button = ctk.CTkButton(window,
+                       text = "A ctk button",
+                       fg_color = "#ff0",
+                       text_color = "black",
+                       # when the cursor passes above the widget
+                       hover_color = "#880",
+                       font = ("Gill Sans", 13, "bold"),
+                       # clicking the button set the mode theme in black
+                       command = change_theme)
+button.pack(pady = 50)
+
+# frame
+frame = ctk.CTkFrame(window, fg_color = "transparent")
+frame.pack(expand = True, fill = "both")
+
+# grid
+frame.columnconfigure((0, 1), weight = 1, uniform = "a")
+frame.rowconfigure((0, 1), weight = 1, uniform = "a")
+
+# segmented button et tkinter var
+segemented_button_var = ctk.StringVar(value = "Value 1")
+segemented_button = ctk.CTkSegmentedButton(frame,
+                                           values = ["Value 1", "Value 2", "Value 3"],
+                                           command = segmented_button_callback,
+                                           variable = segemented_button_var)
+segemented_button.grid(row = 0, column = 0, columnspan = 2, sticky = "nsew")
+
+# slider
+slider = ctk.CTkSlider(frame, orientation = "vertical", button_color = "#10e0a9", button_hover_color = "#3474eb", progress_color = "#0c5270")
+slider.grid(row = 1, column = 0, pady = 10)
+
+# switch
+switch = ctk.CTkSwitch(frame,
+                       text = "A ctk switch",
+                       fg_color = "red",
+                       progress_color = "pink",
+                       border_color = "blue",
+                       button_color = "green",
+                       button_hover_color = "yellow",
+                       switch_width = 60,
+                       switch_height = 30,
+                       # very thin slider + rounded background
+                       corner_radius = 2)
+switch.grid(row = 1, column = 1)
+
+# run
+window.mainloop()
+```
+
+#### 4. ttkbootstrap
+CSS framework proposant des templates pour la typographie, la forme,... Contrairement à CustomTkinter qui permet de définir le style de chaque widget individuellement avec une grande liberté, avec ttkbootstrap on utilise des thèmes qu'on applique aux widgets (plus rapide).\
 Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
 
 *Il est possible, à l'importation, de remplacer les strings données en paramètre par des constantes en majuscule : `from ttkbootstrap.constants import *` ; au lieu de `side = "left"`, on écrira alors `side = LEFT`.*
@@ -7597,7 +8131,7 @@ On peut ensuite soit créer la fenêtre avec Tk : `window = tk.Tk()`, soit avec 
 
 #### Theme
 
-Le thème par défaut est litera. On trouve des thèmes clairs, dont fait partie litera : cosmo, flatly, journal, lumen, minty, pulse, sandstone, united, yeti, morph, simplex, cerculean. Les thèmes sombres sont : solar, superhero, darkly, cyborg, vapor.\
+Le thème par défaut est *litera*. On trouve des thèmes clairs, dont fait partie *litera* : *cosmo*, *flatly*, *journal*, *lumen*, *minty*, *pulse*, *sandstone*, *united*, *yeti*, *morph*, *simplex*, *cerculean*. Les thèmes sombres sont : *solar*, *superhero*, *darkly*, *cyborg*, *vapor*.\
 *Je préfère personnellement superhero et darkly en thèmes sombres, et cosmo, litera ou cerculean en thèmes clairs.*
 
 ```python
