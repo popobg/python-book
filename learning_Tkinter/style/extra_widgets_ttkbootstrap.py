@@ -71,6 +71,10 @@ progress_int = tk.IntVar(value = 50)
 progress = ttk.Floodgauge(window,
                           text = "progress",
                           bootstyle = "danger",
+                          # 100 by default
+                          max = 150,
+                          # horizontal by default
+                          orient = "horizontal",
                           variable = progress_int,
                           # overwriting a text into the bar
                           # {} displays the value of the progress
@@ -83,7 +87,7 @@ progress.start(interval = 500)
 
 # a scale that is linked to the progress bar
 # and allows to control it
-ttk.Scale(window, from_ = 0, to = 100, bootstyle = "light", variable = progress_int).pack(fill = "x")
+ttk.Scale(window, from_ = 0, to = 150, bootstyle = "light", variable = progress_int).pack(fill = "x")
 
 # meter
 # the diameter of the circle of the meter
