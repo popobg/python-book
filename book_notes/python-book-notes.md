@@ -8123,7 +8123,7 @@ window.mainloop()
 
 #### 4. ttkbootstrap
 CSS framework proposant des templates pour la typographie, la forme,... Contrairement à CustomTkinter qui permet de définir le style de chaque widget individuellement avec une grande liberté, avec ttkbootstrap on utilise des thèmes qu'on applique aux widgets (plus rapide).\
-Ce module remplace `from tkinter import ttk` par `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
+Ce module remplace le module `ttk` de `tkinter`; on importe donc `ttkbootstrap` directement : `import ttkbootstrap as ttk`. On utilise ensuite le `bootstyle` comme paramètre à la création d'un widget pour gérer le style.
 
 *Il est possible, à l'importation, de remplacer les strings données en paramètre par des constantes en majuscule : `from ttkbootstrap.constants import *` ; au lieu de `side = "left"`, on écrira alors `side = LEFT`.*
 
@@ -8143,114 +8143,363 @@ OU
 window = ttk.Window(themename = "darkly")
 ```
 
+ttkbootstrap permet également de créer ses propres thèmes à l'aide de **TTK Creator**. On tape `python -m ttkcreator` dans le terminal. Il suffit ensuite de donner un nom et de l'enregistrer. L'application permet d'importer/exporter des thèmes également.
+
 #### Style colors
 
 On définit le style avec le paramètre `bootstyle` à la création des widgets. Si on prend l'exemple d'un bouton : `b1 = ttk.Button(window, text = 'primary', bootstyle = 'primary')` (couleur par défaut).
 
 ![style colors](image-16.png)
 
-#### Button types
----
-On distingue des boutons **solid** (par défaut), **outline** ou encore **link**.
-
 ```python
+import tkinter as tk
 import ttkbootstrap as ttk
 
-window = ttk.Window()
+# window with ttkbootstrat
+window = ttk.Window(themename = "minty")
+window.title("ttk bootstrap intro")
+window.geometry("400x300")
 
-b1 = ttk.Button(window, text = "Solid Button", bootstyle = "success")
-b1.pack(side = "left", padx = 5, pady = 10)
+# function
+def change_theme_menubutton():
+    if selected_theme.get() == "dark theme":
+        ttk.Style("superhero")
 
-b2 = ttk.Button(window, text = "Outline Button", bootstyle = ("success", "outline"))
-b2.pack(side = "left", padx = 5, pady = 10)
+    if selected_theme.get() == "light theme":
+        ttk.Style("minty")
+
+def change_theme_combobox(event):
+    if selected_theme.get() == "dark theme":
+        ttk.Style("superhero")
+
+    if selected_theme.get() == "light theme":
+        ttk.Style("minty")
+
+# widgets & layout
+label = ttk.Label(window, text = "Label", anchor = "center")
+label.pack(pady = 10)
+
+button1 = ttk.Button(window, text = "Red", bootstyle = "danger-link")
+button1.pack(pady = 10)
+
+# by default, the buttons are solid
+button2 = ttk.Button(window, text = "Yellow", bootstyle = "warning-solid")
+button2.pack(pady = 10)
+
+# with outline, the background is transparent
+# the background turn into the full color when hovering above the widget
+# bootstyle = "color-outline"
+button3 = ttk.Button(window, text = "Green", bootstyle = "success-outline")
+button3.pack(pady = 10)
+
+checkbutton = ttk.Checkbutton(window, text = "square toggle checkbutton", bootstyle = "info-square-toggle")
+checkbutton.pack(pady = 10)
+
+# separator
+ttk.Separator(window, bootstyle = "dark").pack(fill = "x")
+
+# frame
+frame = ttk.Frame(window)
+frame.pack(expand = True, fill = "both")
+
+# menubutton
+selected_theme = tk.StringVar(value = "light theme")
+
+menu_button = ttk.Menubutton(frame, text = "Select a theme:")
+menu_button.pack(side = "left", expand = True)
+
+button_submenu = tk.Menu(menu_button, tearoff = False)
+button_submenu.add_radiobutton(label = "dark theme", command = change_theme_menubutton, variable = selected_theme)
+button_submenu.add_radiobutton(label = "light theme", command = change_theme_menubutton, variable = selected_theme)
+
+menu_button.configure(menu = button_submenu)
+
+# combobox
+combobox = ttk.Combobox(frame, values = ("dark theme", "light theme"), textvariable = selected_theme)
+combobox.pack(side = "left", expand = True)
+
+combobox.bind('<<ComboboxSelected>>', change_theme_combobox)
+
+# Sizegrip
+ttk.Sizegrip(window, bootstyle = "success").place(relx = 1, rely = 1, anchor = "se")
+
+# run
+window.mainloop()
+```
+
+![ttk bootstrap](image-17.png)
+
+#### Extra widgets
+
+Dans l'API de ttkbootstrap on retrouve un certain nombre de nouveaux widgets et de widgets complexes built-in, comme un calendrier, des zones de texte ou des frames scrollables, des tableaux type excel...
+
+```python
+import tkinter as tk
+import ttkbootstrap as ttk
+from ttkbootstrap.scrolled import ScrolledFrame
+from ttkbootstrap.toast import ToastNotification
+from ttkbootstrap.tooltip import ToolTip
+from ttkbootstrap.widgets import DateEntry, Floodgauge
+
+# window with ttkbootstrat
+window = ttk.Window(title = "Extra widgets",
+                    themename = "superhero",
+                    # only resizable in height
+                    resizable = (False, True))
+window.geometry("500x650")
+# displays the window in the center of the screen monitor
+# same as window.position_center()
+window.place_window_center()
+
+# scrollable frame
+# autohide = when True, the scrollbars will hide
+# when the mouse is not within the framebox
+scroll_frame = ScrolledFrame(window, autohide = True)
+scroll_frame.pack(fill = "both", expand = True, padx = 10, pady = 10)
+
+for i in range(100):
+    # hard to create a layout into a scrollable frame,
+    # so insert a frame inside it
+    frame = ttk.Frame(scroll_frame)
+    frame.pack(expand = True, fill = "both")
+
+    ttk.Label(frame, text = f"Label: {i}", anchor = "center").pack(side = "left", expand = True, fill = "x", padx = 5)
+    ttk.Button(frame, text = f"Button: {i}").pack(side = "left", expand = True, padx = 5)
+
+# toast = semi-transparent pop up window for temporary messages
+toast = ToastNotification(title = "This is a message title",
+                          message = "This is the actual message",
+                          # duration = time to display the message in ms
+                          # if not set, click on the window to close it
+                          duration = 3000,
+                          # outline is not supported
+                          bootstyle = "dark",
+                          # position = (x padding, y padding, start position)
+                          # start position is a cardinal point
+                          # and is the most important parameter
+                          position = (50, 100, "nw"))
+
+# hide_toast() exists too
+ttk.Button(window, text = "show toast", command = lambda: toast.show_toast()).pack()
+
+# tooltip = text displays pop up when the mouse is hovering a widget
+button = ttk.Button(window, text = "tooltip button", bootstyle = "info")
+button.pack()
+# Tooltip(master)
+ToolTip(button, text = "This does something", bootstyle = "success-inverse")
+
+# calendar
+calendar = DateEntry(window,
+                     # this date format is the default one
+                     dateformat = "%d-%m-%Y",
+                     # default starting day = 6 (sunday)
+                     firstweekday = 7,
+                     bootstyle = "warning")
+calendar.pack(pady = 10)
+
+ttk.Button(window,
+           text = "get calendar date",
+           bootstyle = "light-link",
+           command = lambda: print(calendar.entry.get())).pack()
+
+# floodgauge (= progressbar tkinter)
+progress_int = tk.IntVar(value = 50)
+progress = ttk.Floodgauge(window,
+                          text = "progress",
+                          bootstyle = "danger",
+                          # 100 by default
+                          max = 150,
+                          # horizontal by default
+                          orient = "horizontal",
+                          variable = progress_int,
+                          # overwriting a text into the bar
+                          # {} displays the value of the progress
+                          mask = "mask {}%")
+progress.pack(pady = 10, fill = "x")
+
+# autoincrement the gauge
+# progress.stop() to stop it
+progress.start(interval = 500)
+
+# a scale that is linked to the progress bar
+# and allows to control it
+ttk.Scale(window, from_ = 0, to = 150, bootstyle = "light", variable = progress_int).pack(fill = "x")
+
+# meter
+# the diameter of the circle of the meter
+meter = ttk.Meter(metersize = 180,
+                  # space between the meter and the other widgets
+                  padding = 10,
+                  # value setted (default = 0)
+                  amountused = 25,
+                  # max value of the meter (default = 100)
+                  amounttotal = 200,
+                  # length of the indicator wedge
+                  # 0 by default so the indicator goes from 0 to set value
+                  wedgesize = 0,
+                  # "full" or "semi" circle
+                  metertype = "semi",
+                  # thickness of the meter
+                  # 10 by default
+                  meterthickness = 20,
+                  # by default = 0, so that the indicator is a solid bar
+                  # when > 0, the indicator is made by striped wedges
+                  stripethickness = 10,
+                  # text under the value of the meter
+                  subtext = "miles per hour",
+                  # textright/left
+                  textright = "mph",
+                  # bootstyle color of the subtext and other text label defined
+                  subtextstyle = "warning",
+                  # if set to True, can be manually updated
+                  interactive = True,
+                  bootstyle = "info",
+                  # indicates whether to show the left, center
+                  # and right text labels on the meter;
+                  # if set to False, only the subtext is visible
+                  showtext = True,
+                  # sets the amount by which to change the meter indicator
+                  # when incremented by mouse interaction
+                  stepsize = 10)
+meter.pack()
+
+meter.configure(amountused = 50)
+
+# update the amount used with another widget
+entry_meter = ttk.Entry(window, textvariable = meter.amountusedvar)
+entry_meter.place(relx = 0.5, rely = 1, anchor = "s")
+
+# increment the amount by 10 steps
+meter.step(delta = -10)
+
+# decrement the amount by 15 steps
+meter.step(delta = 15)
+
+# update the subtext
+meter.configure(subtext = "loading...")
+
+# run
+window.mainloop()
+```
+
+#### 7.1.2.11. Animated widgets
+---
+Il faut créer ses propres widgets animés avec Tkinter, en utilisant la méthode `after`, combinée soit avec les layouts, soit avec la méthode `configure` d'un widget, qui permettent de mettre-à-jour le widget en temps réel.
+
+**After**\
+`after` est une méthode Tk qui permet d'appeler une fonction après un certain temps.\
+`window.after(time,func)` avec le premier argument `time` correspondant au temps écoulé en ms.\
+Notez que la fonction `after` peut être circulaire et elle-même appeler la fonction `after`:
+```python
+def func():
+    print("test")
+    window.after(1000, func)
+```
+
+**Layout & configure**\
+Le layout permet de gérer la position et la taille d'un widget. On rappelle que l'appel d'un layout sur un widget écrase le layout précédent. Dans les widgets animés, on utilise toujours **`place()`** car c'est la seule méthode qui permette de changer les valeurs de position pixel par pixel.\
+La méthode `configure` permet quant à elle de mettre-à-jour des attributs du widget, comme le texte, la police, les couleurs,...
+
+```python
+import tkinter as tk
+from tkinter import ttk
+from tkinter import scrolledtext
+
+# class
+class SlidePanel(ttk.Frame):
+    """A sliding animated panel on the right side of the window"""
+
+    def __init__(self, parent, start_pos, end_pos):
+        super().__init__(master = parent)
+
+        # general attributes
+        self.start_pos = start_pos + 0.02
+        self.end_pos = end_pos - 0.02
+        # the end_pos can be greater than the start_pos,
+        # so we have to use absolute
+        self.width = abs(start_pos - end_pos)
+
+        # animation logic
+        self.pos = self.start_pos
+        # it is a switch : check if in a start-pos and move to the end
+        # or the contrary
+        self.in_start_pos = True
+
+        # insert widgets
+        self.create_widgets()
+
+        # layout
+        self.place(relx = self.start_pos, rely = 0.01, relwidth = self.width, relheight = 0.97)
+
+    def animate(self):
+        """check the position of the switch"""
+        if self.in_start_pos:
+            self.animate_forward()
+        else:
+            self.animate_backwards()
+
+    def animate_forward(self):
+        """move the panel to the left"""
+        if self.pos > self.end_pos:
+            # decreases the position on x
+            self.pos -= 0.008
+
+            self.place(relx = self.pos, rely = 0.01, relwidth = self.width, relheight = 0.97)
+            # call a function after some time (ms)
+            self.after(3, self.animate_forward)
+
+        else:
+            self.in_start_pos = False
+
+    def animate_backwards(self):
+        """move the panel to the right"""
+        if self.pos < self.start_pos:
+            # increases the position on x
+            self.pos += 0.008
+
+            self.place(relx = self.pos, rely = 0.01, relwidth = self.width, relheight = 0.97)
+            self.after(3, self.animate_backwards)
+
+        else:
+            self.in_start_pos = True
+
+    def create_widgets(self):
+        ttk.Button(self, text = "Button 1").pack(expand = True, anchor = "center")
+        ttk.Button(self, text = "Button 2").pack(expand = True, anchor = "center")
+        ttk.Label(self, text = "Label").pack(expand = True, anchor = "center")
+        scrolledtext.ScrolledText(self, width = 20, height = 10).pack(anchor = "center", padx = 5, pady = 5)
+
+# creating the window
+window = tk.Tk()
+window.title("Animated widgets")
+window.geometry("400x350")
+window.configure(bg = "#21334f")
+
+# style
+style = ttk.Style()
+# this theme makes the bg of the button more visible
+style.theme_use("clam")
+style.configure("TFrame", background = "pink")
+
+# create an instance of slide panel (master, start, end)
+animated_panel = SlidePanel(window, 1, 0.7)
+
+# var
+button_x = 0.5
+
+# widget
+button = ttk.Button(window, text = "toggle sidebar", command = animated_panel.animate, style = "button.TButton")
+button.place(relx = button_x, rely = 0.5, relheight = button_x, anchor = "center")
 
 window.mainloop()
 ```
 
-![type buttons](image-17.png)
-
-```python
-for color in window.style.colors:
-    b = ttk.Button(window, text = color, bootstyle = (color, "link"))
-    b.pack(side = "left", padx = 5, pady = 5)
-```
-
-![style colors](image-18.png)
-
-On peut aussi désactiver le bouton, soit lors de sa création `b = Button(state = "disabled")`, soit à l'aide de la méthode *configure( )* `b.configure(state = "disabled")`.
-
-#### Checkbutton types
+#### 7.1.2.12. Images in Tkinter
 ---
+On peut ajouter des images à certains widgets (principalement labels, buttons, canvas).\
+Cependant, pour que les images se mettent correctement à l'échelle, il faut créer une logique soi-même (pas de *scaling logic*).
 
-```python
-# default = square checkbox and label
-c1 = ttk.Checkbutton(window, text = "default", bootstyle = "success")
-c1.pack(side = "left", padx = 5, pady = 5)
-
-# toolbutton = solid button that toggles between an off and on color
-# outline toolbutton = same, with outline button
-c2 = ttk.Checkbutton(window, text = "toolbutton", bootstyle = ("success", "toolbutton"))
-c3 = ttk.Checkbutton(window, text = "outline toolbutton", bootstyle = ("success", "outline toolbutton"))
-c2.pack(side = "left", padx = 5, pady = 5)
-c3.pack(side = "left", padx = 5, pady = 5)
-
-# round toggle button = rounded button with a round indicator that changes color and position when toggled off and on
-c4 = ttk.Checkbutton(window, text = "round toggle", bootstyle = ("success", "round-toggle"))
-c4.pack(side = "left", padx = 5, pady = 5)
-
-# square toggle button = same, with a square indicator
-c5 = ttk.Checkbutton(window, text = "square toggle", bootstyle = ("success", "square-toggle"))
-c5.pack(side = "left", padx = 5, pady = 5)
-
-# disabled checkbutton
-c6 = ttk.Checkbutton(window, text = "disabled", bootstyle = "success", state = "disabled")
-c6.pack(side = "left", padx = 5, pady = 5)
-```
-
-![different buttons](image-19.png)
-
-#### Label
----
-```python
-# default = colored text without a background
-l1 = ttk.Label(window, text = "success", bootstyle = "success")
-l1.pack(side = "left", padx = 5, pady = 5)
-
-# inverse label = colored background with matching color text
-l2 = ttk.Label(window, text = "success", bootstyle = ("inverse", "success"))
-l2.pack(side = "left", padx = 5, pady = 5)
-```
-
-![label](image-20.png)
-
-#### Radiobutton
----
-```python
-# by default, its a round indicator button with text on its right
-# the indicator is filled when in a selected state, it can be disabled in the state parameter
-rd1 = ttk.Radiobutton(window, text = "success", bootstyle = "success")
-rd1.pack(padx = 5, pady = 5)
-
-# it can also be solid by adding "toolbutton" in the boostyle parameter,
-# outline by adding "outline" and "toolbutton" (or "outline-toolbutton")
-rd2 = ttk.Radiobutton(window, text = "success", bootstyle = ("success", "outline", "toolbutton"))
-rd2.pack(padx = 5, pady = 5)
-```
-
-#### Separator
-```python
-# a thin horizontal/vertical line drawn in the color defined in bootstyle
-# no text parameter
-s = ttk.Separator(window, bootstyle = "success")
-s.pack(padx = 5, pady = 5)
-```
-
-#### Sizegrip
-```python
-# a pattern of squares that allows you to manage the size of the window by clicking on it
-s = ttk.Separator(window, bootstyle = "success")
-s.pack(padx = 5, pady = 5)
-```
+Pour utiliser les images, il faut avoir la librairie `pillow`.
 
 ### 7.2. Graphics in Python-Pygame
 ---
