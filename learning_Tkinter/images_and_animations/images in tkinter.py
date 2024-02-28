@@ -78,7 +78,7 @@ def show_image(event):
 
 
 def change_theme():
-    """update the wundow's theme"""
+    """update the window's theme"""
 
     if ctk.get_appearance_mode() == "Dark":
         ctk.set_appearance_mode("light")
