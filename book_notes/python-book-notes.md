@@ -8382,8 +8382,10 @@ meter.configure(subtext = "loading...")
 window.mainloop()
 ```
 
-#### 7.1.2.11. Animated widgets
+#### 7.1.2.11. Animated widgets and images
 ---
+
+#### Animated widgets
 Il faut créer ses propres widgets animés avec Tkinter, en utilisant la méthode `after`, combinée soit avec les layouts, soit avec la méthode `configure` d'un widget, qui permettent de mettre-à-jour le widget en temps réel.
 
 **After**\
@@ -8493,9 +8495,9 @@ button.place(relx = button_x, rely = 0.5, relheight = button_x, anchor = "center
 
 window.mainloop()
 ```
+Cf scripts, autre façon de faire avec interpolation (pas plus simple dans ce cas mais bon à savoir).
 
-#### 7.1.2.12. Images in Tkinter
----
+#### Images in Tkinter
 On peut ajouter des images à certains widgets (principalement labels, buttons, canvas).\
 Cependant, pour que les images se mettent correctement à l'échelle, il faut créer une logique soi-même (pas de *scaling logic*).
 
@@ -8670,6 +8672,11 @@ else:
 # run
 window.mainloop()
 ```
+
+#### 7.1.2.12. Multithreading Tkinter Apps
+---
+
+
 
 ### 7.2. Graphics in Python-Pygame
 ---
