@@ -798,24 +798,27 @@ Certaines fonctions sont aussi contenues dans des **modules**, comme *sine* ou *
 import math # le module math est importé dans le programme et ses fonctions peuvent être utilisées.
 ```
 
-L'instruction ***import*** doit se trouver au début du programme (après le shebang s'il y en a).
+L'instruction ***import*** doit se trouver au début du programme (après le shebang ou la doc s'il y en a).
 
 Pour appeler une fonction, il faut ensuite appeler le nom du module suivi d'un *.* (*period* en anglais) et du nom de la fonction.
 ```python
-print(math.sqrt(64))``` # sqrt(x) = un appel de fonction
+print(math.sqrt(64)) # sqrt(x) = un appel de fonction
 ```
 `8`
+
+On peut aussi donner un autre nom au module : `import tkinter as tk`, ou importer une fonction spécifique, comme `from tkinter import ttk`.
 
 ---
 #### Quelques exemples de fonctions *random*
 
-Il existe un module ***random*** contenant plusieurs modules.
+De nombreux modules inclus dans la bibliothèque standard sont très utiles. Les plus utilisés sont `os`, `sys`, `Path`, `time`, `random`, `math`.\
+Concentrons-nous sur le module ***random*** qui contient plusieurs fonctions.
 
 **random()** \
 La fonction ***random()*** produit un nombre aléatoire compris entre 0.0 et 1.0.
 ```python
-    import random
-    print(random.random())
+import random
+print(random.random())
 ```
 `0.07229650795715237`
 
@@ -837,18 +840,53 @@ else:
 ```
 *randrange()* est identique à *randint()* mais la borne supérieure est exclue.
 
+### Autres modules
+***os* et *sys***
+```python
+# import the standard libraries modules first,
+# then the extra modules dl,
+# and finally our own modules
+import os
+import sys
+
+# a list of dir where python looks for modules.
+# First, it is looking into the dir where the script is running,
+# then, it is looking into the dir of the python standard library
+# and finally, into the site-packages dir
+dir = sys.path
+current_path = os.getcwd()  # get path to the current directory
+os.chdir("new_path")    # change the current dir
+file_path = os.path.join(os.getcwd(), "test.txt")   # append a file name to a given path
+```
+Le module `os` a également des fonctions qui permettent de faire des commandes semblables aux commandes Bash ou Powershell (ex : `mkdir(new_dir_or_file)` ou `makedirs(new_dir/path)` si on veut créer plusieurs fichiers récursifs, `rmdir(dir)` ou `removedirs(dir_file)`, `listdir()`, `rename(actual_name, new_name)`, `stat(file)`, ).\
+`os.walk(path)` est une fonction qui parcourt tous les dossiers depuis le path donné. Elle retourne le chemin dans lequel elle est, les dossiers, puis les fichiers présents à cette localisation.\
+`os.environ.get("file_or_dir_name")` retourne le path auquel se trouve le dossier cherché (il ne prend que des variables d'environnement comme HOME).
+
+`os.path` a plusieurs fonctions, comme `basename("/dir/file_name")`, `direname("file_name")`, `split("/dir/file_name")` ou `splitext("path")` (découpe le path et l'extension du dernier fichier donné, comme `.txt`), `exists("path")`, `isdir("name")` / `isfile("name")`.
+
+***datetime* et *calendar***
+```python
+import datetime
+import calendar
+
+today = datetime.date.today()   # us date format
+calendar.isleap(2017)   # return a bool if the year is a leap year ("bisextile" in french)
+```
 ---
+
 On peut importer un fichier du dossier actuel ou d'un dossier fils, ou bien d'un fichier se trouvant dans le path python en faisant `from folder_name import file_name` (sans avoir à mentionner l'extension du fichier, par exemple *.py*).
 
-Pour importer un module qui n'est ni dans le dossier actuel ni dans le path, on ajoute ce fichier au path :
+Pour importer un module qui n'est ni dans le dossier actuel ni dans le path, on peut ajouter ce fichier aux chemins que `sys.path` explore pour trouver des modules :
 ```python
 import sys
-sys.path.insert(0, '/path/to/module')        # no file_name, just folder_name at the end of the path
+sys.path.insert(0, '/path/to/added/module')        # no file_name, just folder_name at the end of the path
 import module_name
 ```
 *insert()* prend pour arguments un index et un path absolu vers le dossier contenant le fichier à importer. L'index indique à quelle position du path on ajoute le dossier (0 pour le début, -1 à la fin). Cela importe si par exemple on a un module du même nom dans notre dossier actuel. Si on met en index 0, on cherchera d'abord le fichier à importer dans le dossier dont on indique le path.
 
-Il existe d'autres moyens, comme `sys.path.append('path/to/module')` mais on ne donne pas d'index ici. Pour retirer un path du sys.path, on utilise la fonction *remove( )* : `sys.path.remove('/path.to/module')`.
+Il existe d'autres moyens, comme `sys.path.append('path/to/added/module')` mais on ne donne pas d'index ici. Pour retirer un path du sys.path, on utilise la fonction *remove( )* : `sys.path.remove('/path.to/module')`.
+
+Une autre façon de faire est d'ajouter un nouveau PYTHONPATH aux variables d'environnement python ; cet ajout se fait différemment en fonction des OS. Ne pas oublier de redémarrer son terminal pour prendre en compte les changements.
 
 ### 2.3. Counting loops : for loops
 ---
@@ -2943,11 +2981,11 @@ Les variables ***locales*** sont définies dans une fonction et utilisables dans
 C'est ce qu'on appelle le ***scoping*** : l'emplacement du programme où la variable est accessible est appelé le *scope*.
 
 Si une variable locale porte le même nom qu'une variable globale, c'est ce qu'on appelle l'*aliasing* et cela devient compliqué. \
-En Python, les variables sont considérées comme étant locales à moins que le programmeur spécifie qu'elle est globale dans une instruction :
+En Python, les variables sont considérées comme étant locales à moins que le programmeur spécifie qu'elles sont globales dans une instruction :
 ```python
 global a, b, c
 ```
-Cela signifie que les variables *a*, *b* et *c* sont des variables globales définies en dehors de toute fonction. Ainsi ces fonctions sont aussi accessibles du *main* et de tout programme les déclarant comme globales.
+Cela signifie que les variables *a*, *b* et *c* sont des variables globales, définies en dehors de toute fonction. Ainsi ces fonctions sont accessibles du *main* et de tout programme les déclarant comme globales.
 
 Pour ne pas s'emmêler, il ne faut définir de variables globales que pour des variables qui sont connues, essentielles et utilisées sur l'ensemble du programme (*ex : le plateau de jeu sur un jeu d'échec*). Pour mieux s'y retrouver, on peut aussi placer *_g* à la fin du nom de la variable globale pour savoir à tout moment qu'elle est globale. \
 Dans notre jeu de sticks, la valeur globale serait *value* qui détermine le nombre de bâtons restants sur le plateau.
@@ -3583,7 +3621,7 @@ C'est utile pour les bases de données importantes utilisées par plusieurs prog
 
 - *+* (ou *r+*) pour *read and write*. On peut alors réaliser toutes les opérations de lecture et d'écrire sur le fichier.
 
-- *b* (*wb*, *rb* ou *ab*) pour *binary* (pas d'encodage à préciser dans ce cas), cela ouvre le fichier en mode binaire. C'est utile pour les fichiers MP3 ou vidéo. \
+- *b* (*wb*, *rb* ou *ab*) pour *binary* (pas d'encodage à préciser dans ce cas), cela ouvre le fichier en mode binaire. C'est utile pour les fichiers MP3, images ou vidéo.\
 Précisons qu'il est impératif de le mentionner sur Windows, mieux pour la clarté sur Unix sans nécessité. En effet, Windows modifie les carctères de fin de ligne des fichiers en mode simple ; cela n'a que peu d'importance pour les fichiers .txt ASCII, mais peut corrompre un fichier de type .JPEG ou .exe par exemple.
 
 ---
@@ -3710,7 +3748,7 @@ g.close()
 ```
 ***filter***
 
-Un **filtre** est un programme qui lit les données d'un fichier et les convertir en une autre forme avant de les écrire. Un filtre peut être utilisé également lors d'une copie :
+Un **filtre** est un programme qui lit les données d'un fichier et les convertit en une autre forme avant de les écrire. Un filtre peut être utilisé également lors d'une copie :
 ```python
 original_file = open("file.text", "r", encoding = "utf-8")
 copied_file = open("copy.txt", "w", encoding = "utf-8")
@@ -4987,7 +5025,7 @@ class Moving_object(Game_object):
 
         # OU
 
-        super().__init__(pos, vis)
+        super().__init__(pos, vis)  # better because more maintenable
 ```
 Cela n'empêche pas que même sans appeler son *__init__()*, toutes les méthodes de la superclasse sont accessibles depuis la sous-classe et on peut appeler sur l'instance aussi bien les méthodes de la superclasse que celles de la sous-classe. C'est parce que l'instance de la sous-classe est aussi une instance de la superclasse.
 
@@ -5134,7 +5172,10 @@ Les problèmes avec ce code :
 - Sur des fonctions init très longues, cela devient très très dur de distinguer les self.\<attr> s'ils ne sont pas dans le bloc d'init.
 - Une modification de variable (permise par le fait que Python ait un typage dynamique) devient très compliqué, puisqu'il ne suffit pas d'avoir un setter qui modifierait l'attribut dans la fonction init, et cela donnerait lieu à du code encore plus complexe.
 
-Pour améliorer cela, on ne crée plus une instance de classe mais on utilise une méthode statique (introduite par `@`) qui agit sur la classe et non sur l'instance :
+Pour améliorer cela, on ne crée plus une instance de classe mais on utilise une méthode statique (introduite par `@`) qui agit sur la classe et non sur l'instance.\
+Le décorateur `@property` permet de lier une fonction à un attribut, sans avoir besoin de l'appeler pour l'utiliser (on n'utilise pas les parenthèses quand on se réfère à cette fonction).\
+Les `@classmethod` sont des méthodes prenant automatiquement la classe comme premier argument. Elles peuvent aussi être utilisées automatiquement comme constructeur de classe alternatif.\
+Les `@staticmethod` ne prennent pas la classe ou l'instance comme premier argument. Elles se comportent comme des fonctions "normales", mais comportent une connexion logique avec la classe, ce qui explique qu'elles se trouvent rangées avec elle.
 
 ```python
 class Configuration:
@@ -5188,7 +5229,7 @@ class Configuration:
 
     @classmethod
     # cls is the instance's name created in the function
-    # the only arg the user give in filepath
+    # the only arg the user give is filepath
     def from_file(cls, filepath: str) -> Configuration:
         print("from_file")
         return cls(
@@ -5202,7 +5243,14 @@ print(c.attr1)
 `init`\
 `hello`
 
-On lance donc d'abord la fonction `@classmethod` ***from-file( )***, qui n'est pas privée (pas d'underscore) et qui peut donc être appelée dans le *main* de notre programme. Cette fonction crée elle-même une instance de la classe Configuration et lui donne les attributs qu'elle a calculé. On peut aussi avoir des méthodes propres à l'instance `@property`, comme ***get( )*** et ***set( )***.
+On lance donc d'abord la fonction `@classmethod` ***from_file( )***, qui n'est pas privée (pas d'underscore) et qui peut donc être appelée dans le *main* de notre programme. Cette fonction crée elle-même une instance de la classe Configuration et lui donne les attributs qu'elle a calculé. On peut aussi avoir des méthodes propres à l'instance `@property`, comme ***get( )*** et ***set( )***.
+
+### 6.10. Magic/dunner methods in Python
+On les appelle aussi **special methods**. Elles permettent de modifier ou d'imiter le comportement de certaines fonctions built-in ou d'implémenter des "operator overloading" ("+", "/",...).\
+Le double underscore est parfois surnommé "dunder" ; "dunder init" fait donc référence à la méthode `__init__()`.
+
+Les plus utilisées sont `__init__()`, `__repr__()` et `__str__()`. `__repr__()` correspond à la description de la class utile aux programmeurs et `__str__()` correspond à celle utile à l'utilisateur. On peut donc implémenter la string qu'elles retournent.\
+`__add__(char1, char2)` est la dunder method appelée lorsqu'on tape `char1 + char2`.
 
 ---
 ## Summary
