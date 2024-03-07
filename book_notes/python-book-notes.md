@@ -811,7 +811,7 @@ On peut aussi donner un autre nom au module : `import tkinter as tk`, ou importe
 ---
 #### Quelques exemples de fonctions *random*
 
-De nombreux modules inclus dans la bibliothèque standard sont très utiles. Les plus utilisés sont `os`, `sys`, `Path`, `time`, `random`, `math`.\
+De nombreux modules inclus dans la bibliothèque standard sont très utiles. Les plus utilisés sont `os`, `sys`, `pathlib`, `time`, `random`, `math`.\
 Concentrons-nous sur le module ***random*** qui contient plusieurs fonctions.
 
 **random()** \
