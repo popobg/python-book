@@ -159,13 +159,9 @@ class App(ctk.CTk):
 
     @staticmethod
     def start_game(app, items: tuple) -> None:
-        print("round passed before if: ", app.round_passed)
-        print("title round selected : ", app.round_selected)
         if app.round_passed < app.round_selected:
             Choice_screen(app, items)
-            print("round passed after if: ", app.round_passed)
         else:
-            print("win screen")
             Winner_screen(app, items)
 
 # CLASSES

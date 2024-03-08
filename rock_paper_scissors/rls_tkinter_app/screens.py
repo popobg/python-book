@@ -127,7 +127,6 @@ class Title_screen:
             else:
                 break
         self.window.set_round_selected(self.window, int("".join(numb_round)))
-        print("selected rounds: ", self.window.round_selected)
 
 
 class Choice_screen:
@@ -227,7 +226,7 @@ class Duel_screen:
         self.items = items
 
         self.computer_choice = random.choice(items)
-        print(self.computer_choice)
+
         self.win_text = "Vous avez gagné cette manche ! Bravo !"
         self.lose_text = "Vous avez perdu cette manche... Dommage."
         self.draw_text = "Egalité. La manche ne compte pas."
