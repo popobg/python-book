@@ -176,7 +176,6 @@ class App(ctk.CTk):
     @staticmethod
     def play_sound(path: str) -> None:
         """Play the sound at the given path"""
-        print("play")
         pygame.mixer.music.load((os.path.join(Path(__file__).parent, path)))
         pygame.mixer.music.play(loops = 0)
 
