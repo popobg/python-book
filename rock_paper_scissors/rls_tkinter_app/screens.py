@@ -48,7 +48,7 @@ class Title_screen:
             self.window,
             text="Lancer le jeu",
             font=self.window.button_font,
-            command=lambda: self.window.start_game(self.window, self.items),
+            command=lambda: self.window.run_game(self.window, self.items, paths.button_sound),
             )
 
         self.create_layout()
@@ -156,7 +156,7 @@ class Choice_screen:
             text="",
             image=self.items[0].neutral.image_ctk,
             compound="top",
-            command=lambda choice = self.items[0]: self.start_duel(choice),
+            command=lambda choice = self.items[0]: self.start_duel(choice, paths.rock_sound),
             )
 
         self.button_leaf = ctk.CTkButton(
@@ -164,7 +164,7 @@ class Choice_screen:
             text="",
             image=self.items[1].neutral.image_ctk,
             compound="top",
-            command=lambda choice = self.items[1]: self.start_duel(choice),
+            command=lambda choice = self.items[1]: self.start_duel(choice, paths.leaf_sound),
             )
 
         self.button_scissors = ctk.CTkButton(
@@ -172,7 +172,7 @@ class Choice_screen:
             text="",
             image=self.items[2].neutral.image_ctk,
             compound="top",
-            command=lambda choice = self.items[2]: self.start_duel(choice),
+            command=lambda choice = self.items[2]: self.start_duel(choice, paths.scissors_sound),
             )
 
         self.window.display_score(self.window)
@@ -213,7 +213,8 @@ class Choice_screen:
             pady=20,
             )
 
-    def start_duel(self, choice: items) -> None:
+    def start_duel(self, choice: items, audio_path: str) -> None:
+        self.window.play_sound(audio_path)
         Duel_screen(self.window, choice, self.items)
 
 
@@ -270,7 +271,7 @@ class Duel_screen:
             self.window,
             text=match_score[3],
             font = self.window.button_font,
-            command=lambda: self.window.start_game(self.window, self.items),
+            command=lambda: self.window.run_game(self.window, self.items, paths.button_sound),
         )
 
         self.window.display_score(self.window)
@@ -350,20 +351,22 @@ class Winner_screen:
         self.window = parent
         self.items = items
 
-        self.end_sentence = self.determine_winner()
+        self.end_sentence, self.sound = self.determine_winner()
 
         self.thumb_up = Image_tk(paths.thumb_up)
         self.thumb_down = Image_tk(paths.thumb_down)
 
+        self.window.play_sound(self.sound)
         self.create_widgets()
 
     def determine_winner(self):
         if self.window.score[0] > self.window.score[1]:
-            return "Bien joué, vous êtes le gagnant !"
+            return ("Bien joué, vous êtes le gagnant !", paths.success_sound)
         else:
-            return "L'ordinateur a gagné,\nvous aurez plus de chance la prochaine fois !"
+            return ("L'ordinateur a gagné,\nvous aurez plus de chance la prochaine fois !", paths.fail_sound)
 
     def new_game(self):
+        self.window.play_sound(paths.button_sound)
         self.window.set_round_passed(self.window, 0)
         self.window.set_score(self.window, reset=True)
         self.window.title = Title_screen(self.window, self.items)

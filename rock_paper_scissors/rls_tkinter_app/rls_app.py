@@ -7,6 +7,7 @@ from pathlib import Path
 import tkinter as tk
 import customtkinter as ctk
 from PIL import ImageTk
+import pygame
 from screens import Title_screen, Choice_screen, Winner_screen
 import paths
 import items
@@ -38,6 +39,9 @@ class App(ctk.CTk):
         ctk.AppearanceModeTracker.callback_list.append(self.set_icon)
 
         self.create_ctk_style()
+
+        # initiate pygame to play music
+        pygame.mixer.init()
 
         self.items = (items.Rock(), items.Leaf(), items.Scissors())
 
@@ -102,6 +106,7 @@ class App(ctk.CTk):
 
     @staticmethod
     def set_score(app, user_score: int = 0, computer_score: int = 0, reset: bool = False) -> None:
+        """Update the score; the reset option set the score to 0."""
         if reset:
             app.score = [0, 0]
             return None
@@ -137,7 +142,7 @@ class App(ctk.CTk):
 
     @staticmethod
     def display_score(app, winner:bool = False) -> None:
-
+        """Display the current score via a label."""
         label_score = ctk.CTkLabel(
                 master=app,
                 text=f"Joueur : {app.score[0]} ; ordinateur : {app.score[1]}",
@@ -158,11 +163,22 @@ class App(ctk.CTk):
             )
 
     @staticmethod
-    def start_game(app, items: tuple) -> None:
+    def run_game(app, items: tuple, audio_path: str) -> None:
+        """Manage the transition between different states of the game
+        and play the sound button effect.
+        """
+        app.play_sound(audio_path)
         if app.round_passed < app.round_selected:
             Choice_screen(app, items)
         else:
             Winner_screen(app, items)
+
+    @staticmethod
+    def play_sound(path: str) -> None:
+        """Play the sound at the given path"""
+        print("play")
+        pygame.mixer.music.load((os.path.join(Path(__file__).parent, path)))
+        pygame.mixer.music.play(loops = 0)
 
 # CLASSES
 app = App("Pierre-feuille-ciseaux", (750, 750))
